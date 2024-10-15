@@ -90,7 +90,7 @@ namespace FiveMinutes.Controllers
                 await userManager.AddToRoleAsync(newUser, UserRoles.Student);
                 return RedirectToAction("Index", "Home");
             }
-            else
+            else if (!newUserResponse.Succeeded && true) 
             {
                 TempData["Error"] = "Enter the correct email";
                 return View(registerViewModel);

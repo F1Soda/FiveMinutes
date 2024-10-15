@@ -1,4 +1,5 @@
 using FiveMinutes.Data;
+using FiveMinutes.Debug;
 using FiveMinutes.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -27,11 +28,6 @@ builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
 var app = builder.Build();
-
-if (args.Length == 1 && args[0].ToLower() == "seedadmins")
-{
-	await Seed.SeedAdmins(app);
-}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

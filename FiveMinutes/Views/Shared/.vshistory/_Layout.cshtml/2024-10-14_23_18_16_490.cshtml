@@ -25,23 +25,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <l1 class="nav-item">
-                                <form asp-area="" asp-controller="Account" asp-action="Logout">
-                                    <button class="btn btn-outline-danger">Logout</button>
-                                </form>
-                            </l1>
-                        }
-                        else
-                        {
-                            <l1 class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                            </l1>
-                            <l1 class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                            </l1>
-                        }
+                        <l1 class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        </l1>
+                        <l1 class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                        </l1>
+
                     </ul>
                 </div>
             </div>

@@ -86,15 +86,9 @@ namespace FiveMinutes.Controllers
             var newUserResponse = await userManager.CreateAsync(newUser, registerViewModel.Password);
 
             if (newUserResponse.Succeeded)
-            {
                 await userManager.AddToRoleAsync(newUser, UserRoles.Student);
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                TempData["Error"] = "Enter the correct email";
-                return View(registerViewModel);
-            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]

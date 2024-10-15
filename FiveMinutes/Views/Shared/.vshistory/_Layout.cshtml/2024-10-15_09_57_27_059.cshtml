@@ -28,6 +28,10 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <l1 class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Dashboard"
+                                   asp-action="Index">Dashboard</a>
+                            </l1>
+                            <l1 class="nav-item">
                                 <form asp-area="" asp-controller="Account" asp-action="Logout">
                                     <button class="btn btn-outline-danger">Logout</button>
                                 </form>
