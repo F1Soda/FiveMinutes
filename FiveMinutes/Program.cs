@@ -12,6 +12,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddDbContext<ApplicationDbTest>(options =>
+{
+	options.UseNpgsql(builder.Configuration.GetConnectionString("MyConnection"));
+});
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
 	options.Password.RequireDigit = false;

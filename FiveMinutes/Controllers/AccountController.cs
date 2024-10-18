@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FiveMinutes.Controllers
 {
     public class AccountController : Controller
-    {
+    { 
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
         private readonly ApplicationDbContext context;
