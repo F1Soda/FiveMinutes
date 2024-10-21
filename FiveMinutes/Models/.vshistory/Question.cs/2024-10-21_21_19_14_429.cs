@@ -17,5 +17,5 @@ public class Question
 
     [ForeignKey("FiveMinuteTemplate")]
     public int? RelatedFMTId { get; set; }
-    public FiveMinuteTemplate FMT { get; set; }
+    public FiveMinuteTemplate FiveMinuteTemplate { get; set; }
 }

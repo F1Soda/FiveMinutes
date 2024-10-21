@@ -9,9 +9,8 @@ namespace FiveMinutes.Models
 		[Key]
 		public int Id { get; set; }
         public string Name { get; set; }
-        [ForeignKey("FiveMinuteTemplate")]
-        public int? AttachedFMTId {  get; set; }
-		public FiveMinuteTemplate AttachedFMT { get; set; }
+		public int? AttachedFiveMinuteTemplateId {  get; set; }
+		public FiveMinuteTemplate AttachedFiveMinuteTemplate { get; set; }
 		public TestStatus Status { get; set; }
         public int FolderId { get; set; }
         public Folder Folder { get; set; }
