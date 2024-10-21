@@ -4,8 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FiveMinutes.Data
 {
-	public class ApplicationDbContext : IdentityDbContext<AppUser>
+	public class ApplicationDbContext : DbContext
 	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+		public DbSet<Question> Questions {  get;set; }
+		public DbSet<Answer> Answers {  get;set; }
+        public DbSet<EducationTest> EducationTests { get; set; }
+        public DbSet<FiveMinuteTemplate> FiveMinuteTemplate { get; set; }
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 	}
 }
