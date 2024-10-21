@@ -4,11 +4,11 @@ using System.Diagnostics;
 
 namespace FiveMinutes.Controllers
 {
-	public class HomeController : Controller
+	public class WelcomeController : Controller
 	{
-		private readonly ILogger<HomeController> _logger;
+		private readonly ILogger<WelcomeController> _logger;
 
-		public HomeController(ILogger<HomeController> logger)
+		public WelcomeController(ILogger<WelcomeController> logger)
 		{
 			_logger = logger;
 		}

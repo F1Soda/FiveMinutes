@@ -43,7 +43,7 @@ namespace FiveMinutes.Controllers
                     var result = await signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Welcome");
                     }
                 }
                 // TODO: Сделать позже это поле
@@ -88,7 +88,7 @@ namespace FiveMinutes.Controllers
             if (newUserResponse.Succeeded)
             {
                 await userManager.AddToRoleAsync(newUser, UserRoles.Student);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Welcome");
             }
             else
             {
@@ -101,7 +101,7 @@ namespace FiveMinutes.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Welcome");
         }
     }
 }
