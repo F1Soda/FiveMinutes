@@ -1,8 +1,10 @@
 ﻿using FiveMinutes.Data;
 using FiveMinutes.Models;
 using FiveMinutes.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace FiveMinutes.Controllers
 {
@@ -102,6 +104,26 @@ namespace FiveMinutes.Controllers
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> Detail(string id)
+        {
+            var user = await context.Users.FindAsync(id);
+            if (user == null)
+            {
+                // По хорошему сюда надо PageNotFounded
+                return RedirectToAction("Index", "Home");
+            }
+            // И возможно не нужна сразу все пятиминутки с тестами отправлять
+            var userDetailViewModel = new UserDetailViewModel()
+            {
+                Id = id,
+                UserName = user.UserName,
+                FMTs = user.FMTs,
+                Tests = user.Tests,
+                Email = user.Email
+            };
+            return View(userDetailViewModel);
         }
     }
 }

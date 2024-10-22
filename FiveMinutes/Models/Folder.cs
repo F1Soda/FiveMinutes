@@ -10,6 +10,6 @@ namespace FiveMinutes.Models
         public int? ParentFolderId { get; set; }
         public Folder ParentFolder { get; set; }
         public ICollection<Folder> SubFolders { get; set; }
-        public ICollection<Test> Tests { get; set; }
+        public ICollection<EducationTest> Tests { get; set; }
     }
 }
