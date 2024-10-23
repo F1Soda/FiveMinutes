@@ -1,8 +1,10 @@
 ﻿using FiveMinutes.Data;
 using FiveMinutes.Models;
 using FiveMinutes.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace FiveMinutes.Controllers
 {
@@ -43,7 +45,7 @@ namespace FiveMinutes.Controllers
                     var result = await signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Welcome");
                     }
                 }
                 // TODO: Сделать позже это поле
@@ -88,7 +90,7 @@ namespace FiveMinutes.Controllers
             if (newUserResponse.Succeeded)
             {
                 await userManager.AddToRoleAsync(newUser, UserRoles.Student);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Welcome");
             }
             else
             {
@@ -101,7 +103,27 @@ namespace FiveMinutes.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Welcome");
+        }
+
+        public async Task<IActionResult> Detail(string id)
+        {
+            var user = await context.Users.FindAsync(id);
+            if (user == null)
+            {
+                // По хорошему сюда надо PageNotFounded
+                return RedirectToAction("Index", "Home");
+            }
+            // И возможно не нужна сразу все пятиминутки с тестами отправлять
+            var userDetailViewModel = new UserDetailViewModel()
+            {
+                Id = id,
+                UserName = user.UserName,
+                FMTs = user.FMTs,
+                Tests = user.Tests,
+                Email = user.Email
+            };
+            return View(userDetailViewModel);
         }
     }
 }

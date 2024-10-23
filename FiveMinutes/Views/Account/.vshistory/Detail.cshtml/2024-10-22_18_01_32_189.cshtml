@@ -1,0 +1,17 @@
+﻿@using FiveMinutes.Data
+@using FiveMinutes.ViewModels
+@model UserDetailViewModel
+
+<h1>Данные о пользователе @Model.UserName</h1>
+
+<h3>Пятиминутки:</h3>
+@if (Model.FMTs is not null)
+{
+	@foreach (var fmt in Model.FMTs)
+	{
+		<li>@fmt.Name</li>
+	}
+}
+else{
+	<p>Пока тут пусто. Создайте новую!</p>
+}

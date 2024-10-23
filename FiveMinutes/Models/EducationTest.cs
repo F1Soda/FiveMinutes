@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FiveMinutes.Models
 {
-	public class Test
+	public class EducationTest
 	{
 		[Key]
 		public int Id { get; set; }
