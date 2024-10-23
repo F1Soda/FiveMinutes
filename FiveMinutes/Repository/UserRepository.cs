@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FiveMinutes.Repository
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : DefaultRepository<AppUser> ,IUserRepository
     {
         private readonly ApplicationDbContext context;
 
-        public UserRepository(ApplicationDbContext context)
+        public UserRepository(ApplicationDbContext context) : base(context)
         {
             this.context = context;
         }

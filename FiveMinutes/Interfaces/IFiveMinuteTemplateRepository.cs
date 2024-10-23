@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace FiveMinutes.Interfaces
 {
-    public interface IFiveMinuteTemplateRepository
+    public interface IFiveMinuteTemplateRepository : IDefaultRepository<FiveMinuteTemplate>
     {
         Task<FiveMinuteTemplate?> GetByIdAsync(int id);
 
@@ -11,13 +11,5 @@ namespace FiveMinutes.Interfaces
 
         // Возможно лишнее, но пока оставлю
         Task<IEnumerable<FiveMinuteTemplate>> GetAllFromUserId(int userId);
-
-        bool Add(FiveMinuteTemplate fmt);
-
-        bool Update(FiveMinuteTemplate fmt);
-
-        bool Delete(FiveMinuteTemplate fmt);
-
-        bool Save();
     }
 }

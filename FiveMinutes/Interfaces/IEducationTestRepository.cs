@@ -1,6 +1,9 @@
-﻿namespace FiveMinutes.Interfaces
+﻿using FiveMinutes.Models;
+
+namespace FiveMinutes.Interfaces
 {
-    public interface IEducationTestRepository
+    public interface IEducationTestRepository : IDefaultRepository<EducationTest>
     {
+        
     }
 }

@@ -28,10 +28,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 var app = builder.Build();
 
-if (args.Length == 1 && args[0].ToLower() == "seedadmins")
-{
-    await Seed.SeedAdmins(app);
-}
+
+await Seed.SeedAdmins(app);
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

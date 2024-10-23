@@ -10,16 +10,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/FiveMinutes/Data/ApplicationDbTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FiveMinutes/Models/Answer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FiveMinutes/Models/Question.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Controllers/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/FiveMinutes.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/FiveMinutes.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Models/EducationTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Models/EducationTest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Models/FiveMinuteTemplate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Models/FiveMinuteTemplate.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FiveMinutes/Interfaces/IDefaultRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FiveMinutes/Repository/DefaultRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FiveMinutes/Repository/EducationTestRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Controllers/FiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Controllers/FiveMinuteTemplateController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Data/ApplicationDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Interfaces/IEducationTestRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Interfaces/IEducationTestRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Interfaces/IFiveMinuteTemplateRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Interfaces/IFiveMinuteTemplateRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Interfaces/IUserRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Interfaces/IUserRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Migrations/20241021163528_Initial.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Migrations/20241021163528_Initial.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinutes/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/Account/Login.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/Account/Login.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Repository/FiveMinuteTemplateRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Repository/FiveMinuteTemplateRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Repository/UserRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Repository/UserRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinute/.vshistory/Edit.cshtml/2024-10-22_18_21_23_106.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/.vshistory/Edit.cshtml/2024-10-22_18_21_23_106.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinute/.vshistory/Index.cshtml/2024-10-22_18_09_31_135.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/.vshistory/Index.cshtml/2024-10-22_18_09_31_135.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinute/.vshistory/Index.cshtml/2024-10-22_18_13_11_392.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/.vshistory/Index.cshtml/2024-10-22_18_13_11_392.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinute/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/Edit.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinute/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/Index.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +41,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f9342fb513b7b524925c79d9822cd3ecaf072c50231aa3b469875f4c2cdf/IdentityDbContext.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../RunGroupWebAppExample/RunGroupWebApp/Program.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -46,12 +57,13 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;cynpy__branch&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;cynpy&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
@@ -128,6 +140,8 @@
       <workItem from="1729267871743" duration="36000" />
       <workItem from="1729267929197" duration="1320000" />
       <workItem from="1729269283902" duration="3712000" />
+      <workItem from="1729700735569" duration="386000" />
+      <workItem from="1729702478351" duration="3720000" />
     </task>
     <servers />
   </component>
