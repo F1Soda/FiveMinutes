@@ -10,8 +10,10 @@ namespace FiveMinutes.Models
 
 		public DateTime? CreationTime { get; set; }
 		public DateTime? LastModificationTime { get; set; }
+
+		public bool? ShowInProfile { get; set; }
+
 		public ICollection<Question> Questions { get; set; }
-        public bool? ShowInProfile { get; set; }
 
         [ForeignKey("AppUser")]
         public int? UserOwnerId { get; set; }

@@ -11,11 +11,12 @@ public class Question
     public int Position { get; set; }
     public string QuestionText { get; set; }
     public ResponseType ResponseType { get; set; }
+
     public ICollection<SingleChoiceAnswer> SingleChoiceAnswers { get; set; }
     public ICollection<MultipleChoiceAnswer> MultipleChoiceAnswers { get; set; }
     public ICollection<TextAnswer> TextAnswers { get; set; }
 
     [ForeignKey("FiveMinuteTemplate")]
-    public int? RelatedFMTId { get; set; }
-    public FiveMinuteTemplate FMT { get; set; }
+    public int? FiveMinuteTemplateId { get; set; }
+    public FiveMinuteTemplate FiveMinuteTemplate { get; set; }
 }

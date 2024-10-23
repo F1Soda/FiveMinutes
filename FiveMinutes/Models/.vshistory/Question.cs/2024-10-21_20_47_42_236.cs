@@ -16,6 +16,6 @@ public class Question
     public ICollection<TextAnswer> TextAnswers { get; set; }
 
     [ForeignKey("FiveMinuteTemplate")]
-    public int? RelatedFMTId { get; set; }
-    public FiveMinuteTemplate FMT { get; set; }
+    public int? FiveMinuteTemplateId { get; set; }
+    public FiveMinuteTemplate FiveMinuteTemplate { get; set; }
 }
