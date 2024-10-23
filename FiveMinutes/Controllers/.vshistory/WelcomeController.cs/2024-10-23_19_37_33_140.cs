@@ -5,12 +5,12 @@ using System.Diagnostics;
 
 namespace FiveMinutes.Controllers
 {
-	public class HomeController : Controller
+	public class WelcomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
         private readonly UserManager<AppUser> userManager;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager)
+		public WelcomeController(ILogger<WelcomeController> logger)
 		{
 			_logger = logger;
 			this.userManager = userManager;

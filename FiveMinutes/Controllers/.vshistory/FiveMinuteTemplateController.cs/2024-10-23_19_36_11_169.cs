@@ -9,7 +9,7 @@ namespace FiveMinutes.Controllers
 {
     public class FiveMinuteTemplateController : Controller
     {
-		private readonly ILogger<WelcomeController> _logger;
+		private readonly ILogger<HomeController> _logger;
 		private readonly UserManager<AppUser> userManager;
         private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
 
