@@ -26,7 +26,7 @@ namespace FiveMinutes.Controllers
 		public IActionResult Create() 
         {
             var newFMT = new FiveMinuteTemplate 
-            { 
+            {
                 CreationTime = DateTime.Now,
                 LastModificationTime=DateTime.Now,  
                 UserOwnerId = 1,
@@ -44,6 +44,21 @@ namespace FiveMinutes.Controllers
         public IActionResult Edit(FiveMinuteTemplate fmt)
         {
             return View(fmt);
+        }
+        
+        public IActionResult TestCreation()
+        {
+	        return View();
+        }
+    
+        public IActionResult AllFiveMinutesTemplates()
+        {
+	        return View();
+        }
+        
+        public IActionResult FiveMinuteFolder()
+        {
+	        return View();
         }
     }
 }

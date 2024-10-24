@@ -4,11 +4,16 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewData["Title"] = "Создание пятиминутки";
 }
 
 <h1>Редактор пятиминутки</h1>
 
 <p>Название пятиминутки: @Model.Name</p>
 <p>Айди: @Model.Id</p>
+
+    <a class="btn btn-outline-secondary" asp-controller="FiveMinuteTemplate" asp-action="TestCreation">Создание теста</a>
+    <a class="btn btn-outline-secondary" asp-controller="FiveMinuteTemplate" asp-action="AllFiveMinutesTemplates">Выбрать шаблон пятиминутки</a>
+
 
 
