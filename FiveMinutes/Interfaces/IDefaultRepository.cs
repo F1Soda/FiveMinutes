@@ -9,6 +9,4 @@ public interface IDefaultRepository<T>
     bool Delete(T fmt);
 
     bool Save();
-    Task<T?> GetByIdAsync(int id);
-    Task<T?> GetByIdAsyncNoTracking(int id);
 }

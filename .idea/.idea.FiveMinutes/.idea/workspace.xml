@@ -10,16 +10,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/FiveMinutes/Controllers/AppointedFiveMinuteTemplateController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/efCoreDialogsState.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/efCoreDialogsState.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Controllers/FiveMinutesController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinutes/AllFiveMinutesTemplates.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/AllFiveMinutesTemplates.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinutes/AllTests.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/AllTests.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinutes/FiveMinuteCreation.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/FiveMinuteCreation.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinutes/FiveMinuteFolder.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/FiveMinuteFolder.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinutes/Test.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/Test.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinutes/TestCreation.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/TestCreation.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinutes/TestPassing.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/TestPassing.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Controllers/EducationTestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Controllers/FiveMinuteTestController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Controllers/FiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Controllers/FiveMinuteTemplateController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Data/ApplicationDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Interfaces/IDefaultRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Interfaces/IDefaultRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Interfaces/IEducationTestRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Interfaces/IFiveMinuteTestRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Interfaces/IFiveMinuteTemplateRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Interfaces/IFiveMinuteTemplateRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Models/AppUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Models/AppUser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Models/EducationTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Models/FiveMinuteTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Models/FiveMinuteTemplate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Models/FiveMinuteTemplate.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Models/Folder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Models/Folder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Repository/DefaultRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Repository/DefaultRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Repository/EducationTestRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Repository/FiveMinuteTestRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Repository/FiveMinuteTemplateRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Repository/FiveMinuteTemplateRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/ViewModels/UserDetailViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/ViewModels/UserDetailViewModel.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +37,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3bd4df5aff92cabbc4d630be64227073db1b8539b3a1e47786b4b189d7cdb7/DbContext.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/533e65d7e1d3ab33a791a6bb1a1ecf0d06cc9b38761b9465fc6c2554a77ecb6/MvcServiceCollectionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c69576b4a074ad2839225611609498e344b7e2819997af48dbb2d2f8257f3/EntityFrameworkQueryableExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f9342fb513b7b524925c79d9822cd3ecaf072c50231aa3b469875f4c2cdf/IdentityDbContext.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../RunGroupWebAppExample/RunGroupWebApp/Program.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -133,6 +143,8 @@
       <workItem from="1729700735569" duration="386000" />
       <workItem from="1729702478351" duration="3720000" />
       <workItem from="1729759467189" duration="1852000" />
+      <workItem from="1729783093705" duration="949000" />
+      <workItem from="1729930910463" duration="5587000" />
     </task>
     <servers />
   </component>

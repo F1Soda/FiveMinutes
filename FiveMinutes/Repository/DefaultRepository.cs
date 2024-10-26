@@ -8,7 +8,7 @@ namespace FiveMinutes.Repository;
 
 public abstract class DefaultRepository<T> : IDefaultRepository<T>
 {
-    private readonly ApplicationDbContext context;
+    protected readonly ApplicationDbContext context;
 
     public DefaultRepository(ApplicationDbContext context)
     {
@@ -22,15 +22,8 @@ public abstract class DefaultRepository<T> : IDefaultRepository<T>
 
     public bool Delete(T obj)
     {
-        throw new NotImplementedException();
-    }
-    public Task<T?> GetByIdAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
-    public Task<T?> GetByIdAsyncNoTracking(int id)
-    {
-        throw new NotImplementedException();
+        context.Remove(obj);
+        return Save();
     }
     public bool Save()
     {

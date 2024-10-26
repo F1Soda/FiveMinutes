@@ -2,7 +2,7 @@
 
 namespace FiveMinutes.Interfaces
 {
-    public interface IEducationTestRepository : IDefaultRepository<EducationTest>
+    public interface IFiveMinuteTestRepository : IDefaultRepository<FiveMinuteTest>
     {
         
     }

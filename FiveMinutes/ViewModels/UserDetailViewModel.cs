@@ -9,6 +9,6 @@ namespace FiveMinutes.ViewModels
         public string Email { get; set; }
         public bool IsOwner { get; set; }
         public ICollection<FiveMinuteTemplate> FMTs { get; set; }
-        public ICollection<EducationTest> Tests { get; set; }
+        public ICollection<FiveMinuteTest> Tests { get; set; }
     }
 }

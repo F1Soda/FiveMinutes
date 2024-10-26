@@ -2,7 +2,7 @@
 
 namespace FiveMinutes.Controllers
 {
-    public class EducationTestController : Controller
+    public class FiveMinuteTestController : Controller
     {
         public IActionResult Create()
         {

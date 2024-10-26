@@ -15,5 +15,5 @@ namespace FiveMinutes.Models
 
         [ForeignKey("AppUser")]
         public int? UserOwnerId { get; set; }
-    }
+	}
 }

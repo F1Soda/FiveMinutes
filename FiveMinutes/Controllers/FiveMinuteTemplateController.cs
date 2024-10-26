@@ -25,11 +25,16 @@ namespace FiveMinutes.Controllers
         [HttpPost]
 		public IActionResult Create() 
         {
-            var newFMT = new FiveMinuteTemplate 
+	        var currentUser = userManager.GetUserAsync(User);
+	        if (currentUser == null)
+	        {
+		        throw new ApplicationException("Попытка создать шаблон не зарегистрировавшись");
+	        }
+	        var newFMT = new FiveMinuteTemplate 
             { 
-                CreationTime = DateTime.Now,
-                LastModificationTime=DateTime.Now,  
-                UserOwnerId = 1,
+                CreationTime = DateTime.UtcNow,
+                LastModificationTime=DateTime.UtcNow,  
+                UserOwnerId = currentUser.Id,
                 ShowInProfile = true,
                 // Вот тут надо будет переделать, чтобы добавлялся номер в конец, чтобы избавиться от повторения
                 Name = "Новая пятиминутка"
@@ -43,6 +48,8 @@ namespace FiveMinutes.Controllers
 
         public IActionResult Edit(FiveMinuteTemplate fmt)
         {
+
+	        Create();
             return View(fmt);
         }
     }
