@@ -14,7 +14,7 @@ namespace FiveMinutes.Controllers
 		private readonly UserManager<AppUser> userManager;
         private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
 
-		public FiveMinuteTemplateController(UserManager<AppUser> userManager,ApplicationDbContext context)
+		public FiveMinuteTemplateController(UserManager<AppUser> userManager, ApplicationDbContext context)
         { 
 			this.userManager = userManager;
             this.fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
@@ -60,5 +60,29 @@ namespace FiveMinutes.Controllers
         {
 	        return View();
         }
+        
+        /* Предполагаем, что у каждой пятиминутки уникальный id и достаём её из БД
+        [HttpGet]
+        public IActionResult Create(int id)
+        {
+	        var fmt = fiveMinuteTemplateRepository.GetById(id);
+	        if (fmt == null)
+	        {
+		        return NotFound();
+	        }
+	        return View(fmt);
+        }
+
+        [HttpPost]
+        public IActionResult Create(FiveMinuteTemplate model)
+        {
+	        if (ModelState.IsValid)
+	        {
+		        fiveMinuteTemplateRepository.Update(model);
+		        return RedirectToAction("Index");
+	        }
+	        return View(model);
+        }
+        */
     }
 }

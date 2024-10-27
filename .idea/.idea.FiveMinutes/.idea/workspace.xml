@@ -10,20 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/AllFiveMinutesTemplates.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Controllers/AppointedFiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Controllers/AppointedFiveMinuteTemplateController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinutes/Controllers/FiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Controllers/FiveMinuteTemplateController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/AllFiveMinutesTemplates.cshtml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/AllTests.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/AllTests.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/FiveMinuteCreation.cshtml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/FiveMinuteFolder.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/FiveMinuteFolder.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/Test.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/Test.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/AppointedFiveMinuteTemplate/TestCreation.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/TestCreation.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Repository/FiveMinuteTemplateRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Repository/FiveMinuteTemplateRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/Edit.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/Shared/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/Welcome/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/Welcome/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/global.json" beforeDir="false" afterPath="$PROJECT_DIR$/global.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +41,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;pancakeovich&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -139,6 +129,7 @@
       <workItem from="1729759467189" duration="1852000" />
       <workItem from="1729764841928" duration="3594000" />
       <workItem from="1729769559413" duration="2122000" />
+      <workItem from="1730028695446" duration="372000" />
     </task>
     <servers />
   </component>

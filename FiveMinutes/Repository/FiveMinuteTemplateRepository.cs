@@ -14,6 +14,12 @@ namespace FiveMinutes.Repository
 		{
 			throw new NotImplementedException();
 		}
+
+		public FiveMinuteTemplate GetById(int id)
+		{
+			// достаёт по id соответствующую пятиминутку
+			return new FiveMinuteTemplate();
+	}
 		
 	}
 }
