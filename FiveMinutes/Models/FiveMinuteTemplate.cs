@@ -6,14 +6,16 @@ namespace FiveMinutes.Models
 	{
 		[Key]
 		public int Id { get; set; }
-		public string? Name { get; set; }
+        
+		[Required(ErrorMessage = "Название обязательно")]
+		public string Name { get; set; }
 
-		public DateTime? CreationTime { get; set; }
-		public DateTime? LastModificationTime { get; set; }
-		public ICollection<Question> Questions { get; set; }
-        public bool? ShowInProfile { get; set; }
+		public DateTime CreationTime { get; set; }
+		public DateTime LastModificationTime { get; set; }
+		public List<Question> Questions { get; set; } = new List<Question>();
+		public bool ShowInProfile { get; set; }
 
-        [ForeignKey("AppUser")]
-        public int? UserOwnerId { get; set; }
-    }
+		[ForeignKey("AppUser")]
+		public int? UserOwnerId { get; set; }
+	}
 }

@@ -9,13 +9,12 @@ public class Question
     [Key]
     public int Id { get; set; }
     public int Position { get; set; }
+        
+    [Required(ErrorMessage = "Текст вопроса обязателен")]
     public string QuestionText { get; set; }
     public ResponseType ResponseType { get; set; }
-    public ICollection<SingleChoiceAnswer> SingleChoiceAnswers { get; set; }
-    public ICollection<MultipleChoiceAnswer> MultipleChoiceAnswers { get; set; }
-    public ICollection<TextAnswer> TextAnswers { get; set; }
+    public List<Answer> Answers { get; set; } = new List<Answer>();
 
     [ForeignKey("FiveMinuteTemplate")]
-    public int? RelatedFMTId { get; set; }
-    public FiveMinuteTemplate FMT { get; set; }
+    public int FiveMinuteTemplateId { get; set; }
 }
