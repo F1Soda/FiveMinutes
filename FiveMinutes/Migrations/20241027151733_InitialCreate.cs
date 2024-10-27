@@ -200,30 +200,7 @@ namespace FiveMinutes.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Question",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Position = table.Column<int>(type: "integer", nullable: false),
-                    QuestionText = table.Column<string>(type: "text", nullable: false),
-                    ResponseType = table.Column<int>(type: "integer", nullable: false),
-                    RelatedFMTId = table.Column<int>(type: "integer", nullable: true),
-                    FMTId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Question", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Question_FiveMinuteTemplate_FMTId",
-                        column: x => x.FMTId,
-                        principalTable: "FiveMinuteTemplate",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Test",
+                name: "FiveMinuteTest",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -237,19 +214,19 @@ namespace FiveMinutes.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Test", x => x.Id);
+                    table.PrimaryKey("PK_FiveMinuteTest", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Test_AspNetUsers_AppUserId",
+                        name: "FK_FiveMinuteTest_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Test_FiveMinuteTemplate_AttachedFMTId",
+                        name: "FK_FiveMinuteTest_FiveMinuteTemplate_AttachedFMTId",
                         column: x => x.AttachedFMTId,
                         principalTable: "FiveMinuteTemplate",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Test_Folder_FolderId",
+                        name: "FK_FiveMinuteTest_Folder_FolderId",
                         column: x => x.FolderId,
                         principalTable: "Folder",
                         principalColumn: "Id",
@@ -257,67 +234,53 @@ namespace FiveMinutes.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MultipleChoiceAnswer",
+                name: "Question",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    IsChecked = table.Column<bool>(type: "boolean", nullable: false),
                     Position = table.Column<int>(type: "integer", nullable: false),
-                    QuestionId = table.Column<int>(type: "integer", nullable: false)
+                    QuestionText = table.Column<string>(type: "text", nullable: false),
+                    ResponseType = table.Column<int>(type: "integer", nullable: false),
+                    FiveMinuteTemplateId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MultipleChoiceAnswer", x => x.Id);
+                    table.PrimaryKey("PK_Question", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MultipleChoiceAnswer_Question_QuestionId",
-                        column: x => x.QuestionId,
-                        principalTable: "Question",
+                        name: "FK_Question_FiveMinuteTemplate_FiveMinuteTemplateId",
+                        column: x => x.FiveMinuteTemplateId,
+                        principalTable: "FiveMinuteTemplate",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SingleChoiceAnswer",
+                name: "Answer",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    IsSelected = table.Column<bool>(type: "boolean", nullable: false),
                     Position = table.Column<int>(type: "integer", nullable: false),
-                    QuestionId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SingleChoiceAnswer", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SingleChoiceAnswer_Question_QuestionId",
-                        column: x => x.QuestionId,
-                        principalTable: "Question",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TextAnswer",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Text = table.Column<string>(type: "text", nullable: false),
-                    Position = table.Column<int>(type: "integer", nullable: false),
+                    IsCorrect = table.Column<bool>(type: "boolean", nullable: false),
                     QuestionId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TextAnswer", x => x.Id);
+                    table.PrimaryKey("PK_Answer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TextAnswer_Question_QuestionId",
+                        name: "FK_Answer_Question_QuestionId",
                         column: x => x.QuestionId,
                         principalTable: "Question",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Answer_QuestionId",
+                table: "Answer",
+                column: "QuestionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -362,49 +325,37 @@ namespace FiveMinutes.Migrations
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FiveMinuteTest_AppUserId",
+                table: "FiveMinuteTest",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FiveMinuteTest_AttachedFMTId",
+                table: "FiveMinuteTest",
+                column: "AttachedFMTId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FiveMinuteTest_FolderId",
+                table: "FiveMinuteTest",
+                column: "FolderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Folder_ParentFolderId",
                 table: "Folder",
                 column: "ParentFolderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MultipleChoiceAnswer_QuestionId",
-                table: "MultipleChoiceAnswer",
-                column: "QuestionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Question_FMTId",
+                name: "IX_Question_FiveMinuteTemplateId",
                 table: "Question",
-                column: "FMTId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SingleChoiceAnswer_QuestionId",
-                table: "SingleChoiceAnswer",
-                column: "QuestionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Test_AppUserId",
-                table: "Test",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Test_AttachedFMTId",
-                table: "Test",
-                column: "AttachedFMTId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Test_FolderId",
-                table: "Test",
-                column: "FolderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TextAnswer_QuestionId",
-                table: "TextAnswer",
-                column: "QuestionId");
+                column: "FiveMinuteTemplateId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Answer");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -421,25 +372,16 @@ namespace FiveMinutes.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "MultipleChoiceAnswer");
+                name: "FiveMinuteTest");
 
             migrationBuilder.DropTable(
-                name: "SingleChoiceAnswer");
-
-            migrationBuilder.DropTable(
-                name: "Test");
-
-            migrationBuilder.DropTable(
-                name: "TextAnswer");
+                name: "Question");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Folder");
-
-            migrationBuilder.DropTable(
-                name: "Question");
 
             migrationBuilder.DropTable(
                 name: "FiveMinuteTemplate");

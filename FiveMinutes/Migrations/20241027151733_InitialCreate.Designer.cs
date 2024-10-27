@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinutes.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241021164913_InitialCreate")]
+    [Migration("20241027151733_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,34 @@ namespace FiveMinutes.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("FiveMinutes.Models.Answer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answer");
+                });
 
             modelBuilder.Entity("FiveMinutes.Models.AppUser", b =>
                 {
@@ -122,108 +150,7 @@ namespace FiveMinutes.Migrations
                     b.ToTable("FiveMinuteTemplate");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.Folder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("ParentFolderId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentFolderId");
-
-                    b.ToTable("Folder");
-                });
-
-            modelBuilder.Entity("FiveMinutes.Models.MultipleChoiceAnswer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsChecked")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Position")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("MultipleChoiceAnswer");
-                });
-
-            modelBuilder.Entity("FiveMinutes.Models.Question", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("FMTId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Position")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("QuestionText")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("RelatedFMTId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ResponseType")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FMTId");
-
-                    b.ToTable("Question");
-                });
-
-            modelBuilder.Entity("FiveMinutes.Models.SingleChoiceAnswer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsSelected")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Position")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("SingleChoiceAnswer");
-                });
-
-            modelBuilder.Entity("FiveMinutes.Models.Test", b =>
+            modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -258,10 +185,10 @@ namespace FiveMinutes.Migrations
 
                     b.HasIndex("FolderId");
 
-                    b.ToTable("Test");
+                    b.ToTable("FiveMinuteTest");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.TextAnswer", b =>
+            modelBuilder.Entity("FiveMinutes.Models.Folder", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -269,21 +196,46 @@ namespace FiveMinutes.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Position")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Text")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("ParentFolderId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("ParentFolderId");
 
-                    b.ToTable("TextAnswer");
+                    b.ToTable("Folder");
+                });
+
+            modelBuilder.Entity("FiveMinutes.Models.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("FiveMinuteTemplateId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("QuestionText")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("ResponseType")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FiveMinuteTemplateId");
+
+                    b.ToTable("Question");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -418,6 +370,15 @@ namespace FiveMinutes.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FiveMinutes.Models.Answer", b =>
+                {
+                    b.HasOne("FiveMinutes.Models.Question", null)
+                        .WithMany("Answers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTemplate", b =>
                 {
                     b.HasOne("FiveMinutes.Models.AppUser", null)
@@ -425,49 +386,7 @@ namespace FiveMinutes.Migrations
                         .HasForeignKey("AppUserId");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.Folder", b =>
-                {
-                    b.HasOne("FiveMinutes.Models.Folder", "ParentFolder")
-                        .WithMany("SubFolders")
-                        .HasForeignKey("ParentFolderId");
-
-                    b.Navigation("ParentFolder");
-                });
-
-            modelBuilder.Entity("FiveMinutes.Models.MultipleChoiceAnswer", b =>
-                {
-                    b.HasOne("FiveMinutes.Models.Question", "Question")
-                        .WithMany("MultipleChoiceAnswers")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Question");
-                });
-
-            modelBuilder.Entity("FiveMinutes.Models.Question", b =>
-                {
-                    b.HasOne("FiveMinutes.Models.FiveMinuteTemplate", "FMT")
-                        .WithMany("Questions")
-                        .HasForeignKey("FMTId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FMT");
-                });
-
-            modelBuilder.Entity("FiveMinutes.Models.SingleChoiceAnswer", b =>
-                {
-                    b.HasOne("FiveMinutes.Models.Question", "Question")
-                        .WithMany("SingleChoiceAnswers")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Question");
-                });
-
-            modelBuilder.Entity("FiveMinutes.Models.Test", b =>
+            modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTest", b =>
                 {
                     b.HasOne("FiveMinutes.Models.AppUser", null)
                         .WithMany("Tests")
@@ -488,15 +407,24 @@ namespace FiveMinutes.Migrations
                     b.Navigation("Folder");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.TextAnswer", b =>
+            modelBuilder.Entity("FiveMinutes.Models.Folder", b =>
                 {
-                    b.HasOne("FiveMinutes.Models.Question", "Question")
-                        .WithMany("TextAnswers")
-                        .HasForeignKey("QuestionId")
+                    b.HasOne("FiveMinutes.Models.Folder", "ParentFolder")
+                        .WithMany("SubFolders")
+                        .HasForeignKey("ParentFolderId");
+
+                    b.Navigation("ParentFolder");
+                });
+
+            modelBuilder.Entity("FiveMinutes.Models.Question", b =>
+                {
+                    b.HasOne("FiveMinutes.Models.FiveMinuteTemplate", "FiveMinuteTemplate")
+                        .WithMany("Questions")
+                        .HasForeignKey("FiveMinuteTemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Question");
+                    b.Navigation("FiveMinuteTemplate");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -571,11 +499,7 @@ namespace FiveMinutes.Migrations
 
             modelBuilder.Entity("FiveMinutes.Models.Question", b =>
                 {
-                    b.Navigation("MultipleChoiceAnswers");
-
-                    b.Navigation("SingleChoiceAnswers");
-
-                    b.Navigation("TextAnswers");
+                    b.Navigation("Answers");
                 });
 #pragma warning restore 612, 618
         }
