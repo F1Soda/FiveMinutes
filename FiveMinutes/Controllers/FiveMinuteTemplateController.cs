@@ -14,7 +14,7 @@ namespace FiveMinutes.Controllers
 		private readonly UserManager<AppUser> userManager;
         private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
 
-		public FiveMinuteTemplateController(UserManager<AppUser> userManager,ApplicationDbContext context)
+		public FiveMinuteTemplateController(UserManager<AppUser> userManager, ApplicationDbContext context)
         { 
 			this.userManager = userManager;
             this.fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
@@ -25,16 +25,11 @@ namespace FiveMinutes.Controllers
         [HttpPost]
 		public IActionResult Create() 
         {
-	        var currentUser = userManager.GetUserAsync(User);
-	        if (currentUser == null)
-	        {
-		        throw new ApplicationException("Попытка создать шаблон не зарегистрировавшись");
-	        }
-	        var newFMT = new FiveMinuteTemplate 
-            { 
-                CreationTime = DateTime.UtcNow,
-                LastModificationTime=DateTime.UtcNow,  
-                UserOwnerId = currentUser.Id,
+            var newFMT = new FiveMinuteTemplate 
+            {
+                CreationTime = DateTime.Now,
+                LastModificationTime=DateTime.Now,  
+                UserOwnerId = 1,
                 ShowInProfile = true,
                 // Вот тут надо будет переделать, чтобы добавлялся номер в конец, чтобы избавиться от повторения
                 Name = "Новая пятиминутка"
@@ -48,9 +43,46 @@ namespace FiveMinutes.Controllers
 
         public IActionResult Edit(FiveMinuteTemplate fmt)
         {
-
-	        Create();
             return View(fmt);
         }
+        
+        public IActionResult TestCreation()
+        {
+	        return View();
+        }
+    
+        public IActionResult AllFiveMinutesTemplates()
+        {
+	        return View();
+        }
+        
+        public IActionResult FiveMinuteFolder()
+        {
+	        return View();
+        }
+        
+        /* Предполагаем, что у каждой пятиминутки уникальный id и достаём её из БД
+        [HttpGet]
+        public IActionResult Create(int id)
+        {
+	        var fmt = fiveMinuteTemplateRepository.GetById(id);
+	        if (fmt == null)
+	        {
+		        return NotFound();
+	        }
+	        return View(fmt);
+        }
+
+        [HttpPost]
+        public IActionResult Create(FiveMinuteTemplate model)
+        {
+	        if (ModelState.IsValid)
+	        {
+		        fiveMinuteTemplateRepository.Update(model);
+		        return RedirectToAction("Index");
+	        }
+	        return View(model);
+        }
+        */
     }
 }

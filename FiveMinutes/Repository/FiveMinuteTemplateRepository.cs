@@ -31,6 +31,12 @@ namespace FiveMinutes.Repository
 				.Where(x => x.UserOwnerId==userId)
 				.ToListAsync();
 		}
+
+		public FiveMinuteTemplate GetById(int id)
+		{
+			// достаёт по id соответствующую пятиминутку
+			return new FiveMinuteTemplate();
+	}
 		
 	}
 }
