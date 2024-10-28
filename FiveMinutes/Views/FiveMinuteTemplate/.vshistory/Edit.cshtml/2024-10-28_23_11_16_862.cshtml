@@ -8,6 +8,8 @@
 
 <h1>Редактор пятиминутки</h1>
 
+<h3>DEBUG</h3>
+
 
 <form asp-action="Save" method="post">
 	<div class="form-group">
@@ -81,7 +83,7 @@
 									<label>Вариант ответа ${answerCount + 1}:</label>
 									<input type="text" name="Questions[${questionIndex}].Answers[${answerCount}].Text" class="form-control" required />
 									<div class="form-check">
-																<input class="form-check-input" type="checkbox" name="Questions[${questionIndex}].Answers[${answerCount}].IsCorrect" id="Questions[${questionIndex}].Answers[${answerCount}].isCorrect${questionIndex}_${answerCount}" value="true">
+										<input class="form-check-input" type="checkbox" name="Questions[${questionIndex}].Answers[${answerCount}].IsCorrect" id="isCorrect${questionIndex}_${answerCount}">
 										<label class="form-check-label" for="isCorrect${questionIndex}_${answerCount}">
 											Правильный ответ
 										</label>
@@ -102,11 +104,11 @@
 							<h5 class="card-title">Вопрос ${questionIndex + 1}</h5>
 							<div class="form-group">
 								<label>Текст вопроса:</label>
-								<input type="text" name="Questions[${questionIndex}].QuestionText" class="form-control" value="${question["questionText"]}" required />
+								<input type="text" name="Questions[${questionIndex}][questionText]" class="form-control" value="${question["questionText"]}" required />
 							</div>
 							<div class="form-group">
 								<label>Тип ответа:</label>
-								<select name="Questions[${questionIndex}].ResponseType" class="form-control" onchange="handleResponseTypeChange(this)">
+								<select name="Questions[${questionIndex}]["responseType"]" class="form-control" onchange="handleResponseTypeChange(this)">
 									<option value="0" ${question["responseType"] === 0 ? 'selected' : ''}>Один вариант</option>
 									<option value="1" ${question["responseType"] === 1 ? 'selected' : ''}>Несколько вариантов</option>
 									<option value="2" ${question["responseType"] === 2 ? 'selected' : ''}>Текстовый ответ</option>
@@ -115,21 +117,21 @@
 							<div class="answers-container mt-2">
 								<!-- Здесь будут динамически добавляться варианты ответов -->
 							</div>
-							<button type="button" class="btn btn-secondary mt-2" onclick="addAnswer(this)" style="${question["responceType"] === 2 ? 'display: none;' : ''}">Добавить вариант ответа</button>
+							<button type="button" class="btn btn-secondary mt-2" onclick="addAnswer(this)" style="${question["responseType"] === 2 ? 'display: none;' : ''}">Добавить вариант ответа</button>
 						</div>
 					</div>
 				`;
 				questionsContainer.insertAdjacentHTML('beforeend', questionHtml);
 
 				const answersContainer = questionsContainer.querySelectorAll('.answers-container')[questionIndex];
-				question["answers"].forEach((answer, answerIndex) => {
+				question.Answers.forEach((answer, answerIndex) => {
 					const answerHtml = `
 						<div class="form-group">
 							<label>Вариант ответа ${answerIndex + 1}:</label>
-							<input type="text" name="Questions[${questionIndex}].Answers[${answerIndex}].Text" class="form-control" value="${answer["text"]}" required />
+							<input type="text" name="Questions[${questionIndex}][answers][${answerIndex}].Text" class="form-control" value="${answer["text"]}" required />
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" name="Questions[${questionIndex}].Answers[${answerIndex}].IsCorrect" id="Questions[${questionIndex}].Answers[${answerIndex}].isCorrect${questionIndex}_${answerIndex}" value="true" ${answer["isCorrect"] ? 'checked' : ''}>
-								<label class="form-check-label" asp-for="isCorrect${questionIndex}_${answerIndex}">
+								<input class="form-check-input" type="checkbox" name="Questions[${questionIndex}][answers][${answerIndex}].IsCorrect" id="isCorrect${questionIndex}_${answerIndex}" ${answer.IsCorrect ? 'checked' : ''}>
+								<label class="form-check-label" for="isCorrect${questionIndex}_${answerIndex}">
 									Правильный ответ
 								</label>
 							</div>
@@ -137,13 +139,11 @@
 					`;
 					answersContainer.insertAdjacentHTML('beforeend', answerHtml);
 				});
-				questionCount+=1;
 			});
 		}
 
 		// Call the initQuestions function when the page loads
 		document.addEventListener('DOMContentLoaded', initQuestions);
-
 
 
 		document.getElementById('add-question').addEventListener('click', addQuestion);

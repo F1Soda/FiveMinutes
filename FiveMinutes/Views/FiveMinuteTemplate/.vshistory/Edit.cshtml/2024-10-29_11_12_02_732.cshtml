@@ -81,7 +81,7 @@
 									<label>Вариант ответа ${answerCount + 1}:</label>
 									<input type="text" name="Questions[${questionIndex}].Answers[${answerCount}].Text" class="form-control" required />
 									<div class="form-check">
-																<input class="form-check-input" type="checkbox" name="Questions[${questionIndex}].Answers[${answerCount}].IsCorrect" id="Questions[${questionIndex}].Answers[${answerCount}].isCorrect${questionIndex}_${answerCount}" value="true">
+														<input class="form-check-input" type="checkbox" name="Questions[${questionIndex}].Answers[${answerCount}].IsCorrect" id="Questions[${questionIndex}].Answers[${}].isCorrect${questionIndex}_${answerCount}" value="true">
 										<label class="form-check-label" for="isCorrect${questionIndex}_${answerCount}">
 											Правильный ответ
 										</label>

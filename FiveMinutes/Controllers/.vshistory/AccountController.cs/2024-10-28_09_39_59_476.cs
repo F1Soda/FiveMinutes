@@ -4,7 +4,6 @@ using FiveMinutes.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace FiveMinutes.Controllers
@@ -109,7 +108,7 @@ namespace FiveMinutes.Controllers
 
         public async Task<IActionResult> Detail(string id)
         {
-            var user = await context.Users.Include(x => x.FMTs).FirstOrDefaultAsync(x => x.Id == id);
+            var user = await context.Users.FindAsync(id);
             if (user == null)
             {
                 // По хорошему сюда надо PageNotFounded

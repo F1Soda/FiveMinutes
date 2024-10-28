@@ -81,7 +81,7 @@
 									<label>Вариант ответа ${answerCount + 1}:</label>
 									<input type="text" name="Questions[${questionIndex}].Answers[${answerCount}].Text" class="form-control" required />
 									<div class="form-check">
-																<input class="form-check-input" type="checkbox" name="Questions[${questionIndex}].Answers[${answerCount}].IsCorrect" id="Questions[${questionIndex}].Answers[${answerCount}].isCorrect${questionIndex}_${answerCount}" value="true">
+												<input class="form-check-input" type="checkbox" name="Questions[${questionIndex}].Answers[${answerCount}].IsCorrect" id="isCorrect${questionIndex}_${answerCount}" value="true">
 										<label class="form-check-label" for="isCorrect${questionIndex}_${answerCount}">
 											Правильный ответ
 										</label>
@@ -128,7 +128,7 @@
 							<label>Вариант ответа ${answerIndex + 1}:</label>
 							<input type="text" name="Questions[${questionIndex}].Answers[${answerIndex}].Text" class="form-control" value="${answer["text"]}" required />
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" name="Questions[${questionIndex}].Answers[${answerIndex}].IsCorrect" id="Questions[${questionIndex}].Answers[${answerIndex}].isCorrect${questionIndex}_${answerIndex}" value="true" ${answer["isCorrect"] ? 'checked' : ''}>
+														<input class="form-check-input" type="checkbox" name="Questions[${questionIndex}].Answers[${answerIndex}].IsCorrect" id="Questions[${questionIndex}].Answers[${answerIndex}].isCorrect${questionIndex}_${answerIndex}" value="true" ${answer["isCorrect"] ? 'checked' : ''}>
 								<label class="form-check-label" asp-for="isCorrect${questionIndex}_${answerIndex}">
 									Правильный ответ
 								</label>

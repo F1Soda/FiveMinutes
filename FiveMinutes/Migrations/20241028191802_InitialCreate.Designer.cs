@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinutes.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241028143245_Initialize")]
-    partial class Initialize
+    [Migration("20241028191802_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,7 +50,7 @@ namespace FiveMinutes.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answer");
+                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("FiveMinutes.Models.AppUser", b =>
@@ -144,7 +144,7 @@ namespace FiveMinutes.Migrations
 
                     b.HasIndex("UserOwnerId");
 
-                    b.ToTable("FiveMinuteTemplate");
+                    b.ToTable("FiveMinuteTemplates");
                 });
 
             modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTest", b =>
@@ -182,7 +182,7 @@ namespace FiveMinutes.Migrations
 
                     b.HasIndex("FolderId");
 
-                    b.ToTable("FiveMinuteTest");
+                    b.ToTable("FiveMinuteTests");
                 });
 
             modelBuilder.Entity("FiveMinutes.Models.Folder", b =>
@@ -204,7 +204,7 @@ namespace FiveMinutes.Migrations
 
                     b.HasIndex("ParentFolderId");
 
-                    b.ToTable("Folder");
+                    b.ToTable("Folders");
                 });
 
             modelBuilder.Entity("FiveMinutes.Models.Question", b =>
@@ -232,7 +232,7 @@ namespace FiveMinutes.Migrations
 
                     b.HasIndex("FiveMinuteTemplateId");
 
-                    b.ToTable("Question");
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

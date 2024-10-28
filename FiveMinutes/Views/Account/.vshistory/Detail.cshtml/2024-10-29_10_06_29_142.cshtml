@@ -1,0 +1,25 @@
+﻿@using FiveMinutes.Data
+@using FiveMinutes.ViewModels
+@model UserDetailViewModel
+
+<h1>Данные о пользователе @Model.UserName</h1>
+<p>Пользовательское имя @Model.UserName</p>
+<p>Почта @Model.Email</p>
+<h3>Пятиминутки:</h3>
+@if (Model.FMTs is not null)
+{
+    @foreach (var test in Model.FMTs)
+    {
+        <tr>
+            <td>@test.Id</td>
+            <td>@test.Name</td>
+            <td>@test.ShowInProfile</td>
+            <td>
+                <a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-id="@test.Id" class="btn btn-primary">Edit</a>
+            </td>
+        </tr>
+    }
+}
+else{
+	<p>Пока тут пусто. Создайте новую!</p>
+}
