@@ -45,9 +45,9 @@ namespace FiveMinutes.Controllers
                     var result = await signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Welcome");
+                        return RedirectToAction("Index", "Home");
                     }
-                }
+                }   
                 // TODO: Сделать позже это поле
                 // loginViewModel.PasswordIsCorrect = false;
                 TempData["Error"] = "Wrond credentials. Please, try again";
@@ -90,7 +90,7 @@ namespace FiveMinutes.Controllers
             if (newUserResponse.Succeeded)
             {
                 await userManager.AddToRoleAsync(newUser, UserRoles.Student);
-                return RedirectToAction("Index", "Welcome");
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -103,7 +103,7 @@ namespace FiveMinutes.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Welcome");
+            return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> Detail(string id)

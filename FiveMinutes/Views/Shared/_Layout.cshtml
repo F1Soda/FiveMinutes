@@ -1,5 +1,4 @@
 ﻿@using Microsoft.AspNetCore.Identity
-﻿@using Microsoft.AspNetCore.Identity
 @inject UserManager<AppUser> UserManager
 
 @{
@@ -33,7 +32,7 @@
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 						</li>
-						@if (User.Identity.IsAuthenticated)
+						@if (User.Identity.IsAuthenticated && currentUser is not null)
 						{
 							<l1 class="nav-item">
 								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Detail" , asp-route-id=@currentUser.Id>@User.Identity.Name</a>

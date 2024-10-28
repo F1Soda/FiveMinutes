@@ -2,14 +2,13 @@
 using FiveMinutes.Interfaces;
 using FiveMinutes.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace FiveMinutes.Repository
 {
-	public class FiveMinuteTemplateRepository : DefaultRepository<FiveMinuteTemplate> , IFiveMinuteTemplateRepository
+	public class FiveMinuteTemplateRepository : DefaultRepository<FiveMinuteTemplate>, IFiveMinuteTemplateRepository
 	{
-
 		public FiveMinuteTemplateRepository(ApplicationDbContext context) : base(context) { }
+
 		public async Task<FiveMinuteTemplate?> GetByIdAsync(int id)
 		{
 			return await context.FiveMinuteTemplates
@@ -25,18 +24,11 @@ namespace FiveMinutes.Repository
 				.FirstOrDefaultAsync(x => x.Id == id);
 		}
 
-		public async Task<IEnumerable<FiveMinuteTemplate>> GetAllFromUserId(int userId)
+		public async Task<IEnumerable<FiveMinuteTemplate>> GetAllFromUserId(string userId)
 		{
 			return await context.FiveMinuteTemplates
-				.Where(x => x.UserOwnerId==userId)
+				.Where(x => x.UserOwnerId == userId)
 				.ToListAsync();
 		}
-
-		public FiveMinuteTemplate GetById(int id)
-		{
-			// достаёт по id соответствующую пятиминутку
-			return new FiveMinuteTemplate();
-	}
-		
 	}
 }

@@ -122,9 +122,6 @@ namespace FiveMinutes.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("text");
-
                     b.Property<DateTime?>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -137,12 +134,12 @@ namespace FiveMinutes.Migrations
                     b.Property<bool?>("ShowInProfile")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("UserOwnerId")
-                        .HasColumnType("integer");
+                    b.Property<string>("UserOwnerId")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("UserOwnerId");
 
                     b.ToTable("FiveMinuteTemplate");
                 });
@@ -378,9 +375,11 @@ namespace FiveMinutes.Migrations
 
             modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTemplate", b =>
                 {
-                    b.HasOne("FiveMinutes.Models.AppUser", null)
+                    b.HasOne("FiveMinutes.Models.AppUser", "UserOwner")
                         .WithMany("FMTs")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("UserOwnerId");
+
+                    b.Navigation("UserOwner");
                 });
 
             modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTest", b =>
