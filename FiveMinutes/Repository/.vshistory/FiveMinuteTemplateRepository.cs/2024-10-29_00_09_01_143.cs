@@ -12,14 +12,14 @@ namespace FiveMinutes.Repository
 		public async Task<FiveMinuteTemplate?> GetByIdAsync(int id)
 		{
 			return await context.FiveMinuteTemplates
-				.Include(x =>x.UserOwner) // если мы хотим в FiveMinuteTemplate знать об AppUse
+				//.Include(x =>x.AppUser) если мы хотим в FiveMinuteTemplate знать об AppUse
 				.FirstOrDefaultAsync(x => x.Id == id);
 		}
 
 		public async Task<FiveMinuteTemplate?> GetByIdAsyncNoTracking(int id)
 		{
 			return await context.FiveMinuteTemplates
-				.Include(x =>x.UserOwner) // если мы хотим в FiveMinuteTemplate знать об AppUser
+				//.Include(x =>x.AppUser) если мы хотим в FiveMinuteTemplate знать об AppUser
 				.AsNoTracking()
 				.FirstOrDefaultAsync(x => x.Id == id);
 		}

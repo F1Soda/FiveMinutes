@@ -94,57 +94,59 @@
 		}
 
 		function initQuestions() {
-			const questionsContainer = document.getElementById('questions-container');
-			questionsContainer.innerHTML = ''; // Clear any existing questions
+    // Parse the JSON string into a JavaScript object
+    const fmtObj = JSON.parse(fmt);
 
-			fmt["questions"].forEach((question, questionIndex) => {
-				const questionHtml = `
-					<div class="card mt-3">
-						<div class="card-body">
-							<h5 class="card-title">Вопрос ${questionIndex + 1}</h5>
-							<div class="form-group">
-								<label>Текст вопроса:</label>
-								<input type="text" name="Questions[${questionIndex}].QuestionText" class="form-control" value="${question["questionText"]}" required />
-							</div>
-							<div class="form-group">
-								<label>Тип ответа:</label>
-								<select name="Questions[${questionIndex}].ResponseType" class="form-control" onchange="handleResponseTypeChange(this)">
-									<option value="0" ${question["responseType"] === 0 ? 'selected' : ''}>Один вариант</option>
-									<option value="1" ${question["responseType"] === 1 ? 'selected' : ''}>Несколько вариантов</option>
-									<option value="2" ${question["responseType"] === 2 ? 'selected' : ''}>Текстовый ответ</option>
-								</select>
-							</div>
-							<div class="answers-container mt-2">
-								<!-- Здесь будут динамически добавляться варианты ответов -->
-							</div>
-							<button type="button" class="btn btn-secondary mt-2" onclick="addAnswer(this)" style="${question["responceType"] === 2 ? 'display: none;' : ''}">Добавить вариант ответа</button>
-						</div>
-					</div>
-				`;
-				questionsContainer.insertAdjacentHTML('beforeend', questionHtml);
+    const questionsContainer = document.getElementById('questions-container');
+    questionsContainer.innerHTML = ''; // Clear any existing questions
 
-				const answersContainer = questionsContainer.querySelectorAll('.answers-container')[questionIndex];
-				question["answers"].forEach((answer, answerIndex) => {
-					const answerHtml = `
-						<div class="form-group">
-							<label>Вариант ответа ${answerIndex + 1}:</label>
-							<input type="text" name="Questions[${questionIndex}].Answers[${answerIndex}].Text" class="form-control" value="${answer["text"]}" required />
-							<div class="form-check">
-								<input class="form-check-input" type="checkbox" name="Questions[${questionIndex}].Answers[${answerIndex}].IsCorrect" id="isCorrect${questionIndex}_${answerIndex}" ${answer["isCorrect"] ? 'checked' : ''}>
-								<label class="form-check-label" for="isCorrect${questionIndex}_${answerIndex}">
-									Правильный ответ
-								</label>
-							</div>
-						</div>
-					`;
-					answersContainer.insertAdjacentHTML('beforeend', answerHtml);
-				});
-				questionCount+=1;
-			});
-		}
+    fmtObj.questions.forEach((question, questionIndex) => {
+        const questionHtml = `
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Вопрос ${questionIndex + 1}</h5>
+                    <div class="form-group">
+                        <label>Текст вопроса:</label>
+                        <input type="text" name="Questions[${questionIndex}].QuestionText" class="form-control" value="${question.questionText}" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Тип ответа:</label>
+                        <select name="Questions[${questionIndex}].ResponseType" class="form-control" onchange="handleResponseTypeChange(this)">
+                            <option value="0" ${question.responseType === 0 ? 'selected' : ''}>Один вариант</option>
+                            <option value="1" ${question.responseType === 1 ? 'selected' : ''}>Несколько вариантов</option>
+                            <option value="2" ${question.responseType === 2 ? 'selected' : ''}>Текстовый ответ</option>
+                        </select>
+                    </div>
+                    <div class="answers-container mt-2">
+                        <!-- Здесь будут динамически добавляться варианты ответов -->
+                    </div>
+                    <button type="button" class="btn btn-secondary mt-2" onclick="addAnswer(this)" style="${question.responseType === 2 ? 'display: none;' : ''}">Добавить вариант ответа</button>
+                </div>
+            </div>
+        `;
+        questionsContainer.insertAdjacentHTML('beforeend', questionHtml);
 
-		// Call the initQuestions function when the page loads
-		document.addEventListener('DOMContentLoaded', initQuestions);
+        const answersContainer = questionsContainer.querySelectorAll('.answers-container')[questionIndex];
+        question.answers.forEach((answer, answerIndex) => {
+            const answerHtml = `
+                <div class="form-group">
+                    <label>Вариант ответа ${answerIndex + 1}:</label>
+                    <input type="text" name="Questions[${questionIndex}].Answers[${answerIndex}].Text" class="form-control" value="${answer.text}" required />
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="Questions[${questionIndex}].Answers[${answerIndex}].IsCorrect" id="isCorrect${questionIndex}_${answerIndex}" ${answer.isCorrect ? 'checked' : ''}>
+                        <label class="form-check-label" for="isCorrect${questionIndex}_${answerIndex}">
+                            Правильный ответ
+                        </label>
+                    </div>
+                </div>
+            `;
+            answersContainer.insertAdjacentHTML('beforeend', answerHtml);
+        });
+    });
+}
+
+// Call the initQuestions function when the page loads
+document.addEventListener('DOMContentLoaded', initQuestions);
 
 
 

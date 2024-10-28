@@ -61,8 +61,6 @@ namespace FiveMinutes.Controllers
 			{
 				currentUser.AddFMT(newFMT);
 
-				context.SaveChanges();
-
 				var fmtViewModel = new FiveMinuteTemplateEditViewModel
 				{
 					Id = newFMT.Id,

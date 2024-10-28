@@ -47,7 +47,7 @@ namespace FiveMinutes.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answer");
+                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("FiveMinutes.Models.AppUser", b =>
@@ -141,7 +141,7 @@ namespace FiveMinutes.Migrations
 
                     b.HasIndex("UserOwnerId");
 
-                    b.ToTable("FiveMinuteTemplate");
+                    b.ToTable("FiveMinuteTemplates");
                 });
 
             modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTest", b =>
@@ -179,7 +179,7 @@ namespace FiveMinutes.Migrations
 
                     b.HasIndex("FolderId");
 
-                    b.ToTable("FiveMinuteTest");
+                    b.ToTable("FiveMinuteTests");
                 });
 
             modelBuilder.Entity("FiveMinutes.Models.Folder", b =>
@@ -201,7 +201,7 @@ namespace FiveMinutes.Migrations
 
                     b.HasIndex("ParentFolderId");
 
-                    b.ToTable("Folder");
+                    b.ToTable("Folders");
                 });
 
             modelBuilder.Entity("FiveMinutes.Models.Question", b =>
@@ -229,7 +229,7 @@ namespace FiveMinutes.Migrations
 
                     b.HasIndex("FiveMinuteTemplateId");
 
-                    b.ToTable("Question");
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -61,8 +61,6 @@ namespace FiveMinutes.Controllers
 			{
 				currentUser.AddFMT(newFMT);
 
-				context.SaveChanges();
-
 				var fmtViewModel = new FiveMinuteTemplateEditViewModel
 				{
 					Id = newFMT.Id,
@@ -148,7 +146,7 @@ namespace FiveMinutes.Controllers
 									ResponseType = question.ResponseType,
 									FiveMinuteTemplateId = fmt.Id,
 									Answers = question.Answers
-								}).ToList();
+								});
 
 							// Mark the entity as modified
 							context.Entry(existingFmt).State = EntityState.Modified;

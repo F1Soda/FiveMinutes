@@ -5,7 +5,6 @@ using FiveMinutes.Repository;
 using FiveMinutes.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Runtime.Intrinsics.X86;
 
@@ -15,13 +14,11 @@ namespace FiveMinutes.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
 		private readonly UserManager<AppUser> userManager;
-		public readonly ApplicationDbContext context;
 		private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
 
 		public FiveMinuteTemplateController(UserManager<AppUser> userManager, ApplicationDbContext context)
 		{
 			this.userManager = userManager;
-			this.context = context;
 			this.fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
 		}
 
@@ -60,8 +57,6 @@ namespace FiveMinutes.Controllers
 			if (fiveMinuteTemplateRepository.Add(newFMT))
 			{
 				currentUser.AddFMT(newFMT);
-
-				context.SaveChanges();
 
 				var fmtViewModel = new FiveMinuteTemplateEditViewModel
 				{
@@ -111,6 +106,7 @@ namespace FiveMinutes.Controllers
 			return View();
 		}
 
+		[HttpPost]
 		public async Task<IActionResult> Save(FiveMinuteTemplateEditViewModel fmt)
 		{
 			Console.WriteLine("Save was called!");
@@ -127,44 +123,19 @@ namespace FiveMinutes.Controllers
 					{
 						var id = currentFmt.Id; // Access the Id property
 
-						// Retrieve the entity from the database
-						var existingFmt = await fiveMinuteTemplateRepository.GetByIdAsyncNoTracking(id);
+						var originFmt = await fiveMinuteTemplateRepository.GetByIdAsyncNoTracking(id);
 
-						if (existingFmt != null)
-						{
-							// Attach the entity to the context
-							context.FiveMinuteTemplates.Attach(existingFmt);
+						var updateFmt = RecreateFMTByFMTAndViewModel(originFmt, fmt);
 
-							// Update the entity with the new values from the view model
-							existingFmt.Name = fmt.Name;
-							existingFmt.ShowInProfile = fmt.ShowInProfile;
-							existingFmt.LastModificationTime = DateTime.UtcNow;
-							existingFmt.Questions = fmt.Questions
-								.Select(question => new Question
-								{
-									QuestionText = question.QuestionText,
-									FiveMinuteTemplate = existingFmt,
-									Position = question.Position,
-									ResponseType = question.ResponseType,
-									FiveMinuteTemplateId = fmt.Id,
-									Answers = question.Answers
-								}).ToList();
-
-							// Mark the entity as modified
-							context.Entry(existingFmt).State = EntityState.Modified;
-
-							fiveMinuteTemplateRepository.Save();
-
+						//Perform the update operation using the id
+						if (fiveMinuteTemplateRepository.Update(updateFmt))
 							return Json(new { success = true });
-						}
 					}
 				}
 			}
 
 			return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
 		}
-
-
 
 
 		private static FiveMinuteTemplate RecreateFMTByFMTAndViewModel(FiveMinuteTemplate fmt, FiveMinuteTemplateEditViewModel fmtViewModel)
@@ -178,7 +149,6 @@ namespace FiveMinutes.Controllers
 				ShowInProfile = fmt.ShowInProfile,
 				UserOwner = fmt.UserOwner,
 				UserOwnerId = fmt.UserOwnerId,
-				// Кажется есть проблемы с тем, что у прошлые вопросы не удаляются в бд
 				Questions = fmtViewModel.Questions
 					.Select(question => new Question
 					{

@@ -97,14 +97,14 @@
 			const questionsContainer = document.getElementById('questions-container');
 			questionsContainer.innerHTML = ''; // Clear any existing questions
 
-			fmt["questions"].forEach((question, questionIndex) => {
+			fmt.Questions.forEach((question, questionIndex) => {
 				const questionHtml = `
 					<div class="card mt-3">
 						<div class="card-body">
 							<h5 class="card-title">Вопрос ${questionIndex + 1}</h5>
 							<div class="form-group">
 								<label>Текст вопроса:</label>
-								<input type="text" name="Questions[${questionIndex}].QuestionText" class="form-control" value="${question["questionText"]}" required />
+								<input type="text" name="Questions[${questionIndex}].QuestionText" class="form-control" value="${question.QuestionText}" required />
 							</div>
 							<div class="form-group">
 								<label>Тип ответа:</label>
@@ -124,7 +124,7 @@
 				questionsContainer.insertAdjacentHTML('beforeend', questionHtml);
 
 				const answersContainer = questionsContainer.querySelectorAll('.answers-container')[questionIndex];
-				question["answers"].forEach((answer, answerIndex) => {
+				question.Answers.forEach((answer, answerIndex) => {
 					const answerHtml = `
 						<div class="form-group">
 							<label>Вариант ответа ${answerIndex + 1}:</label>

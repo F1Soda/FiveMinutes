@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinutes.Migrations
 {
     /// <inheritdoc />
-    public partial class Initialize : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -52,7 +52,7 @@ namespace FiveMinutes.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Folder",
+                name: "Folders",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -62,11 +62,11 @@ namespace FiveMinutes.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Folder", x => x.Id);
+                    table.PrimaryKey("PK_Folders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Folder_Folder_ParentFolderId",
+                        name: "FK_Folders_Folders_ParentFolderId",
                         column: x => x.ParentFolderId,
-                        principalTable: "Folder",
+                        principalTable: "Folders",
                         principalColumn: "Id");
                 });
 
@@ -177,7 +177,7 @@ namespace FiveMinutes.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FiveMinuteTemplate",
+                name: "FiveMinuteTemplates",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -190,16 +190,16 @@ namespace FiveMinutes.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FiveMinuteTemplate", x => x.Id);
+                    table.PrimaryKey("PK_FiveMinuteTemplates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FiveMinuteTemplate_AspNetUsers_UserOwnerId",
+                        name: "FK_FiveMinuteTemplates_AspNetUsers_UserOwnerId",
                         column: x => x.UserOwnerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "FiveMinuteTest",
+                name: "FiveMinuteTests",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -213,27 +213,27 @@ namespace FiveMinutes.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FiveMinuteTest", x => x.Id);
+                    table.PrimaryKey("PK_FiveMinuteTests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FiveMinuteTest_AspNetUsers_AppUserId",
+                        name: "FK_FiveMinuteTests_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_FiveMinuteTest_FiveMinuteTemplate_AttachedFMTId",
+                        name: "FK_FiveMinuteTests_FiveMinuteTemplates_AttachedFMTId",
                         column: x => x.AttachedFMTId,
-                        principalTable: "FiveMinuteTemplate",
+                        principalTable: "FiveMinuteTemplates",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_FiveMinuteTest_Folder_FolderId",
+                        name: "FK_FiveMinuteTests_Folders_FolderId",
                         column: x => x.FolderId,
-                        principalTable: "Folder",
+                        principalTable: "Folders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Question",
+                name: "Questions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -245,17 +245,17 @@ namespace FiveMinutes.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Question", x => x.Id);
+                    table.PrimaryKey("PK_Questions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Question_FiveMinuteTemplate_FiveMinuteTemplateId",
+                        name: "FK_Questions_FiveMinuteTemplates_FiveMinuteTemplateId",
                         column: x => x.FiveMinuteTemplateId,
-                        principalTable: "FiveMinuteTemplate",
+                        principalTable: "FiveMinuteTemplates",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Answer",
+                name: "Answers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -267,18 +267,18 @@ namespace FiveMinutes.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Answer", x => x.Id);
+                    table.PrimaryKey("PK_Answers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Answer_Question_QuestionId",
+                        name: "FK_Answers_Questions_QuestionId",
                         column: x => x.QuestionId,
-                        principalTable: "Question",
+                        principalTable: "Questions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Answer_QuestionId",
-                table: "Answer",
+                name: "IX_Answers_QuestionId",
+                table: "Answers",
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
@@ -319,33 +319,33 @@ namespace FiveMinutes.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_FiveMinuteTemplate_UserOwnerId",
-                table: "FiveMinuteTemplate",
+                name: "IX_FiveMinuteTemplates_UserOwnerId",
+                table: "FiveMinuteTemplates",
                 column: "UserOwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FiveMinuteTest_AppUserId",
-                table: "FiveMinuteTest",
+                name: "IX_FiveMinuteTests_AppUserId",
+                table: "FiveMinuteTests",
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FiveMinuteTest_AttachedFMTId",
-                table: "FiveMinuteTest",
+                name: "IX_FiveMinuteTests_AttachedFMTId",
+                table: "FiveMinuteTests",
                 column: "AttachedFMTId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FiveMinuteTest_FolderId",
-                table: "FiveMinuteTest",
+                name: "IX_FiveMinuteTests_FolderId",
+                table: "FiveMinuteTests",
                 column: "FolderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Folder_ParentFolderId",
-                table: "Folder",
+                name: "IX_Folders_ParentFolderId",
+                table: "Folders",
                 column: "ParentFolderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Question_FiveMinuteTemplateId",
-                table: "Question",
+                name: "IX_Questions_FiveMinuteTemplateId",
+                table: "Questions",
                 column: "FiveMinuteTemplateId");
         }
 
@@ -353,7 +353,7 @@ namespace FiveMinutes.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Answer");
+                name: "Answers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -371,19 +371,19 @@ namespace FiveMinutes.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "FiveMinuteTest");
+                name: "FiveMinuteTests");
 
             migrationBuilder.DropTable(
-                name: "Question");
+                name: "Questions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Folder");
+                name: "Folders");
 
             migrationBuilder.DropTable(
-                name: "FiveMinuteTemplate");
+                name: "FiveMinuteTemplates");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
