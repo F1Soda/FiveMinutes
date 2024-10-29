@@ -1,9 +1,13 @@
+using FiveMinutes.Data;
+using FiveMinutes.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FiveMinutes.Controllers;
 
 public class AppointedFiveMinuteTemplateController : Controller
 {
+    public readonly ApplicationDbContext context;
+    private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
     public IActionResult AllTests()
     {
         return View();
@@ -14,8 +18,10 @@ public class AppointedFiveMinuteTemplateController : Controller
         return View();
     }
     
-    public IActionResult TestPassing()
+    public IActionResult TestPassing(int testId)
     {
+        var fiveMinuteTemplate = fiveMinuteTemplateRepository.GetByIdAsyncNoTracking(testId);
+        
         return View();
     }
 

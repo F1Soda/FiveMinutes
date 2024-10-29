@@ -10,13 +10,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/FiveMinutes/Controllers/TestPassingController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FiveMinutes/Models/FiveMinuteUserAnswers.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FiveMinutes/ViewModels/AnswerViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FiveMinutes/ViewModels/FiveMinuteViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FiveMinutes/ViewModels/QuestionViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FiveMinutes/Views/TestPassing/Test.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Controllers/FiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Controllers/FiveMinuteTemplateController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Migrations/20241021164913_InitialCreate.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Migrations/20241021164913_InitialCreate.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Controllers/AppointedFiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Controllers/AppointedFiveMinuteTemplateController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Interfaces/IFiveMinuteTestRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Interfaces/IFiveMinuteTestRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Migrations/20241028191802_InitialCreate.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Migrations/20241028191802_InitialCreate.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinutes/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Models/Question.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Models/Question.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Repository/FiveMinuteTestRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Repository/FiveMinuteTestRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/Account/Detail.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/Account/Detail.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/Edit.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,20 +32,17 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="be3d11e7c1c29ffbe15e60e6902189b54d5e7adb" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7462dfe485934fe8b101381ea7f8a32318930/6d/5570d93d/ClaimsPrincipal.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9e70c4835c5b4a869ad017ebfa8cf5741de928/ee/30122093/ControllerBase.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f2e3970763e345ae93dbba9d72a4cbca3b8a0/91/e05d7b4e/RazorPageBase.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/211e6f3b24fa438a92f1815153647ce2c8f908/_5a3bc/IIdentity.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3bd4df5aff92cabbc4d630be64227073db1b8539b3a1e47786b4b189d7cdb7/DbContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/533e65d7e1d3ab33a791a6bb1a1ecf0d06cc9b38761b9465fc6c2554a77ecb6/MvcServiceCollectionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6888d268113295cfcdc76a84c4c278e42377eae2c9e6648376871d19143c89c4/RazorPageBase.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c69576b4a074ad2839225611609498e344b7e2819997af48dbb2d2f8257f3/EntityFrameworkQueryableExtensions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d8d9726f3deb1bbf671f5b791e4dc3e0338219a996f439ad2a69024b825c60/UserManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f9342fb513b7b524925c79d9822cd3ecaf072c50231aa3b469875f4c2cdf/IdentityDbContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../RunGroupWebAppExample/RunGroupWebApp/Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/c2a442982e736e17ae6bcadbfd8ccba278ee1be6/src/Mvc/Mvc.Core/src/Infrastructure/ActionMethodExecutor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9e70c4835c5b4a869ad017ebfa8cf5741de928/48/77eb0206/ControllerFactoryProvider.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/trasc/Desktop/Артемкины задачки/FiveMinutes/FiveMinutes/Controllers/AccountController.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -50,10 +55,11 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.FiveMinutes: https.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;cynpy&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;tim&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -65,9 +71,9 @@
   },
   &quot;keyToStringList&quot;: {
     &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\stepa\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\stepa\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\stepa\\AppData\\Local\\Symbols\\src&quot;
+      &quot;C:\\Users\\trasc\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\trasc\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\trasc\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
 }</component>
@@ -117,6 +123,11 @@
         <option name="Build" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue=".NET Launch Settings Profile.FiveMinutes: http" />
+      <item itemvalue=".NET Launch Settings Profile.FiveMinutes: https" />
+      <item itemvalue=".NET Launch Settings Profile.FiveMinutes: IIS Express" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -143,6 +154,10 @@
       <workItem from="1729930910463" duration="5587000" />
       <workItem from="1730039138026" duration="3074000" />
       <workItem from="1730042360230" duration="2077000" />
+      <workItem from="1730196802189" duration="2907000" />
+      <workItem from="1730209133095" duration="3629000" />
+      <workItem from="1730212810703" duration="7267000" />
+      <workItem from="1730222863674" duration="5381000" />
     </task>
     <servers />
   </component>
