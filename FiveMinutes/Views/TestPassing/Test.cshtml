@@ -2,6 +2,7 @@
     ViewData["Title"] = "Profile";
 }
 
+@using FiveMinutes.ViewModels
 @model FiveMinutes.ViewModels.FiveMinuteViewModel
 
 <style>
@@ -77,18 +78,20 @@
 
 <div class="container test-area">
     <h1>@ViewData["Title"]</h1>
-    <form asp-action="SendTestResults" asp-controller="TestPassing">
+    <form asp-action="SendTestResults" asp-controller="TestPassing" method="post">
         @{ var questionNumber = 0;}
         @foreach (var question in Model.Questions)
         {
+            
             questionNumber++;
             <div class="question">
                 <div class="question-text">@questionNumber. @question.QuestionText</div>
+                @* <input type="hidden" name="userAnswers[@question.Id]" value="@(@question.Id)"/> *@
                 @switch (question.ResponseType)
                 {
                     case ResponseType.Text:
                         <div>
-                            <input type="text" aria-label="@question.QuestionText"/>
+                            <input type="text" aria-label="@question.QuestionText" name="userAnswers[@(question.Id)]"/>
                         </div>
                         break;
                     case ResponseType.SingleChoice:
@@ -96,7 +99,7 @@
                             @foreach (var answer in question.Answers)
                             {
                                 <label>
-                                    <input type="radio" name="q@(question.Id)" value="@answer.Id">
+                                    <input type="radio" name="userAnswers[@(question.Id)]" value="@answer.Text">
                                     @answer.Text
                                 </label>
                             }
@@ -107,7 +110,7 @@
                             @foreach (var answer in question.Answers)
                             {
                                 <label>
-                                    <input type="checkbox" name="q@(question.Id)" value="@answer.Id">
+                                    <input type="checkbox" name="userAnswers[@(question.Id)]" value="@answer.Text">
                                     @answer.Text
                                 </label>
                             }

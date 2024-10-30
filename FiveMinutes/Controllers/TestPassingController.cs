@@ -10,13 +10,17 @@ namespace FiveMinutes.Controllers;
 
 public class TestPassingController : Controller
 {
-    public readonly ApplicationDbContext context;
+    private readonly ApplicationDbContext context;
     private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
+    private readonly IQuestionRepository _questionRepository;
+    private readonly IFiveMinuteResultsRepository _fiveMinuteResultsRepository;
 
     public TestPassingController(ApplicationDbContext context)
     {
         this.context = context;
         this.fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
+        _questionRepository = new QuestionRepository(context);
+        _fiveMinuteResultsRepository = new FiveMinuteResultRepository(context);
     }
     public IActionResult Test(int id)
     {
@@ -42,8 +46,35 @@ public class TestPassingController : Controller
         return View(test);
     }
 
-    public string SendTestResults(FiveMinuteUserAnswers fiveMinuteUserAnswers)
+    [HttpPost]
+    public string SendTestResults(Dictionary<int, string[]> userAnswers)
     {
-        throw new NotImplementedException();
+        // TODO: По хорошему нужно создать в форме поле для имени, если чел не зареган
+        var correctAnswers = userAnswers.Keys
+            .ToDictionary(id => id, id => _questionRepository.GetByIdAsyncNoTracking(id).Result.Answers);  
+        var answers = userAnswers.Keys
+            .SelectMany(questionId => userAnswers[questionId]
+                .Select(answerText => new UserAnswer
+                {
+                    // TODO: Тут хуйня, переделать
+                    IsCorrect = correctAnswers[questionId]
+                        .Any(correctAnswer => correctAnswer.Text == answerText),
+                    QuestionId = questionId,
+                    Text = answerText,
+                }))
+            .ToList();
+        var fiveMinuteResult = new FiveMinuteResult()
+        {
+            Answers = answers,
+            PassTime = DateTime.UtcNow,
+            // TODO: запоминать айди пользователя и пятиминутки
+            UserId = -1,
+            UserName = "User",
+            FiveMinuteTemplateId = -1,
+        };
+
+        _fiveMinuteResultsRepository.Add(fiveMinuteResult);
+        context.SaveChanges();
+        return "succes";
     }
 }
