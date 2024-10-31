@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "TestPassing";
 }
 
 @using FiveMinutes.ViewModels
@@ -79,10 +79,10 @@
 <div class="container test-area">
     <h1>@ViewData["Title"]</h1>
     <form asp-action="SendTestResults" asp-controller="TestPassing" method="post">
-        @{ var questionNumber = 0;}
+    <input type="hidden" aria-label="" name="fiveMinuteId" value = "@Model.Id"/>
+        @{ var questionNumber = 0; }
         @foreach (var question in Model.Questions)
         {
-            
             questionNumber++;
             <div class="question">
                 <div class="question-text">@questionNumber. @question.QuestionText</div>

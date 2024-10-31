@@ -107,9 +107,9 @@ namespace FiveMinutes.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task<IActionResult> Detail(string id)
+        public async Task<IActionResult> Detail(string fiveMinuteId)
         {
-            var user = await context.Users.Include(x => x.FMTs).FirstOrDefaultAsync(x => x.Id == id);
+            var user = await context.Users.Include(x => x.FMTs).FirstOrDefaultAsync(x => x.Id == fiveMinuteId);
             if (user == null)
             {
                 // По хорошему сюда надо PageNotFounded
@@ -118,7 +118,7 @@ namespace FiveMinutes.Controllers
             // И возможно не нужна сразу все пятиминутки с тестами отправлять
             var userDetailViewModel = new UserDetailViewModel()
             {
-                Id = id,
+                Id = fiveMinuteId,
                 UserName = user.UserName,
                 FMTs = user.FMTs,
                 Tests = user.Tests,

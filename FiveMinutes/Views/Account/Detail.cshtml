@@ -25,11 +25,15 @@
                     <td>@test.Name</td>
                     <td>@test.ShowInProfile</td>
                     <td>
-                        <a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-id="@test.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-fiveMinuteId="@test.Id" class="btn btn-primary">Edit</a>
                     </td>
                     <td>
-                        <a asp-action="Test" asp-controller="TestPassing" asp-route-id="@test.Id" class="btn btn-primary">Pass link</a>
+                        <a asp-action="Test" asp-controller="TestPassing" asp-route-fiveMinuteId="@test.Id" class="btn btn-primary">Pass link</a>
                     </td>
+                    <td>
+                        <a asp-action="ShowResults" asp-controller="FiveMinuteStatistics" asp-route-fiveMinuteId="@test.Id" class="btn btn-primary">Show Statistics</a>
+                    </td>
+
                 </tr>
             }
         </tbody>

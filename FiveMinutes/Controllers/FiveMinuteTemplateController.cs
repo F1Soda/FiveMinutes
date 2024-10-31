@@ -106,7 +106,7 @@ namespace FiveMinutes.Controllers
             return View();
         }
 
-        public IActionResult AllFiveMinutesTemplates()
+        public IActionResult AllFiveMinuteTemplates()
         {
             return View();
         }

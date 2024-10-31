@@ -22,12 +22,13 @@ public class TestPassingController : Controller
         _questionRepository = new QuestionRepository(context);
         _fiveMinuteResultsRepository = new FiveMinuteResultRepository(context);
     }
-    public IActionResult Test(int id)
+    public IActionResult Test(int fiveMinuteId)
     {
-        var fmt = fiveMinuteTemplateRepository.GetByIdAsync(id).Result;
+        var fmt = fiveMinuteTemplateRepository.GetByIdAsync(fiveMinuteId).Result;
         var test = new FiveMinuteViewModel
         {
             Name = fmt.Name,
+            Id = fmt.Id,
             Questions = fmt.Questions.Select(x => new QuestionViewModel
             {
                 Id = x.Id,
@@ -47,22 +48,26 @@ public class TestPassingController : Controller
     }
 
     [HttpPost]
-    public string SendTestResults(Dictionary<int, string[]> userAnswers)
+    public string SendTestResults(Dictionary<int, string[]> userAnswers, int fiveMinuteId)
     {
         // TODO: По хорошему нужно создать в форме поле для имени, если чел не зареган
-        var correctAnswers = userAnswers.Keys
-            .ToDictionary(id => id, id => _questionRepository.GetByIdAsyncNoTracking(id).Result.Answers);  
+            //.SelectMany(question => question.Answers)
+            //.Where(answer => answer.IsCorrect)
+            //.ToList();
+            //.ToDictionary(id => id, id => _questionRepository.GetByIdAsyncNoTracking(id).Result.Answers);
+        
         var answers = userAnswers.Keys
             .SelectMany(questionId => userAnswers[questionId]
                 .Select(answerText => new UserAnswer
                 {
                     // TODO: Тут хуйня, переделать
-                    IsCorrect = correctAnswers[questionId]
-                        .Any(correctAnswer => correctAnswer.Text == answerText),
+                    IsCorrect = correctAnswers
+                        .Any(correctAnswer => correctAnswer.ToString() == answerText),
                     QuestionId = questionId,
                     Text = answerText,
                 }))
             .ToList();
+        
         var fiveMinuteResult = new FiveMinuteResult()
         {
             Answers = answers,
@@ -70,7 +75,7 @@ public class TestPassingController : Controller
             // TODO: запоминать айди пользователя и пятиминутки
             UserId = -1,
             UserName = "User",
-            FiveMinuteTemplateId = -1,
+            FiveMinuteTemplateId = fiveMinuteId,
         };
 
         _fiveMinuteResultsRepository.Add(fiveMinuteResult);
