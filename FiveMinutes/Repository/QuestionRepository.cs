@@ -21,4 +21,17 @@ public class QuestionRepository : DefaultRepository<Question>, IQuestionReposito
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<bool> DeleteByFMT(FiveMinuteTemplate fiveMinuteTemplate)
+    {
+        foreach (var question in fiveMinuteTemplate.Questions)
+        {
+            if (!Delete(question))
+            {
+                throw new Exception();//надо??
+                return false;
+            }
+        }
+        return true;
+    }
 }

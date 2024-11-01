@@ -17,12 +17,14 @@ namespace FiveMinutes.Controllers
         private readonly UserManager<AppUser> userManager;
         public readonly ApplicationDbContext context;
         private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
+        private readonly IQuestionRepository questionRepository;
 
         public FiveMinuteTemplateController(UserManager<AppUser> userManager, ApplicationDbContext context)
         {
             this.userManager = userManager;
             this.context = context;
             this.fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
+            this.questionRepository = new QuestionRepository(context);
         }
 
         public IActionResult Index() { return View(); }
@@ -171,30 +173,22 @@ namespace FiveMinutes.Controllers
 
 
 
-        private static FiveMinuteTemplate RecreateFMTByFMTAndViewModel(FiveMinuteTemplate fmt, FiveMinuteTemplateEditViewModel fmtViewModel)
+        private async Task<FiveMinuteTemplate> RecreateFMTByFMTAndViewModel(FiveMinuteTemplate fmt, FiveMinuteTemplateEditViewModel fmtViewModel)
         {
-            var res = new FiveMinuteTemplate
-            {
-                Id = fmt.Id,
-                Name = fmt.Name,
-                CreationTime = fmt.CreationTime,
-                LastModificationTime = DateTime.UtcNow,
-                ShowInProfile = fmt.ShowInProfile,
-                UserOwner = fmt.UserOwner,
-                UserOwnerId = fmt.UserOwnerId,
-                // Кажется есть проблемы с тем, что у прошлые вопросы не удаляются в бд
-                Questions = fmtViewModel.Questions
-                    .Select(question => new Question
-                    {
-                        QuestionText = question.QuestionText,
-                        FiveMinuteTemplate = fmt,
-                        Position = question.Position,
-                        ResponseType = question.ResponseType,
-                        FiveMinuteTemplateId = fmt.Id,
-                        Answers = question.Answers
-                    })
-            };
-
+            var res = fmt.GetCopy();
+            res.Questions = fmtViewModel.Questions
+                .Select(question => new Question
+                {
+                    QuestionText = question.QuestionText,
+                    FiveMinuteTemplate = fmt,
+                    Position = question.Position,
+                    ResponseType = question.ResponseType,
+                    FiveMinuteTemplateId = fmt.Id,
+                    Answers = question.Answers
+                });
+            questionRepository.Save();
+            await questionRepository.DeleteByFMT(fmt);
+            
             return res;
         }
     }
