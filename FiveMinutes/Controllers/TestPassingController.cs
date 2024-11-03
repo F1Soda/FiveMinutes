@@ -61,8 +61,7 @@ public class TestPassingController : Controller
                 .Select(answerText => new UserAnswer
                 {
                     // TODO: Тут хуйня, переделать
-                    IsCorrect = correctAnswers
-                        .Any(correctAnswer => correctAnswer.ToString() == answerText),
+                    IsCorrect = false,
                     QuestionId = questionId,
                     Text = answerText,
                 }))
