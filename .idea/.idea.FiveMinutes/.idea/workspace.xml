@@ -11,7 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="added test passing page">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/Edit.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/Edit.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinutes/Controllers/FiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Controllers/FiveMinuteTemplateController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
