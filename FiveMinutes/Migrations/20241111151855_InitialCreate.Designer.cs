@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinutes.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241031115422_JoJo")]
-    partial class JoJo
+    [Migration("20241111151855_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

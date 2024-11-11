@@ -1,0 +1,205 @@
+﻿@using FiveMinutes.Data
+@using FiveMinutes.ViewModels
+@model FiveMinuteTemplateEditViewModel
+
+@{
+  ViewData["Title"] = "Создание пятиминутки";
+}
+
+<h1>Редактор пятиминутки</h1>
+
+
+<div method="post">
+  <div class="form-group">
+    <label asp-for="Name">Название пятиминутки:</label>
+    <input asp-for="Name" class="form-control" required />
+    <span asp-validation-for="Name" class="text-danger"></span>
+  </div>
+  <div id="questions-container">
+    <!-- Здесь будут динамически добавляться вопросы -->
+  </div>
+
+  <button type="button" id="add-question" class="btn btn-primary mt-3">Добавить вопрос</button>
+  <button type="button" id="save" class="btn btn-success mt-3">Сохранить пятиминутку</button>
+</div>
+
+<!-- Popup Element -->
+<div id="popupSave" class="popup">
+    <p>Saved!</p>
+</div>
+
+@section Scripts {
+  <script>
+    var fmt = @JavaScriptConvert.SerializeObject(Model)
+    console.log(fmt)
+
+    let questionCount = 0;
+
+    function addQuestion() {
+      questionCount++;
+      const questionHtml = `
+                <div class="card mt-3">
+                  <div class="card-body">
+                    <h5 class="card-title">Вопрос ${questionCount}</h5>
+                    <div class="form-group">
+                      <label>Текст вопроса:</label>
+                      <input type="text" name="Questions[${questionCount - 1}].QuestionText" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                      <label>Тип ответа:</label>
+                      <select name="Questions[${questionCount - 1}].ResponseType" class="form-control" onchange="handleResponseTypeChange(this)">
+                        <option value="0">Один вариант</option>
+                        <option value="1">Несколько вариантов</option>
+                        <option value="2">Текстовый ответ</option>
+                      </select>
+                    </div>
+                    <div class="answers-container mt-2">
+                      <!-- Здесь будут динамически добавляться варианты ответов -->
+                    </div>
+                    <button type="button" class="btn btn-secondary mt-2" onclick="addAnswer(this)">Добавить вариант ответа</button>
+                  </div>
+                </div>
+              `;
+      document.getElementById('questions-container').insertAdjacentHTML('beforeend', questionHtml);
+    }
+
+    function handleResponseTypeChange(select) {
+      const answersContainer = select.closest('.card-body').querySelector('.answers-container');
+      const addAnswerButton = select.closest('.card-body').querySelector('button');
+
+      answersContainer.innerHTML = '';
+      if (select.value === "2") { // Текстовый ответ
+        addAnswerButton.style.display = 'none';
+      } else {
+        addAnswerButton.style.display = 'block';
+      }
+    }
+
+    function addAnswer(button) {
+      const questionCard = button.closest('.card');
+      const questionIndex = Array.from(questionCard.parentNode.children).indexOf(questionCard);
+      const answersContainer = questionCard.querySelector('.answers-container');
+      const answerCount = answersContainer.children.length;
+
+      const answerHtml = `
+                <div class="form-group">
+                  <label>Вариант ответа ${answerCount + 1}:</label>
+                  <input type="text" name="Questions[${questionIndex}].Answers[${answerCount}].Text" class="form-control" required />
+                  <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Questions[${questionIndex}].Answers[${answerCount}].IsCorrect" id="Questions[${questionIndex}].Answers[${answerCount}].isCorrect${questionIndex}_${answerCount}" value="true">
+                    <label class="form-check-label" for="isCorrect${questionIndex}_${answerCount}">
+                      Правильный ответ
+                    </label>
+                  </div>
+                </div>
+              `;
+      answersContainer.insertAdjacentHTML('beforeend', answerHtml);
+    }
+
+
+    function initQuestions() {
+      const questionsContainer = document.getElementById('questions-container');
+      questionsContainer.innerHTML = ''; // Clear any existing questions
+
+      fmt["questions"].forEach((question, questionIndex) => {
+        const questionHtml = `
+          <div class="card mt-3">
+            <div class="card-body">
+              <h5 class="card-title">Вопрос ${questionIndex + 1}</h5>
+              <div class="form-group">
+                <label>Текст вопроса:</label>
+                <input type="text" name="Questions[${questionIndex}].QuestionText" class="form-control" value="${question["questionText"]}" required />
+              </div>
+              <div class="form-group">
+                <label>Тип ответа:</label>
+                <select name="Questions[${questionIndex}].ResponseType" class="form-control" onchange="handleResponseTypeChange(this)">
+                  <option value="0" ${question["responseType"] === 0 ? 'selected' : ''}>Один вариант</option>
+                  <option value="1" ${question["responseType"] === 1 ? 'selected' : ''}>Несколько вариантов</option>
+                  <option value="2" ${question["responseType"] === 2 ? 'selected' : ''}>Текстовый ответ</option>
+                </select>
+              </div>
+              <div class="answers-container mt-2">
+                <!-- Здесь будут динамически добавляться варианты ответов -->
+              </div>
+              <button type="button" class="btn btn-secondary mt-2" onclick="addAnswer(this)" style="${question["responceType"] === 2 ? 'display: none;' : ''}">Добавить вариант ответа</button>
+            </div>
+          </div>
+        `;
+        questionsContainer.insertAdjacentHTML('beforeend', questionHtml);
+
+        const answersContainer = questionsContainer.querySelectorAll('.answers-container')[questionIndex];
+        question["answers"].forEach((answer, answerIndex) => {
+          const answerHtml = `
+            <div class="form-group">
+              <label>Вариант ответа ${answerIndex + 1}:</label>
+              <input type="text" name="Questions[${questionIndex}].Answers[${answerIndex}].Text" class="form-control" value="${answer["text"]}" required />
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="Questions[${questionIndex}].Answers[${answerIndex}].IsCorrect" id="Questions[${questionIndex}].Answers[${answerIndex}].isCorrect${questionIndex}_${answerIndex}" value="true" ${answer["isCorrect"] ? 'checked' : ''}>
+                <label class="form-check-label" asp-for="isCorrect${questionIndex}_${answerIndex}">
+                  Правильный ответ
+                </label>
+              </div>
+            </div>
+          `;
+          answersContainer.insertAdjacentHTML('beforeend', answerHtml);
+        });
+        questionCount+=1;
+      });
+    }
+
+    // Call the initQuestions function when the page loads
+    document.addEventListener('DOMContentLoaded', initQuestions);
+
+
+
+    document.getElementById('add-question').addEventListener('click', addQuestion);
+
+
+    $(document).ready(function () {
+      $('#save').click(function (e) {
+        e.preventDefault(); // Prevent the default form submission behavior
+
+        // Serialize the form data into a JSON object
+        
+
+        var formData = $(this).serializeArray();
+        var jsonData = {};
+        $.each(formData, function () {
+          jsonData[this.name] = this.value;
+        });
+
+        // Send the data to your controller using AJAX
+        $.ajax({
+          url: '@Url.Action("Save")',
+          type: 'POST',
+          data: JSON.stringify(jsonData),
+          contentType: 'application/json; charset=utf-8',
+          dataType: "json",
+          success: function (response) {
+            // Handle the success response here
+            console.log('Test saved successfully');
+            showPopup();
+          },
+          error: function (xhr, status, error) {
+            // Handle the error response here
+            console.error('Error saving test:', error);
+          }
+        });
+      });
+    });
+  </script>
+
+  <!-- Логика высплывающего окна о сохранении -->
+  <script>
+
+  function showPopup() {
+        const popup = document.getElementById("popupSave");
+        popup.style.display = "block";
+
+        // Automatically close the popup after 3 seconds (3000 ms)
+        setTimeout(function() {
+            popup.style.display = "none";
+        }, 3000);
+    }
+    </script>
+}

@@ -30,8 +30,31 @@ namespace FiveMinutes.Models
 		        UserOwnerId = this.UserOwnerId,
 		        Questions = this.Questions
 	        };
-
         }
-	}
 
+		public static FiveMinuteTemplate CreateDefault(AppUser user)
+		{
+			var fmt = new FiveMinuteTemplate
+			{
+				CreationTime = DateTime.UtcNow,
+				LastModificationTime = DateTime.UtcNow,
+				UserOwnerId = user.Id,
+				UserOwner = user,
+				Questions = new List<Question>()
+				{
+					new Question
+					{
+						QuestionText = "Вопрос 1",
+						Position = 0,
+						ResponseType = Models.ResponseType.SingleChoice,
+					}
+				},
+				ShowInProfile = true,
+			};
+			fmt.Name = $"Новая пятиминутка ({fmt.Id})";
+
+			return fmt;
+		}
+
+	}
 }
