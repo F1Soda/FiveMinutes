@@ -17,15 +17,20 @@ namespace FiveMinutes.Controllers
         private readonly UserManager<AppUser> userManager;
         public readonly ApplicationDbContext context;
         private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
+        private readonly IQuestionRepository questionRepository;
 
         public FiveMinuteTemplateController(UserManager<AppUser> userManager, ApplicationDbContext context)
         {
             this.userManager = userManager;
             this.context = context;
             this.fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
+            this.questionRepository = new QuestionRepository(context);
         }
 
-        public IActionResult Index() { return View(); }
+        public IActionResult Index()
+        {
+            return View();
+        }
 
 
         [HttpGet]
@@ -44,7 +49,8 @@ namespace FiveMinutes.Controllers
                 LastModificationTime = DateTime.UtcNow,
                 UserOwnerId = currentUser.Id,
                 UserOwner = currentUser,
-                Questions = new List<Question>() {
+                Questions = new List<Question>()
+                {
                     new Question
                     {
                         QuestionText = "Вопрос 1",
@@ -65,6 +71,7 @@ namespace FiveMinutes.Controllers
 
                 return RedirectToAction("Edit", new { newFMT.Id });
             }
+
             throw new ApplicationException("Неудачная попытка добавить в бд пятиминутку");
         }
 
@@ -94,10 +101,7 @@ namespace FiveMinutes.Controllers
                         Answers = x.Answers
                     })
             };
-
             HttpContext.Session.SetString("FmtViewModel", JsonConvert.SerializeObject(fmtViewModel));
-
-
             return View(fmtViewModel);
         }
 
@@ -106,7 +110,7 @@ namespace FiveMinutes.Controllers
             return View();
         }
 
-        public IActionResult AllFiveMinutesTemplates()
+        public IActionResult AllFiveMinuteTemplates()
         {
             return View();
         }
@@ -122,78 +126,72 @@ namespace FiveMinutes.Controllers
 
 
             var currentFmtJson = HttpContext.Session.GetString("FmtViewModel");
-
-            if (currentFmtJson is not null)
+            if (currentFmtJson is null)
             {
-                var currentFmt = JsonConvert.DeserializeObject<FiveMinuteTemplateEditViewModel>(currentFmtJson);
-
-                if (currentFmt != null)
+                return Json(new
                 {
-                    var id = currentFmt.Id; // Access the Id property
-
-                    // Retrieve the entity from the database
-                    var existingFmt = await fiveMinuteTemplateRepository.GetByIdAsyncNoTracking(id);
-
-                    if (existingFmt != null)
-                    {
-                        // Attach the entity to the context
-                        context.FiveMinuteTemplates.Attach(existingFmt);
-
-                        // Update the entity with the new values from the view model
-                        existingFmt.Name = fmt.Name;
-                        existingFmt.ShowInProfile = fmt.ShowInProfile;
-                        existingFmt.LastModificationTime = DateTime.UtcNow;
-                        existingFmt.Questions = fmt.Questions
-                            .Select(question => new Question
-                            {
-                                QuestionText = question.QuestionText,
-                                FiveMinuteTemplate = existingFmt,
-                                Position = question.Position,
-                                ResponseType = question.ResponseType,
-                                FiveMinuteTemplateId = fmt.Id,
-                                Answers = question.Answers
-                            }).ToList();
-
-                        // Mark the entity as modified
-                        context.Entry(existingFmt).State = EntityState.Modified;
-
-                        fiveMinuteTemplateRepository.Save();
-
-                        return Json(new { success = true });
-                    }
-                }
+                    success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                });
             }
 
+            var currentFmt = JsonConvert.DeserializeObject<FiveMinuteTemplateEditViewModel>(currentFmtJson);
+            if (currentFmt is null)
+            {
+                return Json(new
+                {
+                    success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                }); //тут какая-то другая ошибка должна быть
+            }
 
-            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
+            var id = currentFmt.Id; // Access the Id property
+            // Retrieve the entity from the database
+            var existingFmt = await fiveMinuteTemplateRepository.GetByIdAsyncNoTracking(id);
+            if (existingFmt is null)
+            {
+                return Json(new
+                {
+                    success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                }); //тут какая-то другая ошибка должна быть
+            }
+
+            // Attach the entity to the context
+            context.FiveMinuteTemplates.Attach(existingFmt);
+            // Update the entity with the new values from the view model
+            existingFmt.Name = fmt.Name;
+            existingFmt.ShowInProfile = fmt.ShowInProfile;
+            existingFmt.LastModificationTime = DateTime.UtcNow;
+            existingFmt.Questions = fmt.Questions
+                .Select(question => new Question
+                {
+                    QuestionText = question.QuestionText,
+                    FiveMinuteTemplate = existingFmt,
+                    Position = question.Position,
+                    ResponseType = question.ResponseType,
+                    FiveMinuteTemplateId = fmt.Id,
+                    Answers = question.Answers
+                }).ToList();
+            // Mark the entity as modified
+            context.Entry(existingFmt).State = EntityState.Modified;
+            fiveMinuteTemplateRepository.Save();
+            return Json(new { success = true });
         }
 
-
-
-
-        private static FiveMinuteTemplate RecreateFMTByFMTAndViewModel(FiveMinuteTemplate fmt, FiveMinuteTemplateEditViewModel fmtViewModel)
+        private async Task<FiveMinuteTemplate> RecreateFMTByFMTAndViewModel(FiveMinuteTemplate fmt,
+            FiveMinuteTemplateEditViewModel fmtViewModel)
         {
-            var res = new FiveMinuteTemplate
-            {
-                Id = fmt.Id,
-                Name = fmt.Name,
-                CreationTime = fmt.CreationTime,
-                LastModificationTime = DateTime.UtcNow,
-                ShowInProfile = fmt.ShowInProfile,
-                UserOwner = fmt.UserOwner,
-                UserOwnerId = fmt.UserOwnerId,
-                // Кажется есть проблемы с тем, что у прошлые вопросы не удаляются в бд
-                Questions = fmtViewModel.Questions
-                    .Select(question => new Question
-                    {
-                        QuestionText = question.QuestionText,
-                        FiveMinuteTemplate = fmt,
-                        Position = question.Position,
-                        ResponseType = question.ResponseType,
-                        FiveMinuteTemplateId = fmt.Id,
-                        Answers = question.Answers
-                    })
-            };
+            var res = fmt.GetCopy();
+            res.Questions = fmtViewModel.Questions
+                .Select(question => new Question
+                {
+                    QuestionText = question.QuestionText,
+                    FiveMinuteTemplate = fmt,
+                    Position = question.Position,
+                    ResponseType = question.ResponseType,
+                    FiveMinuteTemplateId = fmt.Id,
+                    Answers = question.Answers
+                });
+            questionRepository.Save();
+            await questionRepository.DeleteByFMT(fmt);
 
             return res;
         }

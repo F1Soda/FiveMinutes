@@ -10,20 +10,25 @@ namespace FiveMinutes.Controllers;
 
 public class TestPassingController : Controller
 {
-    public readonly ApplicationDbContext context;
+    private readonly ApplicationDbContext context;
     private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
+    private readonly IQuestionRepository _questionRepository;
+    private readonly IFiveMinuteResultsRepository _fiveMinuteResultsRepository;
 
     public TestPassingController(ApplicationDbContext context)
     {
         this.context = context;
         this.fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
+        _questionRepository = new QuestionRepository(context);
+        _fiveMinuteResultsRepository = new FiveMinuteResultRepository(context);
     }
-    public IActionResult Test(int id)
+    public IActionResult Test(int fiveMinuteId)
     {
-        var fmt = fiveMinuteTemplateRepository.GetByIdAsync(id).Result;
+        var fmt = fiveMinuteTemplateRepository.GetByIdAsync(fiveMinuteId).Result;
         var test = new FiveMinuteViewModel
         {
             Name = fmt.Name,
+            Id = fmt.Id,
             Questions = fmt.Questions.Select(x => new QuestionViewModel
             {
                 Id = x.Id,
@@ -42,8 +47,38 @@ public class TestPassingController : Controller
         return View(test);
     }
 
-    public string SendTestResults(FiveMinuteUserAnswers fiveMinuteUserAnswers)
+    [HttpPost]
+    public string SendTestResults(Dictionary<int, string[]> userAnswers, int fiveMinuteId)
     {
-        throw new NotImplementedException();
+        // TODO: По хорошему нужно создать в форме поле для имени, если чел не зареган
+            //.SelectMany(question => question.Answers)
+            //.Where(answer => answer.IsCorrect)
+            //.ToList();
+            //.ToDictionary(id => id, id => _questionRepository.GetByIdAsyncNoTracking(id).Result.Answers);
+        
+        var answers = userAnswers.Keys
+            .SelectMany(questionId => userAnswers[questionId]
+                .Select(answerText => new UserAnswer
+                {
+                    // TODO: Тут хуйня, переделать
+                    IsCorrect = false,
+                    QuestionId = questionId,
+                    Text = answerText,
+                }))
+            .ToList();
+        
+        var fiveMinuteResult = new FiveMinuteResult()
+        {
+            Answers = answers,
+            PassTime = DateTime.UtcNow,
+            // TODO: запоминать айди пользователя и пятиминутки
+            UserId = -1,
+            UserName = "User",
+            FiveMinuteTemplateId = fiveMinuteId,
+        };
+
+        _fiveMinuteResultsRepository.Add(fiveMinuteResult);
+        context.SaveChanges();
+        return "succes";
     }
 }

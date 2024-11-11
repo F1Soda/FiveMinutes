@@ -16,6 +16,22 @@ namespace FiveMinutes.Models
         [ForeignKey("AppUser")]
         public string? UserOwnerId { get; set; }
         public AppUser? UserOwner { get; set; }
+
+        public FiveMinuteTemplate GetCopy()
+        {
+	        return new FiveMinuteTemplate
+	        {
+		        Id = this.Id,
+		        Name = this.Name,
+		        CreationTime = this.CreationTime,
+		        LastModificationTime = this.LastModificationTime,
+		        ShowInProfile = this.ShowInProfile,
+		        UserOwner = this.UserOwner,
+		        UserOwnerId = this.UserOwnerId,
+		        Questions = this.Questions
+	        };
+
+        }
 	}
 
 }

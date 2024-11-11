@@ -35,7 +35,7 @@
 						@if (User.Identity.IsAuthenticated && currentUser is not null)
 						{
 							<l1 class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Detail" , asp-route-id=@currentUser.Id>@User.Identity.Name</a>
+								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Detail" , asp-route-fiveMinuteId=@currentUser.Id>@User.Identity.Name</a>
 							</l1>
 							<l1 class="nav-item">
 								<form asp-area="" asp-controller="Account" asp-action="Logout">

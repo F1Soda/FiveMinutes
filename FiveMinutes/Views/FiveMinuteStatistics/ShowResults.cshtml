@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Статистика по пятиминутке";
+}
+
+@model FiveMinutes.ViewModels.FiveMinuteResultsViewModel
+
+<div class="container test-area">
+    <h1>@ViewData["Title"]</h1>
+    <h6>Всего прохождений: @Model.Results.Count</h6>
+    <form asp-action="ShowResults" asp-controller="FiveMinuteStatistics" method="post">
+        @{ var questionNumber = 0; }
+        @foreach (var result in Model.Results)
+        {
+            var correctAnswers = 0;
+            @foreach (var answer in result.Answers)
+            {
+                if (answer.IsCorrect)
+                    correctAnswers++;
+            }
+            <h6>Имя пользователя: @result.UserName</h6>
+            <h6>ID пользователя: @result.UserId</h6>
+            <h6>Правильные ответы: @correctAnswers</h6>
+            <h6>Время прохождения: @result.PassTime</h6>
+            <p>-</p>
+        }
+    </form>
+</div>
