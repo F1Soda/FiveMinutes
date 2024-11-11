@@ -1,13 +1,7 @@
 ﻿// Initialize variables
-let fmt = modelData;
+let fmt = null;
 let questionCount = 0;
 let hasUnsavedChanges = false;
-
-document.addEventListener('DOMContentLoaded', initQuestions);
-
-$(document).ready(function () {
-	initialize();
-});
 
 
 // Function to generate HTML for a question card
@@ -141,30 +135,32 @@ function initQuestions() {
 }
 
 // Define the save method
-function save(isFinalSave = false) {
+function save() {
 	console.log('save was called!');
 
 	// Serialize the form data into a JSON object
-	const jsonData = {
-		Id: $('#Id').val(),
+	var jsonData = {
+		Id: $('#Id').val(), // assuming you have an element with Id field in the form
 		Name: $('input[name="Name"]').val(),
-		ShowInProfile: true,
+		ShowInProfile: true, // or get the value if it's dynamic
 		Questions: []
 	};
 
+	// Collect questions data
 	$('#questions-container .card').each(function (index, element) {
-		const question = {
-			Position: index + 1,
+		var question = {
+			Position: index + 1, // or set it from an input field if it's part of the form
 			QuestionText: $(element).find('input[name^="Questions"]').val(),
 			ResponseType: parseInt($(element).find('select[name^="Questions"]').val(), 10),
 			Answers: []
 		};
 
+		// Collect answers if there are any
 		$(element).find('.answers-container .answer-item').each(function () {
-			const answer = {
-				Position: question.Answers.length + 1,
+			var answer = {
+				Position: question.Answers.length + 1, // dynamic position
 				Text: $(this).find('input[type="text"]').val(),
-				IsCorrect: $(this).find('input[type="checkbox"]').is(':checked')
+				IsCorrect: $(this).find('input[type="checkbox"]').is(':checked') // true if checkbox is checked, false otherwise
 			};
 			question.Answers.push(answer);
 		});
@@ -172,26 +168,34 @@ function save(isFinalSave = false) {
 		jsonData.Questions.push(question);
 	});
 
+	console.log(jsonData);
+
+	// Send the data to your controller using AJAX
 	$.ajax({
-		url: saveUrl, // Use the passed saveUrl variable
+		url: '@Url.Action("Save")',
 		type: 'POST',
 		data: JSON.stringify(jsonData),
 		contentType: 'application/json; charset=utf-8',
 		dataType: "json",
 		success: function (response) {
-			if (response["success"]) showSaveIcon();
-			else showPopup("Произошла ошибка", 'error');
+			// Handle the success response here
+			console.log(response);
+			if (response["success"])
+				showSaveIcon();
+			else
+				showPopup("Произошла ошибка", 'error');
 		},
 		error: function (xhr, status, error) {
+			// Handle the error response here
+			console.error('Error saving test:', error);
 			showPopup("Произошла ошибка", 'error');
 		}
 	});
+	hasUnsavedChanges = false;
 }
 
-
-// Function to initialize event handlers and intervals
-function initialize() {
-	// Set up change tracking on form inputs
+// Initialize the document and set up event handlers
+$(document).ready(function () {
 	$('input, select').on('change', function () {
 		hasUnsavedChanges = true;
 	});
@@ -202,58 +206,21 @@ function initialize() {
 		save(); // Call the save function
 	});
 
-	// Set up an interval to call the save function every 15 seconds
+	// Optionally, set up an interval to call the save function every 5 seconds
 	setInterval(save, 15000);
-
-	// Set up beforeunload event to warn users about unsaved changes
-	window.addEventListener('beforeunload', function (e) {
-		if (hasUnsavedChanges) {
-			const message = "You have unsaved changes. Are you sure you want to leave?";
-			e.returnValue = message; // Required for most browsers
-			return message; // Some browsers use this to show the message
-		}
-	});
-
-	// Bind the add question button click event
-	document.getElementById('add-question').addEventListener('click', addQuestion);
-
-	// Initialize questions on page load
-	initQuestions();
-}
-
-// Initialize the document and set up event handlers when the page is ready
+});
 
 
-function showPopup(message, type) {
-	const popup = document.getElementById("popup");
-	const popupMessage = popup.querySelector(".popup-message");
+// Call the initQuestions function when the page loads
+document.addEventListener('DOMContentLoaded', initQuestions);
 
-	// Set the popup text to the provided message
-	popupMessage.innerText = message;
+document.getElementById('add-question').addEventListener('click', addQuestion);
 
-	// Apply different styles based on the type of popup
-	switch (type) {
-		case 'error':
-			popup.style.backgroundColor = "#f44336"; // Red for errors
-			break;
-		case 'notification':
-			popup.style.backgroundColor = "#4CAF50"; // Green for notifications
-			break;
-		case 'warning':
-			popup.style.backgroundColor = "#ff9800"; // Orange for warnings
-			break;
-		default:
-			popup.style.backgroundColor = "#333"; // Default color
+window.addEventListener('beforeunload', function (e) {
+	if (hasUnsavedChanges) {
+		// Show a warning dialog
+		const message = "You have unsaved changes. Are you sure you want to leave?";
+		e.returnValue = message; // Required for most browsers
+		return message; // Some browsers use this to show the message
 	}
-
-	// Show the popup
-	popup.style.display = "block";
-
-	// Automatically close the popup after 3 seconds (3000 ms)
-	setTimeout(function () {
-		popup.style.display = "none";
-	}, 3000);
-}
-
-
-
+});

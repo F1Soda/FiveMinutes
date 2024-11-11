@@ -1,13 +1,7 @@
 ﻿// Initialize variables
-let fmt = modelData;
+let fmt = null;
 let questionCount = 0;
 let hasUnsavedChanges = false;
-
-document.addEventListener('DOMContentLoaded', initQuestions);
-
-$(document).ready(function () {
-	initialize();
-});
 
 
 // Function to generate HTML for a question card
@@ -189,9 +183,8 @@ function save(isFinalSave = false) {
 }
 
 
-// Function to initialize event handlers and intervals
-function initialize() {
-	// Set up change tracking on form inputs
+// Initialize the document and set up event handlers
+$(document).ready(function () {
 	$('input, select').on('change', function () {
 		hasUnsavedChanges = true;
 	});
@@ -202,26 +195,24 @@ function initialize() {
 		save(); // Call the save function
 	});
 
-	// Set up an interval to call the save function every 15 seconds
+	// Optionally, set up an interval to call the save function every 5 seconds
 	setInterval(save, 15000);
+});
 
-	// Set up beforeunload event to warn users about unsaved changes
-	window.addEventListener('beforeunload', function (e) {
-		if (hasUnsavedChanges) {
-			const message = "You have unsaved changes. Are you sure you want to leave?";
-			e.returnValue = message; // Required for most browsers
-			return message; // Some browsers use this to show the message
-		}
-	});
 
-	// Bind the add question button click event
-	document.getElementById('add-question').addEventListener('click', addQuestion);
+// Call the initQuestions function when the page loads
+document.addEventListener('DOMContentLoaded', initQuestions);
 
-	// Initialize questions on page load
-	initQuestions();
-}
+document.getElementById('add-question').addEventListener('click', addQuestion);
 
-// Initialize the document and set up event handlers when the page is ready
+window.addEventListener('beforeunload', function (e) {
+	if (hasUnsavedChanges) {
+		// Show a warning dialog
+		const message = "You have unsaved changes. Are you sure you want to leave?";
+		e.returnValue = message; // Required for most browsers
+		return message; // Some browsers use this to show the message
+	}
+});
 
 
 function showPopup(message, type) {
@@ -254,6 +245,3 @@ function showPopup(message, type) {
 		popup.style.display = "none";
 	}, 3000);
 }
-
-
-

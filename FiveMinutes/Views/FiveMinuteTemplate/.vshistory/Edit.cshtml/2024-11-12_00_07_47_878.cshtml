@@ -2,8 +2,6 @@
 @using FiveMinutes.ViewModels
 @model FiveMinuteTemplateEditViewModel
 
-<partial name="_Popup" />
-
 @{
 	ViewData["Title"] = "Создание пятиминутки";
 }
@@ -25,11 +23,15 @@
 	<button type="button" , id="save" class="btn btn-success mt-3">Сохранить пятиминутку</button>
 </form>
 
+<!-- Popup Element -->
+<div id="popup" class="popup">
+	<p class="popup-message">Default message</p>
+</div>
+
 @section Scripts {
 	<script>
 		const saveUrl = '@Url.Action("Save")'; // Pass the save URL to the external JavaScript file
 		const modelData = @Html.Raw(Json.Serialize(Model)); // Serialize model data for use in edit.js
 	</script>
-	<script src="~/js/popup.js"></script>
 	<script src="~/js/edit.js"></script>
 }

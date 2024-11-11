@@ -254,6 +254,3 @@ function showPopup(message, type) {
 		popup.style.display = "none";
 	}, 3000);
 }
-
-
-

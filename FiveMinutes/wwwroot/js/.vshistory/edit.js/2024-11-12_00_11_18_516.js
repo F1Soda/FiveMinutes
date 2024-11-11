@@ -5,11 +5,6 @@ let hasUnsavedChanges = false;
 
 document.addEventListener('DOMContentLoaded', initQuestions);
 
-$(document).ready(function () {
-	initialize();
-});
-
-
 // Function to generate HTML for a question card
 function getQuestionHtml(question, questionIndex) {
 	return `
@@ -222,6 +217,9 @@ function initialize() {
 }
 
 // Initialize the document and set up event handlers when the page is ready
+$(document).ready(function () {
+	initialize();
+});
 
 
 function showPopup(message, type) {
@@ -254,6 +252,3 @@ function showPopup(message, type) {
 		popup.style.display = "none";
 	}, 3000);
 }
-
-
-
