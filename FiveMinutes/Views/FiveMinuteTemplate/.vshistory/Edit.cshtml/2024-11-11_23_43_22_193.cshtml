@@ -163,7 +163,7 @@
 				});
 				questionCount += 1;
 			});
-			
+			hasUnsavedChanges = false;
 		}
 
 		// Define the save method
@@ -223,7 +223,6 @@
 					showPopup("Произошла ошибка", 'error');
 				}
 			});
-			hasUnsavedChanges = false;
 		}
 
 		// Initialize the document and set up event handlers
