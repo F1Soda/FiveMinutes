@@ -102,6 +102,10 @@ namespace FiveMinutes.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
+                    b.Property<string>("UserRole")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -158,6 +162,9 @@ namespace FiveMinutes.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("OriginId")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("ShowInProfile")
                         .HasColumnType("boolean");
 
@@ -165,6 +172,8 @@ namespace FiveMinutes.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OriginId");
 
                     b.HasIndex("UserOwnerId");
 
@@ -430,9 +439,15 @@ namespace FiveMinutes.Migrations
 
             modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTemplate", b =>
                 {
+                    b.HasOne("FiveMinutes.Models.FiveMinuteTemplate", "Origin")
+                        .WithMany()
+                        .HasForeignKey("OriginId");
+
                     b.HasOne("FiveMinutes.Models.AppUser", "UserOwner")
                         .WithMany("FMTs")
                         .HasForeignKey("UserOwnerId");
+
+                    b.Navigation("Origin");
 
                     b.Navigation("UserOwner");
                 });

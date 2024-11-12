@@ -1,0 +1,79 @@
+﻿@model FiveMinutes.ViewModels.AccountViewModels.AllUsersViewModel
+@{
+    ViewData["Title"] = "All Users";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Left Section: 3/4 Width for Students and Teachers -->
+        <div class="col-md-9">
+            <h2>Teachers</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <!-- Add any other relevant columns -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var teacher in Model.Teachers)
+                    {
+                        <tr>
+                            <td>@teacher.Id</td>
+                            <td>@teacher.UserName</td>
+                            <td>@teacher.Email</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <h2>Students</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <!-- Add any other relevant columns -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in Model.Students)
+                    {
+                        <tr>
+                            <td>@student.Id</td>
+                            <td>@student.UserName</td>
+                            <td>@student.Email</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Right Section: 1/4 Width for Admins -->
+        <div class="col-md-3">
+            <h2>Admins</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var admin in Model.Admins)
+                    {
+                        <tr>
+                            <td>@admin.Id</td>
+                            <td>@admin.UserName</td>
+                            <td>@admin.Email</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

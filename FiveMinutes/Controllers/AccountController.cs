@@ -1,11 +1,10 @@
 ﻿using FiveMinutes.Data;
 using FiveMinutes.Models;
 using FiveMinutes.ViewModels;
-using Microsoft.AspNetCore.Authorization;
+using FiveMinutes.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
 
 namespace FiveMinutes.Controllers
 {
@@ -107,24 +106,123 @@ namespace FiveMinutes.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public async Task<IActionResult> Detail(string fiveMinuteId)
+        public async Task<IActionResult> Detail(string userId)
         {
-            var user = await context.Users.Include(x => x.FMTs).FirstOrDefaultAsync(x => x.Id == fiveMinuteId);
+            var currentUser = await userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return RedirectToAction("Login", "Account"); // Redirect to login if the user is not authenticated
+            }
+
+            // Get current user roles
+            var currentUserRoles = await userManager.GetRolesAsync(currentUser);
+
+            // Allow access if the current user is Admin or Teacher, or if they are viewing their own profile
+            bool isAdmin = currentUserRoles.Contains(UserRoles.Admin);
+            bool isTeacher = currentUserRoles.Contains(UserRoles.Teacher);
+            bool isOwner = currentUser.Id == userId;
+
+            if (!(isAdmin || isTeacher || isOwner))
+            {
+                // Redirect students trying to view other users' profiles
+                return Forbid(); // or RedirectToAction("AccessDenied") if you have an Access Denied page
+            }
+
+            // Fetch the user being viewed
+            var user = await context.Users.Include(x => x.FMTs).FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
-                // По хорошему сюда надо PageNotFounded
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("NotFound");
             }
-            // И возможно не нужна сразу все пятиминутки с тестами отправлять
-            var userDetailViewModel = new UserDetailViewModel()
+
+            // Get the role of the user being viewed (if needed)
+
+            var model = new UserDetailViewModel
             {
-                Id = fiveMinuteId,
                 UserName = user.UserName,
+                Email = user.Email,
                 FMTs = user.FMTs,
-                Tests = user.Tests,
-                Email = user.Email
+                UserRole = currentUser.UserRole,
+                IsOwner = isOwner,
+
             };
-            return View(userDetailViewModel);
+
+            return View(model);
         }
-    }
+
+		public async Task<IActionResult> All()
+		{
+			var currentUser = await userManager.GetUserAsync(User);
+
+			if (currentUser == null)
+			{
+				return Forbid(); // Redirect to login if the user is not authenticated
+			}
+
+			var currentUserRoles = await userManager.GetRolesAsync(currentUser);
+
+            if (currentUserRoles.Contains(UserRoles.Admin))
+                return Forbid();
+            
+			var users = userManager.Users.ToList();
+
+
+            var allUsersViewModel = new AllUsersViewModel
+            {
+                Admins = users.Where(u => u.UserRole == UserRoles.Admin).Select(u => new UserIdNameEmailViewModel (u.Id, u.UserName, u.Email)).ToList(),
+                Teachers = users.Where(u => u.UserRole == UserRoles.Teacher).Select(u => new UserIdNameEmailViewModel (u.Id, u.UserName, u.Email)).ToList(),
+                Students = users.Where(u => u.UserRole == UserRoles.Student).Select(u => new UserIdNameEmailViewModel (u.Id, u.UserName, u.Email)).ToList(),
+
+            };
+
+            return View(allUsersViewModel);
+        }
+
+        public class DeleteUserRequest
+        {
+            public string UserId { get; set; }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Delete([FromBody] DeleteUserRequest request)
+        {
+            var currentUser = await userManager.GetUserAsync(User);
+            if (currentUser == null || currentUser.UserRole != UserRoles.Admin)
+            {
+                return Json(new
+                {
+                    success = false,
+                    description = "Not Allowed"
+                });
+            }
+
+            var userToDelete = await userManager.FindByIdAsync(request.UserId);
+
+            if (userToDelete == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    description = "Not Found"
+                });
+            }
+
+            var res = await userManager.DeleteAsync(userToDelete);
+            if (res.Succeeded)
+            {
+                return Json(new
+                {
+                    success = true
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    success = false,
+                    description = "Fail to delete user from db"
+                });
+            }
+        }
+	}
 }

@@ -2,7 +2,7 @@
 using FiveMinutes.Interfaces;
 using FiveMinutes.Models;
 using FiveMinutes.Repository;
-using FiveMinutes.ViewModels;
+using FiveMinutes.ViewModels.FMTEditViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -143,5 +143,42 @@ namespace FiveMinutes.Controllers
             fiveMinuteTemplateRepository.Save();
             return Json(new { success = true });
         }
+
+        public async Task<IActionResult> Copy(int fiveMinuteId)
+        {
+			var currentUser = await userManager.GetUserAsync(User);
+			if (currentUser == null)
+			{
+				return RedirectToAction("Login", "Account"); // Redirect to login if the user is not authenticated
+			}
+
+			var currentUserRoles = await userManager.GetRolesAsync(currentUser);
+
+			bool isStudent = currentUserRoles.Contains(UserRoles.Student);
+
+			if (isStudent)
+			{
+				// Redirect students trying to view other users' profiles
+				return Forbid(); // or RedirectToAction("AccessDenied") if you have an Access Denied page
+			}
+
+            var fmt = await fiveMinuteTemplateRepository.GetByIdAsync(fiveMinuteId);
+
+            if (fmt == null)
+            {
+				return RedirectToAction("NotFound");
+			}
+
+            var copyFMT = fmt.GetCopyToUser(currentUser);
+            
+            if (fiveMinuteTemplateRepository.Add(copyFMT))
+            {
+                currentUser.AddFMT(copyFMT);
+                context.SaveChanges();
+
+				return RedirectToAction("Edit", new { copyFMT.Id });
+			}
+			return View("Error", new ErrorViewModel("Fail to add FMT to db"));
+		}
     }
 }

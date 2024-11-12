@@ -1,0 +1,35 @@
+﻿@    using FiveMinutes.Data
+@    using FiveMinutes.ViewModels
+@model FiveMinuteTemplateEditViewModel
+
+<partial name="_Popup" />
+
+@{
+	ViewData["Title"] = "Создание пятиминутки";
+}
+
+<h1>Редактор пятиминутки <span id="save-icon" style="display: none; color: #28a745; margin-left: 8px;">✔️</span></h1>
+
+
+<form id="edit-form" method="post">
+	<div class="form-group">
+		<label asp-for="Name">Название пятиминутки:</label>
+		<input asp-for="Name" class="form-control" required />
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+	<div id="questions-container">
+		<!-- Здесь будут динамически добавляться вопросы -->
+	</div>
+
+	<button type="button" id="add-question" class="btn btn-primary mt-3">Добавить вопрос</button>
+	<button type="button" , id="save" class="btn btn-success mt-3">Сохранить пятиминутку</button>
+</form>
+
+@section Scripts {
+	<script>
+		const saveUrl = '@Url.Action("Save")'; // Pass the save URL to the external JavaScript file
+		const modelData = @Html.Raw(Json.Serialize(Model)); // Serialize model data for use in edit.js
+	</script>
+	<script src="~/js/popup.js"></script>
+	<script src="~/js/edit.js"></script>
+}

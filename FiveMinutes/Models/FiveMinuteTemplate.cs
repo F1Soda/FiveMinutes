@@ -11,24 +11,31 @@ namespace FiveMinutes.Models
 		public DateTime? CreationTime { get; set; }
 		public DateTime? LastModificationTime { get; set; }
 		public IEnumerable<Question> Questions { get; set; }
+		
+		[ForeignKey("FiveMinuteTemplate")]
+		public int? OriginId { get; set; }
+		public FiveMinuteTemplate? Origin { get; set; }
+
         public bool ShowInProfile { get; set; }
 
         [ForeignKey("AppUser")]
         public string? UserOwnerId { get; set; }
         public AppUser? UserOwner { get; set; }
 
-        public FiveMinuteTemplate GetCopy()
+        public FiveMinuteTemplate GetCopyToUser(AppUser newUserOwner)
         {
 	        return new FiveMinuteTemplate
 	        {
-		        Id = this.Id,
-		        Name = this.Name,
-		        CreationTime = this.CreationTime,
-		        LastModificationTime = this.LastModificationTime,
+		        Name = $"{this.Name} (копия)",
+		        CreationTime = DateTime.UtcNow,
+		        LastModificationTime = DateTime.UtcNow,
 		        ShowInProfile = this.ShowInProfile,
-		        UserOwner = this.UserOwner,
-		        UserOwnerId = this.UserOwnerId,
-		        Questions = this.Questions
+		        UserOwner = newUserOwner,
+		        UserOwnerId = newUserOwner.Id,
+		        Questions = this.Questions,
+				Origin = this,
+				OriginId = this.OriginId
+			
 	        };
         }
 

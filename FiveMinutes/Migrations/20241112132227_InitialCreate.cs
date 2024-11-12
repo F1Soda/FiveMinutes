@@ -31,6 +31,7 @@ namespace FiveMinutes.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
+                    UserRole = table.Column<string>(type: "text", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -201,6 +202,7 @@ namespace FiveMinutes.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    OriginId = table.Column<int>(type: "integer", nullable: true),
                     ShowInProfile = table.Column<bool>(type: "boolean", nullable: false),
                     UserOwnerId = table.Column<string>(type: "text", nullable: true)
                 },
@@ -211,6 +213,11 @@ namespace FiveMinutes.Migrations
                         name: "FK_FiveMinuteTemplates_AspNetUsers_UserOwnerId",
                         column: x => x.UserOwnerId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FiveMinuteTemplates_FiveMinuteTemplates_OriginId",
+                        column: x => x.OriginId,
+                        principalTable: "FiveMinuteTemplates",
                         principalColumn: "Id");
                 });
 
@@ -354,6 +361,11 @@ namespace FiveMinutes.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FiveMinuteTemplates_OriginId",
+                table: "FiveMinuteTemplates",
+                column: "OriginId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FiveMinuteTemplates_UserOwnerId",

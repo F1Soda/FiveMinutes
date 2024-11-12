@@ -1,0 +1,60 @@
+﻿@using FiveMinutes.Data
+@using FiveMinutes.ViewModels
+@model UserDetailViewModel
+
+<h1>Данные о пользователе @Model.UserName</h1>
+<p>Пользовательское имя: @Model.UserName</p>
+<p>Почта: @Model.Email</p>
+
+@if (Model.UserRole == "Teacher")
+{
+
+	<h3>Пятиминутки:</h3>
+	@if (Model.FMTs is not null && Model.FMTs.Any())
+	{
+		<table class="table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Show In Profile</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var test in Model.FMTs)
+				{
+					if (Model.IsOwner || test.ShowInProfile && !Model.IsOwner)
+					{
+						<tr>
+							<td>@test.Id</td>
+							<td>@test.Name</td>
+							<td>@test.ShowInProfile</td>
+							<td>
+								<a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@test.Id" class="btn btn-primary">Edit</a>
+								<a asp-action="Test" asp-controller="TestPassing" asp-route-fiveMinuteId="@test.Id" class="btn btn-primary">Pass link</a>
+								<a asp-action="ShowResults" asp-controller="FiveMinuteStatistics" asp-route-fiveMinuteId="@test.Id" class="btn btn-primary">Show Statistics</a>
+							</td>
+						</tr>
+					}
+				}
+			</tbody>
+		</table>
+	}
+	else
+	{
+		<p>Пока тут пусто. Создайте новую!</p>
+	}
+}
+else if (Model.UserRole == "Student")
+{
+	<p>Привет, студент @Model.UserName! У вас пока нет доступных тестов.</p>
+}
+else if (Model.UserRole == "Admin")
+{
+	<p>Добро пожаловать, администратор @Model.UserName!</p>
+	<p>У вас есть доступ к управлению всеми пользователями и тестами.</p>
+
+
+	<!-- Add any other admin-specific content here -->
+}
