@@ -121,27 +121,41 @@ namespace FiveMinutes.Controllers
             existingFmt.Name = fmt.Name;
             existingFmt.ShowInProfile = fmt.ShowInProfile;
             existingFmt.LastModificationTime = DateTime.UtcNow;
-            existingFmt.Questions = fmt.Questions
-                .Select(question => new Question
-                {
-                    QuestionText = question.QuestionText,
-                    FiveMinuteTemplate = existingFmt,
-                    Position = question.Position,
-                    ResponseType = question.ResponseType,
-                    FiveMinuteTemplateId = fmt.Id,
-                    Answers = question.Answers.Select(x => new Answer
-                    {
-                        IsCorrect = x.IsCorrect, 
-                        Position = x.Position,
-                        Text =x.Text,
-                        // Вот эту залупу починить как то надо или не надо ???
-                        QuestionId = 0
-                    }).ToList()
-                }).ToList();
+            existingFmt.Questions = GetQuestionsByFMTViewModel(fmt, existingFmt);
             // Mark the entity as modified
             context.Entry(existingFmt).State = EntityState.Modified;
             fiveMinuteTemplateRepository.Save();
             return Json(new { success = true });
+        }
+
+        public List<Question> GetQuestionsByFMTViewModel(FiveMinuteTemplateEditViewModel fmt,FiveMinuteTemplate existingFmt)
+        {
+            if(fmt.Questions.Any(x=>x.QuestionText==""))
+            {
+                Console.Write("Поступил Пустой вопрос");
+            }
+            Console.Write("\n\n\n\n\n\nПоступил Пустой вопрос\n\n\n\n\n");
+            if (fmt.Questions.Select(x => x.Answers)
+                .Any(x => x.Any(x => x.Text == null)))
+            {
+                Console.Write("Поступил Пустой ответ");
+            }
+            return fmt.Questions.Select(question =>new Question
+            {
+                QuestionText = question.QuestionText,
+                FiveMinuteTemplate = existingFmt,
+                Position = question.Position,
+                ResponseType = question.ResponseType,
+                FiveMinuteTemplateId = fmt.Id,
+                Answers = question.Answers.Select(x => new Answer
+                {
+                    IsCorrect = x.IsCorrect, 
+                    Position = x.Position,
+                    Text =x.Text,
+                    // Вот эту залупу починить как то надо или не надо ???
+                    QuestionId = 0
+                }).ToList()
+            }).ToList();
         }
 
         public async Task<IActionResult> Copy(int fiveMinuteId)

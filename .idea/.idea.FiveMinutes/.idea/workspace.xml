@@ -15,15 +15,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="added test passing page">
-      <change beforePath="$PROJECT_DIR$/.dockerignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/photo_2024-10-21_20-34-53.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/wwwroot/js/edit.js" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/wwwroot/js/edit.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinutes.sln" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +33,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9e70c4835c5b4a869ad017ebfa8cf5741de928/ee/30122093/ControllerBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/96a4cc66aa48dda8a9d8be8febec4a769fc143f7a86dd53ecdebfb9c3177d/ControllerBase.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{

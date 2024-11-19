@@ -142,6 +142,45 @@ function initQuestions() {
 
 // Define the save method
 function save(isFinalSave = false) {
+	// Проверка на пустые поля перед сериализацией
+	let isValid = true;
+
+	$('#questions-container .card').each(function() {
+		// Проверка текста вопроса
+		const questionText = $(this).find('input[name^="Questions"]').val().trim();
+		if (!questionText) {
+			showPopup("Заполните текст вопроса", 'error');
+			isValid = false;
+			return false; // Прервать перебор
+		}
+
+		// Получаем тип ответа
+		const responseType = parseInt($(this).find('select[name^="Questions"]').val(), 10);
+
+		// Проверка ответов для типов "Один вариант" и "Несколько вариантов"
+		if (responseType !== 2) {
+			const answers = $(this).find('.answers-container .answer-item');
+			if (answers.length === 0) {
+				showPopup("Добавьте варианты ответа", 'error');
+				isValid = false;
+				return false;
+			}
+
+			answers.each(function() {
+				const answerText = $(this).find('input[type="text"]').val().trim();
+				if (!answerText) {
+					showPopup("Заполните текст всех вариантов ответа", 'error');
+					isValid = false;
+					return false;
+				}
+			});
+		}
+
+		if (!isValid) return false;
+	});
+
+	// Прекратить сохранение, если есть незаполненные поля
+	if (!isValid) return;
 	console.log('save was called!');
 
 	// Serialize the form data into a JSON object
