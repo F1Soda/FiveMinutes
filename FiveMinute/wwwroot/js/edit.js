@@ -1,6 +1,6 @@
 ﻿// Initialize variables
 let fmt = modelData;
-let questionCount = 0;
+let questionCount = 1;
 let hasUnsavedChanges = false;
 
 document.addEventListener('DOMContentLoaded', initQuestions);
@@ -116,6 +116,7 @@ function deleteAnswer(button) {
 }
 
 function deleteQuestion(button) {
+	questionCount--;
 	const questionCard = button.closest('.question-card');
 	questionCard.remove();
 }
@@ -135,7 +136,6 @@ function initQuestions() {
 			const answerHtml = getAnswerHtml(answer, questionIndex, answerIndex);
 			answersContainer.insertAdjacentHTML('beforeend', answerHtml);
 		});
-		questionCount += 1;
 	});
 
 }
