@@ -15,18 +15,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="added test passing page">
+      <change afterPath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTPassingViewModels/TestResultViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Data/ApplicationDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Models/FiveMinuteResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Models/FiveMinuteResult.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Models/UserAnswer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Models/UserAnswer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Repository/FiveMinuteResultRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Repository/FiveMinuteResultRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Repository/QuestionRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Repository/QuestionRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/ViewModels/AnswerViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTPassingViewModels/AnswerViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/ViewModels/FiveMinuteResultsViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTPassingViewModels/FiveMinuteResultsViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/ViewModels/FiveMinuteViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTPassingViewModels/FiveMinuteViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/ViewModels/QuestionInResultViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTPassingViewModels/QuestionInResultViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/ViewModels/QuestionViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTPassingViewModels/QuestionViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/ViewModels/UserAnswerViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTPassingViewModels/UserAnswerViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/ShowResults.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/ShowResults.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/TestPassing/Test.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/TestPassing/Test.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="tim" />
+        <entry key="$PROJECT_DIR$" value="cynpy" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -44,30 +64,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.FiveMinutes: https.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;cynpy&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.FiveMinutes: http.executor": "Run",
+    ".NET Launch Settings Profile.FiveMinutes: https.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "sava",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\stepa\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\stepa\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\stepa\\AppData\\Local\\Symbols\\src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\stepa\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache",
+      "C:\\Users\\stepa\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache",
+      "C:\\Users\\stepa\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.FiveMinutes: http">
     <configuration name="FiveMinutes: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/FiveMinutes/FiveMinutes.csproj" />
@@ -170,6 +191,7 @@
     <option name="version" value="3" />
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -192,13 +214,13 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/FiveMinutes/Repository/FiveMinuteResultRepository.cs</url>
           <line>15</line>
-          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinutes\Repository\FiveMinuteResultRepository.cs" initialLine="15" containingFunctionPresentation="Method 'GetByIdAsync'" />
+          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinutes\Repository\FiveMinuteResultRepository.cs" containingFunctionPresentation="Method 'GetByIdAsync'" />
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/Edit.cshtml</url>
           <line>10</line>
-          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinutes\Views\FiveMinuteTemplate\Edit.cshtml" initialLine="11" isMultiMethodBreakpoint="true">
+          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinutes\Views\FiveMinuteTemplate\Edit.cshtml" isMultiMethodBreakpoint="true">
             <option name="multiMethodBreakpoint" value="true" />
           </properties>
           <option name="timeStamp" value="7" />
@@ -206,8 +228,86 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/FiveMinutes/Controllers/TestPassingController.cs</url>
           <line>53</line>
-          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinutes\Controllers\TestPassingController.cs" initialLine="53" containingFunctionPresentation="Method 'SendTestResults'" />
+          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinutes\Controllers\TestPassingController.cs" containingFunctionPresentation="Method 'SendTestResults'" />
           <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteStatisticsController.cs</url>
+          <line>23</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\FiveMinuteStatisticsController.cs" containingFunctionPresentation="Method 'ShowResults'">
+            <startOffsets>
+              <option value="752" />
+            </startOffsets>
+            <endOffsets>
+              <option value="860" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs</url>
+          <line>70</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\TestPassingController.cs" containingFunctionPresentation="Method 'SendTestResults'">
+            <startOffsets>
+              <option value="2644" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2667" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs</url>
+          <line>75</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\TestPassingController.cs" containingFunctionPresentation="Method 'CheckUserAnswer'">
+            <startOffsets>
+              <option value="2798" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2905" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs</url>
+          <line>80</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\TestPassingController.cs" containingFunctionPresentation="Method 'CheckUserAnswer'">
+            <startOffsets>
+              <option value="3093" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3155" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs</url>
+          <line>79</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\TestPassingController.cs" containingFunctionPresentation="Method 'CheckUserAnswer'">
+            <startOffsets>
+              <option value="3055" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3077" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs</url>
+          <line>67</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\TestPassingController.cs" containingFunctionPresentation="Method 'SendTestResults'">
+            <startOffsets>
+              <option value="2489" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2531" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="26" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -18,14 +18,14 @@ namespace FiveMinutes.Controllers
         public readonly ApplicationDbContext context;
 
         private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
-        private readonly IQuestionRepository questionRepository;
+        // private readonly IQuestionRepository questionRepository;
 
         public FiveMinuteTemplateController(UserManager<AppUser> userManager, ApplicationDbContext context)
         {
             this.userManager = userManager;
             this.context = context;
             this.fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
-            this.questionRepository = new QuestionRepository(context);
+            // this.questionRepository = new QuestionRepository(context);
         }
 
         public IActionResult Index()

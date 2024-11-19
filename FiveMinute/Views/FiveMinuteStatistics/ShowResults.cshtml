@@ -17,11 +17,63 @@
                 if (answer.IsCorrect)
                     correctAnswers++;
             }
-            <h6>Имя пользователя: @result.UserName</h6>
-            <h6>ID пользователя: @result.UserId</h6>
-            <h6>Правильные ответы: @correctAnswers</h6>
-            <h6>Время прохождения: @result.PassTime</h6>
-            <p>-</p>
+            var answersDict = new Dictionary<int, int>();
+            foreach (var answer in result.Answers)
+            {
+                answersDict.TryAdd(answer.QuestionPosition, 0);
+                answersDict[answer.QuestionPosition] += answer.IsCorrect ? 1 : 0;
+            }
+            <table>
+                <caption>Таблица йоу</caption>
+                <tr>
+                    <th>Вопрос</th>
+                    @foreach(var number in answersDict.Keys.Order())
+                    {
+                        <td>@number</td>
+                    }
+                    <td>Всего</td>
+                    
+                </tr>
+                <tr>
+                    <th>Баллы</th>
+                    @foreach (var number in answersDict.Keys.Order())
+                    {
+                        <td>@answersDict[number]</td>
+                    }
+                    <td>@answersDict.Values.Sum()</td>
+
+                </tr>
+            </table>
+            @* <h6>Имя пользователя: @result.UserName</h6> *@
+            @* <h6>ID пользователя: @result.UserId</h6> *@
+            @* <h6>Правильные ответы: @correctAnswers</h6> *@
+            @* <h6>Время прохождения: @result.PassTime</h6> *@
+            @* <p>-</p> *@
         }
     </form>
 </div>
+<style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            width: 30%;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        caption {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+</style>

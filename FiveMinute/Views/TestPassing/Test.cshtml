@@ -3,6 +3,7 @@
 }
 
 @using FiveMinutes.ViewModels
+@using Microsoft.AspNetCore.Mvc.RazorPages
 @model FiveMinutes.ViewModels.FiveMinuteViewModel
 
 <style>
@@ -76,43 +77,68 @@
     }
 </style>
 
-<div class="container test-area">
+<div class="container test-area">э
+    <iframe name="someframe" id="someframe" style="display: none;" on></iframe>
     <h1>@ViewData["Title"]</h1>
-    <form asp-action="SendTestResults" asp-controller="TestPassing" method="post">
-    <input type="hidden" aria-label="" name="fiveMinuteId" value = "@Model.Id"/>
-        @{ var questionNumber = 0; }
+    <form asp-action="SendTestResults" asp-controller="TestPassing" method="post" target="someframe">
+        <input type="hidden" aria-label="" name="FMTId" value = "@Model.Id"/>
+        @{
+            var questionNumber = 0;
+            var answerNumber = 0;
+        }
         @foreach (var question in Model.Questions)
         {
             questionNumber++;
             <div class="question">
                 <div class="question-text">@questionNumber. @question.QuestionText</div>
-                @* <input type="hidden" name="userAnswers[@question.Id]" value="@(@question.Id)"/> *@
+                @{
+                    int position;
+                }
                 @switch (question.ResponseType)
                 {
                     case ResponseType.Text:
                         <div>
-                            <input type="text" aria-label="@question.QuestionText" name="userAnswers[@(question.Id)]"/>
+                            <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber"/>
+                            <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].Position" value="0"/>
+                            <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id"/>
+                            <input type="text" aria-label="@question.QuestionText" name="UserAnswers[@answerNumber].Text"/>
                         </div>
+                        answerNumber++;
                         break;
                     case ResponseType.SingleChoice:
                         <div>
-                            @foreach (var answer in question.Answers)
+                            @{
+                                position = 1;
+                            }
+                            @foreach (var answer in question.AnswerOptions)
                             {
                                 <label>
-                                    <input type="radio" name="userAnswers[@(question.Id)]" value="@answer.Text">
+                                    <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber"/>
+                                    <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].Position" value="@position"/>
+                                    <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id"/>
+                                    <input type="radio" name="UserAnswers[@answerNumber].Text" value="@answer.Text">
                                     @answer.Text
                                 </label>
+                                answerNumber++;
+                                position++;
                             }
                         </div>
                         break;
                     case ResponseType.MultipleChoice:
                         <div>
-                            @foreach (var answer in question.Answers)
+                            @{
+                                position = 1;
+                            }
+                            @foreach (var answer in question.AnswerOptions)
                             {
                                 <label>
-                                    <input type="checkbox" name="userAnswers[@(question.Id)]" value="@answer.Text">
+                                    <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber"/>
+                                    <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].Position" value="@position"/>
+                                    <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id"/>
+                                    <input type="checkbox" name="userAnswers[@questionNumber]" value="@answer.Text">
                                     @answer.Text
                                 </label>
+                                position++;
                             }
                         </div>
                         break;
