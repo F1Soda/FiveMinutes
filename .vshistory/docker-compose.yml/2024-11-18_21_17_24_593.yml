@@ -1,0 +1,31 @@
+﻿version: "3.9"
+networks:
+  deploy-guide-dev:
+    driver: bridge
+services:
+  app: 
+    container_name: fiveminute
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - deploy-guide-dev
+    depends_on:
+      - postgres_db
+  postgres_db:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: deploy-guide
+    ports:
+      - "5432:5432"
+    networks:
+      - deploy-guide-dev
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+volumes:
+  postgres-data:

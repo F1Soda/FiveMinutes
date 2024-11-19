@@ -1,0 +1,21 @@
+services:
+  fiveminute:
+    image: ${DOCKER_REGISTRY-}fiveminute
+    build:
+      context: .
+      dockerfile: FiveMinute/Dockerfile
+    ports:
+        - "8080:8080"
+        - "8081:8081"
+
+  database:
+    image: postgres:latest
+    container_name: database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: fiveminute_db
+    volumes:
+      - ./.containers/products-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"

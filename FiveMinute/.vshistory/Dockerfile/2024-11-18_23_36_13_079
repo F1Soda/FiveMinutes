@@ -1,0 +1,20 @@
+﻿﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["FiveMinute/FiveMinute.csproj", "FiveMinute/"]
+RUN dotnet restore "FiveMinute/FiveMinute.csproj"
+COPY . .
+WORKDIR "/src/FiveMinute"
+RUN dotnet build "FiveMinute.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "FiveMinute.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "FiveMinute.dll"]

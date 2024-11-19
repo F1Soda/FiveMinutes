@@ -1,0 +1,36 @@
+﻿version: "3.9"
+networks:
+  fiveminute_net:
+    driver: bridge
+
+services:
+  app:
+    container_name: fiveminute
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - fiveminute_net
+    depends_on:
+      - postgres_db
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=postgres_db;User Id=postgres;Password=123;Port=5432;Database=fiveminute_db;
+
+  postgres_db:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: fiveminute_db
+    ports:
+      - "5432:5432"
+    networks:
+      - fiveminute_net
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
