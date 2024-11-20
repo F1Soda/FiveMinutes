@@ -1,9 +1,9 @@
 services:
   fiveminute:
-    image: fiveminute:latest
-    ports:
-        - "80:8080"
     container_name: fiveminute
+    image: fiveminute
+    ports:
+        - "80:8088"
     depends_on:
       - db
 

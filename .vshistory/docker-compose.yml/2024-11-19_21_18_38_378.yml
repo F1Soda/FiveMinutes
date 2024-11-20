@@ -1,6 +1,6 @@
 services:
   fiveminute:
-    image: fiveminute:latest
+    image: ${DOCKER_REGISTRY-}fiveminute
     ports:
         - "80:8080"
     container_name: fiveminute

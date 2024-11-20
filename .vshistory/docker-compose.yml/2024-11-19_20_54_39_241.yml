@@ -1,8 +1,13 @@
 services:
   fiveminute:
-    image: fiveminute:latest
+    image: ${DOCKER_REGISTRY-}fiveminute
+    build:
+      context: .
+      dockerfile: FiveMinute/Dockerfile
+
     ports:
-        - "80:8080"
+        - "8080:8080"
+        - "8081:8081"
     container_name: fiveminute
     depends_on:
       - db

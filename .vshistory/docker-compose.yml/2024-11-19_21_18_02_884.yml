@@ -1,6 +1,9 @@
 services:
   fiveminute:
-    image: fiveminute:latest
+    image: ${DOCKER_REGISTRY-}fiveminute
+    build:
+      context: .
+      dockerfile: FiveMinute/Dockerfile
     ports:
         - "80:8080"
     container_name: fiveminute
