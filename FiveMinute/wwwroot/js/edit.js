@@ -212,17 +212,39 @@ function save(isFinalSave = false) {
 	});
 
 	$.ajax({
-		url: saveUrl, // Use the passed saveUrl variable
+		url: saveUrl, // Используем переданный saveUrl
 		type: 'POST',
 		data: JSON.stringify(jsonData),
 		contentType: 'application/json; charset=utf-8',
-		dataType: "json",
+		dataType: 'json',
 		success: function (response) {
-			if (response["success"]) showSaveIcon();
-			else showPopup("Произошла ошибка", 'error');
+			if (response["success"]) {
+				showSaveIcon();
+
+				// Генерация ссылки
+				const testLink = `https://localhost:44384/TestPassing/Test/${response.id}`;
+				const linkContainer = document.getElementById('test-link-container');
+				const copyMessage = document.getElementById('copy-message');
+
+				// Отображаем ссылку рядом с кнопкой
+				linkContainer.innerHTML = `Ссылка: <a href="${testLink}" target="_blank">${testLink}</a>`;
+				linkContainer.style.display = "block";
+
+				// Копируем ссылку в буфер обмена
+				navigator.clipboard.writeText(testLink)
+					.then(() => {
+						copyMessage.style.display = "inline";
+						setTimeout(() => copyMessage.style.display = "none", 3000); // Прячем сообщение через 3 секунды
+					})
+					.catch(err => {
+						console.error("Ошибка копирования в буфер обмена: ", err);
+					});
+			} else {
+				showPopup("Произошла ошибка", 'error');
+			}
 		},
 		error: function (xhr, status, error) {
-			showPopup("Произошла ошибка", 'error');
+			showPopup("Произошла ошибка при сохранении", 'error');
 		}
 	});
 }

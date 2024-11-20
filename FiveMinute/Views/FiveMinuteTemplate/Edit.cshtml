@@ -20,11 +20,10 @@
 	</div>
 
 	<button type="button" id="add-question" class="btn btn-primary mt-3">Добавить вопрос</button>
-	<button type="button" id="save" class="btn btn-success mt-3">Сохранить пятиминутку</button>
-    	<div id="test-link-container" style="margin-left: 15px; display: none;">
-    		Ссылка: <a href="#" id="test-link" target="_blank"></a>
-    	</div>
-    	<span id="copy-message" style="margin-left: 15px; display: none; color: green;">Ссылка скопирована в буфер обмена!</span>
+	<button type="button" , id="save" class="btn btn-success mt-3">Сохранить пятиминутку</button>
+	    <div id="test-link-container" style="margin-left: 15px; display: none;"></div>
+        <span id="copy-message" style="margin-left: 15px; display: none; color: green;">Ссылка скопирована в буфер обмена!</span>
+
 </form>
 
 @section Scripts {
@@ -34,27 +33,4 @@
 	</script>
 	<script src="~/js/popup.js"></script>
 	<script src="~/js/edit.js"></script>
-	<script>
-		const templateId = '@Model.Id';
-
-		document.getElementById('save').addEventListener('click', function () {
-			const testLink = `https://localhost:44384/TestPassing/Test/${templateId}`;
-
-			navigator.clipboard.writeText(testLink)
-				.then(() => {
-					const copyMessage = document.getElementById('copy-message');
-					copyMessage.style.display = "inline";
-					setTimeout(() => copyMessage.style.display = "none", 3000); // Прячем сообщение через 3 секунды
-				})
-				.catch(err => {
-					console.error('Не удалось скопировать ссылку: ', err);
-				});
-
-			const linkContainer = document.getElementById('test-link-container');
-			const linkElement = document.getElementById('test-link');
-			linkElement.href = testLink;
-			linkElement.textContent = testLink;
-			linkContainer.style.display = "block";
-		});
-    </script>
 }

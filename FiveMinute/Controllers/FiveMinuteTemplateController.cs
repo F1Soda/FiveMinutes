@@ -91,8 +91,7 @@ namespace FiveMinutes.Controllers
             {
                 return Json(new
                 {
-                    success = false,
-                    id = fmt.Id
+                    success = false
                 });
             }
 
@@ -102,8 +101,7 @@ namespace FiveMinutes.Controllers
                 return Json(new
                 {
                     success = false,
-                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
-                    id = fmt.Id
+                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage), 
                 });
             }
 
@@ -114,7 +112,6 @@ namespace FiveMinutes.Controllers
                 {
                     success = false,
                     errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
-                    id = fmt.Id
                 }); //тут какая-то другая ошибка должна быть
             }
 
@@ -128,7 +125,11 @@ namespace FiveMinutes.Controllers
             // Mark the entity as modified
             context.Entry(existingFmt).State = EntityState.Modified;
             fiveMinuteTemplateRepository.Save();
-            return Json(new { success = true, id = fmt.Id });
+            return Json(new
+            {
+                success = true,
+                id = existingFmt.Id
+            });
         }
 
         public List<Question> GetQuestionsByFMTViewModel(FiveMinuteTemplateEditViewModel fmt,FiveMinuteTemplate existingFmt)
@@ -137,6 +138,7 @@ namespace FiveMinutes.Controllers
             {
                 Console.Write("Поступил Пустой вопрос");
             }
+            Console.Write("\n\n\n\n\n\nПоступил Пустой вопрос\n\n\n\n\n");
             if (fmt.Questions.Select(x => x.Answers)
                 .Any(x => x.Any(x => x.Text == null)))
             {
