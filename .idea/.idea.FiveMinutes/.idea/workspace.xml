@@ -16,7 +16,9 @@
   <component name="ChangeListManager">
     <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="added test passing page">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/AccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Data/Seed.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Data/Seed.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/Home/Index.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +36,8 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9e70c4835c5b4a869ad017ebfa8cf5741de928/ee/30122093/ControllerBase.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/96a4cc66aa48dda8a9d8be8febec4a769fc143f7a86dd53ecdebfb9c3177d/ControllerBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d8d9726f3deb1bbf671f5b791e4dc3e0338219a996f439ad2a69024b825c60/UserManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ddfe5f2cab585726db85fc046e76ea5725f69d647c242379a11c6da8029c727/ClaimsPrincipal.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -154,6 +158,7 @@
       <workItem from="1730384314803" duration="1975000" />
       <workItem from="1730477276886" duration="429000" />
       <workItem from="1730477875830" duration="3441000" />
+      <workItem from="1732114413157" duration="3132000" />
     </task>
     <task id="LOCAL-00001" summary="added test passing page">
       <option name="closed" value="true" />

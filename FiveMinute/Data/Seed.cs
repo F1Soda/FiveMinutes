@@ -83,6 +83,7 @@ namespace FiveMinutes.Data
                 {
                     var newAdminUser = new AppUser()
                     {
+                        UserRole = UserRoles.Admin,
                         UserName = "golikdev",
                         Email = adminUserEmail,
                         EmailConfirmed = true

@@ -82,6 +82,7 @@ namespace FiveMinutes.Controllers
 
             var newUser = new AppUser()
             {
+                UserRole = UserRoles.Student,
                 Email = registerViewModel.EmailAddress,
                 UserName = registerViewModel.EmailAddress
             };
