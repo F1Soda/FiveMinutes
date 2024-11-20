@@ -1,9 +1,13 @@
 ﻿@using FiveMinutes.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+
 @{
-    //ViewData["Title"] = "Home Page";
+    var currentUser = await UserManager.GetUserAsync(User);
+    bool canCreate = currentUser != null && (currentUser.UserRole == UserRoles.Admin ||currentUser.UserRole == UserRoles.Teacher);
 }
 
-@if ((User.IsInRole(UserRoles.Teacher)||User.IsInRole(UserRoles.Admin)))
+@if (canCreate)
 {
     <l1 class="nav-item">
         <a class="btn" asp-area="" asp-controller="FiveMinuteTemplate" asp-action="Create">Создать пятиминутку</a>
@@ -11,8 +15,4 @@
 }
 <div class="text-center">
     <h1 class="display-4">FIVE MINUTE GREAT WEBSITE</h1>
-    <a asp-controller="AppointedFiveMinuteTemplate" asp-action="AllTests">Все тесты</a>
-
-    Пятиминт
-
 </div>

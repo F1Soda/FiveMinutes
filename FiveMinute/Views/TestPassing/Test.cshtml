@@ -77,10 +77,12 @@
     }
 </style>
 
-<div class="container test-area">э
-    <iframe name="someframe" id="someframe" style="display: none;" on></iframe>
-    <h1>@ViewData["Title"]</h1>
-    <form asp-action="SendTestResults" asp-controller="TestPassing" method="post" target="someframe">
+<div class="container test-area">
+    <h1>@Model.Name</h1>
+    <div>Оставшееся время:
+        <div id="timer">5:00</div>
+    </div>
+    <form asp-action="SendTestResults" asp-controller="TestPassing" method="post">
         <input type="hidden" aria-label="" name="FMTId" value = "@Model.Id"/>
         @{
             var questionNumber = 0;
@@ -147,7 +149,7 @@
             </div>
         }
         <div id="error-message" style="color: red; display: none;">Пожалуйста, заполните все поля перед отправкой.</div>
-        <input type="submit" value="Отправить ответы"/>
+        <input id="submit" type="submit" value="Отправить ответы"/>
     </form>
 </div>
 
@@ -171,4 +173,20 @@
             return true;
         }
     }
+</script>
+<script>
+    let timer = document.getElementById("timer");
+    let seconds = 300;
+    setInterval(() => {
+        seconds--;
+        let secondsString = (seconds % 60).toString();
+        if (seconds %60 < 10){
+            secondsString = "0" + secondsString;
+        }
+        
+        timer.textContent = `${Math.floor(seconds / 60)}:${secondsString}`;
+        if (seconds == 0){
+            document.querySelector('#submit').click()
+        }
+    }, 1000);
 </script>
