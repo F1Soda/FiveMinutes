@@ -13,7 +13,7 @@ public class FiveMinuteResultRepository: DefaultRepository<FiveMinuteResult?>, I
 
     public async Task<ICollection<FiveMinuteResult?>> GetByIdAsync(int fiveMinuteId)
     {
-        return await context.FiveMinuteResults.Where(x => x.FiveMinuteTemplateId == fiveMinuteId)
+        return await context.FiveMinuteResults.Include(x => x.Answers).Where(x => x.FiveMinuteTemplateId == fiveMinuteId)
             .ToListAsync();
     }
 }
