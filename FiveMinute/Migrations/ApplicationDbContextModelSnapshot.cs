@@ -289,6 +289,10 @@ namespace FiveMinutes.Migrations
                     b.Property<int>("QuestionPosition")
                         .HasColumnType("integer");
 
+                    b.Property<string>("QuestionText")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("text");

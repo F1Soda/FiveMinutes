@@ -17,33 +17,45 @@
                 if (answer.IsCorrect)
                     correctAnswers++;
             }
-            var answersDict = new Dictionary<int, int>();
+            var answersDict = new Dictionary<int, List<UserAnswer>>();
             foreach (var answer in result.Answers)
             {
-                answersDict.TryAdd(answer.QuestionPosition, 0);
-                answersDict[answer.QuestionPosition] += answer.IsCorrect ? 1 : 0;
+                answersDict.TryAdd(answer.QuestionPosition, new List<UserAnswer>());
+                answersDict[answer.QuestionPosition].Add(answer);
             }
             <table>
-                <caption>Таблица йоу</caption>
+                <caption>
+                    <div>Пользователь: @result.UserId</div>
+                    <div>Время прохождения: @result.PassTime</div>
+                    <div>Всего баллов: @answersDict.Values.SelectMany(x => x).Sum(x => x.IsCorrect ? 1: 0)</div>
+                </caption>
                 <tr>
                     <th>Вопрос</th>
                     @foreach(var number in answersDict.Keys.Order())
                     {
-                        <td>@number</td>
+                        var someAnswer = answersDict[number].FirstOrDefault();
+                        <td>@someAnswer?.QuestionPosition .@someAnswer?.QuestionText</td>
                     }
-                    <td>Всего</td>
                     
                 </tr>
                 <tr>
-                    <th>Баллы</th>
+                    <th>Ответ</th>
                     @foreach (var number in answersDict.Keys.Order())
                     {
-                        <td>@answersDict[number]</td>
+                        <td>@string.Join(';',answersDict[number].Select(x => x.Text))</td>
                     }
-                    <td>@answersDict.Values.Sum()</td>
+                    @* <td>@answersDict.Values.Sum()</td> *@
 
                 </tr>
+                <tr>
+                    <th>Балл</th>
+                    @foreach (var number in answersDict.Keys.Order())
+                    {
+                        <td>@answersDict[number].Sum(x => x.IsCorrect ? 1: 0)</td>
+                    }
+                </tr>
             </table>
+
             @* <h6>Имя пользователя: @result.UserName</h6> *@
             @* <h6>ID пользователя: @result.UserId</h6> *@
             @* <h6>Правильные ответы: @correctAnswers</h6> *@
@@ -57,7 +69,7 @@
             border-collapse: collapse;
             width: 100%;
             max-width: 600px;
-            margin: 20px auto;
+            margin: 20px 20px;
         }
         th, td {
             border: 1px solid #ddd;

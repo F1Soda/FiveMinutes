@@ -13,5 +13,8 @@ public class UserAnswer
 
     [ForeignKey("Question")]
     public int QuestionId { get; set; }
+
+    public string QuestionText { get; set; } = "";
+
     public int QuestionPosition { get; set; }
 }

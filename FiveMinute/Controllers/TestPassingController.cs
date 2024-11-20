@@ -82,10 +82,11 @@ public class TestPassingController : Controller
         }
         return new UserAnswer
         {
-            QuestionId = dbAnswer.QuestionId,
+            QuestionId = question.Id,
             Text = userAnswer.Text ?? "",
-            IsCorrect = dbAnswer.IsCorrect && userAnswer.Text == dbAnswer.Text,
-            QuestionPosition = userAnswer.QuestionPosition
+            IsCorrect = dbAnswer?.IsCorrect ?? userAnswer.Text == dbAnswer?.Text,
+            QuestionPosition = userAnswer.QuestionPosition,
+            QuestionText = question?.QuestionText ?? "",
         };
     }
 
