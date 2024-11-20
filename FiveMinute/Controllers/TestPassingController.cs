@@ -84,7 +84,7 @@ public class TestPassingController : Controller
         {
             QuestionId = question.Id,
             Text = userAnswer.Text ?? "",
-            IsCorrect = dbAnswer?.IsCorrect ?? userAnswer.Text == dbAnswer?.Text,
+            IsCorrect = (dbAnswer?.IsCorrect ?? false) && userAnswer.Text == dbAnswer?.Text,
             QuestionPosition = userAnswer.QuestionPosition,
             QuestionText = question?.QuestionText ?? "",
         };

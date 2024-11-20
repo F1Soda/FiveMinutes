@@ -14,15 +14,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="added test passing page">
-      <change afterPath="$PROJECT_DIR$/FiveMinute/Models/CompletedQuestion.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Models/UserAnswer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Models/UserAnswer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/ShowResults.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/ShowResults.cshtml" afterDir="false" />
-    </list>
+    <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="updated check of test" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -169,7 +161,7 @@
       <workItem from="1730384314803" duration="1975000" />
       <workItem from="1730477276886" duration="429000" />
       <workItem from="1730477875830" duration="3441000" />
-      <workItem from="1732083090723" duration="4734000" />
+      <workItem from="1732083090723" duration="5098000" />
     </task>
     <task id="LOCAL-00001" summary="added test passing page">
       <option name="closed" value="true" />
@@ -179,7 +171,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730228591567</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="updated check of test">
+      <option name="closed" value="true" />
+      <created>1732118786595</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1732118786595</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -201,7 +201,8 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="added test passing page" />
-    <option name="LAST_COMMIT_MESSAGE" value="added test passing page" />
+    <MESSAGE value="updated check of test" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated check of test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
