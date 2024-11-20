@@ -9,15 +9,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/FiveMinutes/Models/FiveMinuteTemplate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinutes/Models/FiveMinuteTemplate.cs" afterDir="false" />
+=======
+    <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="added test passing page">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/TestPassing/Test.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/TestPassing/Test.cshtml" afterDir="false" />
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
+  </component>
   <component name="Git.Settings">
+<<<<<<< Updated upstream
+=======
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="cynpy" />
+      </map>
+    </option>
+>>>>>>> Stashed changes
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
@@ -33,6 +50,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< Updated upstream
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -53,9 +71,33 @@
       &quot;C:\\Users\\Тёма\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache&quot;,
       &quot;C:\\Users\\Тёма\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache&quot;,
       &quot;C:\\Users\\Тёма\\AppData\\Local\\Symbols\\src&quot;
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.FiveMinutes: http.executor": "Run",
+    ".NET Launch Settings Profile.FiveMinutes: https.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "f3f966c9",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\stepa\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache",
+      "C:\\Users\\stepa\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache",
+      "C:\\Users\\stepa\\AppData\\Local\\Symbols\\src"
+>>>>>>> Stashed changes
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.FiveMinutes: http">
     <configuration name="FiveMinutes: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/FiveMinutes/FiveMinutes.csproj" />
@@ -134,6 +176,7 @@
     <option name="version" value="3" />
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -147,6 +190,61 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+<<<<<<< Updated upstream
+=======
+    <MESSAGE value="added test passing page" />
+    <option name="LAST_COMMIT_MESSAGE" value="added test passing page" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinutes/Repository/FiveMinuteResultRepository.cs</url>
+          <line>15</line>
+          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinutes\Repository\FiveMinuteResultRepository.cs" containingFunctionPresentation="Method 'GetByIdAsync'" />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/Edit.cshtml</url>
+          <line>10</line>
+          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinutes\Views\FiveMinuteTemplate\Edit.cshtml" isMultiMethodBreakpoint="true">
+            <option name="multiMethodBreakpoint" value="true" />
+          </properties>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinutes/Controllers/TestPassingController.cs</url>
+          <line>53</line>
+          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinutes\Controllers\TestPassingController.cs" containingFunctionPresentation="Method 'SendTestResults'" />
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteStatisticsController.cs</url>
+          <line>23</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\FiveMinuteStatisticsController.cs" containingFunctionPresentation="Method 'ShowResults'" />
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs</url>
+          <line>70</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\TestPassingController.cs" containingFunctionPresentation="Method 'SendTestResults'" />
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs</url>
+          <line>72</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\TestPassingController.cs" containingFunctionPresentation="Method 'CheckUserAnswer'" />
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs</url>
+          <line>71</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\TestPassingController.cs" containingFunctionPresentation="Method 'CheckUserAnswer'" />
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+>>>>>>> Stashed changes
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
