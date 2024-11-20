@@ -14,7 +14,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="added test passing page" />
+    <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="added test passing page">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/projectSettingsUpdater.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Migrations/20241112132227_InitialCreate.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Migrations/20241112132227_InitialCreate.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -154,6 +160,7 @@
       <workItem from="1730477276886" duration="429000" />
       <workItem from="1730477875830" duration="3441000" />
       <workItem from="1732114413157" duration="3132000" />
+      <workItem from="1732120146815" duration="335000" />
     </task>
     <task id="LOCAL-00001" summary="added test passing page">
       <option name="closed" value="true" />

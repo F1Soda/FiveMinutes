@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace FiveMinutes.Migrations
+namespace FiveMinute.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -58,7 +58,7 @@ namespace FiveMinutes.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
                     UserName = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
                     FiveMinuteTemplateId = table.Column<int>(type: "integer", nullable: false),
                     PassTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -230,6 +230,8 @@ namespace FiveMinutes.Migrations
                     Text = table.Column<string>(type: "text", nullable: false),
                     IsCorrect = table.Column<bool>(type: "boolean", nullable: false),
                     QuestionId = table.Column<int>(type: "integer", nullable: false),
+                    QuestionText = table.Column<string>(type: "text", nullable: false),
+                    QuestionPosition = table.Column<int>(type: "integer", nullable: false),
                     FiveMinuteResultId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -277,7 +279,7 @@ namespace FiveMinutes.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Questions",
+                name: "Question",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -289,9 +291,9 @@ namespace FiveMinutes.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Questions", x => x.Id);
+                    table.PrimaryKey("PK_Question", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Questions_FiveMinuteTemplates_FiveMinuteTemplateId",
+                        name: "FK_Question_FiveMinuteTemplates_FiveMinuteTemplateId",
                         column: x => x.FiveMinuteTemplateId,
                         principalTable: "FiveMinuteTemplates",
                         principalColumn: "Id",
@@ -313,9 +315,9 @@ namespace FiveMinutes.Migrations
                 {
                     table.PrimaryKey("PK_Answers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Answers_Questions_QuestionId",
+                        name: "FK_Answers_Question_QuestionId",
                         column: x => x.QuestionId,
-                        principalTable: "Questions",
+                        principalTable: "Question",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -393,8 +395,8 @@ namespace FiveMinutes.Migrations
                 column: "ParentFolderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Questions_FiveMinuteTemplateId",
-                table: "Questions",
+                name: "IX_Question_FiveMinuteTemplateId",
+                table: "Question",
                 column: "FiveMinuteTemplateId");
 
             migrationBuilder.CreateIndex(
@@ -431,7 +433,7 @@ namespace FiveMinutes.Migrations
                 name: "UserAnswer");
 
             migrationBuilder.DropTable(
-                name: "Questions");
+                name: "Question");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

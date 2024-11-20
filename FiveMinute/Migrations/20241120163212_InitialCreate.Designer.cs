@@ -9,10 +9,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace FiveMinutes.Migrations
+namespace FiveMinute.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241112132227_InitialCreate")]
+    [Migration("20241120163212_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -135,8 +135,9 @@ namespace FiveMinutes.Migrations
                     b.Property<DateTime>("PassTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(30)
@@ -268,7 +269,7 @@ namespace FiveMinutes.Migrations
 
                     b.HasIndex("FiveMinuteTemplateId");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Question");
                 });
 
             modelBuilder.Entity("FiveMinutes.Models.UserAnswer", b =>
@@ -287,6 +288,13 @@ namespace FiveMinutes.Migrations
 
                     b.Property<int>("QuestionId")
                         .HasColumnType("integer");
+
+                    b.Property<int>("QuestionPosition")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("QuestionText")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Text")
                         .IsRequired()
