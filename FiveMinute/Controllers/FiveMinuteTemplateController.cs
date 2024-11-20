@@ -92,6 +92,7 @@ namespace FiveMinutes.Controllers
                 return Json(new
                 {
                     success = false,
+                    id = fmt.Id
                 });
             }
 
@@ -101,7 +102,8 @@ namespace FiveMinutes.Controllers
                 return Json(new
                 {
                     success = false,
-                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
+                    id = fmt.Id
                 });
             }
 
@@ -111,7 +113,8 @@ namespace FiveMinutes.Controllers
                 return Json(new
                 {
                     success = false,
-                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
+                    id = fmt.Id
                 }); //тут какая-то другая ошибка должна быть
             }
 
@@ -125,7 +128,7 @@ namespace FiveMinutes.Controllers
             // Mark the entity as modified
             context.Entry(existingFmt).State = EntityState.Modified;
             fiveMinuteTemplateRepository.Save();
-            return Json(new { success = true });
+            return Json(new { success = true, id = fmt.Id });
         }
 
         public List<Question> GetQuestionsByFMTViewModel(FiveMinuteTemplateEditViewModel fmt,FiveMinuteTemplate existingFmt)
