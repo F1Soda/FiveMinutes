@@ -53,7 +53,7 @@ public class TestPassingController : Controller
     }
 
     [HttpPost]
-    public async Task<JsonResult> SendTestResults(TestResultViewModel testResult)
+    public async Task<IActionResult> SendTestResults(TestResultViewModel testResult)
     {
         // TODO: По хорошему нужно создать в форме поле для имени, если чел не зареган
             //.SelectMany(question => question.Answers)
@@ -68,7 +68,7 @@ public class TestPassingController : Controller
         fiveMinuteResult.UserId = currentUser?.Id;
         var a = _fiveMinuteResultsRepository.Add(fiveMinuteResult);
         context.SaveChangesAsync();
-        return Json("success");
+        return RedirectToAction("Index","Home");
     }
 
     public UserAnswer CheckUserAnswer(UserAnswerViewModel userAnswer, FiveMinuteTemplate fiveMinuteTemplate)
