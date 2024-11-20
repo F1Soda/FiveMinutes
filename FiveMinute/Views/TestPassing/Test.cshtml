@@ -2,7 +2,6 @@
     ViewData["Title"] = "TestPassing";
 }
 
-@using FiveMinutes.ViewModels
 @model FiveMinutes.ViewModels.FiveMinuteViewModel
 
 <style>
@@ -78,20 +77,19 @@
 
 <div class="container test-area">
     <h1>@ViewData["Title"]</h1>
-    <form asp-action="SendTestResults" asp-controller="TestPassing" method="post">
-    <input type="hidden" aria-label="" name="fiveMinuteId" value = "@Model.Id"/>
+    <form id="testForm" asp-action="SendTestResults" asp-controller="TestPassing" method="post" onsubmit="return validateForm()">
+        <input type="hidden" aria-label="" name="fiveMinuteId" value="@Model.Id" />
         @{ var questionNumber = 0; }
         @foreach (var question in Model.Questions)
         {
             questionNumber++;
             <div class="question">
                 <div class="question-text">@questionNumber. @question.QuestionText</div>
-                @* <input type="hidden" name="userAnswers[@question.Id]" value="@(@question.Id)"/> *@
                 @switch (question.ResponseType)
                 {
                     case ResponseType.Text:
                         <div>
-                            <input type="text" aria-label="@question.QuestionText" name="userAnswers[@(question.Id)]"/>
+                            <input type="text" aria-label="@question.QuestionText" name="userAnswers[@(question.Id)]" class="required-field"/>
                         </div>
                         break;
                     case ResponseType.SingleChoice:
@@ -99,7 +97,7 @@
                             @foreach (var answer in question.Answers)
                             {
                                 <label>
-                                    <input type="radio" name="userAnswers[@(question.Id)]" value="@answer.Text">
+                                    <input type="radio" name="userAnswers[@(question.Id)]" value="@answer.Text" class="required-field">
                                     @answer.Text
                                 </label>
                             }
@@ -110,17 +108,38 @@
                             @foreach (var answer in question.Answers)
                             {
                                 <label>
-                                    <input type="checkbox" name="userAnswers[@(question.Id)]" value="@answer.Text">
+                                    <input type="checkbox" name="userAnswers[@(question.Id)]" value="@answer.Text" class="required-field">
                                     @answer.Text
                                 </label>
                             }
                         </div>
                         break;
-                    default:
-                        break;
                 }
             </div>
         }
+        <div id="error-message" style="color: red; display: none;">Пожалуйста, заполните все поля перед отправкой.</div>
         <input type="submit" value="Отправить ответы"/>
     </form>
 </div>
+
+<script>
+    function validateForm() {
+        const requiredFields = document.querySelectorAll('.required-field');
+        let allFilled = true;
+
+        requiredFields.forEach(field => {
+            if ((field.type === 'text' && field.value.trim() === '') ||
+                ((field.type === 'radio' || field.type === 'checkbox') && !document.querySelector(`input[name="${field.name}"]:checked`))) {
+                allFilled = false;
+            }
+        });
+
+        if (!allFilled) {
+            document.getElementById('error-message').style.display = 'block';
+            return false; // Останавливаем отправку формы
+        } else {
+            document.getElementById('error-message').style.display = 'none';
+            return true;
+        }
+    }
+</script>

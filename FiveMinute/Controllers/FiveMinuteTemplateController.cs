@@ -134,7 +134,6 @@ namespace FiveMinutes.Controllers
             {
                 Console.Write("Поступил Пустой вопрос");
             }
-            Console.Write("\n\n\n\n\n\nПоступил Пустой вопрос\n\n\n\n\n");
             if (fmt.Questions.Select(x => x.Answers)
                 .Any(x => x.Any(x => x.Text == null)))
             {
