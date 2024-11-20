@@ -8,6 +8,6 @@ public class QuestionViewModel
     public int Position { get; set; }
     
     public string QuestionText { get; set; }
-    public IEnumerable<AnswerViewModel> Answers { get; set; }
+    public ICollection<AnswerViewModel> AnswerOptions { get; set; }
     public ResponseType ResponseType { get; set; }
 }

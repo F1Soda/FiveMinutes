@@ -68,6 +68,7 @@ ScaffoldingReadMe.txt
 
 # StyleCop
 StyleCopReport.xml
+workspace.xml
 
 # Files built by Visual Studio
 *_i.c
@@ -366,3 +367,6 @@ FodyWeavers.xsd
 /.idea
 /.idea
 /.containers/products-db
+FiveMinute/Dockerfile
+FiveMinutes.sln
+FiveMinute/Dockerfile

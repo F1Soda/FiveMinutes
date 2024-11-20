@@ -1,6 +1,6 @@
 ﻿// Initialize variables
 let fmt = modelData;
-let questionCount = 0;
+let questionCount = 1;
 let hasUnsavedChanges = false;
 
 document.addEventListener('DOMContentLoaded', initQuestions);
@@ -116,6 +116,7 @@ function deleteAnswer(button) {
 }
 
 function deleteQuestion(button) {
+	questionCount--;
 	const questionCard = button.closest('.question-card');
 	questionCard.remove();
 }
@@ -135,13 +136,51 @@ function initQuestions() {
 			const answerHtml = getAnswerHtml(answer, questionIndex, answerIndex);
 			answersContainer.insertAdjacentHTML('beforeend', answerHtml);
 		});
-		questionCount += 1;
 	});
 
 }
 
 // Define the save method
 function save(isFinalSave = false) {
+	// Проверка на пустые поля перед сериализацией
+	let isValid = true;
+
+	$('#questions-container .card').each(function() {
+		// Проверка текста вопроса
+		const questionText = $(this).find('input[name^="Questions"]').val().trim();
+		if (!questionText) {
+			showPopup("Заполните текст вопроса", 'error');
+			isValid = false;
+			return false; // Прервать перебор
+		}
+
+		// Получаем тип ответа
+		const responseType = parseInt($(this).find('select[name^="Questions"]').val(), 10);
+
+		// Проверка ответов для типов "Один вариант" и "Несколько вариантов"
+		if (responseType !== 2) {
+			const answers = $(this).find('.answers-container .answer-item');
+			if (answers.length === 0) {
+				showPopup("Добавьте варианты ответа", 'error');
+				isValid = false;
+				return false;
+			}
+
+			answers.each(function() {
+				const answerText = $(this).find('input[type="text"]').val().trim();
+				if (!answerText) {
+					showPopup("Заполните текст всех вариантов ответа", 'error');
+					isValid = false;
+					return false;
+				}
+			});
+		}
+
+		if (!isValid) return false;
+	});
+
+	// Прекратить сохранение, если есть незаполненные поля
+	if (!isValid) return;
 	console.log('save was called!');
 
 	// Serialize the form data into a JSON object
@@ -173,17 +212,39 @@ function save(isFinalSave = false) {
 	});
 
 	$.ajax({
-		url: saveUrl, // Use the passed saveUrl variable
+		url: saveUrl, // Используем переданный saveUrl
 		type: 'POST',
 		data: JSON.stringify(jsonData),
 		contentType: 'application/json; charset=utf-8',
-		dataType: "json",
+		dataType: 'json',
 		success: function (response) {
-			if (response["success"]) showSaveIcon();
-			else showPopup("Произошла ошибка", 'error');
+			if (response["success"]) {
+				showSaveIcon();
+
+				// Генерация ссылки
+				const testLink = `https://localhost:44384/TestPassing/Test/${response.id}`;
+				const linkContainer = document.getElementById('test-link-container');
+				const copyMessage = document.getElementById('copy-message');
+
+				// Отображаем ссылку рядом с кнопкой
+				linkContainer.innerHTML = `Ссылка: <a href="${testLink}" target="_blank">${testLink}</a>`;
+				linkContainer.style.display = "block";
+
+				// Копируем ссылку в буфер обмена
+				navigator.clipboard.writeText(testLink)
+					.then(() => {
+						copyMessage.style.display = "inline";
+						setTimeout(() => copyMessage.style.display = "none", 3000); // Прячем сообщение через 3 секунды
+					})
+					.catch(err => {
+						console.error("Ошибка копирования в буфер обмена: ", err);
+					});
+			} else {
+				showPopup("Произошла ошибка", 'error');
+			}
 		},
 		error: function (xhr, status, error) {
-			showPopup("Произошла ошибка", 'error');
+			showPopup("Произошла ошибка при сохранении", 'error');
 		}
 	});
 }

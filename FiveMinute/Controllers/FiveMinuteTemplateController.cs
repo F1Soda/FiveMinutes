@@ -18,14 +18,14 @@ namespace FiveMinutes.Controllers
         public readonly ApplicationDbContext context;
 
         private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
-        private readonly IQuestionRepository questionRepository;
+        // private readonly IQuestionRepository questionRepository;
 
         public FiveMinuteTemplateController(UserManager<AppUser> userManager, ApplicationDbContext context)
         {
             this.userManager = userManager;
             this.context = context;
             this.fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
-            this.questionRepository = new QuestionRepository(context);
+            // this.questionRepository = new QuestionRepository(context);
         }
 
         public IActionResult Index()
@@ -91,7 +91,7 @@ namespace FiveMinutes.Controllers
             {
                 return Json(new
                 {
-                    success = false,
+                    success = false
                 });
             }
 
@@ -101,7 +101,7 @@ namespace FiveMinutes.Controllers
                 return Json(new
                 {
                     success = false,
-                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage), 
                 });
             }
 
@@ -111,7 +111,7 @@ namespace FiveMinutes.Controllers
                 return Json(new
                 {
                     success = false,
-                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
                 }); //тут какая-то другая ошибка должна быть
             }
 
@@ -121,27 +121,45 @@ namespace FiveMinutes.Controllers
             existingFmt.Name = fmt.Name;
             existingFmt.ShowInProfile = fmt.ShowInProfile;
             existingFmt.LastModificationTime = DateTime.UtcNow;
-            existingFmt.Questions = fmt.Questions
-                .Select(question => new Question
-                {
-                    QuestionText = question.QuestionText,
-                    FiveMinuteTemplate = existingFmt,
-                    Position = question.Position,
-                    ResponseType = question.ResponseType,
-                    FiveMinuteTemplateId = fmt.Id,
-                    Answers = question.Answers.Select(x => new Answer
-                    {
-                        IsCorrect = x.IsCorrect, 
-                        Position = x.Position,
-                        Text =x.Text,
-                        // Вот эту залупу починить как то надо или не надо ???
-                        QuestionId = 0
-                    }).ToList()
-                }).ToList();
+            existingFmt.Questions = GetQuestionsByFMTViewModel(fmt, existingFmt);
             // Mark the entity as modified
             context.Entry(existingFmt).State = EntityState.Modified;
             fiveMinuteTemplateRepository.Save();
-            return Json(new { success = true });
+            return Json(new
+            {
+                success = true,
+                id = existingFmt.Id
+            });
+        }
+
+        public List<Question> GetQuestionsByFMTViewModel(FiveMinuteTemplateEditViewModel fmt,FiveMinuteTemplate existingFmt)
+        {
+            if(fmt.Questions.Any(x=>x.QuestionText==""))
+            {
+                Console.Write("Поступил Пустой вопрос");
+            }
+            Console.Write("\n\n\n\n\n\nПоступил Пустой вопрос\n\n\n\n\n");
+            if (fmt.Questions.Select(x => x.Answers)
+                .Any(x => x.Any(x => x.Text == null)))
+            {
+                Console.Write("Поступил Пустой ответ");
+            }
+            return fmt.Questions.Select(question =>new Question
+            {
+                QuestionText = question.QuestionText,
+                FiveMinuteTemplate = existingFmt,
+                Position = question.Position,
+                ResponseType = question.ResponseType,
+                FiveMinuteTemplateId = fmt.Id,
+                Answers = question.Answers.Select(x => new Answer
+                {
+                    IsCorrect = x.IsCorrect, 
+                    Position = x.Position,
+                    Text =x.Text,
+                    // Вот эту залупу починить как то надо или не надо ???
+                    QuestionId = 0
+                }).ToList()
+            }).ToList();
         }
 
         public async Task<IActionResult> Copy(int fiveMinuteId)
