@@ -33,6 +33,7 @@ var app = builder.Build();
 
 
 // Прошу обратить внимание!!! Теперь не только адимны на сайте исть
+
 app.ApplyMigrations();
 await Seed.SeedUsersDefailt(app);
 
