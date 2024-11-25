@@ -2,11 +2,10 @@ namespace FiveMinutes.Interfaces;
 
 public interface IDefaultRepository<T>
 {
-	bool Add(T fmt);
+    Task<bool> Add(T fmt);
 
-	bool Update(T fmt);
 
-	bool Delete(T fmt);
+    Task<bool> Delete(T fmt);
 
-	bool Save();
+    Task<bool> Save();
 }

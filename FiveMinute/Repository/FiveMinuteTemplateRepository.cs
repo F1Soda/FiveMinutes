@@ -12,21 +12,22 @@ namespace FiveMinutes.Repository
 		public async Task<FiveMinuteTemplate?> GetByIdAsync(int id)
 		{
 			return await context.FiveMinuteTemplates
-				.Include(x =>x.UserOwner)
+				.Include(x => x.UserOwner)
 				.Include(x => x.Questions)
-                    .ThenInclude(q => q.Answers)
-                .FirstOrDefaultAsync(x => x.Id == id);
+					.ThenInclude(q => q.Answers)
+				.FirstOrDefaultAsync(x => x.Id == id);
 		}
 
 		public async Task<FiveMinuteTemplate?> GetByIdAsyncNoTracking(int id)
 		{
 			return await context.FiveMinuteTemplates
-				.Include(x =>x.UserOwner) // если мы хотим в FiveMinuteTemplate знать об AppUser
-                .Include(x => x.Questions)
-                    .ThenInclude(q => q.Answers)
-                .AsNoTracking()
+				.Include(x => x.UserOwner) // если мы хотим в FiveMinuteTemplate знать об AppUser
+				.Include(x => x.Questions)
+					.ThenInclude(q => q.Answers)
+				.AsNoTracking()
 				.FirstOrDefaultAsync(x => x.Id == id);
 		}
+
 
 		public async Task<IEnumerable<FiveMinuteTemplate>> GetAllFromUserId(string userId)
 		{
@@ -34,5 +35,18 @@ namespace FiveMinutes.Repository
 				.Where(x => x.UserOwnerId == userId)
 				.ToListAsync();
 		}
+
+		public async Task<bool> Update(FiveMinuteTemplate existingTemplate, FiveMinuteTemplate newTemplate)
+		{
+			context.FiveMinuteTemplates.Attach(existingTemplate);
+            existingTemplate.Name = newTemplate.Name;
+            existingTemplate.ShowInProfile = newTemplate.ShowInProfile;
+            existingTemplate.LastModificationTime = DateTime.UtcNow;
+            existingTemplate.Questions = newTemplate.Questions;
+            context.Entry(existingTemplate).State = EntityState.Modified;
+			return await Save();
+		}
+
 	}
 }
+

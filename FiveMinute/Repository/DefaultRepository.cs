@@ -14,26 +14,21 @@ public abstract class DefaultRepository<T> : IDefaultRepository<T>
     {
         this.context = context;
     }
-    public bool Add(T obj)
+    public async Task<bool> Add(T obj)
     {
         context.Add(obj);
-        return Save();
+        return await Save();
     }
 
-    public bool Delete(T obj)
+    public async Task<bool> Delete(T obj)
     {
         context.Remove(obj);
-        return Save();
+        return await Save();
     }
-    public bool Save()
+    public async Task<bool> Save()
     {
         var saved = context.SaveChanges();
         return saved > 0 ? true : false;
     }
 
-    public bool Update(T obj)
-    {
-        context.Update(obj);
-        return Save();
-    }
 }
