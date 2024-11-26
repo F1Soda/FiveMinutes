@@ -1,0 +1,178 @@
+@{
+    ViewData["Title"] = "FiveMinuteResult";
+}
+
+@model FiveMinutes.Models.FiveMinuteResult
+
+@* <style> *@
+@*     .test-area { *@
+@*         /*font-family: Arial, sans-serif;*/ *@
+@*         line-height: 1.6; *@
+@*         color: #333; *@
+@*         background-color: #f4f4f4; *@
+@*         max-width: 800px; *@
+@*         margin: 0 auto; *@
+@*         padding: 20px; *@
+@*     } *@
+@*     /*.container {*/ *@
+@*     /*    background-color: #f4f4f4;*/ *@
+@*     /*    padding: 20px;*/ *@
+@*     /*    border-radius: 5px;*/ *@
+@*     /*    box-shadow: 0 2px 5px rgba(0,0,0,0.1);*/ *@
+@*     /*}*/ *@
+@*     h1 { *@
+@*         color: #2c3e50; *@
+@*         text-align: center; *@
+@*     } *@
+@*     .question { *@
+@*         margin-bottom: 20px; *@
+@*         padding: 15px; *@
+@*         background-color: #fff; *@
+@*         border-radius: 5px; *@
+@*         box-shadow: 0 1px 3px rgba(0,0,0,0.1); *@
+@*     } *@
+@*     .question-text { *@
+@*         font-weight: bold; *@
+@*         margin-bottom: 10px; *@
+@*     } *@
+@*     input[type="text"] { *@
+@*         width: 100%; *@
+@*         padding: 8px; *@
+@*         margin-top: 5px; *@
+@*         border: 1px solid #ddd; *@
+@*         border-radius: 4px; *@
+@*     } *@
+@*     label { *@
+@*         display: block; *@
+@*         margin-bottom: 5px; *@
+@*     } *@
+@*     input[type="radio"], *@
+@*     input[type="checkbox"] { *@
+@*         margin-right: 5px; *@
+@*     } *@
+@*     input[type="submit"] { *@
+@*         display: block; *@
+@*         width: 100%; *@
+@*         padding: 10px; *@
+@*         background-color: #3498db; *@
+@*         color: #fff; *@
+@*         border: none; *@
+@*         border-radius: 4px; *@
+@*         cursor: pointer; *@
+@*         font-size: 16px; *@
+@*         transition: background-color 0.3s; *@
+@*     } *@
+@*     input[type="submit"]:hover { *@
+@*         background-color: #2980b9; *@
+@*     } *@
+@*     @@media (max-width: 600px) { *@
+@*         body { *@
+@*             padding: 10px; *@
+@*         } *@
+@*         .container { *@
+@*             padding: 10px; *@
+@*         } *@
+@*     } *@
+@* </style> *@
+
+<style>
+    label{
+        display:  block;
+        margin-left: 5px;
+    }
+    .question {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="container test-area">
+    <h1>@Model.FiveMinuteTemplate.Name</h1>
+    <div>Оставшееся время:
+        <div id="timer">5:00</div>
+    </div>
+    <form asp-action="SendTestResults" asp-controller="TestPassing" method="post">
+        <input type="hidden" aria-label="" name="FMTId" value = "@Model.Id"/>
+        <div style="margin-bottom: 10px">
+            <input class="form-control" type="text" disabled value="@(Model.UserName)"/>
+        </div>
+
+        @{
+            var questionNumber = 0;
+        }
+        @foreach (var question in Model.FiveMinuteTemplate.Questions.OrderBy(q => q.Position))
+        {
+            questionNumber++;
+            <div class="question card mt-3 question-card border-secondary border-3">
+                <h5 class="question-text card-title mb-2">@questionNumber. @question.QuestionText</h5>
+                @{
+                    var answers = Model.Answers.Where(answer => answer.QuestionPosition == question.Position).ToList();
+                }
+                @switch (question.ResponseType)
+                {
+                    case ResponseType.Text:
+                        <div class="mb-3">
+                            <input type="text" aria-label="@question.QuestionText" value="@answers[0].Text" disabled/>
+                        </div>
+                        break;
+                    case ResponseType.SingleChoice:
+                        <div class="card-body mb-3">
+                            @foreach (var answer in question.AnswerOptions)
+                            {
+                                var userAnswer = answers
+                                    .FirstOrDefault(ans => ans.Position == answer.Position);
+                                <div class="form-check">
+
+                                    <input type="radio" class="form-check-input" value="@answer.Text"
+                                           id="answer_@(question.Position)_@(answer.Position)"
+                                           @(userAnswer != null? "checked": "")
+                                           disabled>
+                                    <label class="answer_@(question.Position)_@(answer.Position)" 
+                                           style="color: @GetAnswerColor(userAnswer)">
+                                        @answer.Text
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                        break;
+                    case ResponseType.MultipleChoice:
+                        <div class="mb-3">
+                            @foreach (var answer in question.AnswerOptions.OrderBy(x=>x.Position))
+                            {
+                                var userAnswer = answers
+                                    .FirstOrDefault(ans => ans.Position == answer.Position);
+                                <div class="card-body mb-3">
+                                    <input type="checkbox" value="@answer.Text"
+                                           id="answer_@(question.Position)_@(answer.Position)"
+                                           @(userAnswer.Text != ""? "checked": "")
+                                           disabled>
+                                    <label class="form-check-label" for="answer_@(question.Position)_@(answer.Position)"
+                                           style="color: @GetAnswerColor(userAnswer)">
+                                        @answer.Text
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                        break;
+                }
+            </div>
+        }
+    </form>
+</div>
+
+
+@{
+    @functions {
+        public string GetAnswerColor(UserAnswer? answer)
+        {
+            if (answer is null)
+                return "";
+            if (answer.IsCorrect)
+                return "green";
+            return "red";
+        }
+    }
+}

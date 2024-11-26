@@ -12,6 +12,7 @@ $(document).ready(function () {
 
 // Function to generate HTML for a question card
 function getQuestionHtml(question, questionIndex) {
+	console.log(question);
 	return `
 														<div class="card mt-3 question-card border-secondary border-3">
 															<div class="card-body">
@@ -243,7 +244,7 @@ function initialize() {
 	});
 
 	// Set up an interval to call the save function every 15 seconds
-	setInterval(save, 15000);
+	// setInterval(save, 15000);
 
 	// Set up beforeunload event to warn users about unsaved changes
 	window.addEventListener('beforeunload', function (e) {

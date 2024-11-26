@@ -119,7 +119,7 @@ namespace FiveMinutes.Controllers
                 Name = fmt.Name,
                 ShowInProfile = fmt.ShowInProfile,
                 LastModificationTime = DateTime.UtcNow,
-                Questions = GetQuestionsByFMTViewModel(fmt, existingFmt)
+                Questions = GetQuestionsByFMTViewModel(fmt, existingFmt),
             };
             await fiveMinuteTemplateRepository.Update(existingFmt, template);
             return Json(new { success = true, id = fmt.Id });
@@ -143,7 +143,7 @@ namespace FiveMinutes.Controllers
                 Position = question.Position,
                 ResponseType = question.ResponseType,
                 FiveMinuteTemplateId = fmt.Id,
-                Answers = question.Answers.Select(x => new Answer
+                AnswerOptions = question.Answers.Select(x => new Answer
                 {
                     IsCorrect = x.IsCorrect, 
                     Position = x.Position,

@@ -20,13 +20,29 @@ public class FiveMinuteStatisticsController : Controller
 
     public IActionResult ShowResults(int fiveMinuteId)
     {
-        var results = _fiveMinuteResultsRepository.GetByIdAsync(fiveMinuteId).Result;
+        var results = _fiveMinuteResultsRepository.GetByFMTIdAsync(fiveMinuteId).Result;
         var fiveMinuteResults = new FiveMinuteResultsViewModel()
         {
             Results = results,
         };
         return View(fiveMinuteResults);
 
+    }
+
+    public IActionResult FiveMinuteResult(int resultId)
+    {
+        var result = _fiveMinuteResultsRepository.GetById(resultId).Result;
+        // var a = new FiveMinuteResultViewModel
+        // {
+        //     Id = result.Id,
+        //     Answers = result.Answers,
+        //     FiveMinuteTemplate = result.FiveMinuteTemplate,
+        //     FiveMinuteTemplateId = result.FiveMinuteTemplateId,
+        //     UserId = result.UserId,
+        //     UserName = result.UserName,
+        //     PassTime = result.PassTime,
+        // };
+        return View(result);
     }
 
 }

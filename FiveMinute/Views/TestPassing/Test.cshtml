@@ -163,7 +163,8 @@
                                     <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber"/>
                                     <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].Position" value="@position"/>
                                     <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id"/>
-                                    <input type="checkbox" name="UserAnswers[@questionNumber]" value="@answer.Text">
+                                    <input type="checkbox" name="UserAnswers[@answerNumber].Text" value="@answer.Text" 
+                                           id="answer_@(questionNumber)_@(position)">
                                     <label class="form-check-label" for="answer_@(questionNumber)_@(position)">
                                         @answer.Text
                                     </label>

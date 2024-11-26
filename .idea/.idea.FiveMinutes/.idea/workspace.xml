@@ -14,16 +14,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="added test passing page">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/projectSettingsUpdater.xml" afterDir="false" />
+    <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/FiveMinuteResult.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/AppointedFiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/AppointedFiveMinuteTemplateController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteStatisticsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteStatisticsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Data/Seed.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Data/Seed.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Interfaces/IFiveMinuteResultsRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Interfaces/IFiveMinuteResultsRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinute/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinute/Models/FiveMinuteResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Models/FiveMinuteResult.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTPassingViewModels/QuestionViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTPassingViewModels/QuestionViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTPassingViewModels/TestResultViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTPassingViewModels/TestResultViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Models/Question.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Models/Question.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Models/UserAnswer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Models/UserAnswer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Repository/FiveMinuteResultRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Repository/FiveMinuteResultRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Repository/FiveMinuteTemplateRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Repository/FiveMinuteTemplateRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTEditViewModels/FiveMinuteTemplateEditViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTEditViewModels/FiveMinuteTemplateEditViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/Account/Detail.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/Account/Detail.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/ShowResults.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/ShowResults.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinute/Views/TestPassing/Test.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/TestPassing/Test.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinute/wwwroot/js/edit.js" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/wwwroot/js/edit.js" afterDir="false" />
@@ -41,30 +46,22 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "boboboba"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;boboboba&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/F1Soda/FiveMinutes.git",
-    "accountId": "d4f11ee3-2270-4552-95c7-fd8d38411fc7"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/F1Soda/FiveMinutes.git&quot;,
+    &quot;accountId&quot;: &quot;d4f11ee3-2270-4552-95c7-fd8d38411fc7&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9e70c4835c5b4a869ad017ebfa8cf5741de928/03/1ec62fa7/ActionMethodExecutor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f2e3970763e345ae93dbba9d72a4cbca3b8a0/a0/ebebfb74/RazorPage`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d8d9726f3deb1bbf671f5b791e4dc3e0338219a996f439ad2a69024b825c60/UserManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/palka228/Desktop/Проект/FiveMinutes/FiveMinute/Controllers/FiveMinuteTemplateController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/palka228/Desktop/Проект/FiveMinutes/FiveMinute/Controllers/FiveMinuteTemplateController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/palka228/Desktop/Проект/FiveMinutes/FiveMinute/Controllers/TestPassingController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/palka228/Desktop/Проект/FiveMinutes/FiveMinute/Controllers/TestPassingController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/palka228/Desktop/Проект/FiveMinutes/FiveMinute/Models/FiveMinuteResult.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/palka228/Desktop/Проект/FiveMinutes/FiveMinute/Models/FiveMinuteResult.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/palka228/Desktop/Проект/FiveMinutes/FiveMinute/Repository/DefaultRepository.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/palka228/Desktop/Проект/FiveMinutes/FiveMinute/Repository/DefaultRepository.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/palka228/Desktop/Проект/FiveMinutes/FiveMinute/Repository/FiveMinuteResultRepository.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/palka228/Desktop/Проект/FiveMinutes/FiveMinute/Repository/FiveMinuteResultRepository.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -80,13 +77,13 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    ".NET Launch Settings Profile.FiveMinutes: http.executor": "Run",
+    ".NET Launch Settings Profile.FiveMinutes: http.executor": "Debug",
     ".NET Launch Settings Profile.FiveMinutes: https.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "cynpy",
+    "git-widget-placeholder": "sava",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -186,6 +183,7 @@
       <workItem from="1732114413157" duration="3132000" />
       <workItem from="1732120146815" duration="335000" />
       <workItem from="1732620085599" duration="9666000" />
+      <workItem from="1732637014107" duration="3853000" />
     </task>
     <task id="LOCAL-00001" summary="added test passing page">
       <option name="closed" value="true" />
@@ -244,19 +242,99 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs</url>
-          <line>64</line>
+          <line>58</line>
           <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\TestPassingController.cs" containingFunctionPresentation="Method 'SendTestResults'">
             <startOffsets>
-              <option value="2357" />
+              <option value="2049" />
             </startOffsets>
             <endOffsets>
-              <option value="2397" />
+              <option value="2119" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="22" />
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/FiveMinuteResult.cshtml</url>
+          <line>159</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs</url>
+          <line>115</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\FiveMinuteTemplateController.cs" containingFunctionPresentation="Method 'Save'">
+            <startOffsets>
+              <option value="3749" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4058" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs</url>
+          <line>123</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\FiveMinuteTemplateController.cs" containingFunctionPresentation="Method 'Save'">
+            <startOffsets>
+              <option value="4071" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4136" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Repository/FiveMinuteTemplateRepository.cs</url>
+          <line>46</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Repository\FiveMinuteTemplateRepository.cs" containingFunctionPresentation="Method 'Update'">
+            <startOffsets>
+              <option value="1663" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1683" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Repository/FiveMinuteTemplateRepository.cs</url>
+          <line>45</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Repository\FiveMinuteTemplateRepository.cs" containingFunctionPresentation="Method 'Update'">
+            <startOffsets>
+              <option value="1598" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1659" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs</url>
+          <line>58</line>
+          <properties documentPath="C:\Users\palka228\Desktop\Проект\FiveMinutes\FiveMinute\Controllers\FiveMinuteTemplateController.cs" containingFunctionPresentation="Method 'Edit'">
+            <startOffsets>
+              <option value="2015" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2031" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Views/FiveMinuteTemplate/Edit.cshtml</url>
+          <line>5</line>
+          <option name="timeStamp" value="44" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="LaunchSettings">
+        <watch expression="this.&lt;&gt;4__this.ViewData" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -14,7 +14,7 @@ namespace FiveMinutes.Repository
 			return await context.FiveMinuteTemplates
 				.Include(x => x.UserOwner)
 				.Include(x => x.Questions)
-					.ThenInclude(q => q.Answers)
+					.ThenInclude(q => q.AnswerOptions)
 				.FirstOrDefaultAsync(x => x.Id == id);
 		}
 
@@ -23,7 +23,7 @@ namespace FiveMinutes.Repository
 			return await context.FiveMinuteTemplates
 				.Include(x => x.UserOwner) // если мы хотим в FiveMinuteTemplate знать об AppUser
 				.Include(x => x.Questions)
-					.ThenInclude(q => q.Answers)
+					.ThenInclude(q => q.AnswerOptions)
 				.AsNoTracking()
 				.FirstOrDefaultAsync(x => x.Id == id);
 		}

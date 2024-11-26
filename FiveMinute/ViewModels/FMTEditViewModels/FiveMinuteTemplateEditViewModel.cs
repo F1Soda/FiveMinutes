@@ -22,8 +22,8 @@ namespace FiveMinutes.ViewModels.FMTEditViewModels
                     {
                         QuestionText = x.QuestionText,
                         Position = x.Position,
-                        ResponseType = ResponseType.SingleChoice,
-                        Answers = x.Answers.Select(x => new AnswerEditViewModel
+                        ResponseType = x.ResponseType,
+                        Answers = x.AnswerOptions.Select(x => new AnswerEditViewModel
                         {
                             Position = x.Position,
                             Text = x.Text,

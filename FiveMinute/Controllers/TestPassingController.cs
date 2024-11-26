@@ -39,7 +39,7 @@ public class TestPassingController : Controller
                 Position = x.Position,
                 QuestionText = x.QuestionText,
                 ResponseType = x.ResponseType,
-                AnswerOptions = x.Answers.Select(answer => new AnswerViewModel()
+                AnswerOptions = x.AnswerOptions.Select(answer => new AnswerViewModel()
                 {
                     Id = answer.Id,
                     QuestionId = answer.QuestionId,
@@ -68,15 +68,17 @@ public class TestPassingController : Controller
     public UserAnswer CheckUserAnswer(UserAnswerViewModel userAnswer, FiveMinuteTemplate fiveMinuteTemplate)
     {
         var question = fiveMinuteTemplate.Questions.FirstOrDefault(q => q.Position == userAnswer.QuestionPosition);
-        var dbAnswer = question?.Answers.FirstOrDefault(x => x.Position == userAnswer.Position);
+        var dbAnswer = question?.AnswerOptions.FirstOrDefault(x => x.Position == userAnswer.Position);
         if (dbAnswer == null)
         {
-            throw new Exception($"Вопрос ,на который указывает ответ юзера {userAnswer} не существует в ");
+            // throw new Exception($"Вопрос ,на который указывает ответ юзера {userAnswer} не существует в ");
+            // Для текстового ответа надо подумать что делать
         }
         return new UserAnswer
         {
             QuestionId = question.Id,
             Text = userAnswer.Text ?? "",
+            Position = userAnswer.Position,
             IsCorrect = (dbAnswer?.IsCorrect ?? false) && userAnswer.Text == dbAnswer?.Text,
             QuestionPosition = userAnswer.QuestionPosition,
             QuestionText = question?.QuestionText ?? "",

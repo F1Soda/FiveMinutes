@@ -29,6 +29,7 @@
                     <div>Имя пользователя: @result.UserName</div>
                     <div>Время прохождения: @result.PassTime</div>
                     <div>Всего баллов: @answersDict.Values.SelectMany(x => x).Sum(x => x.IsCorrect ? 1: 0)</div>
+                    <a asp-action="FiveMinuteResult" asp-route-resultId="@result.Id">Подробнее</a>
                 </caption>
                 <tr>
                     <th>Вопрос</th>
@@ -43,7 +44,7 @@
                     <th>Ответ</th>
                     @foreach (var number in answersDict.Keys.Order())
                     {
-                        <td>@string.Join(';',answersDict[number].Select(x => x.Text))</td>
+                        <td>@string.Join(';',answersDict[number].Select(x => x.Text).Where(x => x!=""))</td>
                     }
                     @* <td>@answersDict.Values.Sum()</td> *@
 
