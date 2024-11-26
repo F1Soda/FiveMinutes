@@ -23,7 +23,7 @@ public class FiveMinuteResultRepository: DefaultRepository<FiveMinuteResult?>, I
             .ToListAsync();
     }
 
-    public async Task<FiveMinuteResult> GetById(int resultId)
+    public async Task<FiveMinuteResult?> GetById(int resultId)
     {
         return await context.FiveMinuteResults
             .Include(x => x.Answers)

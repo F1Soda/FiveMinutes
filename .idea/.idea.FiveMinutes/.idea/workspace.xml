@@ -14,24 +14,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/FiveMinuteResult.cshtml" afterDir="false" />
+    <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="did what Степа said">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteStatisticsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteStatisticsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/TestPassingController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Interfaces/IFiveMinuteResultsRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Interfaces/IFiveMinuteResultsRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Models/FiveMinuteResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Models/FiveMinuteResult.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Models/Question.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Models/Question.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Models/UserAnswer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Models/UserAnswer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Repository/FiveMinuteResultRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Repository/FiveMinuteResultRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Repository/FiveMinuteTemplateRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Repository/FiveMinuteTemplateRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTEditViewModels/FiveMinuteTemplateEditViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/ViewModels/FMTEditViewModels/FiveMinuteTemplateEditViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/Account/Detail.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/Account/Detail.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/ShowResults.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/ShowResults.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/FiveMinuteResult.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/FiveMinuteResult.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinute/Views/TestPassing/Test.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/TestPassing/Test.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/wwwroot/js/edit.js" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/wwwroot/js/edit.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,8 +47,10 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9e70c4835c5b4a869ad017ebfa8cf5741de928/03/1ec62fa7/ActionMethodExecutor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9e70c4835c5b4a869ad017ebfa8cf5741de928/5b/72045cdd/ControllerBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f2e3970763e345ae93dbba9d72a4cbca3b8a0/a0/ebebfb74/RazorPage`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d8d9726f3deb1bbf671f5b791e4dc3e0338219a996f439ad2a69024b825c60/UserManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/palka228/Desktop/Проект/FiveMinutes/FiveMinute/Migrations/ApplicationDbContextModelSnapshot.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -77,7 +66,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    ".NET Launch Settings Profile.FiveMinutes: http.executor": "Debug",
+    ".NET Launch Settings Profile.FiveMinutes: http.executor": "Run",
     ".NET Launch Settings Profile.FiveMinutes: https.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -183,7 +172,7 @@
       <workItem from="1732114413157" duration="3132000" />
       <workItem from="1732120146815" duration="335000" />
       <workItem from="1732620085599" duration="9666000" />
-      <workItem from="1732637014107" duration="3853000" />
+      <workItem from="1732637014107" duration="5474000" />
     </task>
     <task id="LOCAL-00001" summary="added test passing page">
       <option name="closed" value="true" />
@@ -193,7 +182,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730228591567</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="did what Степа said">
+      <option name="closed" value="true" />
+      <created>1732641052675</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1732641052675</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -215,7 +212,8 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="added test passing page" />
-    <option name="LAST_COMMIT_MESSAGE" value="added test passing page" />
+    <MESSAGE value="did what Степа said" />
+    <option name="LAST_COMMIT_MESSAGE" value="did what Степа said" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -255,7 +253,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/FiveMinuteResult.cshtml</url>
-          <line>159</line>
+          <line>88</line>
           <option name="timeStamp" value="35" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">

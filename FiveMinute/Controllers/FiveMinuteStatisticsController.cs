@@ -1,8 +1,10 @@
+using System.Net;
 using FiveMinutes.Data;
 using FiveMinutes.Interfaces;
 using FiveMinutes.Models;
 using FiveMinutes.Repository;
 using FiveMinutes.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FiveMinutes.Controllers;
@@ -11,15 +13,24 @@ public class FiveMinuteStatisticsController : Controller
 {
     private readonly ApplicationDbContext context;
     private readonly IFiveMinuteResultsRepository _fiveMinuteResultsRepository;
+    private readonly FiveMinuteTemplateRepository _fiveMinuteTemplateRepository;
+    private readonly UserManager<AppUser> _userManager;
 
-    public FiveMinuteStatisticsController(ApplicationDbContext context)
+    public FiveMinuteStatisticsController(UserManager<AppUser> userManager, ApplicationDbContext context)
     {
         this.context = context;
+        _userManager = userManager;
         _fiveMinuteResultsRepository = new FiveMinuteResultRepository(context);
+        _fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
     }
 
-    public IActionResult ShowResults(int fiveMinuteId)
+    public async Task<IActionResult> ShowResults(int fiveMinuteId)
     {
+        var currentUser = await _userManager.GetUserAsync(User);
+        var fmt = await _fiveMinuteTemplateRepository.GetByIdAsync(fiveMinuteId);
+        if (fmt == null || currentUser is null || fmt.UserOwnerId != currentUser.Id)
+            return View("Error", new ErrorViewModel(HttpStatusCode.NotFound.ToString()));
+        
         var results = _fiveMinuteResultsRepository.GetByFMTIdAsync(fiveMinuteId).Result;
         var fiveMinuteResults = new FiveMinuteResultsViewModel()
         {
@@ -29,19 +40,14 @@ public class FiveMinuteStatisticsController : Controller
 
     }
 
-    public IActionResult FiveMinuteResult(int resultId)
+    public async Task<IActionResult> FiveMinuteResult(int resultId)
     {
+        var currentUser = await _userManager.GetUserAsync(User);
         var result = _fiveMinuteResultsRepository.GetById(resultId).Result;
-        // var a = new FiveMinuteResultViewModel
-        // {
-        //     Id = result.Id,
-        //     Answers = result.Answers,
-        //     FiveMinuteTemplate = result.FiveMinuteTemplate,
-        //     FiveMinuteTemplateId = result.FiveMinuteTemplateId,
-        //     UserId = result.UserId,
-        //     UserName = result.UserName,
-        //     PassTime = result.PassTime,
-        // };
+
+        if (result is null || currentUser is null || result.FiveMinuteTemplate.UserOwnerId != currentUser.Id)
+            return View("Error", new ErrorViewModel(HttpStatusCode.NotFound.ToString()));
+
         return View(result);
     }
 

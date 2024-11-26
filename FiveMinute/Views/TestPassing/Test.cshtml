@@ -153,17 +153,17 @@
                         answerNumber++;
                         break;
                     case ResponseType.MultipleChoice:
-                        <div class="mb-3">
+                        <div class="card-body mb-3">
                             @{
                                 position = 1;
                             }
                             @foreach (var answer in question.AnswerOptions)
                             {
-                                <div class="card-body mb-3">
+                                <div class="form-check">
                                     <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber"/>
                                     <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].Position" value="@position"/>
                                     <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id"/>
-                                    <input type="checkbox" name="UserAnswers[@answerNumber].Text" value="@answer.Text" 
+                                    <input type="checkbox" class="form-check-input" name="UserAnswers[@answerNumber].Text" value="@answer.Text" 
                                            id="answer_@(questionNumber)_@(position)">
                                     <label class="form-check-label" for="answer_@(questionNumber)_@(position)">
                                         @answer.Text
