@@ -24,6 +24,4 @@ public class AppointedFiveMinuteTemplateController : Controller
         
         return View();
     }
-
-
 }

@@ -60,6 +60,7 @@ public class TestPassingController : Controller
         var currentUser =  await _userManager.GetUserAsync(User);
  
         fiveMinuteResult.UserId = currentUser?.Id;
+        fiveMinuteResult.UserName = testResult.UserName;
         fiveMinuteResultsRepository.Add(fiveMinuteResult);
         return RedirectToAction("Index","Home");
     }
