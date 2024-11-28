@@ -115,6 +115,11 @@ namespace FiveMinutes.Controllers
                 return RedirectToAction("Login", "Account"); // Redirect to login if the user is not authenticated
             }
 
+            if (currentUser.UserRole == UserRoles.Student && currentUser.Id != userId)
+            {
+                return View("Error", new ErrorViewModel("You can't view someone else's profile"));
+            }
+
             // Get current user roles
             var currentUserRoles = await userManager.GetRolesAsync(currentUser);
 
@@ -133,7 +138,7 @@ namespace FiveMinutes.Controllers
             var user = await context.Users.Include(x => x.FMTs).FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
-                return RedirectToAction("NotFound");
+                return View("NotFound");
             }
 
             // Get the role of the user being viewed (if needed)

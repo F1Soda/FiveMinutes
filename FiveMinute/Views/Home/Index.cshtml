@@ -2,12 +2,12 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<AppUser> UserManager
 
+
 @{
     var currentUser = await UserManager.GetUserAsync(User);
-    bool canCreate = currentUser != null && (currentUser.UserRole == UserRoles.Admin ||currentUser.UserRole == UserRoles.Teacher);
 }
 
-@if (canCreate)
+@if (currentUser != null && currentUser.canCreate)
 {
     <l1 class="nav-item">
         <a class="btn" asp-area="" asp-controller="FiveMinuteTemplate" asp-action="Create">Создать пятиминутку</a>

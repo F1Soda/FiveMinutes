@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FiveMinutes.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace FiveMinutes.Models
 {
@@ -7,7 +8,8 @@ namespace FiveMinutes.Models
         public ICollection<FiveMinuteTemplate> FMTs { get; set; }
         public ICollection<FiveMinuteResult> Result { get; set; }
 
-        public string UserRole {  get; set; }  
+        public string UserRole {  get; set; }
+        public bool canCreate => UserRole is UserRoles.Admin or UserRoles.Teacher; 
 
         public void AddFMT(FiveMinuteTemplate fmt)
         {

@@ -11,12 +11,6 @@
         @{ var questionNumber = 0; }
         @foreach (var result in Model.Results)
         {
-            var correctAnswers = 0;
-            @foreach (var answer in result.Answers)
-            {
-                if (answer.IsCorrect)
-                    correctAnswers++;
-            }
             var answersDict = new Dictionary<int, List<UserAnswer>>();
             foreach (var answer in result.Answers)
             {

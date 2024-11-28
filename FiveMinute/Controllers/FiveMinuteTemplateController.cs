@@ -38,7 +38,7 @@ namespace FiveMinutes.Controllers
         {
             var currentUser = await userManager.GetUserAsync(User);
 
-            if (currentUser == null)
+            if (currentUser == null || !currentUser.canCreate)
                 return View("Error", new ErrorViewModel($"Attempt to create FMT by non register user"));
 
             var newFMT = FiveMinuteTemplate.CreateDefault(currentUser);
@@ -55,6 +55,10 @@ namespace FiveMinutes.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var fmt = await fiveMinuteTemplateRepository.GetByIdAsync(id);
+            var currentUser = await userManager.GetUserAsync(User);
+
+            if (currentUser == null || !currentUser.canCreate)
+                return View("Error", new ErrorViewModel($"Attempt to create FMT by non register user"));
 
             if (fmt == null)
                 return View("NotFound");
