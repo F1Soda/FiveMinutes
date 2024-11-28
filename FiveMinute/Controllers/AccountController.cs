@@ -80,7 +80,7 @@ namespace FiveMinutes.Controllers
                 return View(registerViewModel);
             }
 
-            var newUser = new AppUser()
+            var newUser = new AppUser
             {
                 UserRole = UserRoles.Student,
                 Email = registerViewModel.EmailAddress,
@@ -92,6 +92,11 @@ namespace FiveMinutes.Controllers
             {
                 await userManager.AddToRoleAsync(newUser, UserRoles.Student);
                 return RedirectToAction("Index", "Home");
+            }
+            else if (newUserResponse.Errors.First().Description.Contains("Password"))
+            {
+                TempData["Error"] = "Your password is too short";
+                return View(registerViewModel);
             }
             else
             {

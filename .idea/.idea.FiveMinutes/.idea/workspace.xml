@@ -18,9 +18,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/AccountController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Models/AppUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Models/AppUser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/ShowResults.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/FiveMinuteStatistics/ShowResults.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/Home/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/Home/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/Account/Register.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/Account/Register.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +180,7 @@
       <workItem from="1732120146815" duration="335000" />
       <workItem from="1732620085599" duration="9666000" />
       <workItem from="1732637014107" duration="5474000" />
-      <workItem from="1732771863102" duration="4922000" />
+      <workItem from="1732771863102" duration="6909000" />
     </task>
     <task id="LOCAL-00001" summary="added test passing page">
       <option name="closed" value="true" />
@@ -299,6 +297,19 @@
             <option name="multiMethodBreakpoint" value="true" />
           </properties>
           <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/FiveMinute/Controllers/AccountController.cs</url>
+          <line>82</line>
+          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinute\Controllers\AccountController.cs" initialLine="82" containingFunctionPresentation="Method 'Register'">
+            <startOffsets>
+              <option value="3166" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3380" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="46" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

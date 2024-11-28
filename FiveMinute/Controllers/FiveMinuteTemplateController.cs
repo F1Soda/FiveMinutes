@@ -39,7 +39,7 @@ namespace FiveMinutes.Controllers
             var currentUser = await userManager.GetUserAsync(User);
 
             if (currentUser == null || !currentUser.canCreate)
-                return View("Error", new ErrorViewModel($"Attempt to create FMT by non register user"));
+                return View("Error", new ErrorViewModel($"You don't have the rights to create a five-minute"));
 
             var newFMT = FiveMinuteTemplate.CreateDefault(currentUser);
             if (fiveMinuteTemplateRepository.Add(newFMT).Result)
@@ -58,7 +58,7 @@ namespace FiveMinutes.Controllers
             var currentUser = await userManager.GetUserAsync(User);
 
             if (currentUser == null || !currentUser.canCreate)
-                return View("Error", new ErrorViewModel($"Attempt to create FMT by non register user"));
+                return View("Error", new ErrorViewModel($"You don't have the rights to create a five-minute"));
 
             if (fmt == null)
                 return View("NotFound");
