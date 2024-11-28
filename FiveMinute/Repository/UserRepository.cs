@@ -14,21 +14,11 @@ namespace FiveMinutes.Repository
         {
             this.context = context;
         }
-
-        public bool Add(AppUser user)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<IdentityResult> CreateAsync(AppUser user)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(AppUser user)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<AppUser?> FindByEmailAsync(string email)
         {
@@ -44,17 +34,10 @@ namespace FiveMinutes.Repository
         {
             return await context.Users.FindAsync(id);
         }
-
-        public bool Save()
+        public async Task<bool> AddFMTtoUser(FiveMinuteTemplate fmt,AppUser user)
         {
-            var saved = context.SaveChanges();
-            return saved > 0 ? true : false;
-        }
-
-        public bool Update(AppUser user)
-        {
-            context.Update(user);
-            return Save();
+            user.AddFMT(fmt);
+            return await Save();
         }
     }
 }

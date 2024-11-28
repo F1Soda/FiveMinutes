@@ -3,6 +3,7 @@ using System;
 using FiveMinutes.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinute.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241125182825_ReFactor")]
+    partial class ReFactor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,17 +139,12 @@ namespace FiveMinute.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
-
-                    b.HasIndex("FiveMinuteTemplateId");
 
                     b.ToTable("FiveMinuteResults");
                 });
@@ -283,9 +281,6 @@ namespace FiveMinute.Migrations
 
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("boolean");
-
-                    b.Property<int>("Position")
-                        .HasColumnType("integer");
 
                     b.Property<int>("QuestionId")
                         .HasColumnType("integer");
@@ -443,7 +438,7 @@ namespace FiveMinute.Migrations
             modelBuilder.Entity("FiveMinutes.Models.Answer", b =>
                 {
                     b.HasOne("FiveMinutes.Models.Question", null)
-                        .WithMany("AnswerOptions")
+                        .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -454,14 +449,6 @@ namespace FiveMinute.Migrations
                     b.HasOne("FiveMinutes.Models.AppUser", null)
                         .WithMany("Result")
                         .HasForeignKey("AppUserId");
-
-                    b.HasOne("FiveMinutes.Models.FiveMinuteTemplate", "FiveMinuteTemplate")
-                        .WithMany()
-                        .HasForeignKey("FiveMinuteTemplateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FiveMinuteTemplate");
                 });
 
             modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTemplate", b =>
@@ -598,7 +585,7 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("FiveMinutes.Models.Question", b =>
                 {
-                    b.Navigation("AnswerOptions");
+                    b.Navigation("Answers");
                 });
 #pragma warning restore 612, 618
         }

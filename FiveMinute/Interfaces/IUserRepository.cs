@@ -10,5 +10,6 @@ namespace FiveMinutes.Interfaces
         Task<AppUser?> GetUserById(string id);
         Task<AppUser?> FindByEmailAsync(string email);
         Task<IdentityResult> CreateAsync(AppUser user);
+        Task<bool> AddFMTtoUser(FiveMinuteTemplate fmt, AppUser user);
     }
 }

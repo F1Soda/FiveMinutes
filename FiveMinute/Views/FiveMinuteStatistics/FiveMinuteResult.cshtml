@@ -1,0 +1,107 @@
+@{
+    ViewData["Title"] = "FiveMinuteResult";
+}
+
+@model FiveMinutes.Models.FiveMinuteResult
+
+<style>
+    label{
+        display:  block;
+        margin-left: 5px;
+    }
+    .question {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="container test-area">
+    <h1>@Model.FiveMinuteTemplate.Name</h1>
+    <div>Оставшееся время:
+        <div id="timer">5:00</div>
+    </div>
+    <form asp-action="SendTestResults" asp-controller="TestPassing" method="post">
+        <input type="hidden" aria-label="" name="FMTId" value = "@Model.Id"/>
+        <div style="margin-bottom: 10px">
+            <input class="form-control" type="text" disabled value="@(Model.UserName)"/>
+        </div>
+
+        @{
+            var questionNumber = 0;
+        }
+        @foreach (var question in Model.FiveMinuteTemplate.Questions.OrderBy(q => q.Position))
+        {
+            questionNumber++;
+            <div class="question card mt-3 question-card border-secondary border-3">
+                <h5 class="question-text card-title mb-2">@questionNumber. @question.QuestionText</h5>
+                @{
+                    var answers = Model.Answers.Where(answer => answer.QuestionPosition == question.Position).ToList();
+                }
+                @switch (question.ResponseType)
+                {
+                    case ResponseType.Text:
+                        <div class="mb-3">
+                            <input type="text" aria-label="@question.QuestionText" value="@answers[0].Text" disabled/>
+                        </div>
+                        break;
+                    case ResponseType.SingleChoice:
+                        <div class="card-body mb-3">
+                            @foreach (var answer in question.AnswerOptions)
+                            {
+                                var userAnswer = answers
+                                    .FirstOrDefault(ans => ans.Position == answer.Position);
+                                <div class="form-check">
+
+                                    <input type="radio" class="form-check-input" value="@answer.Text"
+                                           id="answer_@(question.Position)_@(answer.Position)"
+                                           @(userAnswer != null? "checked": "")
+                                           disabled>
+                                    <label class="answer_@(question.Position)_@(answer.Position)" 
+                                           style="color: @GetAnswerColor(userAnswer)">
+                                        @answer.Text
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                        break;
+                    case ResponseType.MultipleChoice:
+                        <div class="card-body mb-3">
+                            @foreach (var answer in question.AnswerOptions.OrderBy(x=>x.Position))
+                            {
+                                var userAnswer = answers
+                                    .FirstOrDefault(ans => ans.Position == answer.Position);
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="@answer.Text"
+                                           id="answer_@(question.Position)_@(answer.Position)"
+                                           @(userAnswer.Text != ""? "checked": "")
+                                           disabled>
+                                    <label class="form-check-label" for="answer_@(question.Position)_@(answer.Position)"
+                                           style="color: @GetAnswerColor(userAnswer)">
+                                        @answer.Text
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                        break;
+                }
+            </div>
+        }
+    </form>
+</div>
+
+
+@{
+    @functions {
+        public string GetAnswerColor(UserAnswer answer)
+        {
+            if (answer.Text == "")
+                return "";
+            if (answer.IsCorrect)
+                return "green";
+            return "red";
+        }
+    }
+}

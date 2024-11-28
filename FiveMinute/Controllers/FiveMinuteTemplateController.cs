@@ -14,16 +14,15 @@ namespace FiveMinutes.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<AppUser> userManager;
 
-        // Удалить
-        public readonly ApplicationDbContext context;
 
         private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
+        private readonly IUserRepository userRepository;
         // private readonly IQuestionRepository questionRepository;
 
         public FiveMinuteTemplateController(UserManager<AppUser> userManager, ApplicationDbContext context)
         {
             this.userManager = userManager;
-            this.context = context;
+            userRepository=new UserRepository(context);
             this.fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
             // this.questionRepository = new QuestionRepository(context);
         }
@@ -39,16 +38,13 @@ namespace FiveMinutes.Controllers
         {
             var currentUser = await userManager.GetUserAsync(User);
 
-            if (currentUser == null)
-                return View("Error", new ErrorViewModel($"Attempt to create FMT by non register user"));
+            if (currentUser == null || !currentUser.canCreate)
+                return View("Error", new ErrorViewModel($"You don't have the rights to create a five-minute"));
 
             var newFMT = FiveMinuteTemplate.CreateDefault(currentUser);
-            if (fiveMinuteTemplateRepository.Add(newFMT))
+            if (fiveMinuteTemplateRepository.Add(newFMT).Result)
             {
-                currentUser.AddFMT(newFMT);
-
-                // CHANGE!!!
-                context.SaveChanges();
+                await userRepository.AddFMTtoUser(newFMT, currentUser);
 
                 return RedirectToAction("Edit", new { newFMT.Id });
             }
@@ -59,6 +55,10 @@ namespace FiveMinutes.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var fmt = await fiveMinuteTemplateRepository.GetByIdAsync(id);
+            var currentUser = await userManager.GetUserAsync(User);
+
+            if (currentUser == null || !currentUser.canCreate)
+                return View("Error", new ErrorViewModel($"You don't have the rights to create a five-minute"));
 
             if (fmt == null)
                 return View("NotFound");
@@ -114,22 +114,16 @@ namespace FiveMinutes.Controllers
                     errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
                 }); //тут какая-то другая ошибка должна быть
             }
-
-            // Attach the entity to the context
-            context.FiveMinuteTemplates.Attach(existingFmt);
-            // Update the entity with the new values from the view model
-            existingFmt.Name = fmt.Name;
-            existingFmt.ShowInProfile = fmt.ShowInProfile;
-            existingFmt.LastModificationTime = DateTime.UtcNow;
-            existingFmt.Questions = GetQuestionsByFMTViewModel(fmt, existingFmt);
-            // Mark the entity as modified
-            context.Entry(existingFmt).State = EntityState.Modified;
-            fiveMinuteTemplateRepository.Save();
-            return Json(new
+            var template = new FiveMinuteTemplate
             {
-                success = true,
-                id = existingFmt.Id
-            });
+                Id = fmt.Id,
+                Name = fmt.Name,
+                ShowInProfile = fmt.ShowInProfile,
+                LastModificationTime = DateTime.UtcNow,
+                Questions = GetQuestionsByFMTViewModel(fmt, existingFmt),
+            };
+            await fiveMinuteTemplateRepository.Update(existingFmt, template);
+            return Json(new { success = true, id = fmt.Id });
         }
 
         public List<Question> GetQuestionsByFMTViewModel(FiveMinuteTemplateEditViewModel fmt,FiveMinuteTemplate existingFmt)
@@ -151,7 +145,7 @@ namespace FiveMinutes.Controllers
                 Position = question.Position,
                 ResponseType = question.ResponseType,
                 FiveMinuteTemplateId = fmt.Id,
-                Answers = question.Answers.Select(x => new Answer
+                AnswerOptions = question.Answers.Select(x => new Answer
                 {
                     IsCorrect = x.IsCorrect, 
                     Position = x.Position,
@@ -189,12 +183,10 @@ namespace FiveMinutes.Controllers
 
             var copyFMT = fmt.GetCopyToUser(currentUser);
             
-            if (fiveMinuteTemplateRepository.Add(copyFMT))
+            if (fiveMinuteTemplateRepository.Add(copyFMT).Result)
             {
-                currentUser.AddFMT(copyFMT);
-                context.SaveChanges();
-
-				return RedirectToAction("Edit", new { copyFMT.Id });
+                await userRepository.AddFMTtoUser(copyFMT, currentUser);
+                return RedirectToAction("Edit", new { copyFMT.Id });
 			}
 			return View("Error", new ErrorViewModel("Fail to add FMT to db"));
 		}

@@ -11,12 +11,6 @@
         @{ var questionNumber = 0; }
         @foreach (var result in Model.Results)
         {
-            var correctAnswers = 0;
-            @foreach (var answer in result.Answers)
-            {
-                if (answer.IsCorrect)
-                    correctAnswers++;
-            }
             var answersDict = new Dictionary<int, List<UserAnswer>>();
             foreach (var answer in result.Answers)
             {
@@ -25,9 +19,11 @@
             }
             <table>
                 <caption>
-                    <div>Пользователь: @result.UserId</div>
+                    <div>Id пользователя: @result.UserId</div>
+                    <div>Имя пользователя: @result.UserName</div>
                     <div>Время прохождения: @result.PassTime</div>
                     <div>Всего баллов: @answersDict.Values.SelectMany(x => x).Sum(x => x.IsCorrect ? 1: 0)</div>
+                    <a asp-action="FiveMinuteResult" asp-route-resultId="@result.Id">Подробнее</a>
                 </caption>
                 <tr>
                     <th>Вопрос</th>
@@ -42,7 +38,7 @@
                     <th>Ответ</th>
                     @foreach (var number in answersDict.Keys.Order())
                     {
-                        <td>@string.Join(';',answersDict[number].Select(x => x.Text))</td>
+                        <td>@string.Join(';',answersDict[number].Select(x => x.Text).Where(x => x!=""))</td>
                     }
                     @* <td>@answersDict.Values.Sum()</td> *@
 

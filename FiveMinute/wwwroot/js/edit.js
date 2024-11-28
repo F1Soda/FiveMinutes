@@ -12,11 +12,12 @@ $(document).ready(function () {
 
 // Function to generate HTML for a question card
 function getQuestionHtml(question, questionIndex) {
+	console.log(question);
 	return `
-														<div class="card mt-3 question-card">
+														<div class="card mt-3 question-card border-secondary border-3">
 															<div class="card-body">
 																<h5 class="card-title">Вопрос ${questionIndex + 1}</h5>
-																<button type="button" class="btn btn-danger btn-sm mb-2" onclick="deleteQuestion(this)">Удалить вопрос</button>
+																<button type="button" class="delete-answer-button btn btn-danger btn-sm mb-2" onclick="deleteQuestion(this)">Удалить вопрос</button>
 																<div class="form-group">
 																	<label>Текст вопроса:</label>
 																	<input type="text" name="Questions[${questionIndex}].QuestionText" class="form-control" value="${question["questionText"]}" required />
@@ -32,7 +33,7 @@ function getQuestionHtml(question, questionIndex) {
 																<div class="answers-container mt-2">
 																	<!-- Answer options will be dynamically added here -->
 																</div>
-																<button type="button" class="btn btn-secondary mt-2" onclick="addAnswer(this)" style="${question["responseType"] === 2 ? 'display: none;' : ''}">Добавить вариант ответа</button>
+																<button type="button" class="add-answer-button btn btn-secondary mt-2" onclick="addAnswer(this)" style="${question["responseType"] === 2 ? 'display: none;' : ''}">Добавить вариант ответа</button>
 															</div>
 														</div>
 													`;
@@ -73,7 +74,8 @@ function addQuestion() {
 
 function handleResponseTypeChange(select) {
 	const answersContainer = select.closest('.card-body').querySelector('.answers-container');
-	const addAnswerButton = select.closest('.card-body').querySelector('button');
+	const addAnswerButton = select.closest('.card-body').querySelector('.add-answer-button');
+	console.log(addAnswerButton);
 
 	answersContainer.innerHTML = '';
 	if (select.value === "2") { // Текстовый ответ
@@ -264,7 +266,7 @@ function initialize() {
 	});
 
 	// Set up an interval to call the save function every 15 seconds
-	setInterval(save, 15000);
+	// setInterval(save, 15000);
 
 	// Set up beforeunload event to warn users about unsaved changes
 	window.addEventListener('beforeunload', function (e) {

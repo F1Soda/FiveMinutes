@@ -54,7 +54,7 @@ namespace FiveMinutes.Data
                 await AddRoles(applicationBuilder);
 				var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
                 await AddUser(userManager, "golik.tima@gmail.com", "golikdev", "Coding@13421212?", UserRoles.Admin);
-
+                await AddUser(userManager, "1@c.com", "1", "1", UserRoles.Admin);
                 await AddUser(userManager, "g.t@gmail.com", "GolikTimofey", "Coding@1234?", UserRoles.Student);
 				await AddUser(userManager, "michail.zukov@kontur.ru", "Micha", "123456", UserRoles.Student);
                 await AddUser(userManager, "maria.filatova@mail.ru", "Maria", "123456", UserRoles.Teacher);
