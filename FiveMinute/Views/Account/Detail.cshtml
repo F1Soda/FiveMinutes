@@ -86,7 +86,10 @@
                 <tr>
                     <td>@test.Id</td>
                     <td>@test.Name</td>
-                    @* <td>@test.</td> *@
+                    <td>
+                        <a asp-action="Edit" asp-controller="FiveMinuteTest" asp-route-testId="@test.Id" class="btn btn-primary">Edit</a>
+
+                    </td>
                     
                 </tr>
                 
