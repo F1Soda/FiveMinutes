@@ -1,4 +1,4 @@
-namespace FiveMinutes.ViewModels;
+namespace FiveMinute.ViewModels;
 
 public class UserAnswerViewModel
 {

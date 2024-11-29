@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 
-namespace FiveMinutes.Models;
+namespace FiveMinute.Models;
 
 public class FiveMinuteResult
 {

@@ -1,8 +1,8 @@
-using FiveMinutes.Data;
-using FiveMinutes.Interfaces;
+using FiveMinute.Data;
+using FiveMinute.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FiveMinutes.Controllers;
+namespace FiveMinute.Controllers;
 
 public class AppointedFiveMinuteTemplateController : Controller
 {

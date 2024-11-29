@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FiveMinutes.Models
+namespace FiveMinute.Models
 {
     public class Folder
     {

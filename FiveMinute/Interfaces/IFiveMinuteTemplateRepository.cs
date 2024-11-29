@@ -1,7 +1,7 @@
-﻿using FiveMinutes.Models;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using FiveMinute.Models;
 
-namespace FiveMinutes.Interfaces
+namespace FiveMinute.Interfaces
 {
     public interface IFiveMinuteTemplateRepository : IDefaultRepository<FiveMinuteTemplate>
     {

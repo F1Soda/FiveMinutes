@@ -1,8 +1,7 @@
 ﻿using FiveMinute.Interfaces;
-using FiveMinutes.Data;
-using FiveMinutes.Interfaces;
-using FiveMinutes.Models;
-using FiveMinutes.Repository;
+using FiveMinute.Data;
+using FiveMinute.Models;
+using FiveMinute.Repository;
 
 namespace FiveMinute.Repository
 {

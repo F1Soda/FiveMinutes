@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.ComponentModel.DataAnnotations;
 
-namespace FiveMinutes.ViewModels.AccountViewModels
+namespace FiveMinute.ViewModels.AccountViewModels
 {
     public class RegisterViewModel
     {

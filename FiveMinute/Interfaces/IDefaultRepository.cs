@@ -1,4 +1,4 @@
-namespace FiveMinutes.Interfaces;
+namespace FiveMinute.Interfaces;
 
 public interface IDefaultRepository<T>
 {

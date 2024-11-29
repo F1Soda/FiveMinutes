@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using FiveMinutes.Data;
-using FiveMinutes.Models;
+using FiveMinute.Data;
+using FiveMinute.Models;
 
 namespace FiveMinute.Models
 {

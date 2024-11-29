@@ -4,8 +4,7 @@ using FiveMinute.Models;
 using FiveMinute.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using FiveMinutes.Data;
-using FiveMinutes.Models;
+using FiveMinute.Data;
 
 namespace FiveMinute.Controllers
 {

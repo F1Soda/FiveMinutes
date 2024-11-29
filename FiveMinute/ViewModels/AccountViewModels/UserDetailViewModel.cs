@@ -1,6 +1,6 @@
-﻿using FiveMinutes.Models;
+﻿using FiveMinute.Models;
 
-namespace FiveMinutes.ViewModels.AccountViewModels
+namespace FiveMinute.ViewModels.AccountViewModels
 {
     public class UserDetailViewModel
     {
