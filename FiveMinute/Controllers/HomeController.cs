@@ -1,11 +1,10 @@
-using FiveMinute.Models;
-using FiveMinutes.Data;
-using FiveMinutes.Models;
+using FiveMinute.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using FiveMinute.Models;
 
-namespace FiveMinutes.Controllers
+namespace FiveMinute.Controllers
 {
 	public class HomeController : Controller
 	{

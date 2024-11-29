@@ -1,8 +1,9 @@
 using FiveMinute.Database;
 using FiveMinute.Repository.FiveMinuteTemplateRepository;
+using FiveMinute.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FiveMinutes.Controllers;
+namespace FiveMinute.Controllers;
 
 public class AppointedFiveMinuteTemplateController : Controller
 {

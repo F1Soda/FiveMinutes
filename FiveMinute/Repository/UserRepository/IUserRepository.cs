@@ -1,6 +1,5 @@
 ﻿using FiveMinute.Models;
 using FiveMinute.Repository.DefaultRepository;
-using FiveMinutes.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace FiveMinute.Repository.UserRepository

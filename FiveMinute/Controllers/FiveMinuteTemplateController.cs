@@ -1,15 +1,14 @@
-﻿using FiveMinute.Database;
+﻿using FiveMinute.Data;
+using FiveMinute.Database;
 using FiveMinute.Models;
 using FiveMinute.Repository.FiveMinuteTemplateRepository;
 using FiveMinute.Repository.UserRepository;
-using FiveMinutes.Data;
-using FiveMinutes.Models;
-using FiveMinutes.Repository;
-using FiveMinutes.ViewModels.FMTEditViewModels;
+using FiveMinute.ViewModels.FMTEditViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FiveMinutes.Controllers
+
+namespace FiveMinute.Controllers
 {
 	public class FiveMinuteTemplateController : Controller
     {

@@ -1,6 +1,5 @@
 ﻿using FiveMinute.Models;
-using FiveMinutes.Data;
-using FiveMinutes.Models;
+using FiveMinute.Data;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FiveMinute.ViewModels.FiveMinuteTestViewModels

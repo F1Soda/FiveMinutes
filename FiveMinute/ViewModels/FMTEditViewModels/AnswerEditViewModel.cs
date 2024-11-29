@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FiveMinutes.ViewModels.FMTEditViewModels
+namespace FiveMinute.ViewModels.FMTEditViewModels
 {
     public class AnswerEditViewModel
     {

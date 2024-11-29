@@ -1,11 +1,10 @@
 using FiveMinute.Database;
+using FiveMinute.Interfaces;
 using FiveMinute.Models;
 using FiveMinute.Repository.DefaultRepository;
-using FiveMinutes.Interfaces;
-using FiveMinutes.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FiveMinutes.Repository;
+namespace FiveMinute.Repository;
 
 public class FiveMinuteResultRepository : DefaultRepository<FiveMinuteResult?>, IFiveMinuteResultsRepository
 {

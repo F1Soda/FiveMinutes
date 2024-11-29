@@ -1,13 +1,15 @@
 using System.Net;
+using FiveMinute.Models;
 using FiveMinute.Repository.FiveMinuteTemplateRepository;
 using FiveMinute.Repository.FiveMinuteTestRepository;
-using FiveMinutes.Data;
-using FiveMinutes.Models;
-using FiveMinutes.ViewModels;
+using FiveMinute.ViewModels;
+using FiveMinute.Data;
+using FiveMinute.Interfaces;
+using FiveMinute.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FiveMinutes.Controllers;
+namespace FiveMinute.Controllers;
 
 public class FiveMinuteStatisticsController : Controller
 {

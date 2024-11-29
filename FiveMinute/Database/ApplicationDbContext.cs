@@ -1,5 +1,4 @@
 ﻿using FiveMinute.Models;
-using FiveMinutes.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

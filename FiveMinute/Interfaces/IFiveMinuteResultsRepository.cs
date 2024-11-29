@@ -1,7 +1,7 @@
+using FiveMinute.Models;
 using FiveMinute.Repository.DefaultRepository;
-using FiveMinutes.Models;
 
-namespace FiveMinutes.Interfaces;
+namespace FiveMinute.Interfaces;
 
 public interface IFiveMinuteResultsRepository : IDefaultRepository<FiveMinuteResult>
 {

@@ -1,13 +1,13 @@
-﻿using FiveMinute.Database;
-using FiveMinutes.Data;
-using FiveMinutes.Models;
-using FiveMinutes.ViewModels;
-using FiveMinutes.ViewModels.AccountViewModels;
+﻿using FiveMinute.Data;
+using FiveMinute.Database;
+using FiveMinute.Models;
+using FiveMinute.ViewModels.AccountViewModels;
+using FiveMinute.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace FiveMinutes.Controllers
+namespace FiveMinute.Controllers
 {
 	public class AccountController : Controller
     { 
