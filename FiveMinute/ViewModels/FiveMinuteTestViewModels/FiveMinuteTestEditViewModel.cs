@@ -1,5 +1,4 @@
 ﻿using FiveMinute.Models;
-using FiveMinutes.Models;
 
 namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 {

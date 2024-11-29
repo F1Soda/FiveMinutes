@@ -1,8 +1,8 @@
 ﻿using FiveMinute.Database;
 using FiveMinute.Repository.FiveMinuteTestRepository;
 using FiveMinute.ViewModels.FiveMinuteTestViewModels;
-using FiveMinutes.Models;
-using FiveMinutes.Repository;
+using FiveMinute.Models;
+using FiveMinute.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

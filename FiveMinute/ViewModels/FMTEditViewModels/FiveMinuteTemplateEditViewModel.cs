@@ -1,6 +1,6 @@
 ﻿using FiveMinute.Models;
 
-namespace FiveMinutes.ViewModels.FMTEditViewModels
+namespace FiveMinute.ViewModels.FMTEditViewModels
 {
 	public class FiveMinuteTemplateEditViewModel
     {

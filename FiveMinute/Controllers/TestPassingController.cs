@@ -1,15 +1,14 @@
 using FiveMinute.Database;
+using FiveMinute.Interfaces;
 using FiveMinute.Models;
+using FiveMinute.Repository;
 using FiveMinute.Repository.FiveMinuteTemplateRepository;
-using FiveMinutes.Interfaces;
-using FiveMinutes.Models;
-using FiveMinutes.Repository;
-using FiveMinutes.ViewModels;
+using FiveMinute.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace FiveMinutes.Controllers;
+namespace FiveMinute.Controllers;
 
 public class TestPassingController : Controller
 {

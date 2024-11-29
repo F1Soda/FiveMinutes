@@ -1,6 +1,6 @@
-using FiveMinutes.Models;
+using FiveMinute.Models;
 
-namespace FiveMinutes.ViewModels;
+namespace FiveMinute.ViewModels;
 
 public class QuestionViewModel
 {

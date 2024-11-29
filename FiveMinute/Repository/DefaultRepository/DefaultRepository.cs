@@ -1,4 +1,4 @@
-using FiveMinutes.Models;
+using FiveMinute.Models;
 using System.Diagnostics;
 using FiveMinute.Database;
 

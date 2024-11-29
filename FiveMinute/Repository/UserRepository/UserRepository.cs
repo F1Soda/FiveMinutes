@@ -1,7 +1,6 @@
 ﻿using FiveMinute.Database;
 using FiveMinute.Models;
 using FiveMinute.Repository.DefaultRepository;
-using FiveMinutes.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
