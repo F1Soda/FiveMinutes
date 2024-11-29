@@ -1,4 +1,4 @@
-using FiveMinutes.Data;
+using FiveMinute.Database;
 using FiveMinutes.Interfaces;
 using FiveMinutes.Models;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +13,28 @@ public class FiveMinuteTestRepository: DefaultRepository<FiveMinuteTest>, IFiveM
 
     public async Task<FiveMinuteTest?> GetByIdAsync(int id)
     {
-        // return await context.FiveMinuteTests
-        //     .Include(x =>x.UserOwner) // если мы хотим в FiveMinuteTemplate знать об AppUse
-        //     .FirstOrDefaultAsync(x => x.Id == id);
-        throw new NotImplementedException();
+        return await context.FiveMinuteTests
+            .Include(x => x.UserOrganizer)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
+
+	public async Task<bool> Update(FiveMinuteTest existingTest, FiveMinuteTest updatedTest)
+	{
+        context.FiveMinuteTests.Attach(existingTest);
+		existingTest.Name = updatedTest.Name;
+
+		existingTest.AttachedFMTId = updatedTest.AttachedFMTId;
+		existingTest.AttachedFMT = updatedTest.AttachedFMT;
+
+		existingTest.Status = updatedTest.Status;
+
+		existingTest.StartPlanned = updatedTest.StartPlanned;
+		existingTest.EndPlanned = updatedTest.EndPlanned;
+		existingTest.StartTime = updatedTest.StartTime;
+        existingTest.EndTime = updatedTest.EndTime;
+        
+        existingTest.Results = updatedTest.Results;
+
+        return await Save();
+	}
 }

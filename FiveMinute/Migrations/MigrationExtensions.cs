@@ -1,7 +1,7 @@
-﻿using FiveMinutes.Data;
+﻿using FiveMinute.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace FiveMinute.Data
+namespace FiveMinute.Migrations
 {
 	public static class MigrationExtensions
 	{

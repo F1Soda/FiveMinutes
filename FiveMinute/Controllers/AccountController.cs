@@ -1,4 +1,5 @@
-﻿using FiveMinutes.Data;
+﻿using FiveMinute.Database;
+using FiveMinutes.Data;
 using FiveMinutes.Models;
 using FiveMinutes.ViewModels;
 using FiveMinutes.ViewModels.AccountViewModels;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FiveMinutes.Controllers
 {
-    public class AccountController : Controller
+	public class AccountController : Controller
     { 
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
@@ -140,7 +141,7 @@ namespace FiveMinutes.Controllers
             }
 
             // Fetch the user being viewed
-            var user = await context.Users.Include(x => x.FMTs).FirstOrDefaultAsync(x => x.Id == userId);
+            var user = await context.Users.Include(x => x.FMTemplates).FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
                 return View("NotFound");
@@ -152,7 +153,7 @@ namespace FiveMinutes.Controllers
             {
                 UserName = user.UserName,
                 Email = user.Email,
-                FMTs = user.FMTs,
+                FMTs = user.FMTemplates,
                 UserRole = currentUser.UserRole,
                 IsOwner = isOwner,
 

@@ -4,6 +4,7 @@
 
 @{
 	ViewData["Title"] = "Создание пятиминутки";
+	var templateId = ViewData["TemplateId"];
 }
 
 <h1>Редактор пятиминутки <span id="save-icon" style="display: none; color: #28a745; margin-left: 8px;">✔️</span></h1>
@@ -21,15 +22,17 @@
 
 	<button type="button" id="add-question" class="btn btn-primary mt-3">Добавить вопрос</button>
 	<button type="button" , id="save" class="btn btn-success mt-3">Сохранить пятиминутку</button>
-	    <div id="test-link-container" style="margin-left: 15px; display: none;"></div>
-        <span id="copy-message" style="margin-left: 15px; display: none; color: green;">Ссылка скопирована в буфер обмена!</span>
-
+	<button type="button" , id="create-test" class="btn btn-success mt-3">Создать тест</button>
 </form>
+
+
+
 
 @section Scripts {
 	<script>
 		const saveUrl = '@Url.Action("Save")'; // Pass the save URL to the external JavaScript file
 		const modelData = @Html.Raw(Json.Serialize(Model)); // Serialize model data for use in edit.js
+		const templateId = @templateId; // Pass the template ID to JavaScript
 	</script>
 	<script src="~/js/popup.js"></script>
 	<script src="~/js/edit.js"></script>

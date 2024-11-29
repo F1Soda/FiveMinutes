@@ -2,7 +2,6 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<AppUser> UserManager
 
-
 @{
     var currentUser = await UserManager.GetUserAsync(User);
 }
@@ -14,5 +13,5 @@
     </l1>
 }
 <div class="text-center">
-    <h1 class="display-4">FIVE MINUTE GREAT WEBSITE</h1>
+    <h1 class="display-4">Добрый день, @currentUser.UserName!</h1>
 </div>

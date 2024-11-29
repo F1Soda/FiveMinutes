@@ -1,4 +1,4 @@
-using FiveMinutes.Data;
+using FiveMinute.Database;
 using FiveMinutes.Interfaces;
 using FiveMinutes.Models;
 using FiveMinutes.Repository;

@@ -11,23 +11,23 @@ namespace FiveMinutes.Controllers;
 
 public class FiveMinuteStatisticsController : Controller
 {
-    private readonly ApplicationDbContext context;
-    private readonly IFiveMinuteResultsRepository _fiveMinuteResultsRepository;
-    private readonly FiveMinuteTemplateRepository _fiveMinuteTemplateRepository;
-    private readonly UserManager<AppUser> _userManager;
+    private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
+    private readonly IFiveMinuteTestRepository fiveMinuteTestRepository;
+    private readonly UserManager<AppUser> userManager;
 
-    public FiveMinuteStatisticsController(UserManager<AppUser> userManager, ApplicationDbContext context)
+    public FiveMinuteStatisticsController(UserManager<AppUser> userManager,
+        FiveMinuteTemplateRepository fmTemplateRepository,
+        FiveMinuteTestRepository fmTestRepository)
     {
-        this.context = context;
-        _userManager = userManager;
-        _fiveMinuteResultsRepository = new FiveMinuteResultRepository(context);
-        _fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
+        this.userManager = userManager;
+        fiveMinuteTemplateRepository = fmTemplateRepository;
+        fiveMinuteTestRepository = fmTestRepository;
     }
 
     public async Task<IActionResult> ShowResults(int fiveMinuteId)
     {
-        var currentUser = await _userManager.GetUserAsync(User);
-        var fmt = await _fiveMinuteTemplateRepository.GetByIdAsync(fiveMinuteId);
+        var currentUser = await userManager.GetUserAsync(User);
+        var fmt = await fiveMinuteTemplateRepository.GetByIdAsync(fiveMinuteId);
         if (fmt == null || currentUser is null || fmt.UserOwnerId != currentUser.Id)
             return View("Error", new ErrorViewModel(HttpStatusCode.NotFound.ToString()));
         
@@ -42,7 +42,7 @@ public class FiveMinuteStatisticsController : Controller
 
     public async Task<IActionResult> FiveMinuteResult(int resultId)
     {
-        var currentUser = await _userManager.GetUserAsync(User);
+        var currentUser = await userManager.GetUserAsync(User);
         var result = _fiveMinuteResultsRepository.GetById(resultId).Result;
 
         if (result is null || currentUser is null || result.FiveMinuteTemplate.UserOwnerId != currentUser.Id)

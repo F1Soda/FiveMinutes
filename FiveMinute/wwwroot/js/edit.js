@@ -222,25 +222,6 @@ function save(isFinalSave = false) {
 		success: function (response) {
 			if (response["success"]) {
 				showSaveIcon();
-
-				// Генерация ссылки
-				const testLink = `https://localhost:44384/TestPassing/Test/${response.id}`;
-				const linkContainer = document.getElementById('test-link-container');
-				const copyMessage = document.getElementById('copy-message');
-
-				// Отображаем ссылку рядом с кнопкой
-				linkContainer.innerHTML = `Ссылка: <a href="${testLink}" target="_blank">${testLink}</a>`;
-				linkContainer.style.display = "block";
-
-				// Копируем ссылку в буфер обмена
-				navigator.clipboard.writeText(testLink)
-					.then(() => {
-						copyMessage.style.display = "inline";
-						setTimeout(() => copyMessage.style.display = "none", 3000); // Прячем сообщение через 3 секунды
-					})
-					.catch(err => {
-						console.error("Ошибка копирования в буфер обмена: ", err);
-					});
 			} else {
 				showPopup("Произошла ошибка", 'error');
 			}
@@ -263,6 +244,14 @@ function initialize() {
 	$('#save').click(function (e) {
 		e.preventDefault(); // Prevent the default form submission behavior
 		save(); // Call the save function
+	});
+
+	// Bind the save function to the Create Test button's click event
+	$('#create-test').click(function (e) {
+		e.preventDefault(); 
+		if (save()) {
+			window.location.href = '/FiveMinuteTest/Create?templateId=${encodeURIComponent(templateId)}';
+		}
 	});
 
 	// Set up an interval to call the save function every 15 seconds

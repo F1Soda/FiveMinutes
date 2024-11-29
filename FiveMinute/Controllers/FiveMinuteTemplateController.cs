@@ -1,30 +1,26 @@
-﻿using FiveMinutes.Data;
+﻿using FiveMinute.Database;
+using FiveMinutes.Data;
 using FiveMinutes.Interfaces;
 using FiveMinutes.Models;
 using FiveMinutes.Repository;
 using FiveMinutes.ViewModels.FMTEditViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FiveMinutes.Controllers
 {
-    public class FiveMinuteTemplateController : Controller
+	public class FiveMinuteTemplateController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly UserManager<AppUser> userManager;
-
 
         private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
         private readonly IUserRepository userRepository;
-        // private readonly IQuestionRepository questionRepository;
 
         public FiveMinuteTemplateController(UserManager<AppUser> userManager, ApplicationDbContext context)
         {
             this.userManager = userManager;
-            userRepository=new UserRepository(context);
+            userRepository = new UserRepository(context);
             this.fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
-            // this.questionRepository = new QuestionRepository(context);
         }
 
         public IActionResult Index()
@@ -65,9 +61,10 @@ namespace FiveMinutes.Controllers
 
             var fmtViewModel = FiveMinuteTemplateEditViewModel.CreateByModel(fmt);
 
-            // Change !!!
             HttpContext.Session.SetInt32("FmtViewModel", fmt.Id);
-            return View(fmtViewModel);
+
+			ViewData["TemplateId"] = fmt.Id;
+			return View(fmtViewModel);
         }
 
         public IActionResult TestCreation()

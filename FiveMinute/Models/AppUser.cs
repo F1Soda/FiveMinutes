@@ -5,15 +5,16 @@ namespace FiveMinutes.Models
 {
     public class AppUser : IdentityUser
     {
-        public ICollection<FiveMinuteTemplate> FMTs { get; set; }
-        public ICollection<FiveMinuteResult> Result { get; set; }
+        public ICollection<FiveMinuteTemplate> FMTemplates { get; set; }
+        public ICollection<FiveMinuteTest> FMTests { get; set; }
+        public ICollection<FiveMinuteTest> PassedFMTests { get; set; }
 
         public string UserRole {  get; set; }
         public bool canCreate => UserRole is UserRoles.Admin or UserRoles.Teacher; 
 
-        public void AddFMT(FiveMinuteTemplate fmt)
+        public void AddFMT(FiveMinuteTemplate fmTemplate)
         {
-            FMTs.Add(fmt);
+            FMTemplates.Add(fmTemplate);
         }
     }
 }

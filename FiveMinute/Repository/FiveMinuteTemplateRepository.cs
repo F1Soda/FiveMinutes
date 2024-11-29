@@ -1,4 +1,4 @@
-﻿using FiveMinutes.Data;
+﻿using FiveMinute.Database;
 using FiveMinutes.Interfaces;
 using FiveMinutes.Models;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +46,6 @@ namespace FiveMinutes.Repository
             context.Entry(existingTemplate).State = EntityState.Modified;
 			return await Save();
 		}
-
 	}
 }
 

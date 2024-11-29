@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace FiveMinutes.Data
+namespace FiveMinute.Database
 {
 	public class ApplicationDbContext : IdentityDbContext<AppUser>
 	{

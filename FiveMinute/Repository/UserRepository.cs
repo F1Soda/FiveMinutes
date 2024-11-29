@@ -1,4 +1,4 @@
-﻿using FiveMinutes.Data;
+﻿using FiveMinute.Database;
 using FiveMinutes.Interfaces;
 using FiveMinutes.Models;
 using Microsoft.AspNetCore.Identity;
@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FiveMinutes.Repository
 {
-    public class UserRepository : DefaultRepository<AppUser> ,IUserRepository
+	public class UserRepository : DefaultRepository<AppUser> ,IUserRepository
     {
         private readonly ApplicationDbContext context;
 

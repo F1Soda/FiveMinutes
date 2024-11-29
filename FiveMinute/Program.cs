@@ -1,6 +1,9 @@
-using FiveMinute.Data;
+using FiveMinute.Database;
+using FiveMinute.Migrations;
 using FiveMinutes.Data;
+using FiveMinutes.Interfaces;
 using FiveMinutes.Models;
+using FiveMinutes.Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,15 +27,19 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireLowercase = false;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 
-// ???
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
+
+// DI container
+builder.Services.AddSingleton<IFiveMinuteTemplateRepository, FiveMinuteTemplateRepository>();
+builder.Services.AddSingleton<IFiveMinuteTestRepository, FiveMinuteTestRepository>();
+builder.Services.AddSingleton<IUserRepository, UserRepository>();
+
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
 var app = builder.Build();
 
-
-// Прошу обратить внимание!!! Теперь не только адимны на сайте исть
 app.ApplyMigrations();
 await Seed.SeedUsersDefailt(app);
 
@@ -42,7 +49,6 @@ await Seed.SeedUsersDefailt(app);
 //    app.UseExceptionHandler("/Home/Error");
 //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 //    app.UseHsts();
-
 //}
 
 app.UseHttpsRedirection();

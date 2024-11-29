@@ -1,4 +1,4 @@
-using FiveMinutes.Data;
+using FiveMinute.Database;
 using FiveMinutes.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
