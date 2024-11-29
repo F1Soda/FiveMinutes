@@ -21,6 +21,8 @@ namespace FiveMinute.Models
 		public bool EndPlanned = false;
 		public DateTime EndTime { get; set; }
 
+		public List<int> PositionsToInclude { get; set; }
+
 		public IEnumerable<FiveMinuteTestResult> Results { get; set; }
 
 		[ForeignKey("AppUser")]

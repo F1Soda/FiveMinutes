@@ -104,7 +104,8 @@ namespace FiveMinute.Controllers
 			{
 				Name = fmt.Name,
 				FMTestId = fmTest.Id,
-				Questions = fmt.Questions.Select(x => new QuestionViewModel
+				Questions = fmt.Questions.Where(x => fmTest.PositionsToInclude.Contains(x.Position))
+										 .Select(x => new QuestionViewModel
 				{
 					Id = x.Id,
 					Position = x.Position,

@@ -13,7 +13,6 @@ public class TestPassingController : Controller
 {
     private readonly ApplicationDbContext context;
     private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
-    // private readonly IQuestionRepository _questionRepository;
     private readonly IFiveMinuteResultsRepository fiveMinuteResultsRepository;
     
     private readonly UserManager<AppUser> _userManager;
