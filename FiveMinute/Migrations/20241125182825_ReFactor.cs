@@ -42,7 +42,7 @@ namespace FiveMinute.Migrations
                 table: "FiveMinuteResults",
                 column: "AppUserId",
                 principalTable: "AspNetUsers",
-                principalColumn: "Id");
+                principalColumn: "FMTestId");
         }
 
         /// <inheritdoc />
@@ -83,7 +83,7 @@ namespace FiveMinute.Migrations
                 table: "FiveMinuteTests",
                 column: "AppUserId",
                 principalTable: "AspNetUsers",
-                principalColumn: "Id");
+                principalColumn: "FMTestId");
         }
     }
 }

@@ -12,14 +12,14 @@
 //     public async Task<Question?> GetById(int id)
 //     {
 //         return await context.Questions
-//             .FirstOrDefaultAsync(x => x.Id == id);
+//             .FirstOrDefaultAsync(x => x.FMTestId == id);
 //     }
 //     
 //     public async Task<Question?> GetByIdAsyncNoTracking(int id)
 //     {
 //         return await context.Questions
 //             .AsNoTracking()
-//             .FirstOrDefaultAsync(x => x.Id == id);
+//             .FirstOrDefaultAsync(x => x.FMTestId == id);
 //     }
 //
 //     public async Task<bool> DeleteByFMT(FiveMinuteTemplate fiveMinuteTemplate)

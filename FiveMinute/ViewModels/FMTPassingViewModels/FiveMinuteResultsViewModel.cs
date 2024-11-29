@@ -4,5 +4,5 @@ namespace FiveMinute.ViewModels;
 
 public class FiveMinuteResultsViewModel
 {
-    public ICollection<FiveMinuteResult> Results = new List<FiveMinuteResult>();
+    public ICollection<FiveMinuteTestResult> Results = new List<FiveMinuteTestResult>();
 }

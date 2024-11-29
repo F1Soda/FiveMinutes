@@ -27,7 +27,7 @@ namespace FiveMinute.Migrations
                 table: "FiveMinuteResults",
                 column: "FiveMinuteTemplateId",
                 principalTable: "FiveMinuteTemplates",
-                principalColumn: "Id",
+                principalColumn: "FMTestId",
                 onDelete: ReferentialAction.Cascade);
         }
 

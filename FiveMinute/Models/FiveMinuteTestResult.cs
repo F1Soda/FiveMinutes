@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 
 namespace FiveMinute.Models;
 
-public class FiveMinuteResult
+public class FiveMinuteTestResult
 {
     [Key]
     public int Id { get; set; }

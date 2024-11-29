@@ -20,7 +20,7 @@ namespace FiveMinute.Models
 		public bool EndPlanned = false;
 		public DateTime EndTime { get; set; }
 
-		public IEnumerable<FiveMinuteResult> Results { get; set; }
+		public IEnumerable<FiveMinuteTestResult> Results { get; set; }
 
 		[ForeignKey("AppUser")]
 		public string? UserOrganizerId { get; set; }
