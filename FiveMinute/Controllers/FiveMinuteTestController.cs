@@ -49,7 +49,7 @@ namespace FiveMinute.Controllers
 			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(fmTestEditViewModel.Id);
 			var currentUser = await userManager.GetUserAsync(User);
 
-			if (currentUser == null || !currentUser.canCreate)
+			if (currentUser == null) // || !canCreate
 				return View("Error", new ErrorViewModel($"You don't have the rights to this action"));
 
 			if (existingFMTest == null)

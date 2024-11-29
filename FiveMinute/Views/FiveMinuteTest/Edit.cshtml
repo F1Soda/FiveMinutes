@@ -1,0 +1,30 @@
+﻿@model FiveMinute.ViewModels.FiveMinuteTestViewModels.FiveMinuteTestEditViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div>
+    <form asp-action="Edit" asp-controller="FiveMinuteTest" method="post">
+        <input asp-for="AttachedFMTId" type="hidden"/>
+        <input asp-for="Id" type="hidden"/>
+
+        <h5>Название теста</h5>
+        <input asp-for="Name" type="text" value="@Model.Name" id="testName"/>
+
+        <h5>Шаблон пятиминутки @Model.Id</h5>
+        <div id="selected-template-view">@Model.AttachedFMT.Name</div>
+
+        <div>Время начала</div>
+        <input type="datetime-local" asp-for="StartTime" id="startTime" value="@Model.StartTime.ToString("yyyy-MM-ddTHH:mm")"/>
+        <input type="checkbox" asp-for="StartPlanned" id="startPlanned" value="true"/>
+
+        <div>Время окончания</div>
+        <input type="datetime-local" asp-for="EndTime" id="endTime" value="@Model.EndTime.ToString("yyyy-MM-ddTHH:mm")"/>
+        <input type="checkbox" asp-for="EndPlanned" id="endPlanned" value="true"/>
+
+        <div>
+            <input class="btn btn-primary mt-3" id="submit" type="submit" value="Сохранить"/>
+        </div>
+    </form>
+</div>

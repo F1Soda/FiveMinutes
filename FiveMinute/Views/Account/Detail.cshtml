@@ -86,6 +86,9 @@
                 <tr>
                     <td>@test.Id</td>
                     <td>@test.Name</td>
+                    <td>
+                        <a asp-action="Edit" asp-controller="FiveMinuteTest" asp-route-testId="@test.Id" class="btn btn-primary">Edit</a>
+                    </td>
                         <td><a class="btn btn-secondary" asp-area="" , asp-route-testId="@test.Id" , asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a></td>
                 </tr>
                 
@@ -93,7 +96,6 @@
             </tbody>
         </table>
         <a class="btn btn-secondary" asp-area="" asp-controller="FiveMinuteTest" asp-action="Create">Создать тест</a>
-        
     </div>
 </div>
 
