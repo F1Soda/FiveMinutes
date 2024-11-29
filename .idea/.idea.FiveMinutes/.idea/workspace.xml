@@ -17,8 +17,8 @@
     <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="did what Степа said">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/FiveMinuteTemplateController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/Account/Register.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/Account/Register.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Models/AppUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Models/AppUser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/Account/Detail.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/Account/Detail.cshtml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +28,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="tim" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -72,7 +72,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "sava",
+    "git-widget-placeholder": "fe749e0c",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -233,14 +233,6 @@
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/FiveMinutes/Views/FiveMinuteTemplate/Edit.cshtml</url>
-          <line>10</line>
-          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinutes\Views\FiveMinuteTemplate\Edit.cshtml" isMultiMethodBreakpoint="true">
-            <option name="multiMethodBreakpoint" value="true" />
-          </properties>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/FiveMinutes/Controllers/TestPassingController.cs</url>
           <line>53</line>
           <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinutes\Controllers\TestPassingController.cs" containingFunctionPresentation="Method 'SendTestResults'" />
@@ -301,7 +293,7 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/FiveMinute/Controllers/AccountController.cs</url>
           <line>82</line>
-          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinute\Controllers\AccountController.cs" initialLine="82" containingFunctionPresentation="Method 'Register'">
+          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinute\Controllers\AccountController.cs" containingFunctionPresentation="Method 'Register'">
             <startOffsets>
               <option value="3166" />
             </startOffsets>

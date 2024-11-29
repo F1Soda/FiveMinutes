@@ -5,7 +5,8 @@ namespace FiveMinutes.Models
 {
     public class AppUser : IdentityUser
     {
-        public ICollection<FiveMinuteTemplate> FMTs { get; set; }
+        public ICollection<FiveMinuteTemplate> FMTTemplates { get; set; }
+        public ICollection<FiveMinuteTest> FMTests { get; set; }
         public ICollection<FiveMinuteResult> Result { get; set; }
 
         public string UserRole {  get; set; }
@@ -13,7 +14,7 @@ namespace FiveMinutes.Models
 
         public void AddFMT(FiveMinuteTemplate fmt)
         {
-            FMTs.Add(fmt);
+            FMTTemplates.Add(fmt);
         }
     }
 }
