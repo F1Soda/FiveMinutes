@@ -1,4 +1,5 @@
-﻿using FiveMinutes.Models;
+﻿using FiveMinute.Models;
+using FiveMinutes.Models;
 
 namespace FiveMinutes.ViewModels.AccountViewModels
 {
