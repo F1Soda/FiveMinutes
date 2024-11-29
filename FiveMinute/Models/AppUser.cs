@@ -8,7 +8,7 @@ namespace FiveMinutes.Models
     {
         public ICollection<FiveMinuteTemplate> FMTemplates { get; set; }
         public ICollection<FiveMinuteTest> FMTests { get; set; }
-        public ICollection<FiveMinuteTest> PassedFMTests { get; set; }
+        public ICollection<int> PassedFMTestIds { get; set; }
 
         public string UserRole {  get; set; }
         public bool canCreate => UserRole is UserRoles.Admin or UserRoles.Teacher; 

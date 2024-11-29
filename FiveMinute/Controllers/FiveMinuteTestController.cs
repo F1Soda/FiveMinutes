@@ -93,5 +93,10 @@ namespace FiveMinute.Controllers
 
 			return View();
 		}
+
+		//public async Task<IActionResult> Pass(int testId)
+		//{
+
+		//}
 	}
 }

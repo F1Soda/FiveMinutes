@@ -25,9 +25,6 @@ namespace FiveMinutes.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            // Типо прикол в том, что создав отдельную переменную, мы избавили пользователя от случая
-            // когда он случайно во время ввода может перезагрузить страницу и его пароли снова слетят
-            // и надо будет заново вводить 
             var response = new LoginViewModel();
             return View(response);
         }

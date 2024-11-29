@@ -32,9 +32,10 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 
 // DI container
-builder.Services.AddSingleton<IFiveMinuteTemplateRepository, FiveMinuteTemplateRepository>();
-builder.Services.AddSingleton<IFiveMinuteTestRepository, FiveMinuteTestRepository>();
-builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ApplicationDbContext>(); // DbContext should be Scoped
+builder.Services.AddScoped<IFiveMinuteTemplateRepository, FiveMinuteTemplateRepository>(); // Scoped for repository
+builder.Services.AddScoped<IFiveMinuteTestRepository, FiveMinuteTestRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
@@ -42,15 +43,15 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 var app = builder.Build();
 
 app.ApplyMigrations();
-await Seed.SeedUsersDefailt(app);
+// await Seed.SeedUsersDefailt(app);
 
-// Configure the HTTP request pipeline.
-//if (!app.Environment.IsDevelopment())
-//{
-//    app.UseExceptionHandler("/Home/Error");
-//    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-//    app.UseHsts();
-//}
+//Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+app.UseHsts();
+}
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

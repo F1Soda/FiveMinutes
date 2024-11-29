@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FiveMinutes.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace FiveMinutes.Models
+namespace FiveMinute.Models
 {
 	public class FiveMinuteTemplate
 	{
@@ -11,33 +12,33 @@ namespace FiveMinutes.Models
 		public DateTime? CreationTime { get; set; }
 		public DateTime? LastModificationTime { get; set; }
 		public IEnumerable<Question> Questions { get; set; }
-		
+
 		[ForeignKey("FiveMinuteTemplate")]
 		public int? OriginId { get; set; }
 		public FiveMinuteTemplate? Origin { get; set; }
 
-        public bool ShowInProfile { get; set; }
+		public bool ShowInProfile { get; set; }
 
-        [ForeignKey("AppUser")]
-        public string? UserOwnerId { get; set; }
-        public AppUser? UserOwner { get; set; }
+		[ForeignKey("AppUser")]
+		public string? UserOwnerId { get; set; }
+		public AppUser? UserOwner { get; set; }
 
-        public FiveMinuteTemplate GetCopyToUser(AppUser newUserOwner)
-        {
-	        return new FiveMinuteTemplate
-	        {
-		        Name = $"{this.Name} (копия)",
-		        CreationTime = DateTime.UtcNow,
-		        LastModificationTime = DateTime.UtcNow,
-		        ShowInProfile = this.ShowInProfile,
-		        UserOwner = newUserOwner,
-		        UserOwnerId = newUserOwner.Id,
-		        Questions = this.Questions,
+		public FiveMinuteTemplate GetCopyToUser(AppUser newUserOwner)
+		{
+			return new FiveMinuteTemplate
+			{
+				Name = $"{Name} (копия)",
+				CreationTime = DateTime.UtcNow,
+				LastModificationTime = DateTime.UtcNow,
+				ShowInProfile = ShowInProfile,
+				UserOwner = newUserOwner,
+				UserOwnerId = newUserOwner.Id,
+				Questions = Questions,
 				Origin = this,
-				OriginId = this.OriginId
-			
-	        };
-        }
+				OriginId = OriginId
+
+			};
+		}
 
 		public static FiveMinuteTemplate CreateDefault(AppUser user)
 		{
@@ -53,7 +54,7 @@ namespace FiveMinutes.Models
 					{
 						QuestionText = "Вопрос 1",
 						Position = 0,
-						ResponseType = Models.ResponseType.SingleChoice,
+						//ResponseType = Models.ResponseType.SingleChoice,
 					}
 				},
 				ShowInProfile = true,
