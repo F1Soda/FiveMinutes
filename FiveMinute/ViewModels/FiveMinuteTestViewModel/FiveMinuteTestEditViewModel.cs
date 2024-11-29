@@ -7,6 +7,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 		public int Id;
 		public string Name { get; set; }
 		public FiveMinuteTemplate AttachedFMT { get; set; }
+		public int AttachedFMTId { get; set; }
 		public bool StartPlanned = false;
 		public DateTime StartTime { get; set; }
 		public bool EndPlanned = false;

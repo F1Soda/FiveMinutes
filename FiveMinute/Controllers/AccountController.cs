@@ -140,7 +140,9 @@ namespace FiveMinute.Controllers
             }
 
             // Fetch the user being viewed
-            var user = await context.Users.Include(x => x.FMTTemplates).FirstOrDefaultAsync(x => x.Id == userId);
+            var user = await context.Users.Include(x => x.FMTTemplates)
+                .Include(x => x.FMTests)
+                .FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
                 return View("NotFound");
@@ -153,6 +155,7 @@ namespace FiveMinute.Controllers
                 UserName = user.UserName,
                 Email = user.Email,
                 FMTs = user.FMTTemplates,
+                Tests = user.FMTests,
                 UserRole = currentUser.UserRole,
                 IsOwner = isOwner,
 

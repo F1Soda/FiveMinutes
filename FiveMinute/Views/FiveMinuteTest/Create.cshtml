@@ -1,5 +1,74 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model FiveMinute.ViewModels.AccountViewModels.UserDetailViewModel
+
 @{
+    ViewData["Title"] = "Create";
 }
+
+<div>
+    <form asp-action="Create" asp-controller="FiveMinuteTest" method="post">
+        <h5>Название теста</h5>
+        <input name="Name" type="text"/>
+        <h5>Шаблон пятиминутки</h5>
+        <div id="selected-template-view"> </div>
+        <input name="AttachedFMTId" id="selected-template-id" readonly type="hidden"/>
+        
+        <input type="text" id="search" class="form-control mb-2" placeholder="Search Teachers" onkeyup="filterTable('templatesTable', 'search')" />
+        <table id="templatesTable" class="table">
+            
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Время создания</th>
+                <th>Последнее изменение</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var template in Model.FMTs)
+            {
+                <tr data-user-id="@template.Id">
+                    <td>@template.Id</td>
+                    <td>@template.Name</td>
+                    <td>@template.CreationTime</td>
+                    <td>@template.LastModificationTime</td>
+                    <td>
+                        <div class="btn" onclick="updateSelectedTemplate(@template.Id, '@template.Name')">Выбрать</div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <input class="btn btn-primary mt-3" id="submit" type="submit" value="Создать тест"/>
+        
+    </form>
+</div>
+
+<script>
+    function filterTable(tableId, searchInputId) {
+        var input = document.getElementById(searchInputId);
+        var filter = input.value.toLowerCase();
+        var table = document.getElementById(tableId);
+        var rows = table.getElementsByTagName("tr");
+
+        for (var i = 1; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName("td");
+            var match = false;
+
+            for (var j = 0; j < cells.length; j++) {
+                if (cells[j] && cells[j].innerText.toLowerCase().includes(filter)) {
+                    match = true;
+                    break;
+                }
+            }
+
+            rows[i].style.display = match ? "" : "none";
+        }
+    }
+    
+    function updateSelectedTemplate(id, name){
+        var selectedTemplateView = document.getElementById('selected-template-view');
+        var selectedTemplateIdInput = document.getElementById('selected-template-id');
+        selectedTemplateView.innerHTML = `${id} ${name}`;
+        selectedTemplateIdInput.value = id;
+    }
+</script>

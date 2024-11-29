@@ -5,12 +5,16 @@ using FiveMinute.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using FiveMinute.Data;
+using FiveMinute.Migrations;
+using FiveMinute.ViewModels.AccountViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace FiveMinute.Controllers
 {
 	public class FiveMinuteTestController : Controller
 	{
 		private readonly UserManager<AppUser> userManager;
+		private readonly ApplicationDbContext context;
 
 		private readonly IFiveMinuteTestRepository fiveMinuteTestRepository;
 
@@ -18,6 +22,7 @@ namespace FiveMinute.Controllers
 		{
 			this.userManager = userManager;
 			fiveMinuteTestRepository = new FiveMinuteTestRepository(context);
+			this.context = context;
 		}
 
 		public async Task<IActionResult> Edit(int testId)
@@ -90,9 +95,44 @@ namespace FiveMinute.Controllers
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
 
 			ViewData["templateId"] = templateId;
+			
+			var user = await context.Users.Include(x => x.FMTTemplates).FirstOrDefaultAsync(x => x.Id == currentUser.Id);
+			var model = new UserDetailViewModel
+			{
+				UserName = user.UserName,
+				Email = user.Email,
+				FMTs = user.FMTTemplates,
+				UserRole = user.UserRole,
+				IsOwner = true,
 
-			return View();
+			};
+			
+			return View(model);
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> Create(FiveMinuteTestDetailViewModel fmTestEditViewModel)
+		{
+			var currentUser = await userManager.GetUserAsync(User);
+			if (currentUser == null || !currentUser.canCreate)
+				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
+			
+			var user = await context.Users.Include(x => x.FMTTemplates).FirstOrDefaultAsync(x => x.Id == currentUser.Id);
+			var attachedTemplate = user.FMTTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
+			var test = new FiveMinuteTest
+			{
+				Name = fmTestEditViewModel.Name,
+				AttachedFMT = attachedTemplate,
+				AttachedFMTId = fmTestEditViewModel.Id,
+				UserOrganizer = user,
+				UserOrganizerId = user.Id,
+			};
+			
+			context.FiveMinuteTests.Add(test);
+			await context.SaveChangesAsync();
+			return RedirectToAction("Detail", "Account");
+		}
+
 
 		//public async Task<IActionResult> Pass(int testId)
 		//{
