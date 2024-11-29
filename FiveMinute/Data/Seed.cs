@@ -1,7 +1,7 @@
-﻿using FiveMinutes.Models;
+﻿using FiveMinute.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace FiveMinutes.Data
+namespace FiveMinute.Data
 {
     public class Seed
     { 

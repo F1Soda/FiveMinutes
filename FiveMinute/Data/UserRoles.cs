@@ -1,4 +1,4 @@
-﻿namespace FiveMinutes.Data
+﻿namespace FiveMinute.Data
 {
 	public static class UserRoles
 	{

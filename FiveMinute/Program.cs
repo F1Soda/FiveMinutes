@@ -1,9 +1,8 @@
 using FiveMinute.Data;
+using FiveMinute.Interfaces;
+using FiveMinute.Models;
+using FiveMinute.Repository;
 using FiveMinute.Repository.FiveMinuteTestRepository;
-using FiveMinutes.Data;
-using FiveMinutes.Interfaces;
-using FiveMinutes.Models;
-using FiveMinutes.Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

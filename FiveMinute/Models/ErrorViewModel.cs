@@ -1,4 +1,4 @@
-namespace FiveMinutes.Models
+namespace FiveMinute.Models
 {
 	public class ErrorViewModel
 	{

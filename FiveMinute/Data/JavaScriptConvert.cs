@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 
-namespace FiveMinutes.Data
+namespace FiveMinute.Data
 {
 	public static class JavaScriptConvert
 	{

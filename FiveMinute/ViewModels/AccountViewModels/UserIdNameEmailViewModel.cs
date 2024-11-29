@@ -1,4 +1,4 @@
-﻿namespace FiveMinutes.ViewModels.AccountViewModels
+﻿namespace FiveMinute.ViewModels.AccountViewModels
 {
     public class UserIdNameEmailViewModel
     {

@@ -1,10 +1,9 @@
-using FiveMinutes.Interfaces;
-using FiveMinutes.Data;
-using FiveMinutes.Interfaces;
-using FiveMinutes.Models;
+using FiveMinute.Models;
 using System.Diagnostics;
+using FiveMinute.Data;
+using FiveMinute.Interfaces;
 
-namespace FiveMinutes.Repository;
+namespace FiveMinute.Repository;
 
 public abstract class DefaultRepository<T> : IDefaultRepository<T>
 {

@@ -1,7 +1,7 @@
-﻿using FiveMinutes.Models;
+﻿using FiveMinute.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace FiveMinutes.Interfaces
+namespace FiveMinute.Interfaces
 {
 // Скорее всего он не нужен
     public interface IUserRepository : IDefaultRepository<AppUser>

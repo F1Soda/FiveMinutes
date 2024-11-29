@@ -1,9 +1,9 @@
-﻿using FiveMinutes.Data;
-using FiveMinutes.Interfaces;
-using FiveMinutes.Models;
+﻿using FiveMinute.Data;
+using FiveMinute.Interfaces;
+using FiveMinute.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FiveMinutes.Repository
+namespace FiveMinute.Repository
 {
 	public class FiveMinuteTemplateRepository : DefaultRepository<FiveMinuteTemplate>, IFiveMinuteTemplateRepository
 	{

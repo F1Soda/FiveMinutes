@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace FiveMinutes.Models
+namespace FiveMinute.Models
 {
 	public class FiveMinuteTemplate
 	{

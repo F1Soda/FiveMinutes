@@ -1,8 +1,7 @@
-﻿using FiveMinute.Models;
-using FiveMinutes.Data;
+﻿using FiveMinute.Data;
 using Microsoft.AspNetCore.Identity;
 
-namespace FiveMinutes.Models
+namespace FiveMinute.Models
 {
     public class AppUser : IdentityUser
     {

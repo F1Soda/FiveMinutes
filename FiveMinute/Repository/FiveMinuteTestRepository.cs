@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using FiveMinutes.Data;
-using FiveMinutes.Repository;
+using FiveMinute.Data;
+using FiveMinute.Repository;
 using FiveMinute.Models;
 
 namespace FiveMinute.Repository.FiveMinuteTestRepository;

@@ -1,5 +1,5 @@
 ﻿using FiveMinute.Models;
-using FiveMinutes.Interfaces;
+using FiveMinute.Interfaces;
 
 namespace FiveMinute.Repository.FiveMinuteTestRepository
 {
