@@ -1,6 +1,9 @@
 services:
   fiveminute:
-    image: fiveminute:latest
+    image: ${DOCKER_REGISTRY-}fiveminute
+    build:
+      context: .
+      dockerfile: FiveMinute/Dockerfile
     ports:
         - "80:8080"
     container_name: fiveminute
@@ -18,7 +21,6 @@ services:
       - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
 
 volumes:
   db_data:

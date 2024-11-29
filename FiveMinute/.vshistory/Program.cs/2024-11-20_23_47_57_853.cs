@@ -1,8 +1,6 @@
 using FiveMinute.Data;
 using FiveMinutes.Data;
-using FiveMinutes.Interfaces;
 using FiveMinutes.Models;
-using FiveMinutes.Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +11,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("LocalConnection"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
@@ -31,17 +29,13 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
-// DI container
-builder.Services.AddScoped<IFiveMinuteTemplateRepository, FiveMinuteTemplateRepository>(); // Scoped for repository
-builder.Services.AddScoped<IFiveMinuteTestRepository, FiveMinuteTestRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
 var app = builder.Build();
+
+
+// Прошу обратить внимание!!! Теперь не только адимны на сайте исть
 
 app.ApplyMigrations();
 await Seed.SeedUsersDefailt(app);
-
-
 
 // Configure the HTTP request pipeline.
 //if (!app.Environment.IsDevelopment())

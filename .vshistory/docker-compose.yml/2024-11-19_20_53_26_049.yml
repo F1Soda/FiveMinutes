@@ -1,8 +1,16 @@
 services:
   fiveminute:
-    image: fiveminute:latest
+    image: ${DOCKER_REGISTRY-}fiveminute
+    build:
+      context: .
+      dockerfile: FiveMinute/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
     ports:
-        - "80:8080"
+        - "8080:8080"
+        - "8081:8081"
     container_name: fiveminute
     depends_on:
       - db
@@ -18,7 +26,6 @@ services:
       - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
 
 volumes:
   db_data:

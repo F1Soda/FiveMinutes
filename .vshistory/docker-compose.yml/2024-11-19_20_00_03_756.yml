@@ -1,9 +1,9 @@
 services:
   fiveminute:
-    image: fiveminute:latest
+    container_name: fiveminute
+    image: fiveminute
     ports:
         - "80:8080"
-    container_name: fiveminute
     depends_on:
       - db
 
@@ -18,7 +18,6 @@ services:
       - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
 
 volumes:
   db_data:

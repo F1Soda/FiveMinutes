@@ -1,0 +1,6 @@
+services:
+  fiveminute:
+    image: ${DOCKER_REGISTRY-}fiveminute
+    build:
+      context: .
+      dockerfile: FiveMinute/Dockerfile
