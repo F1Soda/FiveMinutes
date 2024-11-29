@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -53,22 +52,6 @@ namespace FiveMinute.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FiveMinuteResults",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    UserName = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
-                    FiveMinuteTemplateId = table.Column<int>(type: "integer", nullable: false),
-                    PassTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FiveMinuteResults", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Folders",
                 columns: table => new
                 {
@@ -84,7 +67,7 @@ namespace FiveMinute.Migrations
                         name: "FK_Folders_Folders_ParentFolderId",
                         column: x => x.ParentFolderId,
                         principalTable: "Folders",
-                        principalColumn: "FMTestId");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -104,7 +87,7 @@ namespace FiveMinute.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
-                        principalColumn: "FMTestId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -125,7 +108,7 @@ namespace FiveMinute.Migrations
                         name: "FK_AspNetUserClaims_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "FMTestId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -145,7 +128,7 @@ namespace FiveMinute.Migrations
                         name: "FK_AspNetUserLogins_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "FMTestId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -163,13 +146,13 @@ namespace FiveMinute.Migrations
                         name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
-                        principalColumn: "FMTestId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "FMTestId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -189,7 +172,7 @@ namespace FiveMinute.Migrations
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "FMTestId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -213,35 +196,12 @@ namespace FiveMinute.Migrations
                         name: "FK_FiveMinuteTemplates_AspNetUsers_UserOwnerId",
                         column: x => x.UserOwnerId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "FMTestId");
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_FiveMinuteTemplates_FiveMinuteTemplates_OriginId",
                         column: x => x.OriginId,
                         principalTable: "FiveMinuteTemplates",
-                        principalColumn: "FMTestId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserAnswer",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Text = table.Column<string>(type: "text", nullable: false),
-                    IsCorrect = table.Column<bool>(type: "boolean", nullable: false),
-                    QuestionId = table.Column<int>(type: "integer", nullable: false),
-                    QuestionText = table.Column<string>(type: "text", nullable: false),
-                    QuestionPosition = table.Column<int>(type: "integer", nullable: false),
-                    FiveMinuteResultId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserAnswer", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserAnswer_FiveMinuteResults_FiveMinuteResultId",
-                        column: x => x.FiveMinuteResultId,
-                        principalTable: "FiveMinuteResults",
-                        principalColumn: "FMTestId");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -253,29 +213,24 @@ namespace FiveMinute.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     AttachedFMTId = table.Column<int>(type: "integer", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    FolderId = table.Column<int>(type: "integer", nullable: false),
-                    UserOrganizerId = table.Column<int>(type: "integer", nullable: true),
-                    AppUserId = table.Column<string>(type: "text", nullable: true)
+                    StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    PositionsToInclude = table.Column<List<int>>(type: "integer[]", nullable: false),
+                    UserOrganizerId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FiveMinuteTests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FiveMinuteTests_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
+                        name: "FK_FiveMinuteTests_AspNetUsers_UserOrganizerId",
+                        column: x => x.UserOrganizerId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "FMTestId");
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_FiveMinuteTests_FiveMinuteTemplates_AttachedFMTId",
                         column: x => x.AttachedFMTId,
                         principalTable: "FiveMinuteTemplates",
-                        principalColumn: "FMTestId");
-                    table.ForeignKey(
-                        name: "FK_FiveMinuteTests_Folders_FolderId",
-                        column: x => x.FolderId,
-                        principalTable: "Folders",
-                        principalColumn: "FMTestId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -296,8 +251,42 @@ namespace FiveMinute.Migrations
                         name: "FK_Question_FiveMinuteTemplates_FiveMinuteTemplateId",
                         column: x => x.FiveMinuteTemplateId,
                         principalTable: "FiveMinuteTemplates",
-                        principalColumn: "FMTestId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FiveMinuteResults",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    UserName = table.Column<string>(type: "text", nullable: false),
+                    FiveMinuteTemplateId = table.Column<int>(type: "integer", nullable: false),
+                    PassTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    AppUserId = table.Column<string>(type: "text", nullable: true),
+                    FiveMinuteTestId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FiveMinuteResults", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FiveMinuteResults_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FiveMinuteResults_FiveMinuteTemplates_FiveMinuteTemplateId",
+                        column: x => x.FiveMinuteTemplateId,
+                        principalTable: "FiveMinuteTemplates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FiveMinuteResults_FiveMinuteTests_FiveMinuteTestId",
+                        column: x => x.FiveMinuteTestId,
+                        principalTable: "FiveMinuteTests",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -318,8 +307,32 @@ namespace FiveMinute.Migrations
                         name: "FK_Answers_Question_QuestionId",
                         column: x => x.QuestionId,
                         principalTable: "Question",
-                        principalColumn: "FMTestId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserAnswer",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Text = table.Column<string>(type: "text", nullable: false),
+                    Position = table.Column<int>(type: "integer", nullable: false),
+                    IsCorrect = table.Column<bool>(type: "boolean", nullable: false),
+                    QuestionId = table.Column<int>(type: "integer", nullable: false),
+                    QuestionText = table.Column<string>(type: "text", nullable: false),
+                    QuestionPosition = table.Column<int>(type: "integer", nullable: false),
+                    FiveMinuteTestResultId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAnswer", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserAnswer_FiveMinuteResults_FiveMinuteTestResultId",
+                        column: x => x.FiveMinuteTestResultId,
+                        principalTable: "FiveMinuteResults",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -365,6 +378,21 @@ namespace FiveMinute.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_FiveMinuteResults_AppUserId",
+                table: "FiveMinuteResults",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FiveMinuteResults_FiveMinuteTemplateId",
+                table: "FiveMinuteResults",
+                column: "FiveMinuteTemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FiveMinuteResults_FiveMinuteTestId",
+                table: "FiveMinuteResults",
+                column: "FiveMinuteTestId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FiveMinuteTemplates_OriginId",
                 table: "FiveMinuteTemplates",
                 column: "OriginId");
@@ -375,19 +403,14 @@ namespace FiveMinute.Migrations
                 column: "UserOwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FiveMinuteTests_AppUserId",
-                table: "FiveMinuteTests",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_FiveMinuteTests_AttachedFMTId",
                 table: "FiveMinuteTests",
                 column: "AttachedFMTId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FiveMinuteTests_FolderId",
+                name: "IX_FiveMinuteTests_UserOrganizerId",
                 table: "FiveMinuteTests",
-                column: "FolderId");
+                column: "UserOrganizerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Folders_ParentFolderId",
@@ -400,9 +423,9 @@ namespace FiveMinute.Migrations
                 column: "FiveMinuteTemplateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserAnswer_FiveMinuteResultId",
+                name: "IX_UserAnswer_FiveMinuteTestResultId",
                 table: "UserAnswer",
-                column: "FiveMinuteResultId");
+                column: "FiveMinuteTestResultId");
         }
 
         /// <inheritdoc />
@@ -427,7 +450,7 @@ namespace FiveMinute.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "FiveMinuteTests");
+                name: "Folders");
 
             migrationBuilder.DropTable(
                 name: "UserAnswer");
@@ -439,10 +462,10 @@ namespace FiveMinute.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Folders");
+                name: "FiveMinuteResults");
 
             migrationBuilder.DropTable(
-                name: "FiveMinuteResults");
+                name: "FiveMinuteTests");
 
             migrationBuilder.DropTable(
                 name: "FiveMinuteTemplates");

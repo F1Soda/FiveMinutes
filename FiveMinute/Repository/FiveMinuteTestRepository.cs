@@ -29,6 +29,10 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 	{
 		return await context.FiveMinuteTests
 			.Include(x => x.UserOrganizer)
+			.Include(x => x.AttachedFMT)
+				.ThenInclude(x => x.Questions)
+				.ThenInclude(x => x.AnswerOptions)
+			.Include(x => x.Results)
 			.FirstOrDefaultAsync(x => x.Id == id);
 	}
 

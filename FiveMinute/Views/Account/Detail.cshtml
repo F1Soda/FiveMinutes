@@ -86,14 +86,14 @@
                 <tr>
                     <td>@test.Id</td>
                     <td>@test.Name</td>
-                    @* <td>@test.</td> *@
-                    
+                        <td><a class="btn btn-secondary" asp-area="" , asp-route-testId="@test.Id" , asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a></td>
                 </tr>
                 
             }
             </tbody>
         </table>
         <a class="btn btn-secondary" asp-area="" asp-controller="FiveMinuteTest" asp-action="Create">Создать тест</a>
+        
     </div>
 </div>
 

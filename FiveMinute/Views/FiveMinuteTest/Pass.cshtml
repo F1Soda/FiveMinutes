@@ -98,8 +98,8 @@
         Оставшееся время:
         <div id="timer">5:00</div>
     </div>
-    <form asp-action="SendTestResults" asp-controller="TestPassing" method="post">
-        <input type="hidden" aria-label="" name="FMTId" value="@Model.FMTestId" />
+    <form asp-action="SendTestResults" asp-controller="FiveMinuteTest" method="post">
+        <input type="hidden" aria-label="" name="FMTestId" value="@Model.FMTestId" />
         <div style="margin-bottom: 10px">
             @{
                 var userName = User.Identity?.Name ?? "";

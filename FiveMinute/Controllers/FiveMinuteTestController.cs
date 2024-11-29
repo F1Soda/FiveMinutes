@@ -4,7 +4,6 @@ using FiveMinute.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using FiveMinute.Data;
-using FiveMinute.Migrations;
 using FiveMinute.ViewModels.AccountViewModels;
 using Microsoft.EntityFrameworkCore;
 using FiveMinute.ViewModels;
@@ -106,7 +105,6 @@ namespace FiveMinute.Controllers
 				FMTs = user.FMTTemplates,
 				UserRole = user.UserRole,
 				IsOwner = true,
-
 			};
 			
 			return View(model);
@@ -119,8 +117,9 @@ namespace FiveMinute.Controllers
 			if (currentUser == null || !currentUser.canCreate)
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
 			
-			var user = await context.Users.Include(x => x.FMTTemplates).FirstOrDefaultAsync(x => x.Id == currentUser.Id);
+			var user = await context.Users.Include(x => x.FMTTemplates).ThenInclude(x => x.Questions).FirstOrDefaultAsync(x => x.Id == currentUser.Id);
 			var attachedTemplate = user.FMTTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
+
 			var test = new FiveMinuteTest
 			{
 				Name = fmTestEditViewModel.Name,
@@ -128,6 +127,8 @@ namespace FiveMinute.Controllers
 				AttachedFMTId = fmTestEditViewModel.Id,
 				UserOrganizer = user,
 				UserOrganizerId = user.Id,
+				PositionsToInclude = attachedTemplate.Questions.Select(x => x.Position).ToList(),
+				Results = new List<FiveMinuteTestResult>()
 			};
 			
 			context.FiveMinuteTests.Add(test);
@@ -139,6 +140,11 @@ namespace FiveMinute.Controllers
 		public async Task<IActionResult> Pass(int testId)
 		{
 			var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testId);
+			if (fmTest is null)
+			{
+				return View("NotFound");
+			}
+
 			var fmt = fmTest.AttachedFMT;
 			var test = new FiveMinuteTestViewModel
 			{
@@ -173,7 +179,8 @@ namespace FiveMinute.Controllers
 
 			testResult.UserId = currentUser?.Id;
 			testResult.UserName = testResultViewModel.UserName;
-			
+
+
 			if (await fiveMinuteTestRepository.AddResultToTest(testResultViewModel.FMTestId, testResult))
 				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers"));
 			return RedirectToAction("Index", "Home");
@@ -206,6 +213,7 @@ namespace FiveMinute.Controllers
 			{
 				Answers = testResult.UserAnswers.Select(ans => CheckUserAnswer(ans, fmTest.AttachedFMT)).ToList(),
 				FiveMinuteTemplateId = testResult.FMTestId,
+				FiveMinuteTemplate = fmTest.AttachedFMT,
 				PassTime = DateTime.UtcNow,
 			};
 		}
