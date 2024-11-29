@@ -84,7 +84,7 @@ namespace FiveMinute.Migrations
                         name: "FK_Folders_Folders_ParentFolderId",
                         column: x => x.ParentFolderId,
                         principalTable: "Folders",
-                        principalColumn: "Id");
+                        principalColumn: "FMTestId");
                 });
 
             migrationBuilder.CreateTable(
@@ -104,7 +104,7 @@ namespace FiveMinute.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
-                        principalColumn: "Id",
+                        principalColumn: "FMTestId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -125,7 +125,7 @@ namespace FiveMinute.Migrations
                         name: "FK_AspNetUserClaims_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalColumn: "FMTestId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -145,7 +145,7 @@ namespace FiveMinute.Migrations
                         name: "FK_AspNetUserLogins_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalColumn: "FMTestId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -163,13 +163,13 @@ namespace FiveMinute.Migrations
                         name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
-                        principalColumn: "Id",
+                        principalColumn: "FMTestId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalColumn: "FMTestId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -189,7 +189,7 @@ namespace FiveMinute.Migrations
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        principalColumn: "FMTestId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -213,12 +213,12 @@ namespace FiveMinute.Migrations
                         name: "FK_FiveMinuteTemplates_AspNetUsers_UserOwnerId",
                         column: x => x.UserOwnerId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "FMTestId");
                     table.ForeignKey(
                         name: "FK_FiveMinuteTemplates_FiveMinuteTemplates_OriginId",
                         column: x => x.OriginId,
                         principalTable: "FiveMinuteTemplates",
-                        principalColumn: "Id");
+                        principalColumn: "FMTestId");
                 });
 
             migrationBuilder.CreateTable(
@@ -241,7 +241,7 @@ namespace FiveMinute.Migrations
                         name: "FK_UserAnswer_FiveMinuteResults_FiveMinuteResultId",
                         column: x => x.FiveMinuteResultId,
                         principalTable: "FiveMinuteResults",
-                        principalColumn: "Id");
+                        principalColumn: "FMTestId");
                 });
 
             migrationBuilder.CreateTable(
@@ -264,17 +264,17 @@ namespace FiveMinute.Migrations
                         name: "FK_FiveMinuteTests_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "FMTestId");
                     table.ForeignKey(
                         name: "FK_FiveMinuteTests_FiveMinuteTemplates_AttachedFMTId",
                         column: x => x.AttachedFMTId,
                         principalTable: "FiveMinuteTemplates",
-                        principalColumn: "Id");
+                        principalColumn: "FMTestId");
                     table.ForeignKey(
                         name: "FK_FiveMinuteTests_Folders_FolderId",
                         column: x => x.FolderId,
                         principalTable: "Folders",
-                        principalColumn: "Id",
+                        principalColumn: "FMTestId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -296,7 +296,7 @@ namespace FiveMinute.Migrations
                         name: "FK_Question_FiveMinuteTemplates_FiveMinuteTemplateId",
                         column: x => x.FiveMinuteTemplateId,
                         principalTable: "FiveMinuteTemplates",
-                        principalColumn: "Id",
+                        principalColumn: "FMTestId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -318,7 +318,7 @@ namespace FiveMinute.Migrations
                         name: "FK_Answers_Question_QuestionId",
                         column: x => x.QuestionId,
                         principalTable: "Question",
-                        principalColumn: "Id",
+                        principalColumn: "FMTestId",
                         onDelete: ReferentialAction.Cascade);
                 });
 

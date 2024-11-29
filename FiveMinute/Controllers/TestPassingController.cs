@@ -29,10 +29,10 @@ public class TestPassingController : Controller
     public IActionResult Test(int fiveMinuteId)
     {
         var fmt = fiveMinuteTemplateRepository.GetByIdAsync(fiveMinuteId).Result;
-        var test = new FiveMinuteViewModel
+        var test = new FiveMinuteTestViewModel
         {
             Name = fmt.Name,
-            Id = fmt.Id,
+            FMTestId = fmt.Id,
             Questions = fmt.Questions.Select(x => new QuestionViewModel
             {
                 Id = x.Id,
@@ -85,13 +85,13 @@ public class TestPassingController : Controller
         };
     }
 
-    public FiveMinuteResult ConvertViewModelToFiveMinuteResult(TestResultViewModel testResult)
+    public FiveMinuteTestResult ConvertViewModelToFiveMinuteResult(TestResultViewModel testResult)
     {
-        var fmt = fiveMinuteTemplateRepository.GetByIdAsync(testResult.FMTId).Result;
-        return new FiveMinuteResult
+        var fmt = fiveMinuteTemplateRepository.GetByIdAsync(testResult.FMTestId).Result;
+        return new FiveMinuteTestResult
         {
             Answers = testResult.UserAnswers.Select(ans => CheckUserAnswer(ans, fmt)).ToList(),
-            FiveMinuteTemplateId = testResult.FMTId,
+            FiveMinuteTemplateId = testResult.FMTestId,
             PassTime = DateTime.UtcNow,
         };
     }

@@ -2,8 +2,8 @@ using FiveMinute.Models;
 
 namespace FiveMinute.Interfaces;
 
-public interface IFiveMinuteResultsRepository : IDefaultRepository<FiveMinuteResult>
+public interface IFiveMinuteResultsRepository : IDefaultRepository<FiveMinuteTestResult>
 {
-    Task<ICollection<FiveMinuteResult?>> GetByFMTIdAsync(int fiveMinuteId);
-    Task<FiveMinuteResult> GetById(int fiveMinuteId);
+    Task<ICollection<FiveMinuteTestResult?>> GetByFMTIdAsync(int fiveMinuteId);
+    Task<FiveMinuteTestResult> GetById(int fiveMinuteId);
 }

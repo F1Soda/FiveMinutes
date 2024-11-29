@@ -11,7 +11,7 @@ namespace FiveMinute.Data
 		public DbSet<FiveMinuteTest> FiveMinuteTests { get; set; }
 		public DbSet<Folder> Folders { get; set; }
 
-		public DbSet<FiveMinuteResult> FiveMinuteResults { get; set; }
+		public DbSet<FiveMinuteTestResult> FiveMinuteResults { get; set; }
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 	}
 }

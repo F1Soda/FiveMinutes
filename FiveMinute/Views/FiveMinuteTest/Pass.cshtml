@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewData["Title"] = "TestPassing";
 }
 
@@ -78,33 +78,35 @@
 @* </style> *@
 
 <style>
-    label{
-        display:  block;
+    label {
+        display: block;
         margin-left: 5px;
     }
-         .question { 
-         margin-bottom: 20px;
-         padding: 15px;
-         background-color: #fff;
-         border-radius: 5px;
-         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-     }
+
+    .question {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
 </style>
 
 <div class="container test-area">
     <h1>@Model.Name</h1>
-    <div>Оставшееся время:
+    <div>
+        Оставшееся время:
         <div id="timer">5:00</div>
     </div>
     <form asp-action="SendTestResults" asp-controller="TestPassing" method="post">
-        <input type="hidden" aria-label="" name="FMTId" value = "@Model.FMTestId"/>
+        <input type="hidden" aria-label="" name="FMTId" value="@Model.FMTestId" />
         <div style="margin-bottom: 10px">
             @{
                 var userName = User.Identity?.Name ?? "";
             }
-            <input class="form-control" type="text" name="UserName" @(userName == "" ? "" : "readonly") value="@(userName)"/>
+            <input class="form-control" type="text" name="UserName" @(userName == "" ? "" : "readonly") value="@(userName)" />
         </div>
-        
+
         @{
             var questionNumber = 0;
             var answerNumber = 0;
@@ -121,10 +123,10 @@
                 {
                     case ResponseType.Text:
                         <div class="mb-3">
-                            <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber"/>
-                            <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].Position" value="0"/>
-                            <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id"/>
-                            <input type="text" aria-label="@question.QuestionText" name="UserAnswers[@answerNumber].Text"/>
+                            <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber" />
+                            <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].Position" value="0" />
+                            <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id" />
+                            <input type="text" aria-label="@question.QuestionText" name="UserAnswers[@answerNumber].Text" />
                         </div>
                         answerNumber++;
                         break;
@@ -133,9 +135,9 @@
                             @{
                                 position = 1;
                             }
-                            <input type="hidden" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber"/>
-                            <input type="hidden" name="UserAnswers[@answerNumber].Position" value="@position"/>
-                            <input type="hidden" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id"/>
+                            <input type="hidden" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber" />
+                            <input type="hidden" name="UserAnswers[@answerNumber].Position" value="@position" />
+                            <input type="hidden" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id" />
                             @foreach (var answer in question.AnswerOptions)
                             {
                                 <div class="form-check">
@@ -160,10 +162,10 @@
                             @foreach (var answer in question.AnswerOptions)
                             {
                                 <div class="form-check">
-                                    <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber"/>
-                                    <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].Position" value="@position"/>
-                                    <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id"/>
-                                    <input type="checkbox" class="form-check-input" name="UserAnswers[@answerNumber].Text" value="@answer.Text" 
+                                    <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber" />
+                                    <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].Position" value="@position" />
+                                    <input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id" />
+                                    <input type="checkbox" class="form-check-input" name="UserAnswers[@answerNumber].Text" value="@answer.Text"
                                            id="answer_@(questionNumber)_@(position)">
                                     <label class="form-check-label" for="answer_@(questionNumber)_@(position)">
                                         @answer.Text
@@ -178,7 +180,7 @@
             </div>
         }
         <div id="error-message" style="color: red; display: none;">Пожалуйста, заполните все поля перед отправкой.</div>
-        <input class="btn btn-primary mt-3" id="submit" type="submit" value="Отправить ответы"/>
+        <input class="btn btn-primary mt-3" id="submit" type="submit" value="Отправить ответы" />
     </form>
 </div>
 
@@ -212,7 +214,7 @@
         if (seconds %60 < 10){
             secondsString = "0" + secondsString;
         }
-        
+
         timer.textContent = `${Math.floor(seconds / 60)}:${secondsString}`;
         if (seconds == 0){
             document.querySelector('#submit').click()

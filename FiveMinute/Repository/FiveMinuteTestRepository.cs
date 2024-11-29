@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using FiveMinute.Data;
-using FiveMinute.Repository;
 using FiveMinute.Models;
+using FiveMinute.ViewModels;
 
 namespace FiveMinute.Repository.FiveMinuteTestRepository;
 
@@ -9,6 +9,20 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 {
 	public FiveMinuteTestRepository(ApplicationDbContext context) : base(context)
 	{
+	}
+
+	public async Task<bool> AddResultToTest(int testId, FiveMinuteTestResult testResults)
+	{
+		var FMTest = await GetByIdAsync(testId);
+
+		if (FMTest == null)
+		{
+			throw new Exception($"Test Is not exist: TestID: {testId}");
+		}
+
+		FMTest.Results.Append(testResults);
+
+		return await Save();
 	}
 
 	public async Task<FiveMinuteTest?> GetByIdAsync(int id)
@@ -37,4 +51,7 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 
 		return await Save();
 	}
+
+
+
 }

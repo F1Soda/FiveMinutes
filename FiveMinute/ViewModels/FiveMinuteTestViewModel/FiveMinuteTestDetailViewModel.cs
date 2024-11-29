@@ -15,7 +15,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 		public DateTime StartTime { get; set; }
 		public bool EndPlanned = false;
 		public DateTime EndTime { get; set; }
-		public IEnumerable<FiveMinuteResult> Results { get; set; }
+		public IEnumerable<FiveMinuteTestResult> Results { get; set; }
 
 		public static FiveMinuteTestDetailViewModel CreateByModel(FiveMinuteTest fmTest)
 		{

@@ -2,10 +2,10 @@ using FiveMinute.Models;
 
 namespace FiveMinute.ViewModels;
 
-public class FiveMinuteViewModel
+public class FiveMinuteTestViewModel
 {
     public string Name { get; set; }
-    public int Id;
+    public int FMTestId;
 
     public IEnumerable<QuestionViewModel> Questions { get; set; }
 }
