@@ -1,8 +1,8 @@
-﻿using FiveMinutes.Models;
+﻿using FiveMinute.Models;
 
 namespace FiveMinutes.ViewModels.FMTEditViewModels
 {
-    public class FiveMinuteTemplateEditViewModel
+	public class FiveMinuteTemplateEditViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

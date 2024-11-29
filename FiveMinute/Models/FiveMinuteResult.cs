@@ -1,3 +1,4 @@
+using FiveMinute.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace FiveMinutes.Models;

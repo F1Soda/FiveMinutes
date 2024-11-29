@@ -1,6 +1,8 @@
 ﻿using FiveMinute.Database;
+using FiveMinute.Models;
+using FiveMinute.Repository.FiveMinuteTemplateRepository;
+using FiveMinute.Repository.UserRepository;
 using FiveMinutes.Data;
-using FiveMinutes.Interfaces;
 using FiveMinutes.Models;
 using FiveMinutes.Repository;
 using FiveMinutes.ViewModels.FMTEditViewModels;

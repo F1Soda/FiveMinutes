@@ -1,9 +1,9 @@
 ﻿using FiveMinute.Database;
-using FiveMinutes.Interfaces;
-using FiveMinutes.Models;
+using FiveMinute.Models;
+using FiveMinute.Repository.DefaultRepository;
 using Microsoft.EntityFrameworkCore;
 
-namespace FiveMinutes.Repository
+namespace FiveMinute.Repository.FiveMinuteTemplateRepository
 {
 	public class FiveMinuteTemplateRepository : DefaultRepository<FiveMinuteTemplate>, IFiveMinuteTemplateRepository
 	{
@@ -39,11 +39,11 @@ namespace FiveMinutes.Repository
 		public async Task<bool> Update(FiveMinuteTemplate existingTemplate, FiveMinuteTemplate newTemplate)
 		{
 			context.FiveMinuteTemplates.Attach(existingTemplate);
-            existingTemplate.Name = newTemplate.Name;
-            existingTemplate.ShowInProfile = newTemplate.ShowInProfile;
-            existingTemplate.LastModificationTime = DateTime.UtcNow;
-            existingTemplate.Questions = newTemplate.Questions;
-            context.Entry(existingTemplate).State = EntityState.Modified;
+			existingTemplate.Name = newTemplate.Name;
+			existingTemplate.ShowInProfile = newTemplate.ShowInProfile;
+			existingTemplate.LastModificationTime = DateTime.UtcNow;
+			existingTemplate.Questions = newTemplate.Questions;
+			context.Entry(existingTemplate).State = EntityState.Modified;
 			return await Save();
 		}
 	}

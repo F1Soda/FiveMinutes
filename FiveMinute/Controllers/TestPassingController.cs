@@ -1,4 +1,6 @@
 using FiveMinute.Database;
+using FiveMinute.Models;
+using FiveMinute.Repository.FiveMinuteTemplateRepository;
 using FiveMinutes.Interfaces;
 using FiveMinutes.Models;
 using FiveMinutes.Repository;

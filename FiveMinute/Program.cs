@@ -1,9 +1,10 @@
 using FiveMinute.Database;
 using FiveMinute.Migrations;
+using FiveMinute.Repository.FiveMinuteTemplateRepository;
+using FiveMinute.Repository.FiveMinuteTestRepository;
+using FiveMinute.Repository.UserRepository;
 using FiveMinutes.Data;
-using FiveMinutes.Interfaces;
 using FiveMinutes.Models;
-using FiveMinutes.Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

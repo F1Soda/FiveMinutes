@@ -1,8 +1,9 @@
-﻿using FiveMinutes.Models;
+﻿using FiveMinute.Models;
+using FiveMinutes.Models;
 
 namespace FiveMinutes.ViewModels.AccountViewModels
 {
-    public class UserDetailViewModel
+	public class UserDetailViewModel
     {
         public string Id { get; set; }
         public string UserName { get; set; }

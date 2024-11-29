@@ -1,3 +1,4 @@
+using FiveMinute.Repository.DefaultRepository;
 using FiveMinutes.Models;
 
 namespace FiveMinutes.Interfaces;

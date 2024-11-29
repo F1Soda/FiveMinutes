@@ -1,9 +1,10 @@
-﻿using FiveMinutes.Data;
+﻿using FiveMinute.Models;
+using FiveMinutes.Data;
 using Microsoft.AspNetCore.Identity;
 
 namespace FiveMinutes.Models
 {
-    public class AppUser : IdentityUser
+	public class AppUser : IdentityUser
     {
         public ICollection<FiveMinuteTemplate> FMTemplates { get; set; }
         public ICollection<FiveMinuteTest> FMTests { get; set; }

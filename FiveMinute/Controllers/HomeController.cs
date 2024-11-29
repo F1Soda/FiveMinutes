@@ -1,3 +1,4 @@
+using FiveMinute.Models;
 using FiveMinutes.Data;
 using FiveMinutes.Models;
 using Microsoft.AspNetCore.Identity;

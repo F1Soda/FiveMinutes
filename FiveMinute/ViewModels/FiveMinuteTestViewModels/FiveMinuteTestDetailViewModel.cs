@@ -1,4 +1,5 @@
-﻿using FiveMinutes.Data;
+﻿using FiveMinute.Models;
+using FiveMinutes.Data;
 using FiveMinutes.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 

@@ -1,5 +1,5 @@
 using FiveMinute.Database;
-using FiveMinutes.Interfaces;
+using FiveMinute.Repository.FiveMinuteTemplateRepository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FiveMinutes.Controllers;
