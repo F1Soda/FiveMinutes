@@ -22,13 +22,13 @@ namespace FiveMinute.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("FiveMinutes.Models.Answer", b =>
+            modelBuilder.Entity("FiveMinute.Models.Answer", b =>
                 {
-                    b.Property<int>("FMTestId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FMTestId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("boolean");
@@ -43,16 +43,16 @@ namespace FiveMinute.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("FMTestId");
+                    b.HasKey("Id");
 
                     b.HasIndex("QuestionId");
 
                     b.ToTable("Answers");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.AppUser", b =>
+            modelBuilder.Entity("FiveMinute.Models.AppUser", b =>
                 {
-                    b.Property<string>("FMTestId")
+                    b.Property<string>("Id")
                         .HasColumnType("text");
 
                     b.Property<int>("AccessFailedCount")
@@ -106,7 +106,7 @@ namespace FiveMinute.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("FMTestId");
+                    b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -118,18 +118,21 @@ namespace FiveMinute.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTestResult", b =>
+            modelBuilder.Entity("FiveMinute.Models.FiveMinuteResult", b =>
                 {
-                    b.Property<int>("FMTestId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FMTestId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
                         .HasColumnType("text");
 
                     b.Property<int>("FiveMinuteTemplateId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("FiveMinuteTestId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("PassTime")
@@ -142,22 +145,24 @@ namespace FiveMinute.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("FMTestId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
                     b.HasIndex("FiveMinuteTemplateId");
 
+                    b.HasIndex("FiveMinuteTestId");
+
                     b.ToTable("FiveMinuteResults");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTemplate", b =>
+            modelBuilder.Entity("FiveMinute.Models.FiveMinuteTemplate", b =>
                 {
-                    b.Property<int>("FMTestId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FMTestId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CreationTime")
                         .HasColumnType("timestamp with time zone");
@@ -178,7 +183,7 @@ namespace FiveMinute.Migrations
                     b.Property<string>("UserOwnerId")
                         .HasColumnType("text");
 
-                    b.HasKey("FMTestId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OriginId");
 
@@ -187,46 +192,49 @@ namespace FiveMinute.Migrations
                     b.ToTable("FiveMinuteTemplates");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTest", b =>
+            modelBuilder.Entity("FiveMinute.Models.FiveMinuteTest", b =>
                 {
-                    b.Property<int>("FMTestId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FMTestId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AttachedFMTId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("FolderId")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("UserOrganizerId")
-                        .HasColumnType("integer");
+                    b.Property<string>("UserOrganizerId")
+                        .HasColumnType("text");
 
-                    b.HasKey("FMTestId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AttachedFMTId");
 
-                    b.HasIndex("FolderId");
+                    b.HasIndex("UserOrganizerId");
 
                     b.ToTable("FiveMinuteTests");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.Folder", b =>
+            modelBuilder.Entity("FiveMinute.Models.Folder", b =>
                 {
-                    b.Property<int>("FMTestId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FMTestId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -235,20 +243,20 @@ namespace FiveMinute.Migrations
                     b.Property<int?>("ParentFolderId")
                         .HasColumnType("integer");
 
-                    b.HasKey("FMTestId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ParentFolderId");
 
                     b.ToTable("Folders");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.Question", b =>
+            modelBuilder.Entity("FiveMinute.Models.Question", b =>
                 {
-                    b.Property<int>("FMTestId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FMTestId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("FiveMinuteTemplateId")
                         .HasColumnType("integer");
@@ -263,20 +271,20 @@ namespace FiveMinute.Migrations
                     b.Property<int>("ResponseType")
                         .HasColumnType("integer");
 
-                    b.HasKey("FMTestId");
+                    b.HasKey("Id");
 
                     b.HasIndex("FiveMinuteTemplateId");
 
                     b.ToTable("Question");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.UserAnswer", b =>
+            modelBuilder.Entity("FiveMinute.Models.UserAnswer", b =>
                 {
-                    b.Property<int>("FMTestId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FMTestId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("FiveMinuteResultId")
                         .HasColumnType("integer");
@@ -301,7 +309,7 @@ namespace FiveMinute.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("FMTestId");
+                    b.HasKey("Id");
 
                     b.HasIndex("FiveMinuteResultId");
 
@@ -310,7 +318,7 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
-                    b.Property<string>("FMTestId")
+                    b.Property<string>("Id")
                         .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -325,7 +333,7 @@ namespace FiveMinute.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
-                    b.HasKey("FMTestId");
+                    b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -336,11 +344,11 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Property<int>("FMTestId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FMTestId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -352,7 +360,7 @@ namespace FiveMinute.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("FMTestId");
+                    b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
@@ -361,11 +369,11 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.Property<int>("FMTestId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FMTestId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -377,7 +385,7 @@ namespace FiveMinute.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("FMTestId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -440,38 +448,42 @@ namespace FiveMinute.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.Answer", b =>
+            modelBuilder.Entity("FiveMinute.Models.Answer", b =>
                 {
-                    b.HasOne("FiveMinutes.Models.Question", null)
+                    b.HasOne("FiveMinute.Models.Question", null)
                         .WithMany("AnswerOptions")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTestResult", b =>
+            modelBuilder.Entity("FiveMinute.Models.FiveMinuteResult", b =>
                 {
-                    b.HasOne("FiveMinutes.Models.AppUser", null)
-                        .WithMany("PassedTestResults")
+                    b.HasOne("FiveMinute.Models.AppUser", null)
+                        .WithMany("Result")
                         .HasForeignKey("AppUserId");
 
-                    b.HasOne("FiveMinutes.Models.FiveMinuteTemplate", "FiveMinuteTemplate")
+                    b.HasOne("FiveMinute.Models.FiveMinuteTemplate", "FiveMinuteTemplate")
                         .WithMany()
                         .HasForeignKey("FiveMinuteTemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FiveMinute.Models.FiveMinuteTest", null)
+                        .WithMany("Results")
+                        .HasForeignKey("FiveMinuteTestId");
+
                     b.Navigation("FiveMinuteTemplate");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTemplate", b =>
+            modelBuilder.Entity("FiveMinute.Models.FiveMinuteTemplate", b =>
                 {
-                    b.HasOne("FiveMinutes.Models.FiveMinuteTemplate", "Origin")
+                    b.HasOne("FiveMinute.Models.FiveMinuteTemplate", "Origin")
                         .WithMany()
                         .HasForeignKey("OriginId");
 
-                    b.HasOne("FiveMinutes.Models.AppUser", "UserOwner")
-                        .WithMany("FMTs")
+                    b.HasOne("FiveMinute.Models.AppUser", "UserOwner")
+                        .WithMany("FMTTemplates")
                         .HasForeignKey("UserOwnerId");
 
                     b.Navigation("Origin");
@@ -479,35 +491,33 @@ namespace FiveMinute.Migrations
                     b.Navigation("UserOwner");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTest", b =>
+            modelBuilder.Entity("FiveMinute.Models.FiveMinuteTest", b =>
                 {
-                    b.HasOne("FiveMinutes.Models.FiveMinuteTemplate", "AttachedFMT")
+                    b.HasOne("FiveMinute.Models.FiveMinuteTemplate", "AttachedFMT")
                         .WithMany()
                         .HasForeignKey("AttachedFMTId");
 
-                    b.HasOne("FiveMinutes.Models.Folder", "Folder")
-                        .WithMany()
-                        .HasForeignKey("FolderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("FiveMinute.Models.AppUser", "UserOrganizer")
+                        .WithMany("FMTests")
+                        .HasForeignKey("UserOrganizerId");
 
                     b.Navigation("AttachedFMT");
 
-                    b.Navigation("Folder");
+                    b.Navigation("UserOrganizer");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.Folder", b =>
+            modelBuilder.Entity("FiveMinute.Models.Folder", b =>
                 {
-                    b.HasOne("FiveMinutes.Models.Folder", "ParentFolder")
+                    b.HasOne("FiveMinute.Models.Folder", "ParentFolder")
                         .WithMany("SubFolders")
                         .HasForeignKey("ParentFolderId");
 
                     b.Navigation("ParentFolder");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.Question", b =>
+            modelBuilder.Entity("FiveMinute.Models.Question", b =>
                 {
-                    b.HasOne("FiveMinutes.Models.FiveMinuteTemplate", "FiveMinuteTemplate")
+                    b.HasOne("FiveMinute.Models.FiveMinuteTemplate", "FiveMinuteTemplate")
                         .WithMany("Questions")
                         .HasForeignKey("FiveMinuteTemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -516,9 +526,9 @@ namespace FiveMinute.Migrations
                     b.Navigation("FiveMinuteTemplate");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.UserAnswer", b =>
+            modelBuilder.Entity("FiveMinute.Models.UserAnswer", b =>
                 {
-                    b.HasOne("FiveMinutes.Models.FiveMinuteTestResult", null)
+                    b.HasOne("FiveMinute.Models.FiveMinuteResult", null)
                         .WithMany("Answers")
                         .HasForeignKey("FiveMinuteResultId");
                 });
@@ -534,7 +544,7 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("FiveMinutes.Models.AppUser", null)
+                    b.HasOne("FiveMinute.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -543,7 +553,7 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("FiveMinutes.Models.AppUser", null)
+                    b.HasOne("FiveMinute.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -558,7 +568,7 @@ namespace FiveMinute.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FiveMinutes.Models.AppUser", null)
+                    b.HasOne("FiveMinute.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -567,36 +577,43 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("FiveMinutes.Models.AppUser", null)
+                    b.HasOne("FiveMinute.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.AppUser", b =>
+            modelBuilder.Entity("FiveMinute.Models.AppUser", b =>
                 {
-                    b.Navigation("FMTs");
+                    b.Navigation("FMTTemplates");
 
-                    b.Navigation("PassedTestResults");
+                    b.Navigation("FMTests");
+
+                    b.Navigation("Result");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTestResult", b =>
+            modelBuilder.Entity("FiveMinute.Models.FiveMinuteResult", b =>
                 {
                     b.Navigation("Answers");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.FiveMinuteTemplate", b =>
+            modelBuilder.Entity("FiveMinute.Models.FiveMinuteTemplate", b =>
                 {
                     b.Navigation("Questions");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.Folder", b =>
+            modelBuilder.Entity("FiveMinute.Models.FiveMinuteTest", b =>
+                {
+                    b.Navigation("Results");
+                });
+
+            modelBuilder.Entity("FiveMinute.Models.Folder", b =>
                 {
                     b.Navigation("SubFolders");
                 });
 
-            modelBuilder.Entity("FiveMinutes.Models.Question", b =>
+            modelBuilder.Entity("FiveMinute.Models.Question", b =>
                 {
                     b.Navigation("AnswerOptions");
                 });

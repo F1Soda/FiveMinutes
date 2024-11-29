@@ -71,7 +71,29 @@
 
     <div id="fiveMinuteTests" class="tab-pane fade">
         <h3>Все тесты</h3>
-        
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Show In Profile</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var test in Model.Tests)
+            {
+                <tr>
+                    <td>@test.Id</td>
+                    <td>@test.Name</td>
+                    @* <td>@test.</td> *@
+                    
+                </tr>
+                
+            }
+            </tbody>
+        </table>
+        <a class="btn btn-secondary" asp-area="" asp-controller="FiveMinuteTest" asp-action="Create">Создать тест</a>
     </div>
 </div>
 
