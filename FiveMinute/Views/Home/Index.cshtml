@@ -1,7 +1,18 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using FiveMinute.Data
+@using Microsoft.AspNetCore.Identity
 @inject UserManager<AppUser> UserManager
 
 
+@{
+    var currentUser = await UserManager.GetUserAsync(User);
+}
+
+@if (currentUser != null && currentUser.canCreate)
+{
+    <l1 class="nav-item">
+        <a class="btn" asp-area="" asp-controller="FiveMinuteTemplate" asp-action="Create">Создать пятиминутку</a>
+    </l1>
+}
 <div class="text-center">
     <h1 class="display-4">FIVE MINUTE GREAT WEBSITE</h1>
 </div>

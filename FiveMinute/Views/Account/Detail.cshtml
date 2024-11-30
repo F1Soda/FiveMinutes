@@ -1,8 +1,14 @@
 ﻿@model FiveMinute.ViewModels.AccountViewModels.UserDetailViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
 
 <h1>Данные о пользователе @Model.UserName</h1>
 <p>Пользовательское имя: @Model.UserName</p>
 <p>Почта: @Model.Email</p>
+
+@{
+    var currentUser = await UserManager.GetUserAsync(User);
+}
 
 <!-- Вкладки -->
 <ul class="nav nav-tabs">
@@ -64,7 +70,12 @@
         {
             <p>Привет, студент @Model.UserName! У вас пока нет доступных тестов.</p>
         }
-        <a class="btn btn-secondary" asp-area="" asp-controller="FiveMinuteTemplate" asp-action="Create">Создать пятиминутку</a>
+        @if (currentUser != null && currentUser.canCreate)
+        {
+            <l1 class="nav-item">
+                <a class="btn" asp-area="" asp-controller="FiveMinuteTemplate" asp-action="Create">Создать пятиминутку</a>
+            </l1>
+        }
     </div>
 
     <div id="fiveMinuteTests" class="tab-pane fade">
@@ -95,7 +106,12 @@
             }
             </tbody>
         </table>
-        <a class="btn btn-secondary" asp-area="" asp-controller="FiveMinuteTest" asp-action="Create">Создать тест</a>
+        @if (currentUser != null && currentUser.canCreate)
+        {
+            <l1 class="nav-item">
+                <a class="btn btn-secondary" asp-area="" asp-controller="FiveMinuteTest" asp-action="Create">Создать тест</a>
+            </l1>
+        }
     </div>
 </div>
 
