@@ -215,26 +215,8 @@ namespace FiveMinute.Controllers
 			{
 				Answers = testResult.UserAnswers.Select(ans => CheckUserAnswer(ans, fmTest.FiveMinuteTemplate)).ToList(),
 				FiveMinuteTestId = testResult.FMTestId,
-				FiveMinuteTest = fmTest,
 				PassTime = DateTime.UtcNow,
 			};
-		}
-
-		public async Task<IActionResult> Statistics(string testId)
-		{
-			if (string.IsNullOrEmpty(testId))
-			{
-				return RedirectToAction("NotFound");
-			}
-
-			var results = await fiveMinuteResultsRepository.GetByTestIdAsync(int.Parse(testId));
-
-			if (results == null)
-			{
-				return RedirectToAction("NotFound");
-			}
-
-			return View(results);
 		}
 	}
 }

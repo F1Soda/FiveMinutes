@@ -1,8 +1,8 @@
 @{
-    ViewData["Title"] = "FiveMinuteTestResult";
+    ViewData["Title"] = "FiveMinuteResult";
 }
 
-@model FiveMinute.Models.FiveMinuteTestResult
+@model FiveMinute.ViewModels.FiveMinuteTestResultViewModel
 
 <style>
     label{
@@ -19,26 +19,26 @@
 </style>
 
 <div class="container test-area">
-    <h1>@Model.FiveMinuteTest.Name</h1>
+    <h1>@Model.FiveMinuteTestName</h1>
     <div>Оставшееся время:
         <div id="timer">5:00</div>
     </div>
     <form asp-action="SendTestResults" asp-controller="TestPassing" method="post">
-        <input type="hidden" aria-label="" name="FMTId" value = "@Model.Id"/>
+        <input type="hidden" aria-label="" name="FMTId" value = "@Model.FiveMinuteTestResult.Id"/>
         <div style="margin-bottom: 10px">
-            <input class="form-control" type="text" disabled value="@(Model.UserName)"/>
+            <input class="form-control" type="text" disabled value="@(Model.FiveMinuteTestResult.UserName)"/>
         </div>
 
         @{
             var questionNumber = 0;
         }
-        @foreach (var question in Model.FiveMinuteTest.FiveMinuteTemplate.Questions.OrderBy(q => q.Position))
+        @foreach (var question in Model.Questions.OrderBy(q => q.Position))
         {
             questionNumber++;
             <div class="question card mt-3 question-card border-secondary border-3">
                 <h5 class="question-text card-title mb-2">@questionNumber. @question.QuestionText</h5>
                 @{
-                    var answers = Model.Answers.Where(answer => answer.QuestionPosition == question.Position).ToList();
+                    var answers = Model.FiveMinuteTestResult.Answers.Where(answer => answer.QuestionPosition == question.Position).ToList();
                 }
                 @switch (question.ResponseType)
                 {
@@ -97,9 +97,9 @@
     @functions {
         public string GetAnswerColor(UserAnswer answer)
         {
-            if (answer.Text == "")
+            if (answer == null || answer?.Text == "")
                 return "";
-            if (answer.IsCorrect)
+            if (answer != null && answer.IsCorrect)
                 return "green";
             return "red";
         }

@@ -15,8 +15,7 @@ public class FiveMinuteResultRepository: DefaultRepository<FiveMinuteTestResult?
     {
         return await context.FiveMinuteResults
             .Include(x => x.Answers)
-            .Include(x => x.FiveMinuteTest)
-            .ThenInclude(x => x.FiveMinuteTemplate)
+            .Where(x => x.FiveMinuteTestId == testId)
             .ToListAsync();
     }
 
@@ -24,7 +23,6 @@ public class FiveMinuteResultRepository: DefaultRepository<FiveMinuteTestResult?
     {
         return await context.FiveMinuteResults
             .Include(x => x.Answers)
-            .Include(x => x.FiveMinuteTest)
             .FirstOrDefaultAsync(x => x.Id == resultId);
     }
 }
