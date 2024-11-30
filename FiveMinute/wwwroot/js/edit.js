@@ -16,7 +16,7 @@ function getQuestionHtml(question, questionIndex) {
 	return `
 														<div class="card mt-3 question-card border-secondary border-3">
 															<div class="card-body">
-																<h5 class="card-title">Вопрос ${questionIndex + 1}</h5>
+																<h5 class="card-title">Вопрос	 ${questionIndex + 1}</h5>
 																<button type="button" class="delete-answer-button btn btn-danger btn-sm mb-2" onclick="deleteQuestion(this)">Удалить вопрос</button>
 																<div class="form-group">
 																	<label>Текст вопроса:</label>
@@ -219,32 +219,6 @@ function save(isFinalSave = false) {
 		data: JSON.stringify(jsonData),
 		contentType: 'application/json; charset=utf-8',
 		dataType: 'json',
-		success: function (response) {
-			if (response["success"]) {
-				showSaveIcon();
-
-				// Генерация ссылки
-				const testLink = `https://localhost:44384/TestPassing/Test/${response.id}`;
-				const linkContainer = document.getElementById('test-link-container');
-				const copyMessage = document.getElementById('copy-message');
-
-				// Отображаем ссылку рядом с кнопкой
-				linkContainer.innerHTML = `Ссылка: <a href="${testLink}" target="_blank">${testLink}</a>`;
-				linkContainer.style.display = "block";
-
-				// Копируем ссылку в буфер обмена
-				navigator.clipboard.writeText(testLink)
-					.then(() => {
-						copyMessage.style.display = "inline";
-						setTimeout(() => copyMessage.style.display = "none", 3000); // Прячем сообщение через 3 секунды
-					})
-					.catch(err => {
-						console.error("Ошибка копирования в буфер обмена: ", err);
-					});
-			} else {
-				showPopup("Произошла ошибка", 'error');
-			}
-		},
 		error: function (xhr, status, error) {
 			showPopup("Произошла ошибка при сохранении", 'error');
 		}
