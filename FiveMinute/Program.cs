@@ -52,6 +52,6 @@ app.UseSession();
 
 app.MapControllerRoute(
 	name: "default",
-	pattern: "{controller=Home}/{action=Index}/{fiveMinuteId?}");
+	pattern: "{controller=Home}/{action=Index}/{testId?}");
 
 app.Run();

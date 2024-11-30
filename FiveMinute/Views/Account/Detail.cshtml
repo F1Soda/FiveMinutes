@@ -10,7 +10,7 @@
         <a class="nav-link active" data-toggle="tab" href="#fiveMinuteTemplates">Пятиминутки</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#fiveMinuteTests">Другой раздел</a>
+        <a class="nav-link" data-toggle="tab" href="#fiveMinuteTests">Тесты</a>
     </li>
 </ul>
 
@@ -46,7 +46,7 @@
                                         }
                                         else
                                         {
-                                            <a asp-action="Copy" asp-controller="FiveMinuteTemplate" asp-route-fiveMinuteId="@test.Id" class="btn btn-primary">Copy</a>
+                                            <a asp-action="Copy" asp-controller="FiveMinuteTemplate" asp-route-testId="@test.Id" class="btn btn-primary">Copy</a>
                                         }
                                     </td>
                                 </tr>
@@ -89,7 +89,7 @@
                     </td>
                     <td>
                         <a class="btn btn-secondary" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
-                        <a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Statistics">Статистика</a>
+                        <a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteStatistics" asp-action="ShowResults">Статистика</a>
                     </td>
                 </tr>
             }

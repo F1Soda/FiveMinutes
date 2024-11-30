@@ -61,8 +61,8 @@ namespace FiveMinute.Controllers
 			{
 				Id = fmTestEditViewModel.Id,
 				Name = fmTestEditViewModel.Name,
-				AttachedFMT = fmTestEditViewModel.AttachedFMT,
-				AttachedFMTId = fmTestEditViewModel.AttachedFMT.Id,
+				FiveMinuteTemplate = fmTestEditViewModel.AttachedFMT,
+				FiveMinuteTemplateId = fmTestEditViewModel.AttachedFMT.Id,
 				Status = existingFMTest.Status,
 				StartPlanned = fmTestEditViewModel.StartPlanned,
 				StartTime = fmTestEditViewModel.StartTime,
@@ -125,8 +125,8 @@ namespace FiveMinute.Controllers
 			var test = new FiveMinuteTest
 			{
 				Name = fmTestEditViewModel.Name,
-				AttachedFMT = attachedTemplate,
-				AttachedFMTId = fmTestEditViewModel.Id,
+				FiveMinuteTemplate = attachedTemplate,
+				FiveMinuteTemplateId = fmTestEditViewModel.AttachedFMTId,
 				UserOrganizer = user,
 				UserOrganizerId = user.Id,
 				PositionsToInclude = attachedTemplate.Questions.Select(x => x.Position).ToList(),
@@ -147,7 +147,7 @@ namespace FiveMinute.Controllers
 				return View("NotFound");
 			}
 
-			var fmt = fmTest.AttachedFMT;
+			var fmt = fmTest.FiveMinuteTemplate;
 			var test = new FiveMinuteTestViewModel
 			{
 				Name = fmt.Name,
@@ -183,7 +183,7 @@ namespace FiveMinute.Controllers
 			testResult.UserName = testResultViewModel.UserName;
 
 
-			if (await fiveMinuteTestRepository.AddResultToTest(testResultViewModel.FMTestId, testResult))
+			if (!await fiveMinuteTestRepository.AddResultToTest(testResultViewModel.FMTestId, testResult))
 				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers"));
 			return RedirectToAction("Index", "Home");
 		}
@@ -213,9 +213,9 @@ namespace FiveMinute.Controllers
 			var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testResult.FMTestId);
 			return new FiveMinuteTestResult
 			{
-				Answers = testResult.UserAnswers.Select(ans => CheckUserAnswer(ans, fmTest.AttachedFMT)).ToList(),
-				FiveMinuteTemplateId = testResult.FMTestId,
-				FiveMinuteTemplate = fmTest.AttachedFMT,
+				Answers = testResult.UserAnswers.Select(ans => CheckUserAnswer(ans, fmTest.FiveMinuteTemplate)).ToList(),
+				FiveMinuteTestId = testResult.FMTestId,
+				FiveMinuteTest = fmTest,
 				PassTime = DateTime.UtcNow,
 			};
 		}
@@ -227,7 +227,7 @@ namespace FiveMinute.Controllers
 				return RedirectToAction("NotFound");
 			}
 
-			var results = await fiveMinuteResultsRepository.GetByFMTIdAsync(int.Parse(testId));
+			var results = await fiveMinuteResultsRepository.GetByTestIdAsync(int.Parse(testId));
 
 			if (results == null)
 			{

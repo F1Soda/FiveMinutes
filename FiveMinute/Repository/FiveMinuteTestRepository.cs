@@ -20,7 +20,7 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 			throw new Exception($"Test Is not exist: TestID: {testId}");
 		}
 
-		FMTest.Results.Append(testResults);
+		FMTest.Results.Add(testResults);
 
 		return await Save();
 	}
@@ -29,7 +29,7 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 	{
 		return await context.FiveMinuteTests
 			.Include(x => x.UserOrganizer)
-			.Include(x => x.AttachedFMT)
+			.Include(x => x.FiveMinuteTemplate)
 				.ThenInclude(x => x.Questions)
 				.ThenInclude(x => x.AnswerOptions)
 			.Include(x => x.Results)
@@ -41,8 +41,8 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 		context.FiveMinuteTests.Attach(existingTest);
 		existingTest.Name = updatedTest.Name;
 
-		existingTest.AttachedFMTId = updatedTest.AttachedFMTId;
-		existingTest.AttachedFMT = updatedTest.AttachedFMT;
+		existingTest.FiveMinuteTemplateId = updatedTest.FiveMinuteTemplateId;
+		existingTest.FiveMinuteTemplate = updatedTest.FiveMinuteTemplate;
 
 		existingTest.Status = updatedTest.Status;
 

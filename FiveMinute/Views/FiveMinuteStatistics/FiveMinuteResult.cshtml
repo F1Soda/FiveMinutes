@@ -19,7 +19,7 @@
 </style>
 
 <div class="container test-area">
-    <h1>@Model.FiveMinuteTemplate.Name</h1>
+    <h1>@Model.FiveMinuteTest.Name</h1>
     <div>Оставшееся время:
         <div id="timer">5:00</div>
     </div>
@@ -32,7 +32,7 @@
         @{
             var questionNumber = 0;
         }
-        @foreach (var question in Model.FiveMinuteTemplate.Questions.OrderBy(q => q.Position))
+        @foreach (var question in Model.FiveMinuteTest.FiveMinuteTemplate.Questions.OrderBy(q => q.Position))
         {
             questionNumber++;
             <div class="question card mt-3 question-card border-secondary border-3">

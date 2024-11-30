@@ -4,6 +4,6 @@ namespace FiveMinute.Interfaces;
 
 public interface IFiveMinuteResultsRepository : IDefaultRepository<FiveMinuteTestResult>
 {
-    Task<ICollection<FiveMinuteTestResult?>> GetByFMTIdAsync(int fiveMinuteId);
+    Task<ICollection<FiveMinuteTestResult?>> GetByTestIdAsync(int testId);
     Task<FiveMinuteTestResult> GetById(int fiveMinuteId);
 }

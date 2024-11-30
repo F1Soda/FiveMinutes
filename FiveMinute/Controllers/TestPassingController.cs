@@ -25,9 +25,9 @@ public class TestPassingController : Controller
         fiveMinuteResultsRepository = new FiveMinuteResultRepository(context);
         _userManager = userManager;
     }
-    public IActionResult Test(int fiveMinuteId)
+    public IActionResult Test(int testId)
     {
-        var fmt = fiveMinuteTemplateRepository.GetByIdAsync(fiveMinuteId).Result;
+        var fmt = fiveMinuteTemplateRepository.GetByIdAsync(testId).Result;
         var test = new FiveMinuteTestViewModel
         {
             Name = fmt.Name,
@@ -90,7 +90,7 @@ public class TestPassingController : Controller
         return new FiveMinuteTestResult
         {
             Answers = testResult.UserAnswers.Select(ans => CheckUserAnswer(ans, fmt)).ToList(),
-            FiveMinuteTemplateId = testResult.FMTestId,
+            FiveMinuteTestId = testResult.FMTestId,
             PassTime = DateTime.UtcNow,
         };
     }

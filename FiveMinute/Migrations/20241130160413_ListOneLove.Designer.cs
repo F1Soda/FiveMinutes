@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FiveMinute.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinute.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241130160413_ListOneLove")]
+    partial class ListOneLove
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,11 +166,11 @@ namespace FiveMinute.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AttachedFMTId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int?>("FiveMinuteTemplateId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -188,7 +191,7 @@ namespace FiveMinute.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FiveMinuteTemplateId");
+                    b.HasIndex("AttachedFMTId");
 
                     b.HasIndex("UserOrganizerId");
 
@@ -474,15 +477,15 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("FiveMinute.Models.FiveMinuteTest", b =>
                 {
-                    b.HasOne("FiveMinute.Models.FiveMinuteTemplate", "FiveMinuteTemplate")
+                    b.HasOne("FiveMinute.Models.FiveMinuteTemplate", "AttachedFMT")
                         .WithMany()
-                        .HasForeignKey("FiveMinuteTemplateId");
+                        .HasForeignKey("AttachedFMTId");
 
                     b.HasOne("FiveMinute.Models.AppUser", "UserOrganizer")
                         .WithMany("FMTests")
                         .HasForeignKey("UserOrganizerId");
 
-                    b.Navigation("FiveMinuteTemplate");
+                    b.Navigation("AttachedFMT");
 
                     b.Navigation("UserOrganizer");
                 });

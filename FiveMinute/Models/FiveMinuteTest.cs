@@ -11,8 +11,8 @@ namespace FiveMinute.Models
 		public string Name { get; set; }
 
 		[ForeignKey("FiveMinuteTemplate")]
-		public int? AttachedFMTId { get; set; }
-		public FiveMinuteTemplate AttachedFMT { get; set; }
+		public int? FiveMinuteTemplateId { get; set; }
+		public FiveMinuteTemplate FiveMinuteTemplate { get; set; }
 		public TestStatus Status { get; set; }
 
 		public bool StartPlanned = false;
@@ -22,7 +22,7 @@ namespace FiveMinute.Models
 
 		public List<int> PositionsToInclude { get; set; }
 
-		public IEnumerable<FiveMinuteTestResult> Results { get; set; }
+		public List<FiveMinuteTestResult> Results { get; set; }
 
 		[ForeignKey("AppUser")]
 		public string? UserOrganizerId { get; set; }

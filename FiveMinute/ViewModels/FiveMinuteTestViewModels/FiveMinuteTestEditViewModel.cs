@@ -19,7 +19,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 			{
 				Id = fmTest.Id,
 				Name = fmTest.Name,
-				AttachedFMT = fmTest.AttachedFMT,
+				AttachedFMT = fmTest.FiveMinuteTemplate,
 				StartPlanned = fmTest.StartPlanned,
 				StartTime = fmTest.StartTime,
 				EndPlanned = fmTest.EndPlanned,

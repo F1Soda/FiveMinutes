@@ -156,7 +156,7 @@ namespace FiveMinute.Controllers
             }).ToList();
         }
 
-        public async Task<IActionResult> Copy(int fiveMinuteId)
+        public async Task<IActionResult> Copy(int testId)
         {
 			var currentUser = await userManager.GetUserAsync(User);
 			if (currentUser == null)
@@ -174,7 +174,7 @@ namespace FiveMinute.Controllers
 				return Forbid(); // or RedirectToAction("AccessDenied") if you have an Access Denied page
 			}
 
-            var fmt = await fiveMinuteTemplateRepository.GetByIdAsync(fiveMinuteId);
+            var fmt = await fiveMinuteTemplateRepository.GetByIdAsync(testId);
 
             if (fmt == null)
             {

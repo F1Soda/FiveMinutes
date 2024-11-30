@@ -11,15 +11,12 @@ public class FiveMinuteResultRepository: DefaultRepository<FiveMinuteTestResult?
     {
     }
 
-
-    public void UpdateQuestions(FiveMinuteTemplate template, List<Question> questions)
+    public async Task<ICollection<FiveMinuteTestResult?>> GetByTestIdAsync(int testId)
     {
-        template.Questions = questions;
-        context.Entry(template).State = EntityState.Modified;
-    }
-    public async Task<ICollection<FiveMinuteTestResult?>> GetByFMTIdAsync(int fiveMinuteId)
-    {
-        return await context.FiveMinuteResults.Include(x => x.Answers).Where(x => x.FiveMinuteTemplateId == fiveMinuteId)
+        return await context.FiveMinuteResults
+            .Include(x => x.Answers)
+            .Include(x => x.FiveMinuteTest)
+            .ThenInclude(x => x.FiveMinuteTemplate)
             .ToListAsync();
     }
 
@@ -27,9 +24,7 @@ public class FiveMinuteResultRepository: DefaultRepository<FiveMinuteTestResult?
     {
         return await context.FiveMinuteResults
             .Include(x => x.Answers)
-            .Include(x => x.FiveMinuteTemplate)
-            .ThenInclude(x => x.Questions)
-            .ThenInclude(x => x.AnswerOptions)
+            .Include(x => x.FiveMinuteTest)
             .FirstOrDefaultAsync(x => x.Id == resultId);
     }
 }
