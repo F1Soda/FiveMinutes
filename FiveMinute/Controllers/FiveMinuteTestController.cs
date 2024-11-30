@@ -18,12 +18,14 @@ namespace FiveMinute.Controllers
 		private readonly ApplicationDbContext context;
 		
 		private readonly IFiveMinuteTestRepository fiveMinuteTestRepository;
+		private readonly IFiveMinuteResultsRepository fiveMinuteResultsRepository;
 
 		public FiveMinuteTestController(UserManager<AppUser> userManager, ApplicationDbContext context)
 		{
 			this.userManager = userManager;
-			fiveMinuteTestRepository = new FiveMinuteTestRepository(context);
 			this.context = context;
+			fiveMinuteTestRepository = new FiveMinuteTestRepository(context);
+			fiveMinuteResultsRepository = new FiveMinuteResultRepository(context);
 		}
 
 		public async Task<IActionResult> Edit(int testId)
@@ -216,6 +218,23 @@ namespace FiveMinute.Controllers
 				FiveMinuteTemplate = fmTest.AttachedFMT,
 				PassTime = DateTime.UtcNow,
 			};
+		}
+
+		public async Task<IActionResult> Statistics(string testId)
+		{
+			if (string.IsNullOrEmpty(testId))
+			{
+				return RedirectToAction("NotFound");
+			}
+
+			var results = await fiveMinuteResultsRepository.GetByFMTIdAsync(int.Parse(testId));
+
+			if (results == null)
+			{
+				return RedirectToAction("NotFound");
+			}
+
+			return View(results);
 		}
 	}
 }

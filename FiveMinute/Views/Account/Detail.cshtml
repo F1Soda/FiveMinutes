@@ -43,13 +43,11 @@
                                         @if (Model.IsOwner)
                                         {
                                             <a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@test.Id" class="btn btn-primary">Edit</a>
-                                            <a asp-action="ShowResults" asp-controller="FiveMinuteStatistics" asp-route-fiveMinuteId="@test.Id" class="btn btn-primary">Show Statistics</a>
                                         }
                                         else
                                         {
                                             <a asp-action="Copy" asp-controller="FiveMinuteTemplate" asp-route-fiveMinuteId="@test.Id" class="btn btn-primary">Copy</a>
                                         }
-                                        <a asp-action="Test" asp-controller="TestPassing" asp-route-fiveMinuteId="@test.Id" class="btn btn-primary">Pass link</a>
                                     </td>
                                 </tr>
                             }
@@ -89,9 +87,11 @@
                     <td>
                         <a asp-action="Edit" asp-controller="FiveMinuteTest" asp-route-testId="@test.Id" class="btn btn-primary">Edit</a>
                     </td>
-                        <td><a class="btn btn-secondary" asp-area="" , asp-route-testId="@test.Id" , asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a></td>
+                    <td>
+                        <a class="btn btn-secondary" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
+                        <a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Statistics">Статистика</a>
+                    </td>
                 </tr>
-                
             }
             </tbody>
         </table>
