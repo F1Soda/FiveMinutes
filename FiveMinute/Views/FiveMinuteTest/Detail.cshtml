@@ -57,7 +57,8 @@
             <h3>Настройки теста</h3>
 
             <form method="post" action="@Url.Action("UpdateTestSettings", "FiveMinuteTest")">
-                <input type="hidden" name="TestViewModel" value="@Model" />
+            <input type="hidden" aria-label="" name="Id" value="@Model.Id" />
+            <input type="hidden" aria-label="" name="PositionsToInclude" value="@Model.PositionsToInclude" />
                 
                 <div class="mb-4">
                     <h4>Управление вопросами</h4>

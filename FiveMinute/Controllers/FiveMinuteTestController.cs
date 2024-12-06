@@ -251,16 +251,16 @@ namespace FiveMinute.Controllers
 			var updatedTest = new FiveMinuteTest
 			{
 				Id = FMTestDetailViewModel.Id,
-				Name = FMTestDetailViewModel.Name,
-				FiveMinuteTemplate = existingFMTest.FiveMinuteTemplate,//супер костыль сори мужики
-				FiveMinuteTemplateId = FMTestDetailViewModel.AttachedFMT.Id,
-				Status = FMTestDetailViewModel.Status,
-				StartPlanned = FMTestDetailViewModel.StartPlanned,
-				StartTime = FMTestDetailViewModel.StartTime,
-				EndPlanned = FMTestDetailViewModel.EndPlanned,
-				EndTime = FMTestDetailViewModel.EndTime,
+				Name =FMTestDetailViewModel.Name!=null?FMTestDetailViewModel.Name:existingFMTest.Name,
+				FiveMinuteTemplate = existingFMTest.FiveMinuteTemplate,
+				FiveMinuteTemplateId = existingFMTest.Id,
+				Status = FMTestDetailViewModel.Status!=null?FMTestDetailViewModel.Status:existingFMTest.Status,
+				StartPlanned = FMTestDetailViewModel.StartPlanned!=null?FMTestDetailViewModel.StartPlanned:existingFMTest.StartPlanned,
+				StartTime = FMTestDetailViewModel.StartTime!=null?FMTestDetailViewModel.StartTime:existingFMTest.StartTime,
+				EndPlanned = FMTestDetailViewModel.EndPlanned!=null?FMTestDetailViewModel.EndPlanned:existingFMTest.EndPlanned,
+				EndTime = FMTestDetailViewModel.EndTime!=null?FMTestDetailViewModel.EndTime:existingFMTest.EndTime,
 				PositionsToInclude = FMTestDetailViewModel.PositionsToInclude,
-				Results = existingFMTest.Results,//супер костыль сори мужики
+				Results = existingFMTest.Results
 			};
 			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);
 			return RedirectToAction("Detail");
