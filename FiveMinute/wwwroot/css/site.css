@@ -95,3 +95,6 @@ body {
 	transform: translateX(-50%);
 }
 
+.bg-brown {
+	background-color: #6f4f37; /* brown color */
+}

@@ -143,6 +143,23 @@ namespace FiveMinute.Controllers
 			return RedirectToAction("Detail", new { testId = test.Id});
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> Delete([FromBody] int id)
+		{
+			var currentUser = await userManager.GetUserAsync(User);
+
+			if (currentUser == null || !currentUser.canCreate)
+				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
+
+			var test = await fiveMinuteTestRepository.GetByIdAsync(id); // Your repository method to fetch the test
+			if (test == null)
+			{
+				return NotFound();
+			}
+			if (await fiveMinuteTestRepository.Delete(test))
+				return Json(new { success = true });
+			return Json(new { success = false });
+		}
 
 		public async Task<IActionResult> Pass(int testId)
 		{
