@@ -1,6 +1,6 @@
 ﻿// Initialize variables
 let fmt = modelData;
-let questionCount = 1;
+let questionCount = 0;
 let hasUnsavedChanges = false;
 
 document.addEventListener('DOMContentLoaded', initQuestions);
@@ -56,7 +56,7 @@ function getAnswerHtml(answer, questionIndex, answerIndex) {
 
 function addQuestion() {
 	// Increment question count
-	questionCount++;
+
 
 	// Define a default question object to pass to getQuestionHtml
 	const newQuestion = {
@@ -64,9 +64,9 @@ function addQuestion() {
 		responseType: 0, // Default to "Один вариант"
 		answers: [] // Start with no answers
 	};
-
+	questionCount++;
 	// Generate the HTML for a new question
-	const questionHtml = getQuestionHtml(newQuestion, questionCount - 1);
+	const questionHtml = getQuestionHtml(newQuestion, questionCount);
 
 	// Insert the new question HTML into the questions container
 	document.getElementById('questions-container').insertAdjacentHTML('beforeend', questionHtml);
@@ -194,7 +194,7 @@ function save(isFinalSave = false) {
 
 	$('#questions-container .card').each(function (index, element) {
 		const question = {
-			Position: index + 1,
+			Position: index,
 			QuestionText: $(element).find('input[name^="Questions"]').val(),
 			ResponseType: parseInt($(element).find('select[name^="Questions"]').val(), 10),
 			Answers: []
