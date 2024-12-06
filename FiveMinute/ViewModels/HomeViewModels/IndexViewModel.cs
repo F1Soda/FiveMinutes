@@ -12,5 +12,10 @@ namespace FiveMinute.ViewModels.HomeViewModels
 		public string UserRole { get; set; }
 		public ICollection<FMTemplateIndexViewModel> FMTemplates { get; set; }
 		public ICollection<FMTestIndexViewModel> FMTests { get; set; }
+
+		public ICollection<FMTestIndexViewModel> ActiveFMTests { get; set; }
+		public ICollection<FMTestIndexViewModel> PlannedFMTests { get; set; }
+		public ICollection<FMTestIndexViewModel> RequiresRecheckingFMTests { get; set; }
+
 	}
 }

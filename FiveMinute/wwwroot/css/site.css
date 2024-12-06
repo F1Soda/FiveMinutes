@@ -67,3 +67,31 @@ body {
 .admin-debug-dropdown .dropdown-item:hover {
 	background-color: #495057;
 }
+
+
+/* Lighter Colors for Cards */
+.bg-light-blue {
+	background-color: #ccd4e0; 
+}
+
+/* Lighter Colors for Cards */
+.card.light-green {
+	background-color: #8fd19e; /* Light Green */
+}
+
+.card.light-yellow {
+	background-color: #f6e29c; /* Light Yellow */
+}
+
+.card.light-red {
+	background-color: #f8b0b0; /* Light Red */
+}
+
+
+.full-width-wrapper {
+	width: 100vw; /* Full viewport width */
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+}
+

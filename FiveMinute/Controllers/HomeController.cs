@@ -33,7 +33,7 @@ namespace FiveMinute.Controllers
 				// Тут возможно двойная работа, но пускай так будет
 				var user = await context.Users.Include(x => x.FMTTemplates)
 						.ThenInclude(x => x.Questions)
-							
+
 					.Include(x => x.FMTests)
 					.FirstOrDefaultAsync(x => x.Id == currentUser.Id);
 
@@ -45,6 +45,10 @@ namespace FiveMinute.Controllers
 					FMTests = user.FMTests.Select(x => FMTestIndexViewModel.CreateByModel(x)).ToList(),
 					UserRole = currentUser.UserRole
 				};
+
+				model.ActiveFMTests = model.FMTests.Where(x => x.Status == TestStatus.Started).ToList();
+				model.RequiresRecheckingFMTests = model.FMTests.Where(x => x.Status == TestStatus.InRechekingProcess).ToList();
+				model.PlannedFMTests = model.FMTests.Where(x => x.Status == TestStatus.Planned).ToList();
 
 			}
 			return View(model);
