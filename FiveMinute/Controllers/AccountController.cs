@@ -163,7 +163,7 @@ namespace FiveMinute.Controllers
                 Tests = user.FMTests,
                 UserRole = currentUser.UserRole,
                 IsOwner = isOwner,
-
+                StudentData = user.StudentData,
             };
 
             return View(model);
@@ -242,6 +242,19 @@ namespace FiveMinute.Controllers
                     description = "Fail to delete user from db"
                 });
             }
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> EditUser(string firstName, string lastName)
+        {
+            var currentUser = await userManager.GetUserAsync(User);
+            if (currentUser == null || currentUser.UserRole != UserRoles.Student)
+                return Forbid();
+            currentUser.StudentData.FirstName = firstName;
+            currentUser.StudentData.FirstName = firstName;
+            
+            await context.SaveChangesAsync();
+            return RedirectToAction("Detail", "Account");
         }
 	}
 }

@@ -31,6 +31,7 @@
 		Оставшееся время:
 		<div id="timer">5:00</div>
 	</div>
+	@* @using (Html.BeginForm()) *@
 	<form asp-action="SendTestResults" asp-controller="FiveMinuteTest" method="post">
 		<input type="hidden" aria-label="" name="FMTestId" value="@Model.FMTestId" />
 		@{
@@ -58,17 +59,17 @@
 					<input type="hidden" aria-label="" name="UserId" value=@userId />
 					<div>
 						<label asp-for="StudentData.FirstName"></label>
-						<input class="form-control" type="text" asp-for="StudentData.FirstName"/>
+						<input class="form-control" type="text" name="StudentData.FirstName"/>
 						<span asp-validation-for="StudentData.FirstName" class="text-danger"></span>
 					</div>
 					<div>
 						<label asp-for="StudentData.LastName"></label>
-						<input class="form-control" type="text" asp-for="StudentData.LastName"/>
+						<input class="form-control" type="text" name="StudentData.LastName"/>
 						<span asp-validation-for="StudentData.LastName" class="text-danger"></span>
 					</div>
 					<div>
 						<label asp-for="StudentData.Group"></label>
-						<input class="form-control" type="text" asp-for="StudentData.Group"/>
+						<input class="form-control" type="text" name="StudentData.Group"/>
 						<span asp-validation-for="StudentData.Group" class="text-danger"></span>
 					</div>
 				</div>
