@@ -182,23 +182,21 @@ namespace FiveMinute.Controllers
 			// TODO: По хорошему нужно создать в форме поле для имени, если чел не зареган
 
 			var testResult = await ConvertViewModelToFiveMinuteResult(testResultViewModel);
+			var currentUser = await userManager.GetUserAsync(User);
 
 
-			testResult.UserId = testResultViewModel.UserId;
-			testResult.UserName = testResultViewModel.UserName;
+			testResult.UserId = currentUser?.Id;
+			testResult.UserName = currentUser?.UserName;
 
 			if (!await fiveMinuteTestRepository.AddResultToTest(testResultViewModel.FMTestId, testResult))
 				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers"));
 
-			if (testResultViewModel.UserId != "")
+			
+			if (currentUser != null)
 			{
-				var currentUser = await userManager.GetUserAsync(User);
-				if (currentUser != null)
-				{
-					currentUser.AddResult(testResult);
-				}
-				context.SaveChanges();
+				currentUser.AddResult(testResult);
 			}
+			context.SaveChanges();
 
 			return RedirectToAction("Passed");
 		}
@@ -233,6 +231,8 @@ namespace FiveMinute.Controllers
 				PassTime = DateTime.UtcNow,
 				// Тут нужна логика, чтобы обрабатывать, сразу ли ответы проверены или ещё что то сам препод долен чекнуть
 				Status = ResultStatus.Accepted,
+				UserId = testResult.UserName,
+				StudentData = testResult.StudentData,
 			};
 		}
 		[HttpPost]
