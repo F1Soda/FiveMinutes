@@ -4,104 +4,105 @@
 
 @if (Model != null)
 {
-	<div class="full-width-wrapper">
-		<!-- Cards Row with Conditional Centering -->
-		<div class="d-flex justify-content-center bg-light-blue pt-3">
-			<div class="row container">
-				<!-- Planned Tests Card (only if there are planned tests) -->
-				@if (Model.PlannedFMTests.Any() || true)
-				{
-					<div class="col-md-4 mb-3">
-						<div class="card text-dark">
-							<div class="card-header">Запланированные Тесты</div>
-							<div class="card-body">
-								<ul id="plannedTestsList">
-									@foreach (var test in Model.PlannedFMTests.Take(5)) // Show only the first 5
+	@if (Model.UserRole == "teacher" || Model.UserRole == "admin")
+	{
+		<div class="full-width-wrapper">
+			<!-- Cards Row with Conditional Centering -->
+			<div class="d-flex justify-content-center bg-light-blue pt-3">
+				<div class="row container">
+					<!-- Planned Tests Card (only if there are planned tests) -->
+					@if (Model.PlannedFMTests.Any() || true)
+					{
+						<div class="col-md-4 mb-3">
+							<div class="card text-dark">
+								<div class="card-header">Запланированные Тесты</div>
+								<div class="card-body">
+									<ul id="plannedTestsList">
+										@foreach (var test in Model.PlannedFMTests.Take(5)) // Show only the first 5
+										{
+											<li>
+												@test.Name
+												<a href="@Url.Action("Edit", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
+											</li>
+										}
+									</ul>
+									@if (Model.PlannedFMTests.Count > 5)
 									{
-										<li>
-											@test.Name
-											<a href="@Url.Action("Edit", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
-										</li>
+										<button class="btn btn-link" id="expandPlannedTests" onclick="toggleList('plannedTestsList')">Показать все</button>
 									}
-								</ul>
-								@if (Model.PlannedFMTests.Count > 5)
-								{
-									<button class="btn btn-link" id="expandPlannedTests" onclick="toggleList('plannedTestsList')">Показать все</button>
-								}
+								</div>
 							</div>
 						</div>
-					</div>
-				}
+					}
 
-				<!-- Active Tests Card (only if there are active tests) -->
-				@if (Model.ActiveFMTests.Any() || true)
-				{
-					<div class="col-md-4 mb-3">
-						<div class="card text-dark">
-							<div class="card-header">Активные Тесты</div>
-							<div class="card-body">
-								<ul id="activeTestsList">
-									@foreach (var test in Model.ActiveFMTests.Take(5)) // Show only the first 5
+					<!-- Active Tests Card (only if there are active tests) -->
+					@if (Model.ActiveFMTests.Any() || true)
+					{
+						<div class="col-md-4 mb-3">
+							<div class="card text-dark">
+								<div class="card-header">Активные Тесты</div>
+								<div class="card-body">
+									<ul id="activeTestsList">
+										@foreach (var test in Model.ActiveFMTests.Take(5)) // Show only the first 5
+										{
+											<li>
+												@test.Name
+												<a href="@Url.Action("Edit", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
+											</li>
+										}
+									</ul>
+									@if (Model.ActiveFMTests.Count > 5)
 									{
-										<li>
-											@test.Name
-											<a href="@Url.Action("Edit", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
-										</li>
+										<button class="btn btn-link" id="expandActiveTests" onclick="toggleList('activeTestsList')">Показать все</button>
 									}
-								</ul>
-								@if (Model.ActiveFMTests.Count > 5)
-								{
-									<button class="btn btn-link" id="expandActiveTests" onclick="toggleList('activeTestsList')">Показать все</button>
-								}
+								</div>
 							</div>
 						</div>
-					</div>
-				}
+					}
 
-				<!-- Rechecking Tests Card (only if there are tests requiring rechecking) -->
-				@if (Model.RequiresRecheckingFMTests.Any() || true)
-				{
-					<div class="col-md-4 mb-3">
-						<div class="card text-dark">
-							<div class="card-header">Тесты, требующие проверки</div>
-							<div class="card-body">
-								<ul id="recheckingTestsList">
-									@foreach (var test in Model.RequiresRecheckingFMTests.Take(5)) // Show only the first 5
+					<!-- Rechecking Tests Card (only if there are tests requiring rechecking) -->
+					@if (Model.RequiresRecheckingFMTests.Any() || true)
+					{
+						<div class="col-md-4 mb-3">
+							<div class="card text-dark">
+								<div class="card-header">Тесты, требующие проверки</div>
+								<div class="card-body">
+									<ul id="recheckingTestsList">
+										@foreach (var test in Model.RequiresRecheckingFMTests.Take(5)) // Show only the first 5
+										{
+											<li>
+												@test.Name
+												<a href="@Url.Action("Edit", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
+											</li>
+										}
+									</ul>
+									@if (Model.RequiresRecheckingFMTests.Count > 5)
 									{
-										<li>
-											@test.Name
-											<a href="@Url.Action("Edit", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
-										</li>
+										<button class="btn btn-link" id="expandRecheckingTests" onclick="toggleList('recheckingTestsList')">Показать все</button>
 									}
-								</ul>
-								@if (Model.RequiresRecheckingFMTests.Count > 5)
-								{
-									<button class="btn btn-link" id="expandRecheckingTests" onclick="toggleList('recheckingTestsList')">Показать все</button>
-								}
+								</div>
 							</div>
 						</div>
-					</div>
-				}
+					}
+
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="pt-3">
-		<!-- Вкладки -->
-		<ul class="nav nav-tabs">
-			<li class="nav-item">
-				<a class="nav-link active" data-toggle="tab" href="#fiveMinuteTemplates">Шаблоны</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" data-toggle="tab" href="#fiveMinuteTests">Тесты</a>
-			</li>
-		</ul>
+		<div class="pt-3">
+			<!-- Вкладки -->
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+					<a class="nav-link active" data-toggle="tab" href="#fiveMinuteTemplates">Шаблоны</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="tab" href="#fiveMinuteTests">Тесты</a>
+				</li>
+			</ul>
 
-		<div class="tab-content">
-			<div id="fiveMinuteTemplates" class="tab-pane fade show active">
-				@if (Model.UserRole == "teacher" || Model.UserRole == "admin")
-				{
-					if (Model.FMTemplates is not null && Model.FMTemplates.Any())
+			<div class="tab-content">
+				<div id="fiveMinuteTemplates" class="tab-pane fade show active">
+					@if (Model.FMTemplates is not null && Model.FMTemplates.Any())
 					{
 						<table class="table">
 							<thead>
@@ -131,57 +132,57 @@
 					{
 						<p>Пока тут пусто. Создайте новую!</p>
 					}
-				}
-				else if (Model.UserRole == "Student")
-				{
-					<p>Привет, студент @Model.UserName! У вас пока нет доступных тестов.</p>
-				}
-				@if (Model != null)
-				{
-					<l1 class="nav-item">
-						<a class="btn" asp-area="" asp-controller="FiveMinuteTemplate" asp-action="Create">Создать пятиминутку</a>
-					</l1>
-				}
-			</div>
+					@if (Model != null)
+					{
+						<l1 class="nav-item">
+							<a class="btn" asp-area="" asp-controller="FiveMinuteTemplate" asp-action="Create">Создать пятиминутку</a>
+						</l1>
+					}
+				</div>
 
-			<div id="fiveMinuteTests" class="tab-pane fade">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>Название</th>
-							<th></th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (var test in Model.FMTests)
-						{
+				<div id="fiveMinuteTests" class="tab-pane fade">
+					<table class="table">
+						<thead>
 							<tr>
-								<td>@test.Id</td>
-								<td>@test.Name</td>
-								<td>
-									<a asp-action="Edit" asp-controller="FiveMinuteTest" asp-route-testId="@test.Id" class="btn btn-primary">Edit</a>
-								</td>
-								<td>
-									<a class="btn btn-secondary" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
-									<a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteStatistics" asp-action="ShowResults">Статистика</a>
-									<a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Detail">Подробнее</a>
-								</td>
+								<th>ID</th>
+								<th>Название</th>
+								<th></th>
+								<th></th>
 							</tr>
-						}
-					</tbody>
-				</table>
-				@if (Model != null)
-				{
-					<l1 class="nav-item">
-						<a class="btn btn-secondary" asp-area="" asp-controller="FiveMinuteTest" asp-action="Create">Создать тест</a>
-					</l1>
-				}
+						</thead>
+						<tbody>
+							@foreach (var test in Model.FMTests)
+							{
+								<tr>
+									<td>@test.Id</td>
+									<td>@test.Name</td>
+									<td>
+										<a asp-action="Edit" asp-controller="FiveMinuteTest" asp-route-testId="@test.Id" class="btn btn-primary">Edit</a>
+									</td>
+									<td>
+										<a class="btn btn-secondary" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
+										<a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteStatistics" asp-action="ShowResults">Статистика</a>
+										<a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Detail">Подробнее</a>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+					@if (Model != null)
+					{
+						<l1 class="nav-item">
+							<a class="btn btn-secondary" asp-area="" asp-controller="FiveMinuteTest" asp-action="Create">Создать тест</a>
+						</l1>
+					}
+				</div>
 			</div>
-		</div>
 
-	</div>
+
+		</div>
+	}
+	else{
+
+	}
 }
 
 <script>

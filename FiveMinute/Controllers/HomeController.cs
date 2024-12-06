@@ -49,7 +49,6 @@ namespace FiveMinute.Controllers
 				model.ActiveFMTests = model.FMTests.Where(x => x.Status == TestStatus.Started).ToList();
 				model.RequiresRecheckingFMTests = model.FMTests.Where(x => x.Status == TestStatus.InRechekingProcess).ToList();
 				model.PlannedFMTests = model.FMTests.Where(x => x.Status == TestStatus.Planned).ToList();
-
 			}
 			return View(model);
 		}
