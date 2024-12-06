@@ -1,4 +1,5 @@
-﻿using FiveMinute.Models;
+﻿using System.Runtime.Intrinsics.X86;
+using FiveMinute.Models;
 
 namespace FiveMinute.ViewModels.FMTEditViewModels
 {
@@ -20,10 +21,33 @@ namespace FiveMinute.ViewModels.FMTEditViewModels
                 Questions = fmt.Questions
                     .Select(x => new QuestionEditViewModel()
                     {
+                        Id = x.Id,
                         QuestionText = x.QuestionText,
                         Position = x.Position,
                         ResponseType = x.ResponseType,
                         Answers = x.AnswerOptions.Select(x => new AnswerEditViewModel
+                        {
+                            Position = x.Position,
+                            Text = x.Text,
+                            IsCorrect = x.IsCorrect
+                        }).ToList()
+                    }).ToList()
+            };
+        }
+        public FiveMinuteTemplate CreateByView()//надо кому-то это дажать у меня сил не хватило но идея класс
+        {
+            return new FiveMinuteTemplate
+            {
+                Id = this.Id,
+                Name = this.Name,
+                ShowInProfile = this.ShowInProfile,
+                Questions = this.Questions
+                    .Select(x => new Question()
+                    {
+                        QuestionText = x.QuestionText,
+                        Position = x.Position,
+                        ResponseType = x.ResponseType,
+                        AnswerOptions = x.Answers.Select(x => new Answer()
                         {
                             Position = x.Position,
                             Text = x.Text,

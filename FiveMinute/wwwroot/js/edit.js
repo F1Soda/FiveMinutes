@@ -202,7 +202,7 @@ function save(isFinalSave = false) {
 
 		$(element).find('.answers-container .answer-item').each(function () {
 			const answer = {
-				Position: question.Answers.length + 1,
+				Position: question.Answers.length	,
 				Text: $(this).find('input[type="text"]').val(),
 				IsCorrect: $(this).find('input[type="checkbox"]').is(':checked')
 			};

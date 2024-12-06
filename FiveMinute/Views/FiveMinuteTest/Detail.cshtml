@@ -54,22 +54,48 @@
 
         <!-- Settings Tab Pane -->
         <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-            <h3>Test Settings</h3>
+            <h3>Настройки теста</h3>
 
-            <form method="post" action="@Url.Action("UpdateTestSettings", "TestController")">
-                <input type="hidden" name="id" value="@Model.Id" />
+            <form method="post" action="@Url.Action("UpdateTestSettings", "FiveMinuteTest")">
+            <input type="hidden" aria-label="" name="Id" value="@Model.Id" />
+            <input type="hidden" aria-label="" name="PositionsToInclude" value="@Model.PositionsToInclude" />
+                
+                <div class="mb-4">
+                    <h4>Управление вопросами</h4>
+                    <div class="list-group">
+                        @for (int i = 0; i < Model.AttachedFMT.Questions.Count; i++)
+                        {
+                            var question = Model.AttachedFMT.Questions[i];
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="question-text">@question.QuestionText</span>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" 
+                                           class="form-check-input" 
+                                           id="position_@question.Id" 
+                                           name="PositionsToInclude" 
+                                           value="@question.Id"
+                                           @(Model.PositionsToInclude.Contains(question.Id) ? "checked" : "") />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
 
                 <div class="mb-3">
-                    <label for="startPlanned" class="form-label">Start Planned</label>
+                    <label for="startPlanned" class="form-label">Запланировать начало</label>
                     <input type="checkbox" id="startPlanned" name="startPlanned" @(Model.StartPlanned ? "checked" : "") class="form-check-input" />
                 </div>
 
                 <div class="mb-3">
-                    <label for="endPlanned" class="form-label">End Planned</label>
+                    <label for="endPlanned" class="form-label">Запланировать окончание</label>
                     <input type="checkbox" id="endPlanned" name="endPlanned" @(Model.EndPlanned ? "checked" : "") class="form-check-input" />
                 </div>
 
-                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <input type="hidden" id="positionsToInclude" name="PositionsToInclude" value="@string.Join(",", Model.PositionsToInclude)" />
+
+                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
             </form>
         </div>
     </div>
@@ -77,3 +103,24 @@
 
 <!-- Optional: Bootstrap JS for Tab Navigation -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Добавьте этот скрипт в конец файла, перед закрывающим тегом </body> -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('input[name="questionPosition"]');
+        const positionsInput = document.getElementById('positionsToInclude');
+        
+        // Функция обновления скрытого поля с позициями
+        function updatePositions() {
+            const positions = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            positionsInput.value = positions.join(',');
+        }
+        
+        // Обработчик изменения чекбоксов
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updatePositions);
+        });
+    });
+</script>
