@@ -6,7 +6,7 @@ namespace FiveMinute.ViewModels.FMTEditViewModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<QuestionEditViewModel> Questions { get; set; }
+        public List<QuestionEditViewModel> Questions { get; set; }
         public bool ShowInProfile { get; set; }
 
 
@@ -29,7 +29,7 @@ namespace FiveMinute.ViewModels.FMTEditViewModels
                             Text = x.Text,
                             IsCorrect = x.IsCorrect
                         }).ToList()
-                    })
+                    }).ToList()
             };
         }
     }
