@@ -35,5 +35,21 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 				PositionsToInclude = fmTest.PositionsToInclude,
 			};
 		}
+		public FiveMinuteTest CreateByView()//надо кому-то это дажать у меня сил не хватило но идея класс не получается null выдает т.к не хваитет ему элементов
+		{
+			return new FiveMinuteTest
+			{
+				Id = this.Id,
+				Name = this.Name,
+				FiveMinuteTemplate = this.AttachedFMT.CreateByView(),
+				StartPlanned = this.StartPlanned,
+				StartTime = this.StartTime,
+				EndPlanned = this.EndPlanned,
+				EndTime = this.EndTime,
+				Results = this.Results.ToList(),
+				Status = this.Status,
+				PositionsToInclude = this.PositionsToInclude,
+			};
+		}
 	}
 }
