@@ -5,7 +5,9 @@ using FiveMinute.ViewModels.AccountViewModels;
 using FiveMinute.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using System.Globalization;
+using FiveMinute.ViewModels.HomeViewModels;
+using FiveMinute.ViewModels.FMTEditViewModels;
+using FiveMinute.ViewModels.FiveMinuteTestViewModels;
 
 namespace FiveMinute.Controllers
 {
@@ -25,23 +27,23 @@ namespace FiveMinute.Controllers
 			var currentUser = await userManager.GetUserAsync(User);
 
 
-			UserDetailViewModel model = null!;
+			IndexViewModel model = null!;
 			if (currentUser != null)
 			{
 				// Тут возможно двойная работа, но пускай так будет
 				var user = await context.Users.Include(x => x.FMTTemplates)
+						.ThenInclude(x => x.Questions)
+							
 					.Include(x => x.FMTests)
 					.FirstOrDefaultAsync(x => x.Id == currentUser.Id);
 
-				model = new UserDetailViewModel
+				model = new IndexViewModel
 				{
 					UserName = user.UserName,
 					Email = user.Email,
-					FMTs = user.FMTTemplates,
-					Tests = user.FMTests,
-					UserRole = currentUser.UserRole,
-					IsOwner = true,
-
+					FMTemplates = user.FMTTemplates.Select(x => FMTemplateIndexViewModel.CreateByModel(x)).ToList(),
+					FMTests = user.FMTests.Select(x => FMTestIndexViewModel.CreateByModel(x)).ToList(),
+					UserRole = currentUser.UserRole
 				};
 
 			}

@@ -219,7 +219,10 @@ function save(isFinalSave = false) {
 		contentType: 'application/json; charset=utf-8',
 		dataType: 'json',
 		success: function (response) {
-			if (response["success"]) showSaveIcon();
+			if (response["success"]) {
+				showSaveIcon();
+				hasUnsavedChanges = false;
+			}
 			else showPopup("Произошла ошибка", 'error');
 		},
 		error: function (xhr, status, error) {

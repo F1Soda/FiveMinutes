@@ -1,13 +1,13 @@
 ﻿@using FiveMinute.Data
 @using Microsoft.AspNetCore.Identity
-@model FiveMinute.ViewModels.AccountViewModels.UserDetailViewModel
+@model FiveMinute.ViewModels.HomeViewModels.IndexViewModel
 
 @if (Model != null)
 {
 	<!-- Вкладки -->
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
-			<a class="nav-link active" data-toggle="tab" href="#fiveMinuteTemplates">Пятиминутки</a>
+			<a class="nav-link active" data-toggle="tab" href="#fiveMinuteTemplates">Шаблоны</a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" data-toggle="tab" href="#fiveMinuteTests">Тесты</a>
@@ -16,41 +16,30 @@
 
 	<div class="tab-content">
 		<div id="fiveMinuteTemplates" class="tab-pane fade show active">
-			<h3>Пятиминутки:</h3>
 			@if (Model.UserRole == "teacher" || Model.UserRole == "admin")
 			{
-				if (Model.FMTs is not null && Model.FMTs.Any())
+				if (Model.FMTemplates is not null && Model.FMTemplates.Any())
 				{
 					<table class="table">
 						<thead>
 							<tr>
 								<th>ID</th>
-								<th>Name</th>
-								<th>Show In Profile</th>
-								<th>Actions</th>
+								<th>Название</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
-							@foreach (var test in Model.FMTs)
+							@foreach (var test in Model.FMTemplates)
 							{
-								if (Model.IsOwner || test.ShowInProfile && !Model.IsOwner)
-								{
-									<tr>
-										<td>@test.Id</td>
-										<td>@test.Name</td>
-										<td>@test.ShowInProfile</td>
-										<td>
-											@if (Model.IsOwner)
-											{
-												<a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@test.Id" class="btn btn-primary">Edit</a>
-											}
-											else
-											{
-												<a asp-action="Copy" asp-controller="FiveMinuteTemplate" asp-route-testId="@test.Id" class="btn btn-primary">Copy</a>
-											}
-										</td>
-									</tr>
-								}
+								
+								<tr>
+									<td>@test.Id</td>
+									<td>@test.Name</td>
+									<td>
+										<a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@test.Id" class="btn btn-primary">Редактировать</a>
+									</td>
+								</tr>
+								
 							}
 						</tbody>
 					</table>
@@ -73,18 +62,17 @@
 		</div>
 
 		<div id="fiveMinuteTests" class="tab-pane fade">
-			<h3>Все тесты</h3>
 			<table class="table">
 				<thead>
 					<tr>
 						<th>ID</th>
-						<th>Name</th>
-						<th>Show In Profile</th>
-						<th>Actions</th>
+						<th>Название</th>
+						<th></th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					@foreach (var test in Model.Tests)
+					@foreach (var test in Model.FMTests)
 					{
 						<tr>
 							<td>@test.Id</td>
@@ -95,6 +83,7 @@
 							<td>
 								<a class="btn btn-secondary" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
 								<a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteStatistics" asp-action="ShowResults">Статистика</a>
+								<a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Detail">Подробнее</a>
 							</td>
 						</tr>
 					}
