@@ -1,4 +1,5 @@
-﻿using FiveMinute.Models;
+﻿using System.Runtime.Intrinsics.X86;
+using FiveMinute.Models;
 
 namespace FiveMinute.ViewModels.FMTEditViewModels
 {
@@ -20,6 +21,7 @@ namespace FiveMinute.ViewModels.FMTEditViewModels
                 Questions = fmt.Questions
                     .Select(x => new QuestionEditViewModel()
                     {
+                        Id = x.Id,
                         QuestionText = x.QuestionText,
                         Position = x.Position,
                         ResponseType = x.ResponseType,

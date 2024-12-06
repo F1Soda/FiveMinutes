@@ -125,9 +125,8 @@
 		}
 		@foreach (var question in Model.Questions)
 		{
-			questionNumber++;
 			<div class="question card mt-3 question-card border-secondary border-3">
-				<h5 class="question-text card-title mb-2">@questionNumber. @question.QuestionText</h5>
+				<h5 class="question-text card-title mb-2">@(questionNumber+1). @question.QuestionText</h5>
 				@{
 					int position;
 				}
@@ -145,7 +144,7 @@
 					case ResponseType.SingleChoice:
 						<div class="card-body mb-3">
 							@{
-								position = 1;
+						position = 0;
 							}
 							<input type="hidden" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber" />
 							<input type="hidden" name="UserAnswers[@answerNumber].Position" value="@position" />
@@ -154,7 +153,7 @@
 							{
 								<div class="form-check">
 									<input type="radio" class="form-check-input" name="UserAnswers[@answerNumber].Text" value="@answer.Text"
-										   id="answer_@(questionNumber)_@(position)" onchange="setQuestionPosition(@position, this)">
+									       id="answer_@(questionNumber)_@(position)" onchange="setQuestionPosition(@position, this)">
 									<label class="form-check-label" for="answer_@(questionNumber)_@(position)">
 										@answer.Text
 									</label>
@@ -168,7 +167,7 @@
 					case ResponseType.MultipleChoice:
 						<div class="card-body mb-3">
 							@{
-								position = 1;
+						position = 0;
 							}
 							@foreach (var answer in question.AnswerOptions)
 							{
@@ -177,7 +176,7 @@
 									<input type="hidden" aria-label="" name="UserAnswers[@answerNumber].Position" value="@position" />
 									<input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id" />
 									<input type="checkbox" class="form-check-input" name="UserAnswers[@answerNumber].Text" value="@answer.Text"
-										   id="answer_@(questionNumber)_@(position)">
+									       id="answer_@(questionNumber)_@(position)">
 									<label class="form-check-label" for="answer_@(questionNumber)_@(position)">
 										@answer.Text
 									</label>
@@ -189,6 +188,7 @@
 						break;
 				}
 			</div>
+			questionNumber++;
 		}
 		<div id="error-message" style="color: red; display: none;">Пожалуйста, заполните все поля перед отправкой.</div>
 		<input class="btn btn-primary mt-3" id="submit" type="submit" value="Отправить ответы" />
