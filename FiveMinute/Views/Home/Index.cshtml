@@ -150,7 +150,7 @@
 										<td>@test.Name</td>
 										<td>
 											<a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@test.Id" class="btn btn-primary">Редактировать</a>
-											<button class="btn btn-danger btn-delete" data-id="@test.Id">Удалить</button>
+											<button class="btn btn-danger btn-delete" id="delete-template" data-id="@test.Id">Удалить</button>
 										</td>
 									</tr>
 
@@ -223,37 +223,7 @@
 @section Scripts {
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		$(document).ready(function () {
-			// Bind the delete button click event
-			$(".btn-delete").click(function () {
-				var testId = $(this).data("id"); 
 
-				console.log(testId);
-
-				// if (confirm("Are you sure you want to delete this item?")) {
-					// Perform the AJAX request to delete
-					$.ajax({
-						url: '@Url.Action("Delete", "FiveMinuteTemplate")', // URL to the Delete action
-						type: 'POST',
-						// data: JSON.stringify({ id: testId }), // Send the ID of the item to delete
-						//contentType: 'application/json; charset=utf-8',
-						//dataType: 'json',
-						data: { id: testId }
-						success: function (response) {
-							if (response.success) {
-								// Remove the row from the table if deletion is successful
-								$("#test-" + testId).remove();
-							} else {
-								alert(response.reason);
-							}
-						},
-						error: function (response) {
-							alert(response.reason);
-						}
-					});
-				// }
-			});
-		});
 	</script>
 
 	<script>

@@ -52,7 +52,6 @@ namespace FiveMinute.Controllers
             return View("Error", new ErrorViewModel("Fail to add FMT to db"));
         }
 
-
 		[HttpPost]
 		public async Task<IActionResult> Delete(int id)
 		{

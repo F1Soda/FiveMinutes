@@ -33,6 +33,9 @@ namespace FiveMinute.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     UserRole = table.Column<string>(type: "text", nullable: false),
+                    StudentData_FirstName = table.Column<string>(type: "text", nullable: true),
+                    StudentData_LastName = table.Column<string>(type: "text", nullable: true),
+                    StudentData_Group = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -264,7 +267,11 @@ namespace FiveMinute.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: true),
-                    UserName = table.Column<string>(type: "text", nullable: false),
+                    UserName = table.Column<string>(type: "text", nullable: true),
+                    StudentData_FirstName = table.Column<string>(type: "text", nullable: false),
+                    StudentData_LastName = table.Column<string>(type: "text", nullable: false),
+                    StudentData_Group = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
                     FiveMinuteTestId = table.Column<int>(type: "integer", nullable: false),
                     PassTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     AppUserId = table.Column<string>(type: "text", nullable: true)

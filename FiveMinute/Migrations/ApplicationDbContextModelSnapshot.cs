@@ -486,8 +486,7 @@ namespace FiveMinute.Migrations
                                 .HasForeignKey("AppUserId");
                         });
 
-                    b.Navigation("StudentData")
-                        .IsRequired();
+                    b.Navigation("StudentData");
                 });
 
             modelBuilder.Entity("FiveMinute.Models.FiveMinuteTemplate", b =>
