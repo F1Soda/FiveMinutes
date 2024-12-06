@@ -183,7 +183,6 @@ function save(isFinalSave = false) {
 
 	// Прекратить сохранение, если есть незаполненные поля
 	if (!isValid) return;
-	console.log('save was called!');
 
 	// Serialize the form data into a JSON object
 	const jsonData = {
@@ -219,6 +218,10 @@ function save(isFinalSave = false) {
 		data: JSON.stringify(jsonData),
 		contentType: 'application/json; charset=utf-8',
 		dataType: 'json',
+		success: function (response) {
+			if (response["success"]) showSaveIcon();
+			else showPopup("Произошла ошибка", 'error');
+		},
 		error: function (xhr, status, error) {
 			showPopup("Произошла ошибка при сохранении", 'error');
 		}

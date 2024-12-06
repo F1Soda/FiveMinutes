@@ -21,7 +21,6 @@ namespace FiveMinute.Models
 		public DateTime EndTime { get; set; }
 
 		public List<int> PositionsToInclude { get; set; }
-
 		public List<FiveMinuteTestResult> Results { get; set; }
 
 		[ForeignKey("AppUser")]

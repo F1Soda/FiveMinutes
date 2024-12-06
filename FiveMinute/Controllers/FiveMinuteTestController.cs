@@ -135,7 +135,7 @@ namespace FiveMinute.Controllers
 			
 			context.FiveMinuteTests.Add(test);
 			await context.SaveChangesAsync();
-			return RedirectToAction("Detail", "Account");
+			return RedirectToAction("Detail", new { testId = test.Id});
 		}
 
 

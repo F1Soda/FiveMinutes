@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinute.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241130160413_ListOneLove")]
-    partial class ListOneLove
+    [Migration("20241130201755_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -166,11 +166,11 @@ namespace FiveMinute.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AttachedFMTId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("FiveMinuteTemplateId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -191,7 +191,7 @@ namespace FiveMinute.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AttachedFMTId");
+                    b.HasIndex("FiveMinuteTemplateId");
 
                     b.HasIndex("UserOrganizerId");
 
@@ -477,15 +477,15 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("FiveMinute.Models.FiveMinuteTest", b =>
                 {
-                    b.HasOne("FiveMinute.Models.FiveMinuteTemplate", "AttachedFMT")
+                    b.HasOne("FiveMinute.Models.FiveMinuteTemplate", "FiveMinuteTemplate")
                         .WithMany()
-                        .HasForeignKey("AttachedFMTId");
+                        .HasForeignKey("FiveMinuteTemplateId");
 
                     b.HasOne("FiveMinute.Models.AppUser", "UserOrganizer")
                         .WithMany("FMTests")
                         .HasForeignKey("UserOrganizerId");
 
-                    b.Navigation("AttachedFMT");
+                    b.Navigation("FiveMinuteTemplate");
 
                     b.Navigation("UserOrganizer");
                 });
@@ -496,13 +496,11 @@ namespace FiveMinute.Migrations
                         .WithMany("PassedTestResults")
                         .HasForeignKey("AppUserId");
 
-                    b.HasOne("FiveMinute.Models.FiveMinuteTest", "FiveMinuteTest")
+                    b.HasOne("FiveMinute.Models.FiveMinuteTest", null)
                         .WithMany("Results")
                         .HasForeignKey("FiveMinuteTestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("FiveMinuteTest");
                 });
 
             modelBuilder.Entity("FiveMinute.Models.Folder", b =>

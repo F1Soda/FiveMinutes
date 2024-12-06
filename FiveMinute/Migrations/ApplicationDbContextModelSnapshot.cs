@@ -493,13 +493,11 @@ namespace FiveMinute.Migrations
                         .WithMany("PassedTestResults")
                         .HasForeignKey("AppUserId");
 
-                    b.HasOne("FiveMinute.Models.FiveMinuteTest", "FiveMinuteTest")
+                    b.HasOne("FiveMinute.Models.FiveMinuteTest", null)
                         .WithMany("Results")
                         .HasForeignKey("FiveMinuteTestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("FiveMinuteTest");
                 });
 
             modelBuilder.Entity("FiveMinute.Models.Folder", b =>

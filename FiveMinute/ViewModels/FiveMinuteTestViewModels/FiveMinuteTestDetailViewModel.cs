@@ -1,5 +1,6 @@
 ﻿using FiveMinute.Models;
 using FiveMinute.Data;
+using FiveMinute.ViewModels.FMTEditViewModels;
 
 namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 {
@@ -8,7 +9,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public int? AttachedFMTId { get; set; }
-		public FiveMinuteTemplate AttachedFMT { get; set; }
+		public FiveMinuteTemplateEditViewModel AttachedFMT { get; set; }
 		public TestStatus Status { get; set; }
 
 		public bool StartPlanned = false;
@@ -16,6 +17,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 		public bool EndPlanned = false;
 		public DateTime EndTime { get; set; }
 		public IEnumerable<FiveMinuteTestResult> Results { get; set; }
+		public List<int> PositionsToInclude { get; set; }
 
 		public static FiveMinuteTestDetailViewModel CreateByModel(FiveMinuteTest fmTest)
 		{
@@ -23,13 +25,14 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 			{
 				Id = fmTest.Id,
 				Name = fmTest.Name,
-				AttachedFMT = fmTest.FiveMinuteTemplate,
+				AttachedFMT = FiveMinuteTemplateEditViewModel.CreateByModel(fmTest.FiveMinuteTemplate),
 				StartPlanned = fmTest.StartPlanned,
 				StartTime = fmTest.StartTime,
 				EndPlanned = fmTest.EndPlanned,
 				EndTime = fmTest.EndTime,
 				Results = fmTest.Results,
-				Status = fmTest.Status
+				Status = fmTest.Status,
+				PositionsToInclude = fmTest.PositionsToInclude,
 			};
 		}
 	}

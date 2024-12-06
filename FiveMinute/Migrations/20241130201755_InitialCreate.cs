@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -211,7 +213,7 @@ namespace FiveMinute.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    AttachedFMTId = table.Column<int>(type: "integer", nullable: true),
+                    FiveMinuteTemplateId = table.Column<int>(type: "integer", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -227,8 +229,8 @@ namespace FiveMinute.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_FiveMinuteTests_FiveMinuteTemplates_AttachedFMTId",
-                        column: x => x.AttachedFMTId,
+                        name: "FK_FiveMinuteTests_FiveMinuteTemplates_FiveMinuteTemplateId",
+                        column: x => x.FiveMinuteTemplateId,
                         principalTable: "FiveMinuteTemplates",
                         principalColumn: "Id");
                 });
@@ -263,10 +265,9 @@ namespace FiveMinute.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "text", nullable: false),
-                    FiveMinuteTemplateId = table.Column<int>(type: "integer", nullable: false),
+                    FiveMinuteTestId = table.Column<int>(type: "integer", nullable: false),
                     PassTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    AppUserId = table.Column<string>(type: "text", nullable: true),
-                    FiveMinuteTestId = table.Column<int>(type: "integer", nullable: true)
+                    AppUserId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -277,16 +278,11 @@ namespace FiveMinute.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_FiveMinuteResults_FiveMinuteTemplates_FiveMinuteTemplateId",
-                        column: x => x.FiveMinuteTemplateId,
-                        principalTable: "FiveMinuteTemplates",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_FiveMinuteResults_FiveMinuteTests_FiveMinuteTestId",
                         column: x => x.FiveMinuteTestId,
                         principalTable: "FiveMinuteTests",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -383,11 +379,6 @@ namespace FiveMinute.Migrations
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FiveMinuteResults_FiveMinuteTemplateId",
-                table: "FiveMinuteResults",
-                column: "FiveMinuteTemplateId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_FiveMinuteResults_FiveMinuteTestId",
                 table: "FiveMinuteResults",
                 column: "FiveMinuteTestId");
@@ -403,9 +394,9 @@ namespace FiveMinute.Migrations
                 column: "UserOwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FiveMinuteTests_AttachedFMTId",
+                name: "IX_FiveMinuteTests_FiveMinuteTemplateId",
                 table: "FiveMinuteTests",
-                column: "AttachedFMTId");
+                column: "FiveMinuteTemplateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FiveMinuteTests_UserOrganizerId",

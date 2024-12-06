@@ -1,0 +1,79 @@
+﻿@using FiveMinute.Data
+@model FiveMinute.ViewModels.FiveMinuteTestViewModels.FiveMinuteTestDetailViewModel
+
+@{
+    ViewData["Title"] = "Test Details";
+}
+
+<div class="container mt-4">
+    <h1>@Model.Name</h1>
+    
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs" id="testDetailTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="statistics-tab" data-bs-toggle="tab" href="#statistics" role="tab" aria-controls="statistics" aria-selected="true">Statistics</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="settings-tab" data-bs-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content mt-3" id="testDetailTabsContent">
+        <!-- Statistics Tab Pane -->
+        <div class="tab-pane fade show active" id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
+            <h3>Statistics</h3>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Test Status:</strong> @Model.Status.ToString().Replace("InRechekingProcess", "In Rechecking Process")</p>
+                    <p><strong>Start Time:</strong> @Model.StartTime.ToString("yyyy-MM-dd HH:mm")</p>
+                    <p><strong>End Time:</strong> @Model.EndTime.ToString("yyyy-MM-dd HH:mm")</p>
+                </div>
+                <div class="col-md-6">
+                    <h4>Statistics for Passers</h4>
+                    <ul class="list-group">
+                        @foreach (var result in Model.Results)
+                        {
+                            <li class="list-group-item">
+                                <strong>@result.UserName</strong> - Not impemented =)
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Notification for Organizer -->
+            @if (Model.StartPlanned && Model.Status == TestStatus.Completed && !Model.PositionsToInclude.Contains(1))
+            {
+                <div class="alert alert-warning mt-4" role="alert">
+                    <strong>Notification:</strong> A new test result has been submitted, but manual review is required.
+                </div>
+            }
+        </div>
+
+        <!-- Settings Tab Pane -->
+        <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+            <h3>Test Settings</h3>
+
+            <form method="post" action="@Url.Action("UpdateTestSettings", "TestController")">
+                <input type="hidden" name="id" value="@Model.Id" />
+
+                <div class="mb-3">
+                    <label for="startPlanned" class="form-label">Start Planned</label>
+                    <input type="checkbox" id="startPlanned" name="startPlanned" @(Model.StartPlanned ? "checked" : "") class="form-check-input" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="endPlanned" class="form-label">End Planned</label>
+                    <input type="checkbox" id="endPlanned" name="endPlanned" @(Model.EndPlanned ? "checked" : "") class="form-check-input" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Optional: Bootstrap JS for Tab Navigation -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
