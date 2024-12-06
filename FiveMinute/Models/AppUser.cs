@@ -16,5 +16,10 @@ namespace FiveMinute.Models
         {
             FMTTemplates.Add(fmt);
         }
+
+        public void AddResult(FiveMinuteTestResult result)
+        {
+            PassedTestResults.Add(result);
+        }
     }
 }

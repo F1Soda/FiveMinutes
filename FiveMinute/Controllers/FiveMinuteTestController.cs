@@ -45,6 +45,11 @@ namespace FiveMinute.Controllers
 			return View(fmTestViewModel);
 		}
 
+		public IActionResult Passed()
+		{
+			return View();
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> Edit(FiveMinuteTestEditViewModel fmTestEditViewModel)
 		{
@@ -177,15 +182,25 @@ namespace FiveMinute.Controllers
 			// TODO: По хорошему нужно создать в форме поле для имени, если чел не зареган
 
 			var testResult = await ConvertViewModelToFiveMinuteResult(testResultViewModel);
-			var currentUser = await userManager.GetUserAsync(User);
 
-			testResult.UserId = currentUser?.Id;
+
+			testResult.UserId = testResultViewModel.UserId;
 			testResult.UserName = testResultViewModel.UserName;
-
 
 			if (!await fiveMinuteTestRepository.AddResultToTest(testResultViewModel.FMTestId, testResult))
 				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers"));
-			return RedirectToAction("Index", "Home");
+
+			if (testResultViewModel.UserId != "")
+			{
+				var currentUser = await userManager.GetUserAsync(User);
+				if (currentUser != null)
+				{
+					currentUser.AddResult(testResult);
+				}
+				context.SaveChanges();
+			}
+
+			return RedirectToAction("Passed");
 		}
 
 		public UserAnswer CheckUserAnswer(UserAnswerViewModel userAnswer, FiveMinuteTemplate fiveMinuteTemplate)
@@ -216,6 +231,8 @@ namespace FiveMinute.Controllers
 				Answers = testResult.UserAnswers.Select(ans => CheckUserAnswer(ans, fmTest.FiveMinuteTemplate)).ToList(),
 				FiveMinuteTestId = testResult.FMTestId,
 				PassTime = DateTime.UtcNow,
+				// Тут нужна логика, чтобы обрабатывать, сразу ли ответы проверены или ещё что то сам препод долен чекнуть
+				Status = ResultStatus.Accepted,
 			};
 		}
 	}

@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinute.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241130201755_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241206102757_AddedResultStatus")]
+    partial class AddedResultStatus
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -214,6 +214,9 @@ namespace FiveMinute.Migrations
 
                     b.Property<DateTime>("PassTime")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
@@ -493,7 +496,7 @@ namespace FiveMinute.Migrations
             modelBuilder.Entity("FiveMinute.Models.FiveMinuteTestResult", b =>
                 {
                     b.HasOne("FiveMinute.Models.AppUser", null)
-                        .WithMany("PassedTests")
+                        .WithMany("PassedTestResults")
                         .HasForeignKey("AppUserId");
 
                     b.HasOne("FiveMinute.Models.FiveMinuteTest", null)
@@ -587,7 +590,7 @@ namespace FiveMinute.Migrations
 
                     b.Navigation("FMTests");
 
-                    b.Navigation("PassedTests");
+                    b.Navigation("PassedTestResults");
                 });
 
             modelBuilder.Entity("FiveMinute.Models.FiveMinuteTemplate", b =>

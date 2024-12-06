@@ -55,7 +55,4 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 
 		return await Save();
 	}
-
-
-
 }

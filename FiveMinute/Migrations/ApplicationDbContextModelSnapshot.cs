@@ -212,6 +212,9 @@ namespace FiveMinute.Migrations
                     b.Property<DateTime>("PassTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
