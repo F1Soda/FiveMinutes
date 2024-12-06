@@ -139,6 +139,7 @@ namespace FiveMinute.Controllers
                 ShowInProfile = fmt.ShowInProfile,
                 LastModificationTime = DateTime.UtcNow,
                 Questions = GetQuestionsByFMTViewModel(fmt, existingFmt),
+                
             };
             await fiveMinuteTemplateRepository.Update(existingFmt, template);
             return Json(new { success = true, id = fmt.Id });

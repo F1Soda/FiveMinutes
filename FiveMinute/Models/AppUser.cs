@@ -19,6 +19,10 @@ namespace FiveMinute.Models
 
         public void AddResult(FiveMinuteTestResult result)
         {
+            if(PassedTestResults==null)
+            {
+                PassedTestResults = new List<FiveMinuteTestResult>();
+            }
             PassedTestResults.Add(result);
         }
     }
