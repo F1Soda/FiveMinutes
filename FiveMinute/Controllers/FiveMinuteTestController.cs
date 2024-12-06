@@ -76,7 +76,7 @@ namespace FiveMinute.Controllers
 				Results = existingFMTest.Results,
 			};
 
-			await fiveMinuteTestRepository.Update(existingFMTest, updatedTest);
+			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);//не кулл надо бы update переделать так чтобы одну принимал модель
 
 			return RedirectToAction("Detail", new { id = existingFMTest.Id });
 		}
@@ -116,7 +116,7 @@ namespace FiveMinute.Controllers
 			
 			return View(model);
 		}
-
+	
 		[HttpPost]
 		public async Task<IActionResult> Create(FiveMinuteTestDetailViewModel fmTestEditViewModel)
 		{
@@ -234,6 +234,36 @@ namespace FiveMinute.Controllers
 				// Тут нужна логика, чтобы обрабатывать, сразу ли ответы проверены или ещё что то сам препод долен чекнуть
 				Status = ResultStatus.Accepted,
 			};
+		}
+		[HttpPost]
+		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailViewModel)
+		{
+			//крч нихуя не работает модель говна приходит
+			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(FMTestDetailViewModel.Id);
+			var currentUser = await userManager.GetUserAsync(User);
+
+			if (currentUser == null) // || !canCreate
+				return View("Error", new ErrorViewModel($"You don't have the rights to this action"));
+
+			if (existingFMTest == null)
+				return View("NotFound");
+
+			var updatedTest = new FiveMinuteTest
+			{
+				Id = FMTestDetailViewModel.Id,
+				Name = FMTestDetailViewModel.Name,
+				FiveMinuteTemplate = existingFMTest.FiveMinuteTemplate,//супер костыль сори мужики
+				FiveMinuteTemplateId = FMTestDetailViewModel.AttachedFMT.Id,
+				Status = FMTestDetailViewModel.Status,
+				StartPlanned = FMTestDetailViewModel.StartPlanned,
+				StartTime = FMTestDetailViewModel.StartTime,
+				EndPlanned = FMTestDetailViewModel.EndPlanned,
+				EndTime = FMTestDetailViewModel.EndTime,
+				PositionsToInclude = FMTestDetailViewModel.PositionsToInclude,
+				Results = existingFMTest.Results,//супер костыль сори мужики
+			};
+			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);
+			return RedirectToAction("Detail");
 		}
 	}
 }
