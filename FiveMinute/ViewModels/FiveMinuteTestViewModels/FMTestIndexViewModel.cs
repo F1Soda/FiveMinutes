@@ -23,7 +23,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 				Id = model.Id,
 				Name = model.Name,
 				AttachedFMTemplateId = model.FiveMinuteTemplateId,
-				AttachedFMTemplateName = model.Name,
+				AttachedFMTemplateName = model.FiveMinuteTemplate.Name,
 				StartPlanned = model.StartPlanned,
 				StartTime = model.StartTime,
 				EndPlanned = model.EndPlanned,

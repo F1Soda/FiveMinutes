@@ -1,0 +1,75 @@
+﻿@using FiveMinute.Data
+@model ICollection<FiveMinute.ViewModels.FiveMinuteTestViewModels.FMTestIndexViewModel>
+
+@{
+    // Helper method for getting status background color class
+    string GetStatusClass(TestStatus status)
+    {
+        return status switch
+        {
+            TestStatus.Planned => "bg-warning", // Yellow
+            TestStatus.Started => "bg-primary", // Blue
+            TestStatus.InRechekingProcess => "bg-brown", // Custom brown color
+            TestStatus.Completed => "bg-success", // Green
+            TestStatus.Cancelled => "bg-danger", // Red
+            _ => "bg-light" // Default (light background)
+        };
+    }
+
+    string ConvertEnumToString(TestStatus status)
+    {
+        return status switch
+        {
+            TestStatus.Planned => "Запланирована", // Yellow
+            TestStatus.Started => "Начата", // Blue
+            TestStatus.InRechekingProcess => "Требует проверки", // Custom brown color
+            TestStatus.Completed => "Завершена", // Green
+            TestStatus.Cancelled => "Отменена", // Red
+            _ => "bg-light" // Default (light background)
+        };
+    }
+}
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Статус</th>
+                <th>Прикрепленная пятиминутка</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var test in Model)
+            {
+                <tr>
+                    <td>@test.Id</td>
+                    <td>@test.Name</td>
+                    <td>
+                        <span class="badge @GetStatusClass(test.Status) text-white">
+                            @ConvertEnumToString(test.Status)
+                        </span>
+                    </td>
+                    <td>@test.AttachedFMTemplateName</td>
+                    <td>
+                        <a asp-action="Edit" asp-controller="FiveMinuteTest" asp-route-testId="@test.Id" class="btn btn-primary">Edit(DEPRICATED)</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-secondary" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста(DEPRICATED)</a>
+                        <a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteStatistics" asp-action="ShowResults">Статистика(DEPRICATED)</a>
+                        <a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Detail">Подробнее</a>
+                        <button class="btn btn-danger btn-delete" id="delete-test" data-id="@test.Id">Удалить</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Пока тут пусто. Создайте новую!</p>
+}

@@ -11,5 +11,7 @@ namespace FiveMinute.Repository.FiveMinuteTestRepository
 		public Task<bool> Update(FiveMinuteTest existingTest, FiveMinuteTest updatedTest);
 
 		public Task<bool> AddResultToTest(int testId, FiveMinuteTestResult testResults);
+
+		IEnumerable<FiveMinuteTest> GetAllFromUserId(string userId);
 	}
 }

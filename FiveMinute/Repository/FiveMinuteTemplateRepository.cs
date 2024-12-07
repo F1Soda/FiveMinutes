@@ -29,11 +29,9 @@ namespace FiveMinute.Repository
 		}
 
 
-		public async Task<IEnumerable<FiveMinuteTemplate>> GetAllFromUserId(string userId)
+		public IEnumerable<FiveMinuteTemplate> GetAllFromUserId(string userId)
 		{
-			return await context.FiveMinuteTemplates
-				.Where(x => x.UserOwnerId == userId)
-				.ToListAsync();
+			return context.Users.Include(x => x.FMTTemplates).FirstOrDefault(x => x.Id == userId)?.FMTTemplates;
 		}
 
 		public async Task<bool> Update(FiveMinuteTemplate existingTemplate, FiveMinuteTemplate newTemplate)

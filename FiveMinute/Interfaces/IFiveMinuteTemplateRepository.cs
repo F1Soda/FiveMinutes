@@ -11,7 +11,7 @@ namespace FiveMinute.Interfaces
 		Task<bool> Update(FiveMinuteTemplate fmt, FiveMinuteTemplate newFmt);
 
 		// Возможно лишнее, но пока оставлю
-		Task<IEnumerable<FiveMinuteTemplate>> GetAllFromUserId(string userId);
+		IEnumerable<FiveMinuteTemplate> GetAllFromUserId(string userId);
 
 		Task<bool> DeleteCascade(FiveMinuteTemplate template);
 

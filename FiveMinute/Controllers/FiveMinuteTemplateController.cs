@@ -2,203 +2,165 @@
 using FiveMinute.Interfaces;
 using FiveMinute.Models;
 using FiveMinute.Repository;
-using FiveMinute.Repository.FiveMinuteTestRepository;
 using FiveMinute.ViewModels.FMTEditViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FiveMinute.Controllers
 {
-    public class FiveMinuteTemplateController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
-        private readonly UserManager<AppUser> userManager;
+	public class FiveMinuteTemplateController : Controller
+	{
+		private readonly ILogger<HomeController> _logger;
+		private readonly UserManager<AppUser> userManager;
+		
+
+		private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
+
+		private readonly IUserRepository userRepository;
 
 
-        private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
-        private readonly IFiveMinuteTestRepository fiveMinuteTestRepository;
-        private readonly IUserRepository userRepository;
-        // private readonly IQuestionRepository questionRepository;
-
-        public FiveMinuteTemplateController(UserManager<AppUser> userManager,
-                                            ApplicationDbContext context,
-                                            IFiveMinuteTemplateRepository FMTemplateReposity,
-											IFiveMinuteTestRepository FMTestRepositoty
+		public FiveMinuteTemplateController(UserManager<AppUser> userManager,
+											ApplicationDbContext context,
+											IFiveMinuteTemplateRepository FMTemplateReposity
 											)
-        {
-            this.userManager = userManager;
-            userRepository=new UserRepository(context);
-            fiveMinuteTemplateRepository = FMTemplateReposity;
-            fiveMinuteTestRepository = FMTestRepositoty;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-
-        [HttpGet]
-        public async Task<IActionResult> Create()
-        {
-            var currentUser = await userManager.GetUserAsync(User);
-
-            if (currentUser == null || !currentUser.canCreate)
-                return View("Error", new ErrorViewModel($"You don't have the rights to create a five-minute"));
-
-            var newFMT = FiveMinuteTemplate.CreateDefault(currentUser);
-            if (fiveMinuteTemplateRepository.Add(newFMT).Result)
-            {
-                await userRepository.AddFMTtoUser(newFMT, currentUser);
-
-                return RedirectToAction("Edit", new { newFMT.Id });
-            }
-            return View("Error", new ErrorViewModel("Fail to add FMT to db"));
-        }
-
-		public class DeleteTemplateRequest
 		{
-			public int Id { get; set; }
+			this.userManager = userManager;
+			userRepository = new UserRepository(context);
+			fiveMinuteTemplateRepository = FMTemplateReposity;
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> Delete([FromBody] DeleteTemplateRequest deleteTemplateRequest)
+		public IActionResult Index()
 		{
-            var id = deleteTemplateRequest.Id;
+			return View();
+		}
+
+
+		[HttpGet]
+		public async Task<IActionResult> Create()
+		{
 			var currentUser = await userManager.GetUserAsync(User);
 
 			if (currentUser == null || !currentUser.canCreate)
-				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
+				return View("Error", new ErrorViewModel($"You don't have the rights to create a five-minute"));
 
-			var template = await fiveMinuteTemplateRepository.GetByIdAsync(id); // Your repository method to fetch the template
-			if (template == null)
+			var newFMT = FiveMinuteTemplate.CreateDefault(currentUser);
+			if (fiveMinuteTemplateRepository.Add(newFMT).Result)
 			{
-                return Json(new { success = false, reason = $"Where is no FMTemplate with id {id}" });
-			}
-			if (await fiveMinuteTemplateRepository.DeleteCascade(template))
-			{
-				//// Fetch updated data for both tabs
-				//var templates = await fiveMinuteTemplateRepository.GetAllFromUserId(currentUser.Id);
-				//var tests = await fiveMinuteTestRepository.GetAllFromUserId(currentUser.Id);
+				await userRepository.AddFMTtoUser(newFMT, currentUser);
 
-				//// Render updated HTML for both tables
-				//var templatesHtml = await RenderPartialViewToString("_TemplatesTable", templates);
-				//var testsHtml = await RenderPartialViewToString("_TestsTable", tests);
-
-				return Json(new { success = true});
+				return RedirectToAction("Edit", new { newFMT.Id });
 			}
-			return Json(new { success = false });
+			return View("Error", new ErrorViewModel("Fail to add FMT to db"));
 		}
 
+
 		public async Task<IActionResult> Edit(int id)
-        {
-            var fmt = await fiveMinuteTemplateRepository.GetByIdAsync(id);
-            var currentUser = await userManager.GetUserAsync(User);
+		{
+			var fmt = await fiveMinuteTemplateRepository.GetByIdAsync(id);
+			var currentUser = await userManager.GetUserAsync(User);
 
-            if (currentUser == null || !currentUser.canCreate)
-                return View("Error", new ErrorViewModel($"You don't have the rights to create a five-minute"));
+			if (currentUser == null || !currentUser.canCreate)
+				return View("Error", new ErrorViewModel($"You don't have the rights to create a five-minute"));
 
-            if (fmt == null)
-                return View("NotFound");
+			if (fmt == null)
+				return View("NotFound");
 
-            var fmtViewModel = FiveMinuteTemplateEditViewModel.CreateByModel(fmt);
+			var fmtViewModel = FiveMinuteTemplateEditViewModel.CreateByModel(fmt);
 
-            // Change !!!
-            HttpContext.Session.SetInt32("FmtViewModel", fmt.Id);
-            return View(fmtViewModel);
-        }
+			// Change !!!
+			HttpContext.Session.SetInt32("FmtViewModel", fmt.Id);
+			return View(fmtViewModel);
+		}
 
-        public IActionResult TestCreation()
-        {
-            return View();
-        }
+		public IActionResult TestCreation()
+		{
+			return View();
+		}
 
-        public IActionResult AllFiveMinuteTemplates()
-        {
-            return View();
-        }
+		public IActionResult AllFiveMinuteTemplates()
+		{
+			return View();
+		}
 
-        public IActionResult FiveMinuteFolder()
-        {
-            return View();
-        }
+		public IActionResult FiveMinuteFolder()
+		{
+			return View();
+		}
 
-        public async Task<JsonResult> Save([FromBody] FiveMinuteTemplateEditViewModel fmt)
-        {
-            if (!ModelState.IsValid)
-            {
-                return Json(new
-                {
-                    success = false
-                });
-            }
+		public async Task<JsonResult> Save([FromBody] FiveMinuteTemplateEditViewModel fmt)
+		{
+			if (!ModelState.IsValid)
+			{
+				return Json(new
+				{
+					success = false
+				});
+			}
 
-            var currentFMTId = HttpContext.Session.GetInt32("FmtViewModel");
-            if (currentFMTId is null)
-            {
-                return Json(new
-                {
-                    success = false,
-                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage), 
-                });
-            }
+			var currentFMTId = HttpContext.Session.GetInt32("FmtViewModel");
+			if (currentFMTId is null)
+			{
+				return Json(new
+				{
+					success = false,
+					errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
+				});
+			}
 
-            var existingFmt = await fiveMinuteTemplateRepository.GetByIdAsyncNoTracking(currentFMTId.Value);
-            if (existingFmt is null)
-            {
-                return Json(new
-                {
-                    success = false,
-                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
-                }); //тут какая-то другая ошибка должна быть
-            }
-            var template = new FiveMinuteTemplate
-            {
-                Id = fmt.Id,
-                Name = fmt.Name,
-                ShowInProfile = fmt.ShowInProfile,
-                LastModificationTime = DateTime.UtcNow,
-                Questions = GetQuestionsByFMTViewModel(fmt, existingFmt),
-                
-            };
-            await fiveMinuteTemplateRepository.Update(existingFmt, template);
-            return Json(new { success = true, id = fmt.Id });
-        }
+			var existingFmt = await fiveMinuteTemplateRepository.GetByIdAsyncNoTracking(currentFMTId.Value);
+			if (existingFmt is null)
+			{
+				return Json(new
+				{
+					success = false,
+					errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
+				}); //тут какая-то другая ошибка должна быть
+			}
+			var template = new FiveMinuteTemplate
+			{
+				Id = fmt.Id,
+				Name = fmt.Name,
+				ShowInProfile = fmt.ShowInProfile,
+				LastModificationTime = DateTime.UtcNow,
+				Questions = GetQuestionsByFMTViewModel(fmt, existingFmt),
 
-        public List<Question> GetQuestionsByFMTViewModel(FiveMinuteTemplateEditViewModel fmt,FiveMinuteTemplate existingFmt)
-        {
-            if(fmt.Questions.Any(x=>x.QuestionText==""))
-            {
-                Console.Write("Поступил Пустой вопрос");
-            }
-            Console.Write("\n\n\n\n\n\nПоступил Пустой вопрос\n\n\n\n\n");
-            if (fmt.Questions.Select(x => x.Answers)
-                .Any(x => x.Any(x => x.Text == null)))
-            {
-                Console.Write("Поступил Пустой ответ");
-            }
-            return fmt.Questions.Select(question =>new Question
-            {
-                QuestionText = question.QuestionText,
-                FiveMinuteTemplate = existingFmt,
-                Position = question.Position,
-                ResponseType = question.ResponseType,
-                FiveMinuteTemplateId = fmt.Id,
-                AnswerOptions = question.Answers.Select(x => new Answer
-                {
-                    IsCorrect = x.IsCorrect, 
-                    Position = x.Position,
-                    Text =x.Text,
-                    // Вот эту залупу починить как то надо или не надо ???
-                    QuestionId = 0
-                }).ToList()
-            }).ToList();
-        }
+			};
+			await fiveMinuteTemplateRepository.Update(existingFmt, template);
+			return Json(new { success = true, id = fmt.Id });
+		}
 
+		public List<Question> GetQuestionsByFMTViewModel(FiveMinuteTemplateEditViewModel fmt, FiveMinuteTemplate existingFmt)
+		{
+			if (fmt.Questions.Any(x => x.QuestionText == ""))
+			{
+				Console.Write("Поступил Пустой вопрос");
+			}
+			Console.Write("\n\n\n\n\n\nПоступил Пустой вопрос\n\n\n\n\n");
+			if (fmt.Questions.Select(x => x.Answers)
+				.Any(x => x.Any(x => x.Text == null)))
+			{
+				Console.Write("Поступил Пустой ответ");
+			}
+			return fmt.Questions.Select(question => new Question
+			{
+				QuestionText = question.QuestionText,
+				FiveMinuteTemplate = existingFmt,
+				Position = question.Position,
+				ResponseType = question.ResponseType,
+				FiveMinuteTemplateId = fmt.Id,
+				AnswerOptions = question.Answers.Select(x => new Answer
+				{
+					IsCorrect = x.IsCorrect,
+					Position = x.Position,
+					Text = x.Text,
+					// Вот эту залупу починить как то надо или не надо ???
+					QuestionId = 0
+				}).ToList()
+			}).ToList();
+		}
 
-
-        public async Task<IActionResult> Copy(int testId)
-        {
+		public async Task<IActionResult> Copy(int testId)
+		{
 			var currentUser = await userManager.GetUserAsync(User);
 			if (currentUser == null)
 			{
@@ -215,21 +177,21 @@ namespace FiveMinute.Controllers
 				return Forbid(); // or RedirectToAction("AccessDenied") if you have an Access Denied page
 			}
 
-            var fmt = await fiveMinuteTemplateRepository.GetByIdAsync(testId);
+			var fmt = await fiveMinuteTemplateRepository.GetByIdAsync(testId);
 
-            if (fmt == null)
-            {
+			if (fmt == null)
+			{
 				return RedirectToAction("NotFound");
 			}
 
-            var copyFMT = fmt.GetCopyToUser(currentUser);
-            
-            if (fiveMinuteTemplateRepository.Add(copyFMT).Result)
-            {
-                await userRepository.AddFMTtoUser(copyFMT, currentUser);
-                return RedirectToAction("Edit", new { copyFMT.Id });
+			var copyFMT = fmt.GetCopyToUser(currentUser);
+
+			if (fiveMinuteTemplateRepository.Add(copyFMT).Result)
+			{
+				await userRepository.AddFMTtoUser(copyFMT, currentUser);
+				return RedirectToAction("Edit", new { copyFMT.Id });
 			}
 			return View("Error", new ErrorViewModel("Fail to add FMT to db"));
 		}
-    }
+	}
 }

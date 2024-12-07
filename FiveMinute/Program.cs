@@ -34,6 +34,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // DI container
 builder.Services.AddScoped<IFiveMinuteTemplateRepository, FiveMinuteTemplateRepository>(); // Scoped for repository
 builder.Services.AddScoped<IFiveMinuteTestRepository, FiveMinuteTestRepository>();
+builder.Services.AddScoped<IFiveMinuteResultsRepository, FiveMinuteResultRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();

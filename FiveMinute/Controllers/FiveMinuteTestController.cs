@@ -7,7 +7,6 @@ using FiveMinute.Data;
 using FiveMinute.ViewModels.AccountViewModels;
 using Microsoft.EntityFrameworkCore;
 using FiveMinute.ViewModels;
-using FiveMinute.Repository;
 using FiveMinute.Interfaces;
 
 namespace FiveMinute.Controllers
@@ -20,12 +19,16 @@ namespace FiveMinute.Controllers
 		private readonly IFiveMinuteTestRepository fiveMinuteTestRepository;
 		private readonly IFiveMinuteResultsRepository fiveMinuteResultsRepository;
 
-		public FiveMinuteTestController(UserManager<AppUser> userManager, ApplicationDbContext context)
+		public FiveMinuteTestController(UserManager<AppUser> userManager,
+										ApplicationDbContext context,
+										IFiveMinuteTestRepository fiveMinuteTestRepository,
+										IFiveMinuteResultsRepository fiveMinuteResultsRepository
+			) 
 		{
 			this.userManager = userManager;
 			this.context = context;
-			fiveMinuteTestRepository = new FiveMinuteTestRepository(context);
-			fiveMinuteResultsRepository = new FiveMinuteResultRepository(context);
+			this.fiveMinuteTestRepository = fiveMinuteTestRepository;
+			this.fiveMinuteResultsRepository = fiveMinuteResultsRepository;
 		}
 
 		public async Task<IActionResult> Edit(int testId)
@@ -141,24 +144,6 @@ namespace FiveMinute.Controllers
 			context.FiveMinuteTests.Add(test);
 			await context.SaveChangesAsync();
 			return RedirectToAction("Detail", new { testId = test.Id});
-		}
-
-		[HttpPost]
-		public async Task<IActionResult> Delete([FromBody] int id)
-		{
-			var currentUser = await userManager.GetUserAsync(User);
-
-			if (currentUser == null || !currentUser.canCreate)
-				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
-
-			var test = await fiveMinuteTestRepository.GetByIdAsync(id); // Your repository method to fetch the test
-			if (test == null)
-			{
-				return NotFound();
-			}
-			if (await fiveMinuteTestRepository.Delete(test))
-				return Json(new { success = true });
-			return Json(new { success = false });
 		}
 
 		public async Task<IActionResult> Pass(int testId)

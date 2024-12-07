@@ -1,0 +1,31 @@
+﻿@model ICollection<FiveMinute.ViewModels.FMTEditViewModels.FMTemplateIndexViewModel>
+
+@if (Model != null && Model!.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var template in Model!)
+            {
+                <tr id="test-@template.Id">
+                    <td>@template.Id</td>
+                    <td>@template.Name</td>
+                    <td>
+                        <a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@template.Id" class="btn btn-primary">Редактировать</a>
+                        <button class="btn btn-danger btn-delete" id="delete-template" data-id="@template.Id">Удалить</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Пока тут пусто. Создайте новую!</p>
+}

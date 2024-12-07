@@ -25,6 +25,12 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 		return await Save();
 	}
 
+	public IEnumerable<FiveMinuteTest> GetAllFromUserId(string userId)
+	{
+		var user = context.Users.Include(x => x.FMTests).FirstOrDefault(x => x.Id == userId);
+		return user.FMTests;
+	}
+
 	public async Task<FiveMinuteTest?> GetByIdAsync(int id)
 	{
 		return await context.FiveMinuteTests
