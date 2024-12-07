@@ -85,11 +85,7 @@ namespace FiveMinute.Controllers
                 UserRole = UserRoles.Student,
                 Email = registerViewModel.EmailAddress,
                 UserName = registerViewModel.EmailAddress,
-                StudentData = new StudentData
-                {
-                    FirstName = registerViewModel.FirstName,
-                    LastName = registerViewModel.LastName,
-                }
+                StudentData = new UserData(registerViewModel.FirstName, registerViewModel.LastName, "")
             };
             var newUserResponse = await userManager.CreateAsync(newUser, registerViewModel.Password);
 

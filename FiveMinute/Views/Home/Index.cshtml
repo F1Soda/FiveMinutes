@@ -150,10 +150,9 @@
 										<td>@test.Name</td>
 										<td>
 											<a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@test.Id" class="btn btn-primary">Редактировать</a>
-											<button class="btn btn-danger btn-delete" id="delete-template" data-id="@test.Id">Удалить</button>
+											<button type="button", class="btn btn-danger btn-delete" id="delete-template" data-id="@test.Id">Удалить</button>
 										</td>
 									</tr>
-
 								}
 							</tbody>
 						</table>
@@ -223,30 +222,15 @@
 @section Scripts {
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-
+		const deleteTemplateUrl = '@Url.Action("Delete", "FiveMinuteTemplate")'; // Pass the save URL to the external JavaScript file
 	</script>
-
-	<script>
-		function toggleList(listId) {
-			var list = document.getElementById(listId);
-			var button = document.getElementById('expand' + listId.charAt(0).toUpperCase() + listId.slice(1));
-
-			if (list.style.display === 'none') {
-				list.style.display = 'block';
-				button.textContent = 'Скрыть';
-			} else {
-				list.style.display = 'none';
-				button.textContent = 'Показать все';
-			}
-		}
-	</script>
+	<script src="~/js/popup.js"></script>
+	<script src="~/js/home-index.js"></script>
+	<!-- Подключение Bootstrap CSS и JS для работы вкладок -->
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	
+	<script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 }
 
 
-
-
-<!-- Подключение Bootstrap CSS и JS для работы вкладок -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

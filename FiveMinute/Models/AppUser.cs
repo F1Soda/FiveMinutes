@@ -9,7 +9,7 @@ namespace FiveMinute.Models
         public ICollection<FiveMinuteTest> FMTests { get; set; }
         public ICollection<FiveMinuteTestResult> PassedTestResults { get; set; } = new List<FiveMinuteTestResult>();
         public string UserRole {  get; set; }
-        public StudentData? StudentData { get; set; }
+        public UserData? StudentData { get; set; }
         public bool canCreate => UserRole is UserRoles.Admin or UserRoles.Teacher; 
 
         public void AddFMT(FiveMinuteTemplate fmt)

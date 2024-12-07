@@ -6,7 +6,6 @@ using FiveMinute.Repository.FiveMinuteTestRepository;
 using FiveMinute.ViewModels.FMTEditViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FiveMinute.Controllers
 {
@@ -17,15 +16,20 @@ namespace FiveMinute.Controllers
 
 
         private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
+        private readonly IFiveMinuteTestRepository fiveMinuteTestRepository;
         private readonly IUserRepository userRepository;
         // private readonly IQuestionRepository questionRepository;
 
-        public FiveMinuteTemplateController(UserManager<AppUser> userManager, ApplicationDbContext context)
+        public FiveMinuteTemplateController(UserManager<AppUser> userManager,
+                                            ApplicationDbContext context,
+                                            IFiveMinuteTemplateRepository FMTemplateReposity,
+											IFiveMinuteTestRepository FMTestRepositoty
+											)
         {
             this.userManager = userManager;
             userRepository=new UserRepository(context);
-            this.fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
-            // this.questionRepository = new QuestionRepository(context);
+            fiveMinuteTemplateRepository = FMTemplateReposity;
+            fiveMinuteTestRepository = FMTestRepositoty;
         }
 
         public IActionResult Index()
@@ -52,9 +56,15 @@ namespace FiveMinute.Controllers
             return View("Error", new ErrorViewModel("Fail to add FMT to db"));
         }
 
-		[HttpPost]
-		public async Task<IActionResult> Delete(int id)
+		public class DeleteTemplateRequest
 		{
+			public int Id { get; set; }
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Delete([FromBody] DeleteTemplateRequest deleteTemplateRequest)
+		{
+            var id = deleteTemplateRequest.Id;
 			var currentUser = await userManager.GetUserAsync(User);
 
 			if (currentUser == null || !currentUser.canCreate)
@@ -65,8 +75,18 @@ namespace FiveMinute.Controllers
 			{
                 return Json(new { success = false, reason = $"Where is no FMTemplate with id {id}" });
 			}
-			if (await fiveMinuteTemplateRepository.Delete(template))
-				return Json(new { success = true });
+			if (await fiveMinuteTemplateRepository.DeleteCascade(template))
+			{
+				//// Fetch updated data for both tabs
+				//var templates = await fiveMinuteTemplateRepository.GetAllFromUserId(currentUser.Id);
+				//var tests = await fiveMinuteTestRepository.GetAllFromUserId(currentUser.Id);
+
+				//// Render updated HTML for both tables
+				//var templatesHtml = await RenderPartialViewToString("_TemplatesTable", templates);
+				//var testsHtml = await RenderPartialViewToString("_TestsTable", tests);
+
+				return Json(new { success = true});
+			}
 			return Json(new { success = false });
 		}
 

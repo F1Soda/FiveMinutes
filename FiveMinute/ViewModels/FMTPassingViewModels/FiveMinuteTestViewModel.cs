@@ -15,7 +15,7 @@ public class FiveMinuteTestViewModel
     public string? UserLastName { get; set; }
     [Display(Name = "Группа")]
     
-    public StudentData StudentData { get; set; }
+    public UserData StudentData { get; set; }
 
     public string? UserGroup { get; set; }
 

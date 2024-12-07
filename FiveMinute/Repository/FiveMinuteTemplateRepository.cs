@@ -47,6 +47,19 @@ namespace FiveMinute.Repository
 			return await Save();
 		}
 
+		public async Task<bool> DeleteCascade(FiveMinuteTemplate template)
+		{
+
+			// Delete related entities first
+			var relatedEntities = context.FiveMinuteTests
+				.Where(x => x.FiveMinuteTemplateId == template.Id);
+			context.FiveMinuteTests.RemoveRange(relatedEntities);
+			
+
+			context.Remove(template!);
+			return await Save();
+		}
+
 	}
 }
 
