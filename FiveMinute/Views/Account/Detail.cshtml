@@ -1,8 +1,38 @@
 ﻿@model FiveMinute.ViewModels.AccountViewModels.UserDetailViewModel
+@using FiveMinute.Data
 @using Microsoft.AspNetCore.Identity
-@inject UserManager<AppUser> UserManager
+@inject UserManager<AppUser > UserManager
 
 <h1>Данные о пользователе @Model.UserName</h1>
 <p>Пользовательское имя: @Model.UserName</p>
 <p>Почта: @Model.Email</p>
 
+<h2>Редактирование пользователя</h2>
+@if (Model.UserRole is UserRoles.Student)
+{
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="EditUser" asp-controller="Account" method="post">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Имя</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" value="@Model.StudentData.FirstName"/>
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Фамилия</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" value="@Model.StudentData.LastName"/>
+                        <span class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}

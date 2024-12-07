@@ -9,6 +9,14 @@ namespace FiveMinute.ViewModels.AccountViewModels
         [Display(Name = "Email address")]
         [Required(ErrorMessage = "Email address is required")]
         public string EmailAddress { get; set; }
+        
+        [Display(Name = "Фамилия")]
+        [Required(ErrorMessage = "Введите фамилию")]
+        public string LastName { get; set; }
+        
+        [Display(Name = "Имя")]
+        [Required(ErrorMessage = "Введите имя")]
+        public string FirstName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

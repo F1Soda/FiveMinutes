@@ -143,6 +143,23 @@ namespace FiveMinute.Controllers
 			return RedirectToAction("Detail", new { testId = test.Id});
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> Delete([FromBody] int id)
+		{
+			var currentUser = await userManager.GetUserAsync(User);
+
+			if (currentUser == null || !currentUser.canCreate)
+				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
+
+			var test = await fiveMinuteTestRepository.GetByIdAsync(id); // Your repository method to fetch the test
+			if (test == null)
+			{
+				return NotFound();
+			}
+			if (await fiveMinuteTestRepository.Delete(test))
+				return Json(new { success = true });
+			return Json(new { success = false });
+		}
 
 		public async Task<IActionResult> Pass(int testId)
 		{
@@ -182,23 +199,21 @@ namespace FiveMinute.Controllers
 			// TODO: По хорошему нужно создать в форме поле для имени, если чел не зареган
 
 			var testResult = await ConvertViewModelToFiveMinuteResult(testResultViewModel);
+			var currentUser = await userManager.GetUserAsync(User);
 
 
-			testResult.UserId = testResultViewModel.UserId;
-			testResult.UserName = testResultViewModel.UserName;
+			testResult.UserId = currentUser?.Id;
+			testResult.UserName = currentUser?.UserName;
 
 			if (!await fiveMinuteTestRepository.AddResultToTest(testResultViewModel.FMTestId, testResult))
 				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers"));
 
-			if (testResultViewModel.UserId != "")
+			
+			if (currentUser != null)
 			{
-				var currentUser = await userManager.GetUserAsync(User);
-				if (currentUser != null)
-				{
-					currentUser.AddResult(testResult);
-				}
-				context.SaveChanges();
+				currentUser.AddResult(testResult);
 			}
+			context.SaveChanges();
 
 			return RedirectToAction("Passed");
 		}
@@ -233,6 +248,8 @@ namespace FiveMinute.Controllers
 				PassTime = DateTime.UtcNow,
 				// Тут нужна логика, чтобы обрабатывать, сразу ли ответы проверены или ещё что то сам препод долен чекнуть
 				Status = ResultStatus.Accepted,
+				UserId = testResult.UserName,
+				StudentData = testResult.StudentData,
 			};
 		}
 		[HttpPost]

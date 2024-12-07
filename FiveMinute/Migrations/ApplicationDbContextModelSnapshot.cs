@@ -219,7 +219,6 @@ namespace FiveMinute.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -460,6 +459,37 @@ namespace FiveMinute.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("FiveMinute.Models.AppUser", b =>
+                {
+                    b.OwnsOne("FiveMinute.Data.StudentData", "StudentData", b1 =>
+                        {
+                            b1.Property<string>("AppUserId")
+                                .HasColumnType("text");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<string>("Group")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.HasKey("AppUserId");
+
+                            b1.ToTable("AspNetUsers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AppUserId");
+                        });
+
+                    b.Navigation("StudentData")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("FiveMinute.Models.FiveMinuteTemplate", b =>
                 {
                     b.HasOne("FiveMinute.Models.FiveMinuteTemplate", "Origin")
@@ -500,6 +530,34 @@ namespace FiveMinute.Migrations
                         .WithMany("Results")
                         .HasForeignKey("FiveMinuteTestId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("FiveMinute.Data.StudentData", "StudentData", b1 =>
+                        {
+                            b1.Property<int>("FiveMinuteTestResultId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<string>("Group")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.HasKey("FiveMinuteTestResultId");
+
+                            b1.ToTable("FiveMinuteResults");
+
+                            b1.WithOwner()
+                                .HasForeignKey("FiveMinuteTestResultId");
+                        });
+
+                    b.Navigation("StudentData")
                         .IsRequired();
                 });
 

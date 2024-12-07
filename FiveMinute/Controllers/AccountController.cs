@@ -84,7 +84,12 @@ namespace FiveMinute.Controllers
             {
                 UserRole = UserRoles.Student,
                 Email = registerViewModel.EmailAddress,
-                UserName = registerViewModel.EmailAddress
+                UserName = registerViewModel.EmailAddress,
+                StudentData = new StudentData
+                {
+                    FirstName = registerViewModel.FirstName,
+                    LastName = registerViewModel.LastName,
+                }
             };
             var newUserResponse = await userManager.CreateAsync(newUser, registerViewModel.Password);
 
@@ -158,7 +163,7 @@ namespace FiveMinute.Controllers
                 Tests = user.FMTests,
                 UserRole = currentUser.UserRole,
                 IsOwner = isOwner,
-
+                StudentData = user.StudentData,
             };
 
             return View(model);
@@ -237,6 +242,19 @@ namespace FiveMinute.Controllers
                     description = "Fail to delete user from db"
                 });
             }
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> EditUser(string firstName, string lastName)
+        {
+            var currentUser = await userManager.GetUserAsync(User);
+            if (currentUser == null || currentUser.UserRole != UserRoles.Student)
+                return Forbid();
+            currentUser.StudentData.FirstName = firstName;
+            currentUser.StudentData.FirstName = firstName;
+            
+            await context.SaveChangesAsync();
+            return RedirectToAction("Detail", "Account");
         }
 	}
 }

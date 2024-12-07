@@ -2,6 +2,7 @@
 using FiveMinute.Interfaces;
 using FiveMinute.Models;
 using FiveMinute.Repository;
+using FiveMinute.Repository.FiveMinuteTestRepository;
 using FiveMinute.ViewModels.FMTEditViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -52,7 +53,25 @@ namespace FiveMinute.Controllers
         }
 
 
-        public async Task<IActionResult> Edit(int id)
+		[HttpPost]
+		public async Task<IActionResult> Delete(int id)
+		{
+			var currentUser = await userManager.GetUserAsync(User);
+
+			if (currentUser == null || !currentUser.canCreate)
+				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
+
+			var template = await fiveMinuteTemplateRepository.GetByIdAsync(id); // Your repository method to fetch the template
+			if (template == null)
+			{
+                return Json(new { success = false, reason = $"Where is no FMTemplate with id {id}" });
+			}
+			if (await fiveMinuteTemplateRepository.Delete(template))
+				return Json(new { success = true });
+			return Json(new { success = false });
+		}
+
+		public async Task<IActionResult> Edit(int id)
         {
             var fmt = await fiveMinuteTemplateRepository.GetByIdAsync(id);
             var currentUser = await userManager.GetUserAsync(User);
