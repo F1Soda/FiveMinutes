@@ -32,45 +32,59 @@
 			return $"{(int)(timeSpan.TotalDays / 365)} год{((int)(timeSpan.TotalDays / 365) == 1 ? "" : "а")} назад";
 	}
 }
+<h1>Создание теста</h1>
 
-<div>
-	<form asp-action="Create" asp-controller="FiveMinuteTest" method="post">
-		<h5>Название теста</h5>
-		<input name="Name" type="text" />
-		<h5>Шаблон пятиминутки</h5>
-		<div id="selected-template-view"> </div>
-		<input name="AttachedFMTId" id="selected-template-id" readonly type="hidden" />
+<div class="container pt-2">
+	<div class="row">
+		<!-- Left Column: Form Fields -->
+		<div class="col-md-6 pt-1">
+			<form asp-action="Create" asp-controller="FiveMinuteTest" method="post">
+				<h5>Название теста</h5>
+				<input name="Name" class="form-control mb-3" type="text" placeholder="Введите название теста" />
 
-		<input type="text" id="search" class="form-control mb-2" placeholder="Поиск пятиминутки" onkeyup="filterTable('templatesTable', 'search')" />
-		<table id="templatesTable" class="table">
+				<h5>Шаблон пятиминутки</h5>
+				<div id="selected-template-view" class="mb-3">
+					<p class="text-muted">Шаблон не выбран</p>
+				</div>
+				<input name="AttachedFMTId" id="selected-template-id" readonly type="hidden" />
 
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Название</th>
-					<th>Время создания</th>
-					<th>Последнее изменение</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var template in Model.FMTs)
-				{
-					<tr data-user-id="@template.Id">
-						<td>@template.Id</td>
-						<td>@template.Name</td>
-						<td>@GetCreationTimeString(template.CreationTime)</td>
-						<td>@GetTimeAgoString(template.LastModificationTime, TimeZoneInfo.Local)</td>
-						<td>
-							<button class="btn btn-primary" onclick="updateSelectedTemplate(@template.Id, '@template.Name')">Выбрать</button>
-						</td>
+				<input class="btn btn-success mt-3" id="submit" type="submit" value="Создать тест" />
+			</form>
+		</div>
+
+		<!-- Right Column: Table with Search -->
+		<div class="col-md-6">
+			<h3>Ваши пятиминутки</h3>
+			<input type="text" id="search" class="form-control mb-2" placeholder="Поиск пятиминутки" onkeyup="filterTable('templatesTable', 'search')" />
+			<table id="templatesTable" class="table ">
+				<thead>
+					<tr>
+						<th>Название</th>
+						<th>Время создания</th>
+						<th>Последнее изменение</th>
+						<th>Действие</th>
 					</tr>
-				}
-			</tbody>
-		</table>
-		<input class="btn btn-success mt-3" id="submit" type="submit" value="Создать тест" />
-
-	</form>
+				</thead>
+				<tbody>
+					@foreach (var template in Model.FMTs)
+					{
+						<tr data-id="@template.Id"
+							data-name="@template.Name"
+							onclick="selectTemplate(this)"
+							style="cursor: pointer;"
+							class="align-middle">
+							<td>@template.Id</td>
+							<td>@template.Name</td>
+							<td>@GetCreationTimeString(template.CreationTime)</td>
+							<td>@GetTimeAgoString(template.LastModificationTime, TimeZoneInfo.Local)</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
+
 
 <script>
 	function filterTable(tableId, searchInputId) {
@@ -99,5 +113,23 @@
 		var selectedTemplateIdInput = document.getElementById('selected-template-id');
 		selectedTemplateView.innerHTML = `${id} ${name}`;
 		selectedTemplateIdInput.value = id;
+	}
+
+
+	// Select a template by clicking on a row
+	function selectTemplate(row) {
+		var id = row.dataset.id;
+		var name = row.dataset.name;
+
+		var selectedTemplateView = document.getElementById('selected-template-view');
+		var selectedTemplateIdInput = document.getElementById('selected-template-id');
+
+		// Update selected template view
+		selectedTemplateView.innerHTML = `<strong>Выбран шаблон:</strong> ${id} - ${name}`;
+		selectedTemplateIdInput.value = id;
+
+		// Highlight the selected row
+		document.querySelectorAll("#templatesTable tr").forEach(r => r.classList.remove("table-primary"));
+		row.classList.add("table-primary");
 	}
 </script>
