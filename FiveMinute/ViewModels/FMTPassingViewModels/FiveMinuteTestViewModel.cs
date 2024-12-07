@@ -19,5 +19,7 @@ public class FiveMinuteTestViewModel
 
     public string? UserGroup { get; set; }
 
-    public IEnumerable<QuestionViewModel> Questions { get; set; }
+    public TimeSpan RemainingTime { get; set; }
+
+	public IEnumerable<QuestionViewModel> Questions { get; set; }
 }

@@ -15,7 +15,7 @@ namespace FiveMinute.Controllers
 	{
 		private readonly UserManager<AppUser> userManager;
 		private readonly ApplicationDbContext context;
-		
+
 		private readonly IFiveMinuteTestRepository fiveMinuteTestRepository;
 		private readonly IFiveMinuteResultsRepository fiveMinuteResultsRepository;
 
@@ -23,7 +23,7 @@ namespace FiveMinute.Controllers
 										ApplicationDbContext context,
 										IFiveMinuteTestRepository fiveMinuteTestRepository,
 										IFiveMinuteResultsRepository fiveMinuteResultsRepository
-			) 
+			)
 		{
 			this.userManager = userManager;
 			this.context = context;
@@ -79,7 +79,7 @@ namespace FiveMinute.Controllers
 				Results = existingFMTest.Results,
 			};
 
-			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);//не кулл надо бы update переделать так чтобы одну принимал модель
+			await fiveMinuteTestRepository.Update(existingFMTest, updatedTest);//не кулл надо бы update переделать так чтобы одну принимал модель
 
 			return RedirectToAction("Detail", new { id = existingFMTest.Id });
 		}
@@ -106,7 +106,7 @@ namespace FiveMinute.Controllers
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
 
 			ViewData["templateId"] = templateId;
-			
+
 			var user = await context.Users.Include(x => x.FMTTemplates).FirstOrDefaultAsync(x => x.Id == currentUser.Id);
 			var model = new UserDetailViewModel
 			{
@@ -116,17 +116,17 @@ namespace FiveMinute.Controllers
 				UserRole = user.UserRole,
 				IsOwner = true,
 			};
-			
+
 			return View(model);
 		}
-	
+
 		[HttpPost]
 		public async Task<IActionResult> Create(FiveMinuteTestDetailViewModel fmTestEditViewModel)
 		{
 			var currentUser = await userManager.GetUserAsync(User);
 			if (currentUser == null || !currentUser.canCreate)
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
-			
+
 			var user = await context.Users.Include(x => x.FMTTemplates).ThenInclude(x => x.Questions).FirstOrDefaultAsync(x => x.Id == currentUser.Id);
 			var attachedTemplate = user.FMTTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
 
@@ -141,10 +141,10 @@ namespace FiveMinute.Controllers
 				CreationTime = DateTime.UtcNow,
 				IdToUninclude = new List<int>(),
 			};
-			
+
 			context.FiveMinuteTests.Add(test);
 			await context.SaveChangesAsync();
-			return RedirectToAction("Detail", new { testId = test.Id});
+			return RedirectToAction("Detail", new { testId = test.Id });
 		}
 
 		public async Task<IActionResult> Pass(int testId)
@@ -155,6 +155,25 @@ namespace FiveMinute.Controllers
 				return View("NotFound");
 			}
 
+			switch (fmTest.Status)
+			{
+				// Вот тут вот я временно сделал хуйню под названием View("НесуществующееПредставление")
+				// Тут надо создать одно представление с отображением текста, которое я хочу передать
+				case TestStatus.Planned:
+					return View("TestPlanned");
+				case TestStatus.Cancelled:
+					return View("TestCancelled");
+				case TestStatus.Completed:
+					var currentUser = await userManager.GetUserAsync(User);
+					if (currentUser == null)
+						return View("TestCompleted");
+
+					var result = fmTest.Results.FirstOrDefault(x => x.UserId == currentUser.Id);
+					if (result == null)
+						return View("NotFound");
+					return RedirectToAction("Detail", "", new { id = result.Id });
+			}
+
 			var fmt = fmTest.FiveMinuteTemplate;
 			var test = new FiveMinuteTestViewModel
 			{
@@ -162,20 +181,27 @@ namespace FiveMinute.Controllers
 				FMTestId = fmTest.Id,
 				Questions = fmt.Questions.Where(x => !fmTest.IdToUninclude.Contains(x.Id))
 										 .Select(x => new QuestionViewModel
-				{
-					Id = x.Id,
-					Position = x.Position,
-					QuestionText = x.QuestionText,
-					ResponseType = x.ResponseType,
-					AnswerOptions = x.AnswerOptions.Select(answer => new AnswerViewModel()
-					{
-						Id = answer.Id,
-						QuestionId = answer.QuestionId,
-						Position = answer.Position,
-						Text = answer.Text,
-					}).ToList(),
-				}),
+										 {
+											 Id = x.Id,
+											 Position = x.Position,
+											 QuestionText = x.QuestionText,
+											 ResponseType = x.ResponseType,
+											 AnswerOptions = x.AnswerOptions.Select(answer => new AnswerViewModel()
+											 {
+												 Id = answer.Id,
+												 QuestionId = answer.QuestionId,
+												 Position = answer.Position,
+												 Text = answer.Text,
+											 }).ToList(),
+										 }),
 			};
+
+			if (fmTest.EndPlanned)
+			{
+				// Тут скорее всего ошибка с часовыми поясами будет
+				test.RemainingTime = DateTime.UtcNow - fmTest.EndTime;
+			}
+
 			return View(test);
 		}
 
@@ -194,7 +220,7 @@ namespace FiveMinute.Controllers
 			if (!await fiveMinuteTestRepository.AddResultToTest(testResultViewModel.FMTestId, testResult))
 				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers"));
 
-			
+
 			if (currentUser != null)
 			{
 				currentUser.AddResult(testResult);
@@ -253,18 +279,18 @@ namespace FiveMinute.Controllers
 			var updatedTest = new FiveMinuteTest
 			{
 				Id = FMTestDetailViewModel.Id,
-				Name =FMTestDetailViewModel.Name!=null?FMTestDetailViewModel.Name:existingFMTest.Name,
+				Name = FMTestDetailViewModel.Name != null ? FMTestDetailViewModel.Name : existingFMTest.Name,
 				FiveMinuteTemplate = existingFMTest.FiveMinuteTemplate,
 				FiveMinuteTemplateId = existingFMTest.FiveMinuteTemplate.Id,
-				Status = FMTestDetailViewModel.Status!=null?FMTestDetailViewModel.Status:existingFMTest.Status,
-				StartPlanned = FMTestDetailViewModel.StartPlanned!=null?FMTestDetailViewModel.StartPlanned:existingFMTest.StartPlanned,
-				StartTime = FMTestDetailViewModel.StartTime!=null?FMTestDetailViewModel.StartTime:existingFMTest.StartTime,
-				EndPlanned = FMTestDetailViewModel.EndPlanned!=null?FMTestDetailViewModel.EndPlanned:existingFMTest.EndPlanned,
-				EndTime = FMTestDetailViewModel.EndTime!=null?FMTestDetailViewModel.EndTime:existingFMTest.EndTime,
-				IdToUninclude =FMTestDetailViewModel.IdToUninclude,
+				Status = FMTestDetailViewModel.Status != null ? FMTestDetailViewModel.Status : existingFMTest.Status,
+				StartPlanned = FMTestDetailViewModel.StartPlanned != null ? FMTestDetailViewModel.StartPlanned : existingFMTest.StartPlanned,
+				StartTime = FMTestDetailViewModel.StartTime != null ? FMTestDetailViewModel.StartTime : existingFMTest.StartTime,
+				EndPlanned = FMTestDetailViewModel.EndPlanned != null ? FMTestDetailViewModel.EndPlanned : existingFMTest.EndPlanned,
+				EndTime = FMTestDetailViewModel.EndTime != null ? FMTestDetailViewModel.EndTime : existingFMTest.EndTime,
+				IdToUninclude = FMTestDetailViewModel.IdToUninclude,
 				Results = existingFMTest.Results
 			};
-			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);
+			await fiveMinuteTestRepository.Update(existingFMTest, updatedTest);
 			return RedirectToAction("Detail");
 		}
 	}
