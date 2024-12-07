@@ -7,7 +7,7 @@
 
 <div class="container mt-4">
     <h1>@Model.Name</h1>
-    
+
     <!-- Tab Navigation -->
     <ul class="nav nav-tabs" id="testDetailTabs" role="tablist">
         <li class="nav-item" role="presentation">
@@ -32,14 +32,53 @@
                 </div>
                 <div class="col-md-6">
                     <h4>Statistics for Passers</h4>
-                    <ul class="list-group">
-                        @foreach (var result in Model.Results)
+                    <h6>Всего прохождений: @Model.Results.Count()</h6>
+
+                    @foreach (var result in Model.Results)
+                    {
+                        var answersDict = new Dictionary<int, List<UserAnswer>>();
+                        foreach (var answer in result.Answers)
                         {
-                            <li class="list-group-item">
-                                <strong>@result.UserName</strong> - Not impemented =)
-                            </li>
+                            answersDict.TryAdd(answer.QuestionPosition, new List<UserAnswer>());
+                            answersDict[answer.QuestionPosition].Add(answer);
                         }
-                    </ul>
+
+                        <table class="table table-bordered table-striped mt-3">
+                            <caption>
+                                <div>Id пользователя: @result.UserId</div>
+                                <div>Имя пользователя: @result.UserName</div>
+                                <div>Время прохождения: @result.PassTime</div>
+                                <div>Всего баллов: @answersDict.Values.SelectMany(x => x).Sum(x => x.IsCorrect ? 1: 0)</div>
+                                <a asp-action="FiveMinuteResult" asp-route-resultId="@result.Id">Подробнее</a>
+                            </caption>
+                            <thead>
+                            <tr>
+                                <th>Вопрос</th>
+                                @foreach(var number in answersDict.Keys.Order())
+                                {
+                                    var someAnswer = answersDict[number].FirstOrDefault();
+                                    <th>@someAnswer?.QuestionPosition. @someAnswer?.QuestionText</th>
+                                }
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th>Ответ</th>
+                                @foreach (var number in answersDict.Keys.Order())
+                                {
+                                    <td>@string.Join(';', answersDict[number].Select(x => x.Text).Where(x => x != ""))</td>
+                                }
+                            </tr>
+                            <tr>
+                                <th>Балл</th>
+                                @foreach (var number in answersDict.Keys.Order())
+                                {
+                                    <td>@answersDict[number].Sum(x => x.IsCorrect ? 1 : 0)</td>
+                                }
+                            </tr>
+                            </tbody>
+                        </table>
+                    }
                 </div>
             </div>
 
@@ -56,48 +95,46 @@
         <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
             <h3>Настройки теста</h3>
 
-                <form method="post" action="@Url.Action("UpdateTestSettings", "FiveMinuteTest")">
-                    <input type="hidden" name="Id" value="@Model.Id" />
-                    
-                    <!-- Это скрытое поле, в которое мы будем записывать список неотмеченных вопросов -->
-                    <input type="hidden" id="IdToUninclude" name="IdToUninclude" />
-                
-                    <div class="mb-4">
-                        <h4>Управление вопросами</h4>
-                        <div class="list-group">
-                            @for (int i = 0; i < Model.AttachedFMT.Questions.Count; i++)
-                            {
-                                var question = Model.AttachedFMT.Questions[i];
-                                bool isChecked = !Model.IdToUninclude.Contains(question.Id);
-                                <div class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <span class="question-text">@question.QuestionText</span>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" 
-                                               class="form-check-input question-checkbox" 
-                                               data-question-id="@question.Id"
-                                               value="@question.Id"
-                                               @(isChecked ? "checked" : "") />
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                
-                    <div class="mb-3">
-                        <label for="startPlanned" class="form-label">Запланировать начало</label>
-                        <input type="checkbox" id="startPlanned" name="startPlanned" @(Model.StartPlanned ? "checked" : "") class="form-check-input" />
-                    </div>
-                
-                    <div class="mb-3">
-                        <label for="endPlanned" class="form-label">Запланировать окончание</label>
-                        <input type="checkbox" id="endPlanned" name="endPlanned" @(Model.EndPlanned ? "checked" : "") class="form-check-input" />
-                    </div>
-                
-                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-                </form>
+            <form method="post" action="@Url.Action("UpdateTestSettings", "FiveMinuteTest")">
+                <input type="hidden" name="Id" value="@Model.Id" />
 
+                <input type="hidden" id="IdToUninclude" name="IdToUninclude" />
+
+                <div class="mb-4">
+                    <h4>Управление вопросами</h4>
+                    <div class="list-group">
+                        @for (int i = 0; i < Model.AttachedFMT.Questions.Count; i++)
+                        {
+                            var question = Model.AttachedFMT.Questions[i];
+                            bool isChecked = !Model.IdToUninclude.Contains(question.Id);
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="question-text">@question.QuestionText</span>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox"
+                                           class="form-check-input question-checkbox"
+                                           data-question-id="@question.Id"
+                                           value="@question.Id"
+                                           @(isChecked ? "checked" : "") />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="startPlanned" class="form-label">Запланировать начало</label>
+                    <input type="checkbox" id="startPlanned" name="startPlanned" @(Model.StartPlanned ? "checked" : "") class="form-check-input" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="endPlanned" class="form-label">Запланировать окончание</label>
+                    <input type="checkbox" id="endPlanned" name="endPlanned" @(Model.EndPlanned ? "checked" : "") class="form-check-input" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+            </form>
         </div>
     </div>
 </div>
@@ -112,4 +149,3 @@
         initializeQuestionCheckboxes('IdToUninclude');
     });
 </script>
-

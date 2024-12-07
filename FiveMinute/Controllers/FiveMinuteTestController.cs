@@ -8,6 +8,7 @@ using FiveMinute.ViewModels.AccountViewModels;
 using Microsoft.EntityFrameworkCore;
 using FiveMinute.ViewModels;
 using FiveMinute.Interfaces;
+using System.Net;
 
 namespace FiveMinute.Controllers
 {
@@ -235,7 +236,12 @@ namespace FiveMinute.Controllers
 				// Тут нужна логика, чтобы обрабатывать, сразу ли ответы проверены или ещё что то сам препод долен чекнуть
 				Status = ResultStatus.Accepted,
 				UserId = testResult.UserName,
-				StudentData = testResult.StudentData,
+				StudentData = testResult.StudentData??new UserData
+				{
+					FirstName = "UNKNOWN",
+					LastName = "UNKNOWN",
+					Group = "UNKNOWN",
+				},
 			};
 		}
 		[HttpPost]
@@ -266,6 +272,30 @@ namespace FiveMinute.Controllers
 			};
 			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);
 			return RedirectToAction("Detail");
+		}
+		
+		// Statistics
+		// public async Task<IActionResult> ShowResults(int testId)
+		// {
+		// 	
+		// }
+
+		public async Task<IActionResult> FiveMinuteResult(int resultId)
+		{
+			var currentUser = await userManager.GetUserAsync(User);
+			var result = fiveMinuteResultsRepository.GetById(resultId).Result;
+			var FMTest = fiveMinuteTestRepository.GetByIdAsync(result.FiveMinuteTestId).Result;
+			var fiveMinuteTestResultViewModel = new FiveMinuteTestResultViewModel
+			{
+				FiveMinuteTestName = FMTest.Name,
+				FiveMinuteTestResult = result,
+				Questions = FMTest.FiveMinuteTemplate.Questions.ToList()
+			};
+
+			if (result is null || currentUser is null || FMTest.UserOrganizerId != currentUser.Id)
+				return View("Error", new ErrorViewModel(HttpStatusCode.NotFound.ToString()));
+
+			return View(fiveMinuteTestResultViewModel);
 		}
 	}
 }
