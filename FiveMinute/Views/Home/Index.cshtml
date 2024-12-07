@@ -149,9 +149,13 @@
 										<td>@test.Id</td>
 										<td>@test.Name</td>
 										<td>
-											<a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@test.Id" class="btn btn-primary">Редактировать</a>
-											<button class="btn btn-danger btn-delete" data-id="@test.Id">Удалить</button>
-										</td>
+                                            <a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@test.Id" class="btn btn-primary" style="border: none; background: transparent; padding: 0;">
+                                                <img src="/images/edit.webp" alt="Edit" style="width:20px; height:20px;">
+                                            </a>
+                                            <button class="btn btn-danger btn-delete" data-id="@test.Id" style="border: none; background: transparent; padding: 0;">
+                                                <img src="/images/trashbox.webp" alt="Delete" style="width:20px; height:20px;">
+                                            </button>
+                                        </td>
 									</tr>
 
 								}
@@ -193,8 +197,10 @@
 										</span>
 									</td>
 									<td>
-										<a asp-action="Edit" asp-controller="FiveMinuteTest" asp-route-testId="@test.Id" class="btn btn-primary">Edit</a>
-									</td>
+                                        <a asp-action="Edit" asp-controller="FiveMinuteTest" asp-route-testId="@test.Id" class="btn btn-primary" style="border: none; background: transparent; padding: 0;">
+                                            <img src="/images/edit.webp" alt="Edit" style="width:20px; height:20px;">
+                                        </a>
+                                    </td>
 									<td>
 										<a class="btn btn-secondary" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
 										<a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteStatistics" asp-action="ShowResults">Статистика</a>
