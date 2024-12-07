@@ -3,6 +3,7 @@ using FiveMinute.Interfaces;
 using FiveMinute.Models;
 using FiveMinute.Repository;
 using FiveMinute.Repository.FiveMinuteTestRepository;
+using FiveMinute.Utils;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,7 @@ builder.Services.AddScoped<IFiveMinuteTemplateRepository, FiveMinuteTemplateRepo
 builder.Services.AddScoped<IFiveMinuteTestRepository, FiveMinuteTestRepository>();
 builder.Services.AddScoped<IFiveMinuteResultsRepository, FiveMinuteResultRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IChecker, FmtChecker>();
 
 var app = builder.Build();
 

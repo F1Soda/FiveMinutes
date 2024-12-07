@@ -8,26 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FiveMinute.Controllers
 {
-	public class FiveMinuteTemplateController : Controller
+	public class FiveMinuteTemplateController(
+		UserManager<AppUser> userManager,
+		IFiveMinuteTemplateRepository fmTemplateReposity,
+		IUserRepository userRepository)
+		: Controller
 	{
 		private readonly ILogger<HomeController> _logger;
-		private readonly UserManager<AppUser> userManager;
-		
-
-		private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
-
-		private readonly IUserRepository userRepository;
-
-
-		public FiveMinuteTemplateController(UserManager<AppUser> userManager,
-											ApplicationDbContext context,
-											IFiveMinuteTemplateRepository FMTemplateReposity
-											)
-		{
-			this.userManager = userManager;
-			userRepository = new UserRepository(context);
-			fiveMinuteTemplateRepository = FMTemplateReposity;
-		}
 
 		public IActionResult Index()
 		{
@@ -44,7 +31,7 @@ namespace FiveMinute.Controllers
 				return View("Error", new ErrorViewModel($"You don't have the rights to create a five-minute"));
 
 			var newFMT = FiveMinuteTemplate.CreateDefault(currentUser);
-			if (fiveMinuteTemplateRepository.Add(newFMT).Result)
+			if (fmTemplateReposity.Add(newFMT).Result)
 			{
 				await userRepository.AddFMTtoUser(newFMT, currentUser);
 
@@ -56,7 +43,7 @@ namespace FiveMinute.Controllers
 
 		public async Task<IActionResult> Edit(int id)
 		{
-			var fmt = await fiveMinuteTemplateRepository.GetByIdAsync(id);
+			var fmt = await fmTemplateReposity.GetByIdAsync(id);
 			var currentUser = await userManager.GetUserAsync(User);
 
 			if (currentUser == null || !currentUser.canCreate)
@@ -107,7 +94,7 @@ namespace FiveMinute.Controllers
 				});
 			}
 
-            var existingFmt = await fiveMinuteTemplateRepository.GetByIdAsyncNoTracking(currentFMTId.Value);
+            var existingFmt = await fmTemplateReposity.GetByIdAsyncNoTracking(currentFMTId.Value);
             if (existingFmt is null)
             {
                 return Json(new
@@ -125,7 +112,7 @@ namespace FiveMinute.Controllers
                 Questions = GetQuestionsByFMTViewModel(fmt, existingFmt),
                 
             };
-            await fiveMinuteTemplateRepository.Update(existingFmt, template);
+            await fmTemplateReposity.Update(existingFmt, template);
             return Json(new { success = true, id = fmt.Id });
         }
 
@@ -177,7 +164,7 @@ namespace FiveMinute.Controllers
 				return Forbid(); // or RedirectToAction("AccessDenied") if you have an Access Denied page
 			}
 
-			var fmt = await fiveMinuteTemplateRepository.GetByIdAsync(testId);
+			var fmt = await fmTemplateReposity.GetByIdAsync(testId);
 
 			if (fmt == null)
 			{
@@ -186,7 +173,7 @@ namespace FiveMinute.Controllers
 
 			var copyFMT = fmt.GetCopyToUser(currentUser);
 
-			if (fiveMinuteTemplateRepository.Add(copyFMT).Result)
+			if (fmTemplateReposity.Add(copyFMT).Result)
 			{
 				await userRepository.AddFMTtoUser(copyFMT, currentUser);
 				return RedirectToAction("Edit", new { copyFMT.Id });

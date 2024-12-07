@@ -12,26 +12,14 @@ using System.Net;
 
 namespace FiveMinute.Controllers
 {
-	public class FiveMinuteTestController : Controller
+	public class FiveMinuteTestController(
+		UserManager<AppUser> userManager,
+		ApplicationDbContext context,
+		IFiveMinuteTestRepository fiveMinuteTestRepository,
+		IFiveMinuteResultsRepository fiveMinuteResultsRepository,
+		IChecker fmtChecker)
+		: Controller
 	{
-		private readonly UserManager<AppUser> userManager;
-		private readonly ApplicationDbContext context;
-		
-		private readonly IFiveMinuteTestRepository fiveMinuteTestRepository;
-		private readonly IFiveMinuteResultsRepository fiveMinuteResultsRepository;
-
-		public FiveMinuteTestController(UserManager<AppUser> userManager,
-										ApplicationDbContext context,
-										IFiveMinuteTestRepository fiveMinuteTestRepository,
-										IFiveMinuteResultsRepository fiveMinuteResultsRepository
-			) 
-		{
-			this.userManager = userManager;
-			this.context = context;
-			this.fiveMinuteTestRepository = fiveMinuteTestRepository;
-			this.fiveMinuteResultsRepository = fiveMinuteResultsRepository;
-		}
-
 		public async Task<IActionResult> Edit(int testId)
 		{
 			var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testId);
@@ -80,7 +68,7 @@ namespace FiveMinute.Controllers
 				Results = existingFMTest.Results,
 			};
 
-			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);//не кулл надо бы update переделать так чтобы одну принимал модель
+			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);//не кулл надо бы update переделать так, чтобы одну принимал модель
 
 			return RedirectToAction("Detail", new { id = existingFMTest.Id });
 		}
@@ -183,67 +171,15 @@ namespace FiveMinute.Controllers
 		[HttpPost]
 		public async Task<IActionResult> SendTestResults(TestResultViewModel testResultViewModel)
 		{
-			// TODO: По хорошему нужно создать в форме поле для имени, если чел не зареган
-
-			var testResult = await ConvertViewModelToFiveMinuteResult(testResultViewModel);
 			var currentUser = await userManager.GetUserAsync(User);
-
-
-			testResult.UserId = currentUser?.Id;
-			testResult.UserName = currentUser?.UserName;
-
-			if (!await fiveMinuteTestRepository.AddResultToTest(testResultViewModel.FMTestId, testResult))
-				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers"));
-
 			
-			if (currentUser != null)
-			{
-				currentUser.AddResult(testResult);
-			}
-			context.SaveChanges();
+			if (!await fmtChecker.CheckAndSave(currentUser, testResultViewModel))
+				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers")); ;
+			await context.SaveChangesAsync();
 
 			return RedirectToAction("Passed");
 		}
-
-		public UserAnswer CheckUserAnswer(UserAnswerViewModel userAnswer, FiveMinuteTemplate fiveMinuteTemplate)
-		{
-			var question = fiveMinuteTemplate.Questions.FirstOrDefault(q => q.Position == userAnswer.QuestionPosition);
-			var dbAnswer = question?.AnswerOptions.FirstOrDefault(x => x.Position == userAnswer.Position);
-			if (dbAnswer == null)
-			{
-				// throw new Exception($"Вопрос ,на который указывает ответ юзера {userAnswer} не существует в ");
-				// Для текстового ответа надо подумать что делать
-			}
-			return new UserAnswer
-			{
-				QuestionId = question.Id,
-				Text = userAnswer.Text ?? "",
-				Position = userAnswer.Position,
-				IsCorrect = (dbAnswer?.IsCorrect ?? false) && userAnswer.Text == dbAnswer?.Text,
-				QuestionPosition = userAnswer.QuestionPosition,
-				QuestionText = question?.QuestionText ?? "",
-			};
-		}
-
-		public async Task<FiveMinuteTestResult> ConvertViewModelToFiveMinuteResult(TestResultViewModel testResult)
-		{
-			var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testResult.FMTestId);
-			return new FiveMinuteTestResult
-			{
-				Answers = testResult.UserAnswers.Select(ans => CheckUserAnswer(ans, fmTest.FiveMinuteTemplate)).ToList(),
-				FiveMinuteTestId = testResult.FMTestId,
-				PassTime = DateTime.UtcNow,
-				// Тут нужна логика, чтобы обрабатывать, сразу ли ответы проверены или ещё что то сам препод долен чекнуть
-				Status = ResultStatus.Accepted,
-				UserId = testResult.UserName,
-				StudentData = testResult.StudentData??new UserData
-				{
-					FirstName = "UNKNOWN",
-					LastName = "UNKNOWN",
-					Group = "UNKNOWN",
-				},
-			};
-		}
+		
 		[HttpPost]
 		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailViewModel)
 		{

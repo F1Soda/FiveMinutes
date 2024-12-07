@@ -15,28 +15,14 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace FiveMinute.Controllers
 {
-	public class HomeController : Controller
+	public class HomeController(
+		ApplicationDbContext context,
+		UserManager<AppUser> userManager,
+		IFiveMinuteTestRepository fiveMinuteTestRepository,
+		IFiveMinuteTemplateRepository fiveMinuteTemplateRepository,
+		ICompositeViewEngine viewEngine)
+		: Controller
 	{
-		private readonly ApplicationDbContext context;
-		private readonly UserManager<AppUser> userManager;
-
-		private readonly IFiveMinuteTestRepository fiveMinuteTestRepository;
-		private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
-		private readonly ICompositeViewEngine viewEngine;
-
-		public HomeController(ApplicationDbContext context,
-						      UserManager<AppUser> userManager,
-							  IFiveMinuteTestRepository fiveMinuteTestRepository,
-							  IFiveMinuteTemplateRepository fiveMinuteTemplateRepository,
-							  ICompositeViewEngine viewEngine)
-		{
-			this.context = context;
-			this.userManager = userManager;
-			this.fiveMinuteTestRepository = fiveMinuteTestRepository;
-			this.fiveMinuteTemplateRepository = fiveMinuteTemplateRepository;
-			this.viewEngine = viewEngine;
-		}
-
 		public async Task<IActionResult> Index()
 		{
 			var currentUser = await userManager.GetUserAsync(User);
@@ -45,7 +31,7 @@ namespace FiveMinute.Controllers
 			IndexViewModel model = null!;
 			if (currentUser != null)
 			{
-				// Тут возможно двойная работа, но пускай так будет
+				// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 				var user = await context.Users.Include(x => x.FMTTemplates)
 						.ThenInclude(x => x.Questions)
 

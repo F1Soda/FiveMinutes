@@ -9,22 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FiveMinute.Controllers;
 
-public class TestPassingController : Controller
+public class TestPassingController(UserManager<AppUser> userManager, ApplicationDbContext context)
+    : Controller
 {
-    private readonly ApplicationDbContext context;
-    private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository;
-    private readonly IFiveMinuteResultsRepository fiveMinuteResultsRepository;
-    
-    private readonly UserManager<AppUser> _userManager;
+    private readonly ApplicationDbContext context = context;
+    private readonly IFiveMinuteTemplateRepository fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
+    private readonly IFiveMinuteResultsRepository fiveMinuteResultsRepository = new FiveMinuteResultRepository(context);
 
 
-    public TestPassingController(UserManager<AppUser> userManager, ApplicationDbContext context)
-    {
-        this.context = context;
-        this.fiveMinuteTemplateRepository = new FiveMinuteTemplateRepository(context);
-        fiveMinuteResultsRepository = new FiveMinuteResultRepository(context);
-        _userManager = userManager;
-    }
     public IActionResult Test(int testId)
     {
         var fmt = fiveMinuteTemplateRepository.GetByIdAsync(testId).Result;
@@ -56,7 +48,7 @@ public class TestPassingController : Controller
         // TODO: По хорошему нужно создать в форме поле для имени, если чел не зареган
         
         var fiveMinuteResult = ConvertViewModelToFiveMinuteResult(testResult);
-        var currentUser =  await _userManager.GetUserAsync(User);
+        var currentUser =  await userManager.GetUserAsync(User);
  
         fiveMinuteResult.UserId = currentUser?.Id;
         fiveMinuteResult.UserName = testResult.UserName;

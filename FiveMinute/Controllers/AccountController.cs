@@ -8,19 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FiveMinute.Controllers
 {
-    public class AccountController : Controller
-    { 
-        private readonly UserManager<AppUser> userManager;
-        private readonly SignInManager<AppUser> signInManager;
-        private readonly ApplicationDbContext context;
-
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ApplicationDbContext context)
-        {
-            this.context = context;
-            this.signInManager = signInManager;
-            this.userManager = userManager;
-        }
-
+    public class AccountController(
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager,
+        ApplicationDbContext context)
+        : Controller
+    {
         [HttpGet]
         public IActionResult Login()
         {
