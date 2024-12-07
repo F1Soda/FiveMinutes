@@ -138,7 +138,7 @@ namespace FiveMinute.Controllers
 				UserOrganizer = user,
 				UserOrganizerId = user.Id,
 				Results = new List<FiveMinuteTestResult>(),
-				CreationTime = DateTime.UtcNow
+				CreationTime = DateTime.UtcNow,
 				IdToUninclude = new List<int>(),
 			};
 			
