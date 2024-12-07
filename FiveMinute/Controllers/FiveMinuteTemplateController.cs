@@ -107,27 +107,27 @@ namespace FiveMinute.Controllers
 				});
 			}
 
-			var existingFmt = await fiveMinuteTemplateRepository.GetByIdAsyncNoTracking(currentFMTId.Value);
-			if (existingFmt is null)
-			{
-				return Json(new
-				{
-					success = false,
-					errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
-				}); //тут какая-то другая ошибка должна быть
-			}
-			var template = new FiveMinuteTemplate
-			{
-				Id = fmt.Id,
-				Name = fmt.Name,
-				ShowInProfile = fmt.ShowInProfile,
-				LastModificationTime = DateTime.UtcNow,
-				Questions = GetQuestionsByFMTViewModel(fmt, existingFmt),
-
-			};
-			await fiveMinuteTemplateRepository.Update(existingFmt, template);
-			return Json(new { success = true, id = fmt.Id });
-		}
+            var existingFmt = await fiveMinuteTemplateRepository.GetByIdAsyncNoTracking(currentFMTId.Value);
+            if (existingFmt is null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
+                }); //тут какая-то другая ошибка должна быть
+            }
+            var template = new FiveMinuteTemplate
+            {
+                Id = fmt.Id,
+                Name = fmt.Name,
+                ShowInProfile = fmt.ShowInProfile,
+                LastModificationTime = DateTime.UtcNow,
+                Questions = GetQuestionsByFMTViewModel(fmt, existingFmt),
+                
+            };
+            await fiveMinuteTemplateRepository.Update(existingFmt, template);
+            return Json(new { success = true, id = fmt.Id });
+        }
 
 		public List<Question> GetQuestionsByFMTViewModel(FiveMinuteTemplateEditViewModel fmt, FiveMinuteTemplate existingFmt)
 		{

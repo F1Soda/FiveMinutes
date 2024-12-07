@@ -137,9 +137,9 @@ namespace FiveMinute.Controllers
 				FiveMinuteTemplateId = fmTestEditViewModel.AttachedFMTId,
 				UserOrganizer = user,
 				UserOrganizerId = user.Id,
-				PositionsToInclude = attachedTemplate.Questions.Select(x => x.Id).ToList(),
 				Results = new List<FiveMinuteTestResult>(),
 				CreationTime = DateTime.UtcNow
+				IdToUninclude = new List<int>(),
 			};
 			
 			context.FiveMinuteTests.Add(test);
@@ -160,7 +160,7 @@ namespace FiveMinute.Controllers
 			{
 				Name = fmt.Name,
 				FMTestId = fmTest.Id,
-				Questions = fmt.Questions.Where(x => fmTest.PositionsToInclude.Contains(x.Position))
+				Questions = fmt.Questions.Where(x => !fmTest.IdToUninclude.Contains(x.Id))
 										 .Select(x => new QuestionViewModel
 				{
 					Id = x.Id,
@@ -241,7 +241,6 @@ namespace FiveMinute.Controllers
 		[HttpPost]
 		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailViewModel)
 		{
-			//крч нихуя не работает модель говна приходит
 			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(FMTestDetailViewModel.Id);
 			var currentUser = await userManager.GetUserAsync(User);
 
@@ -256,13 +255,13 @@ namespace FiveMinute.Controllers
 				Id = FMTestDetailViewModel.Id,
 				Name =FMTestDetailViewModel.Name!=null?FMTestDetailViewModel.Name:existingFMTest.Name,
 				FiveMinuteTemplate = existingFMTest.FiveMinuteTemplate,
-				FiveMinuteTemplateId = existingFMTest.Id,
+				FiveMinuteTemplateId = existingFMTest.FiveMinuteTemplate.Id,
 				Status = FMTestDetailViewModel.Status!=null?FMTestDetailViewModel.Status:existingFMTest.Status,
 				StartPlanned = FMTestDetailViewModel.StartPlanned!=null?FMTestDetailViewModel.StartPlanned:existingFMTest.StartPlanned,
 				StartTime = FMTestDetailViewModel.StartTime!=null?FMTestDetailViewModel.StartTime:existingFMTest.StartTime,
 				EndPlanned = FMTestDetailViewModel.EndPlanned!=null?FMTestDetailViewModel.EndPlanned:existingFMTest.EndPlanned,
 				EndTime = FMTestDetailViewModel.EndTime!=null?FMTestDetailViewModel.EndTime:existingFMTest.EndTime,
-				PositionsToInclude = FMTestDetailViewModel.PositionsToInclude,
+				IdToUninclude =FMTestDetailViewModel.IdToUninclude,
 				Results = existingFMTest.Results
 			};
 			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);

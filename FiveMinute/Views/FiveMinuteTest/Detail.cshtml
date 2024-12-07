@@ -44,59 +44,60 @@
             </div>
 
             <!-- Notification for Organizer -->
-            @if (Model.StartPlanned && Model.Status == TestStatus.Completed && !Model.PositionsToInclude.Contains(1))
+            <!--@if (Model.StartPlanned && Model.Status == TestStatus.Completed && Model.IdToUninclude.Contains(1))
             {
                 <div class="alert alert-warning mt-4" role="alert">
                     <strong>Notification:</strong> A new test result has been submitted, but manual review is required.
                 </div>
-            }
+            }-->
         </div>
 
         <!-- Settings Tab Pane -->
         <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
             <h3>Настройки теста</h3>
 
-            <form method="post" action="@Url.Action("UpdateTestSettings", "FiveMinuteTest")">
-            <input type="hidden" aria-label="" name="Id" value="@Model.Id" />
-            <input type="hidden" aria-label="" name="PositionsToInclude" value="@Model.PositionsToInclude" />
+                <form method="post" action="@Url.Action("UpdateTestSettings", "FiveMinuteTest")">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    
+                    <!-- Это скрытое поле, в которое мы будем записывать список неотмеченных вопросов -->
+                    <input type="hidden" id="IdToUninclude" name="IdToUninclude" />
                 
-                <div class="mb-4">
-                    <h4>Управление вопросами</h4>
-                    <div class="list-group">
-                        @for (int i = 0; i < Model.AttachedFMT.Questions.Count; i++)
-                        {
-                            var question = Model.AttachedFMT.Questions[i];
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="question-text">@question.QuestionText</span>
+                    <div class="mb-4">
+                        <h4>Управление вопросами</h4>
+                        <div class="list-group">
+                            @for (int i = 0; i < Model.AttachedFMT.Questions.Count; i++)
+                            {
+                                var question = Model.AttachedFMT.Questions[i];
+                                bool isChecked = !Model.IdToUninclude.Contains(question.Id);
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="question-text">@question.QuestionText</span>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" 
+                                               class="form-check-input question-checkbox" 
+                                               data-question-id="@question.Id"
+                                               value="@question.Id"
+                                               @(isChecked ? "checked" : "") />
+                                    </div>
                                 </div>
-                                <div class="form-check">
-                                    <input type="checkbox" 
-                                           class="form-check-input" 
-                                           id="position_@question.Id" 
-                                           name="PositionsToInclude" 
-                                           value="@question.Id"
-                                           @(Model.PositionsToInclude.Contains(question.Id) ? "checked" : "") />
-                                </div>
-                            </div>
-                        }
+                            }
+                        </div>
                     </div>
-                </div>
+                
+                    <div class="mb-3">
+                        <label for="startPlanned" class="form-label">Запланировать начало</label>
+                        <input type="checkbox" id="startPlanned" name="startPlanned" @(Model.StartPlanned ? "checked" : "") class="form-check-input" />
+                    </div>
+                
+                    <div class="mb-3">
+                        <label for="endPlanned" class="form-label">Запланировать окончание</label>
+                        <input type="checkbox" id="endPlanned" name="endPlanned" @(Model.EndPlanned ? "checked" : "") class="form-check-input" />
+                    </div>
+                
+                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                </form>
 
-                <div class="mb-3">
-                    <label for="startPlanned" class="form-label">Запланировать начало</label>
-                    <input type="checkbox" id="startPlanned" name="startPlanned" @(Model.StartPlanned ? "checked" : "") class="form-check-input" />
-                </div>
-
-                <div class="mb-3">
-                    <label for="endPlanned" class="form-label">Запланировать окончание</label>
-                    <input type="checkbox" id="endPlanned" name="endPlanned" @(Model.EndPlanned ? "checked" : "") class="form-check-input" />
-                </div>
-
-                <input type="hidden" id="positionsToInclude" name="PositionsToInclude" value="@string.Join(",", Model.PositionsToInclude)" />
-
-                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-            </form>
         </div>
     </div>
 </div>
@@ -104,23 +105,11 @@
 <!-- Optional: Bootstrap JS for Tab Navigation -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Добавьте этот скрипт в конец файла, перед закрывающим тегом </body> -->
+<script src="~/js/questionCheckboxHandler.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const checkboxes = document.querySelectorAll('input[name="questionPosition"]');
-        const positionsInput = document.getElementById('positionsToInclude');
-        
-        // Функция обновления скрытого поля с позициями
-        function updatePositions() {
-            const positions = Array.from(checkboxes)
-                .filter(cb => cb.checked)
-                .map(cb => cb.value);
-            positionsInput.value = positions.join(',');
-        }
-        
-        // Обработчик изменения чекбоксов
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', updatePositions);
-        });
+        console.log('DOM загружен, начинаем инициализацию...'); // Отладочная информация
+        initializeQuestionCheckboxes('IdToUninclude');
     });
 </script>
+

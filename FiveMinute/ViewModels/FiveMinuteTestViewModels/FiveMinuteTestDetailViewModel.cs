@@ -17,7 +17,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 		public bool EndPlanned = false;
 		public DateTime EndTime { get; set; }
 		public IEnumerable<FiveMinuteTestResult> Results { get; set; }
-		public List<int> PositionsToInclude { get; set; }
+		public List<int> IdToUninclude { get; set; }
 
 		public static FiveMinuteTestDetailViewModel CreateByModel(FiveMinuteTest fmTest)
 		{
@@ -32,7 +32,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 				EndTime = fmTest.EndTime,
 				Results = fmTest.Results,
 				Status = fmTest.Status,
-				PositionsToInclude = fmTest.PositionsToInclude,
+				IdToUninclude = fmTest.IdToUninclude,
 			};
 		}
 		public FiveMinuteTest CreateByView()//надо кому-то это дажать у меня сил не хватило но идея класс не получается null выдает т.к не хваитет ему элементов
@@ -48,7 +48,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 				EndTime = this.EndTime,
 				Results = this.Results.ToList(),
 				Status = this.Status,
-				PositionsToInclude = this.PositionsToInclude,
+				IdToUninclude = this.IdToUninclude,
 			};
 		}
 	}

@@ -51,7 +51,7 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 		existingTest.FiveMinuteTemplate = updatedTest.FiveMinuteTemplate;
 
 		existingTest.Status = updatedTest.Status;
-		existingTest.PositionsToInclude = updatedTest.PositionsToInclude;
+		existingTest.IdToUninclude = updatedTest.IdToUninclude;
 		existingTest.StartPlanned = updatedTest.StartPlanned;
 		existingTest.EndPlanned = updatedTest.EndPlanned;
 		existingTest.StartTime = updatedTest.StartTime;

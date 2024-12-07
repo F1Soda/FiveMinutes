@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FiveMinute.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinute.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241207080803_UpdateStudent")]
+    partial class UpdateStudent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,10 +130,10 @@ namespace FiveMinute.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreationTime")
+                    b.Property<DateTime?>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("LastModificationTime")
+                    b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
@@ -144,7 +147,6 @@ namespace FiveMinute.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("UserOwnerId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -164,22 +166,19 @@ namespace FiveMinute.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("FiveMinuteTemplateId")
                         .HasColumnType("integer");
 
-                    b.Property<List<int>>("IdToUninclude")
-                        .IsRequired()
-                        .HasColumnType("integer[]");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<List<int>>("PositionsToInclude")
+                        .IsRequired()
+                        .HasColumnType("integer[]");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone");
@@ -465,7 +464,7 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("FiveMinute.Models.AppUser", b =>
                 {
-                    b.OwnsOne("FiveMinute.Data.UserData", "StudentData", b1 =>
+                    b.OwnsOne("FiveMinute.Data.StudentData", "StudentData", b1 =>
                         {
                             b1.Property<string>("AppUserId")
                                 .HasColumnType("text");
@@ -490,7 +489,8 @@ namespace FiveMinute.Migrations
                                 .HasForeignKey("AppUserId");
                         });
 
-                    b.Navigation("StudentData");
+                    b.Navigation("StudentData")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FiveMinute.Models.FiveMinuteTemplate", b =>
@@ -501,9 +501,7 @@ namespace FiveMinute.Migrations
 
                     b.HasOne("FiveMinute.Models.AppUser", "UserOwner")
                         .WithMany("FMTTemplates")
-                        .HasForeignKey("UserOwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserOwnerId");
 
                     b.Navigation("Origin");
 
@@ -537,7 +535,7 @@ namespace FiveMinute.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("FiveMinute.Data.UserData", "StudentData", b1 =>
+                    b.OwnsOne("FiveMinute.Data.StudentData", "StudentData", b1 =>
                         {
                             b1.Property<int>("FiveMinuteTestResultId")
                                 .HasColumnType("integer");
