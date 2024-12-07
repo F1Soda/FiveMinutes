@@ -39,6 +39,7 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 				.ThenInclude(x => x.Questions)
 				.ThenInclude(x => x.AnswerOptions)
 			.Include(x => x.Results)
+				.ThenInclude(x => x.Answers)
 			.FirstOrDefaultAsync(x => x.Id == id);
 	}
 

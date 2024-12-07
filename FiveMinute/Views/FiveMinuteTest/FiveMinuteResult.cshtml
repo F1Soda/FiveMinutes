@@ -20,9 +20,6 @@
 
 <div class="container test-area">
     <h1>@Model.FiveMinuteTestName</h1>
-    <div>Оставшееся время:
-        <div id="timer">5:00</div>
-    </div>
     <form asp-action="SendTestResults" asp-controller="TestPassing" method="post">
         <input type="hidden" aria-label="" name="FMTId" value = "@Model.FiveMinuteTestResult.Id"/>
         <div style="margin-bottom: 10px">
@@ -31,7 +28,7 @@
         <div style="margin-bottom: 10px">
             <div>
                 <label>Фамилия</label>
-                <input class="form-control" type="text" value="@(Model.FiveMinuteTestResult.StudentData.LastName)"/>
+                <input class="form-control" type="text" readonly value="@(Model.FiveMinuteTestResult.StudentData.LastName)"/>
             </div>
             <div>
                 <label>Имя</label>
@@ -39,7 +36,7 @@
             </div>
             <div>
                 <label>Группа</label>
-                <input class="form-control" type="text" value="@Model.FiveMinuteTestResult.StudentData.Group"/>
+                <input class="form-control" type="text" readonly value="@Model.FiveMinuteTestResult.StudentData.Group"/>
             </div>
         </div>
 

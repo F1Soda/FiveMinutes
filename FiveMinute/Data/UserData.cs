@@ -21,4 +21,9 @@ public class UserData
         LastName = lastName;
         Group = group;
     }
+
+    public UserData()
+    {
+        
+    }
 }
