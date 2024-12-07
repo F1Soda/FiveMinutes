@@ -56,8 +56,11 @@ namespace FiveMinute.Controllers
 				{
 					UserName = user.UserName,
 					Email = user.Email,
-					FMTemplates = user.FMTTemplates.Select(x => FMTemplateIndexViewModel.CreateByModel(x)).ToList(),
-					FMTests = user.FMTests.Select(x => FMTestIndexViewModel.CreateByModel(x)).ToList(),
+					FMTemplates = user.FMTTemplates.Select(x => FMTemplateIndexViewModel.CreateByModel(x))
+						.OrderByDescending(x => x.lastModification).ToList(),
+					FMTests = user.FMTests
+						.OrderByDescending(x => x.CreationTime)
+						.Select(x => FMTestIndexViewModel.CreateByModel(x)).ToList(),
 					UserRole = currentUser.UserRole
 				};
 
@@ -95,8 +98,12 @@ namespace FiveMinute.Controllers
 			if (await fiveMinuteTemplateRepository.DeleteCascade(template))
 			{
 				// Fetch updated data for both tabs
-				var templates = fiveMinuteTemplateRepository.GetAllFromUserId(currentUser.Id)?.Select(FMTemplateIndexViewModel.CreateByModel);
-				var tests = fiveMinuteTestRepository.GetAllFromUserId(currentUser.Id)?.Select(FMTestIndexViewModel.CreateByModel);
+				var templates = fiveMinuteTemplateRepository.GetAllFromUserId(currentUser.Id)
+					?.OrderByDescending(x => x.LastModificationTime)
+					?.Select(FMTemplateIndexViewModel.CreateByModel);
+				var tests = fiveMinuteTestRepository.GetAllFromUserId(currentUser.Id)
+					?.OrderByDescending(x => x.CreationTime)
+					?.Select(FMTestIndexViewModel.CreateByModel);
 
 				if (templates != null)
 				{
@@ -134,8 +141,12 @@ namespace FiveMinute.Controllers
 			if (await fiveMinuteTestRepository.Delete(test))
 			{
 				// Fetch updated data for both tabs
-				var templates = fiveMinuteTemplateRepository.GetAllFromUserId(currentUser.Id)?.Select(FMTemplateIndexViewModel.CreateByModel);
-				var tests = fiveMinuteTestRepository.GetAllFromUserId(currentUser.Id)?.Select(FMTestIndexViewModel.CreateByModel);
+				var templates = fiveMinuteTemplateRepository.GetAllFromUserId(currentUser.Id)
+					?.OrderByDescending(x => x.LastModificationTime)
+					?.Select(FMTemplateIndexViewModel.CreateByModel);
+				var tests = fiveMinuteTestRepository.GetAllFromUserId(currentUser.Id)
+					?.OrderByDescending(x => x.CreationTime)
+					?.Select(FMTestIndexViewModel.CreateByModel);
 
 				if (templates != null)
 				{

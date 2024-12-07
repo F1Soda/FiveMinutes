@@ -15,6 +15,8 @@ namespace FiveMinute.Models
 		public FiveMinuteTemplate FiveMinuteTemplate { get; set; }
 		public TestStatus Status { get; set; }
 
+		public DateTime CreationTime { get; set; }
+
 		public bool StartPlanned = false;
 		public DateTime StartTime { get; set; }
 		public bool EndPlanned = false;

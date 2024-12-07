@@ -8,8 +8,8 @@ namespace FiveMinute.Models
 		public int Id { get; set; }
 		public string Name { get; set; }
 
-		public DateTime? CreationTime { get; set; }
-		public DateTime? LastModificationTime { get; set; }
+		public DateTime CreationTime { get; set; }
+		public DateTime LastModificationTime { get; set; }
 		public IEnumerable<Question> Questions { get; set; }
 		
 		[ForeignKey("FiveMinuteTemplate")]
@@ -19,8 +19,8 @@ namespace FiveMinute.Models
         public bool ShowInProfile { get; set; }
 
         [ForeignKey("AppUser")]
-        public string? UserOwnerId { get; set; }
-        public AppUser? UserOwner { get; set; }
+        public string UserOwnerId { get; set; }
+        public AppUser UserOwner { get; set; }
 
         public FiveMinuteTemplate GetCopyToUser(AppUser newUserOwner)
         {

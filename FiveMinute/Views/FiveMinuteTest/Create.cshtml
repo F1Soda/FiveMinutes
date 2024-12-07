@@ -1,74 +1,103 @@
 ﻿@model FiveMinute.ViewModels.AccountViewModels.UserDetailViewModel
 
 @{
-    ViewData["Title"] = "Create";
+	ViewData["Title"] = "Create";
+}
+
+@{
+	string GetCreationTimeString(DateTime utcDateTime)
+	{
+		var localTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, TimeZoneInfo.Local); // Replace with your timezone ID
+		return localTime.ToString("dd.MM HH:mm"); // Format as per your requirement
+	}
+
+	string GetTimeAgoString(DateTime dateTime, TimeZoneInfo timeZone)
+	{
+		var localTime = TimeZoneInfo.ConvertTimeFromUtc(dateTime, timeZone);
+		var timeSpan = DateTime.Now - localTime;
+
+		if (timeSpan.TotalSeconds < 60)
+			return $"{(int)timeSpan.TotalSeconds} секунд назад";
+		else if (timeSpan.TotalMinutes < 60)
+			return $"{(int)timeSpan.TotalMinutes} минут назад";
+		else if (timeSpan.TotalHours < 24)
+			return $"{(int)timeSpan.TotalHours} час{(timeSpan.TotalHours < 5 ? "" : "ов")} назад";
+		else if (timeSpan.TotalDays < 7)
+			return $"{(int)timeSpan.TotalDays} день{(timeSpan.TotalDays < 2 ? "" : "ей")} назад";
+		else if (timeSpan.TotalDays < 30)
+			return $"{(int)(timeSpan.TotalDays / 7)} недел{((int)(timeSpan.TotalDays / 7) == 1 ? "ю" : "ь")} назад";
+		else if (timeSpan.TotalDays < 365)
+			return $"{(int)(timeSpan.TotalDays / 30)} месяц{((int)(timeSpan.TotalDays / 30) == 1 ? "" : "ев")} назад";
+		else
+			return $"{(int)(timeSpan.TotalDays / 365)} год{((int)(timeSpan.TotalDays / 365) == 1 ? "" : "а")} назад";
+	}
 }
 
 <div>
-    <form asp-action="Create" asp-controller="FiveMinuteTest" method="post">
-        <h5>Название теста</h5>
-        <input name="Name" type="text"/>
-        <h5>Шаблон пятиминутки</h5>
-        <div id="selected-template-view"> </div>
-        <input name="AttachedFMTId" id="selected-template-id" readonly type="hidden"/>
-        
-        <input type="text" id="search" class="form-control mb-2" placeholder="Search Teachers" onkeyup="filterTable('templatesTable', 'search')" />
-        <table id="templatesTable" class="table">
-            
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Название</th>
-                <th>Время создания</th>
-                <th>Последнее изменение</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var template in Model.FMTs)
-            {
-                <tr data-user-id="@template.Id">
-                    <td>@template.Id</td>
-                    <td>@template.Name</td>
-                    <td>@template.CreationTime</td>
-                    <td>@template.LastModificationTime</td>
-                    <td>
-                        <div class="btn" onclick="updateSelectedTemplate(@template.Id, '@template.Name')">Выбрать</div>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-        <input class="btn btn-primary mt-3" id="submit" type="submit" value="Создать тест"/>
-        
-    </form>
+	<form asp-action="Create" asp-controller="FiveMinuteTest" method="post">
+		<h5>Название теста</h5>
+		<input name="Name" type="text" />
+		<h5>Шаблон пятиминутки</h5>
+		<div id="selected-template-view"> </div>
+		<input name="AttachedFMTId" id="selected-template-id" readonly type="hidden" />
+
+		<input type="text" id="search" class="form-control mb-2" placeholder="Поиск пятиминутки" onkeyup="filterTable('templatesTable', 'search')" />
+		<table id="templatesTable" class="table">
+
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Название</th>
+					<th>Время создания</th>
+					<th>Последнее изменение</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var template in Model.FMTs)
+				{
+					<tr data-user-id="@template.Id">
+						<td>@template.Id</td>
+						<td>@template.Name</td>
+						<td>@GetCreationTimeString(template.CreationTime)</td>
+						<td>@GetTimeAgoString(template.LastModificationTime, TimeZoneInfo.Local)</td>
+						<td>
+							<button class="btn btn-primary" onclick="updateSelectedTemplate(@template.Id, '@template.Name')">Выбрать</button>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+		<input class="btn btn-success mt-3" id="submit" type="submit" value="Создать тест" />
+
+	</form>
 </div>
 
 <script>
-    function filterTable(tableId, searchInputId) {
-        var input = document.getElementById(searchInputId);
-        var filter = input.value.toLowerCase();
-        var table = document.getElementById(tableId);
-        var rows = table.getElementsByTagName("tr");
+	function filterTable(tableId, searchInputId) {
+		var input = document.getElementById(searchInputId);
+		var filter = input.value.toLowerCase();
+		var table = document.getElementById(tableId);
+		var rows = table.getElementsByTagName("tr");
 
-        for (var i = 1; i < rows.length; i++) {
-            var cells = rows[i].getElementsByTagName("td");
-            var match = false;
+		for (var i = 1; i < rows.length; i++) {
+			var cells = rows[i].getElementsByTagName("td");
+			var match = false;
 
-            for (var j = 0; j < cells.length; j++) {
-                if (cells[j] && cells[j].innerText.toLowerCase().includes(filter)) {
-                    match = true;
-                    break;
-                }
-            }
+			for (var j = 0; j < cells.length; j++) {
+				if (cells[j] && cells[j].innerText.toLowerCase().includes(filter)) {
+					match = true;
+					break;
+				}
+			}
 
-            rows[i].style.display = match ? "" : "none";
-        }
-    }
-    
-    function updateSelectedTemplate(id, name){
-        var selectedTemplateView = document.getElementById('selected-template-view');
-        var selectedTemplateIdInput = document.getElementById('selected-template-id');
-        selectedTemplateView.innerHTML = `${id} ${name}`;
-        selectedTemplateIdInput.value = id;
-    }
+			rows[i].style.display = match ? "" : "none";
+		}
+	}
+
+	function updateSelectedTemplate(id, name){
+		var selectedTemplateView = document.getElementById('selected-template-view');
+		var selectedTemplateIdInput = document.getElementById('selected-template-id');
+		selectedTemplateView.innerHTML = `${id} ${name}`;
+		selectedTemplateIdInput.value = id;
+	}
 </script>

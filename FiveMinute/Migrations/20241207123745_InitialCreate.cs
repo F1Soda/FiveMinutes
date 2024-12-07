@@ -188,11 +188,11 @@ namespace FiveMinute.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: true),
                     ShowInProfile = table.Column<bool>(type: "boolean", nullable: false),
-                    UserOwnerId = table.Column<string>(type: "text", nullable: true)
+                    UserOwnerId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -201,7 +201,8 @@ namespace FiveMinute.Migrations
                         name: "FK_FiveMinuteTemplates_AspNetUsers_UserOwnerId",
                         column: x => x.UserOwnerId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FiveMinuteTemplates_FiveMinuteTemplates_OriginId",
                         column: x => x.OriginId,
@@ -218,6 +219,7 @@ namespace FiveMinute.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     FiveMinuteTemplateId = table.Column<int>(type: "integer", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     PositionsToInclude = table.Column<List<int>>(type: "integer[]", nullable: false),

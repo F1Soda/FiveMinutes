@@ -138,7 +138,8 @@ namespace FiveMinute.Controllers
 				UserOrganizer = user,
 				UserOrganizerId = user.Id,
 				PositionsToInclude = attachedTemplate.Questions.Select(x => x.Id).ToList(),
-				Results = new List<FiveMinuteTestResult>()
+				Results = new List<FiveMinuteTestResult>(),
+				CreationTime = DateTime.UtcNow
 			};
 			
 			context.FiveMinuteTests.Add(test);

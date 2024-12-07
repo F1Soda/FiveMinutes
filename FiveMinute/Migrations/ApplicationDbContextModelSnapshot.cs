@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using FiveMinute.Data;
-using FiveMinute.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -128,10 +127,10 @@ namespace FiveMinute.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("LastModificationTime")
+                    b.Property<DateTime>("LastModificationTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
@@ -145,6 +144,7 @@ namespace FiveMinute.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("UserOwnerId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -163,6 +163,9 @@ namespace FiveMinute.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
@@ -462,7 +465,7 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("FiveMinute.Models.AppUser", b =>
                 {
-                    b.OwnsOne("FiveMinute.Data.UserData", "UserData", b1 =>
+                    b.OwnsOne("FiveMinute.Data.UserData", "StudentData", b1 =>
                         {
                             b1.Property<string>("AppUserId")
                                 .HasColumnType("text");
@@ -487,7 +490,7 @@ namespace FiveMinute.Migrations
                                 .HasForeignKey("AppUserId");
                         });
 
-                    b.Navigation("UserData");
+                    b.Navigation("StudentData");
                 });
 
             modelBuilder.Entity("FiveMinute.Models.FiveMinuteTemplate", b =>
@@ -498,7 +501,9 @@ namespace FiveMinute.Migrations
 
                     b.HasOne("FiveMinute.Models.AppUser", "UserOwner")
                         .WithMany("FMTTemplates")
-                        .HasForeignKey("UserOwnerId");
+                        .HasForeignKey("UserOwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Origin");
 
@@ -532,7 +537,7 @@ namespace FiveMinute.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("FiveMinute.Data.UserData", "UserData", b1 =>
+                    b.OwnsOne("FiveMinute.Data.UserData", "StudentData", b1 =>
                         {
                             b1.Property<int>("FiveMinuteTestResultId")
                                 .HasColumnType("integer");
@@ -557,7 +562,7 @@ namespace FiveMinute.Migrations
                                 .HasForeignKey("FiveMinuteTestResultId");
                         });
 
-                    b.Navigation("UserData")
+                    b.Navigation("StudentData")
                         .IsRequired();
                 });
 
@@ -674,5 +679,5 @@ namespace FiveMinute.Migrations
                 });
 #pragma warning restore 612, 618
         }
-	}
+    }
 }

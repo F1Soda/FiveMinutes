@@ -7,6 +7,7 @@ namespace FiveMinute.ViewModels.FMTEditViewModels
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
+		public DateTime lastModification { get; set; }
 
 		public static FMTemplateIndexViewModel CreateByModel(FiveMinuteTemplate model)
 		{
@@ -14,6 +15,7 @@ namespace FiveMinute.ViewModels.FMTEditViewModels
 			{
 				Id = model.Id,
 				Name = model.Name,
+				lastModification = model.LastModificationTime
 			};
 		}
 	}
