@@ -1,57 +1,62 @@
 ﻿@model ICollection<FiveMinute.ViewModels.FMTEditViewModels.FMTemplateIndexViewModel>
 
 @{
-	string GetTimeAgoString(DateTime dateTime, TimeZoneInfo timeZone)
-	{
-		var localTime = TimeZoneInfo.ConvertTimeFromUtc(dateTime, timeZone);
-		var timeSpan = DateTime.Now - localTime;
+    string GetTimeAgoString(DateTime dateTime, TimeZoneInfo timeZone)
+    {
+        var localTime = TimeZoneInfo.ConvertTimeFromUtc(dateTime, timeZone);
+        var timeSpan = DateTime.Now - localTime;
 
-		if (timeSpan.TotalSeconds < 60)
-			return $"{(int)timeSpan.TotalSeconds} секунд назад";
-		else if (timeSpan.TotalMinutes < 60)
-			return $"{(int)timeSpan.TotalMinutes} минут назад";
-		else if (timeSpan.TotalHours < 24)
-			return $"{(int)timeSpan.TotalHours} час{(timeSpan.TotalHours < 5 ? "" : "ов")} назад";
-		else if (timeSpan.TotalDays < 7)
-			return $"{(int)timeSpan.TotalDays} день{(timeSpan.TotalDays < 2 ? "" : "ей")} назад";
-		else if (timeSpan.TotalDays < 30)
-			return $"{(int)(timeSpan.TotalDays / 7)} недел{((int)(timeSpan.TotalDays / 7) == 1 ? "ю" : "ь")} назад";
-		else if (timeSpan.TotalDays < 365)
-			return $"{(int)(timeSpan.TotalDays / 30)} месяц{((int)(timeSpan.TotalDays / 30) == 1 ? "" : "ев")} назад";
-		else
-			return $"{(int)(timeSpan.TotalDays / 365)} год{((int)(timeSpan.TotalDays / 365) == 1 ? "" : "а")} назад";
-	}
+        if (timeSpan.TotalSeconds < 60)
+            return $"{(int)timeSpan.TotalSeconds} секунд назад";
+        else if (timeSpan.TotalMinutes < 60)
+            return $"{(int)timeSpan.TotalMinutes} минут назад";
+        else if (timeSpan.TotalHours < 24)
+            return $"{(int)timeSpan.TotalHours} час{(timeSpan.TotalHours < 5 ? "" : "ов")} назад";
+        else if (timeSpan.TotalDays < 7)
+            return $"{(int)timeSpan.TotalDays} день{(timeSpan.TotalDays < 2 ? "" : "ей")} назад";
+        else if (timeSpan.TotalDays < 30)
+            return $"{(int)(timeSpan.TotalDays / 7)} недел{((int)(timeSpan.TotalDays / 7) == 1 ? "ю" : "ь")} назад";
+        else if (timeSpan.TotalDays < 365)
+            return $"{(int)(timeSpan.TotalDays / 30)} месяц{((int)(timeSpan.TotalDays / 30) == 1 ? "" : "ев")} назад";
+        else
+            return $"{(int)(timeSpan.TotalDays / 365)} год{((int)(timeSpan.TotalDays / 365) == 1 ? "" : "а")} назад";
+    }
 }
 
-@if (Model != null && Model!.Any())
+@if (Model != null && Model.Any())
 {
-	<table class="table">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Название</th>
-				<th>Последнее изменение</th>
-				<th>Действия</th>
-
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var template in Model!)
-			{
-				<tr id="test-@template.Id">
-					<td>@template.Id</td>
-					<td>@template.Name</td>
-					<td>@GetTimeAgoString(template.lastModification, TimeZoneInfo.Local)</td>
-					<td>
-						<a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@template.Id" class="btn btn-primary">Редактировать</a>
-						<button class="btn btn-danger btn-delete" id="delete-template" data-id="@template.Id">Удалить</button>
-					</td>
-				</tr>
-			}
-		</tbody>
-	</table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Последнее изменение</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var template in Model)
+            {
+                <tr>
+                    <td>@template.Id</td>
+                    <td>@template.Name</td>
+                    <td>@GetTimeAgoString(template.lastModification, TimeZoneInfo.Local)</td>
+                    <td>
+                        <a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@template.Id" class="btn btn-primary">Редактировать</a>
+                        
+                        <!-- Кнопка удаления с атрибутами для скрипта confirmation-action-popup.js -->
+                        <button class="btn btn-danger confirm-delete-button"
+                                data-delete-url="@Url.Action("DeleteTemplate", "Home")"
+                                data-id="@template.Id">
+                            Удалить
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 else
 {
-	<p>Пока тут пусто. Создайте новую!</p>
+    <p>Пока тут пусто. Создайте новую!</p>
 }

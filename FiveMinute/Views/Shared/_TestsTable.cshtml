@@ -2,17 +2,16 @@
 @model ICollection<FiveMinute.ViewModels.FiveMinuteTestViewModels.FMTestIndexViewModel>
 
 @{
-    // Helper method for getting status background color class
     string GetStatusClass(TestStatus status)
     {
         return status switch
         {
-            TestStatus.Planned => "bg-warning", // Yellow
-            TestStatus.Started => "bg-primary", // Blue
-            TestStatus.InRechekingProcess => "bg-brown", // Custom brown color
-            TestStatus.Completed => "bg-success", // Green
-            TestStatus.Cancelled => "bg-danger", // Red
-            _ => "bg-light" // Default (light background)
+            TestStatus.Planned => "bg-warning",
+            TestStatus.Started => "bg-primary",
+            TestStatus.InRechekingProcess => "bg-brown",
+            TestStatus.Completed => "bg-success",
+            TestStatus.Cancelled => "bg-danger",
+            _ => "bg-light"
         };
     }
 
@@ -20,12 +19,12 @@
     {
         return status switch
         {
-            TestStatus.Planned => "Запланирована", // Yellow
-            TestStatus.Started => "Начата", // Blue
-            TestStatus.InRechekingProcess => "Требует проверки", // Custom brown color
-            TestStatus.Completed => "Завершена", // Green
-            TestStatus.Cancelled => "Отменена", // Red
-            _ => "bg-light" // Default (light background)
+            TestStatus.Planned => "Запланирована",
+            TestStatus.Started => "Начата",
+            TestStatus.InRechekingProcess => "Требует проверки",
+            TestStatus.Completed => "Завершена",
+            TestStatus.Cancelled => "Отменена",
+            _ => "Неизвестный статус"
         };
     }
 }
@@ -62,7 +61,13 @@
                         <a class="btn btn-secondary" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста(DEPRICATED)</a>
                         <a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteStatistics" asp-action="ShowResults">Статистика(DEPRICATED)</a>
                         <a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Detail">Подробнее</a>
-                        <button class="btn btn-danger btn-delete" id="delete-test" data-id="@test.Id">Удалить</button>
+                        
+                        <!-- Кнопка удаления с атрибутами для скрипта confirmation-action-popup.js -->
+                        <button class="btn btn-danger confirm-delete-button"
+                                data-delete-url="@Url.Action("DeleteTest", "Home")"
+                                data-id="@test.Id">
+                            Удалить
+                        </button>
                     </td>
                 </tr>
             }

@@ -45,7 +45,7 @@ namespace FiveMinute.Controllers
 			IndexViewModel model = null!;
 			if (currentUser != null)
 			{
-				// Òóò âîçìîæíî äâîéíàÿ ðàáîòà, íî ïóñêàé òàê áóäåò
+				// Ð¢ÑƒÑ‚ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð´Ð²Ð¾Ð¹Ð½Ð°Ñ Ñ€Ð°Ð±Ð¾Ñ‚Ð°, Ð½Ð¾ Ð¿ÑƒÑÐºÐ°Ð¹ Ñ‚Ð°Ðº Ð±ÑƒÐ´ÐµÑ‚
 				var user = await context.Users.Include(x => x.FMTTemplates)
 						.ThenInclude(x => x.Questions)
 
