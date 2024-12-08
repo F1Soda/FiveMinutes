@@ -145,10 +145,17 @@ namespace FiveMinute.Controllers
 			}
 
 			var fmt = fmTest.FiveMinuteTemplate;
+			
+			var currentUser = await userManager.GetUserAsync(User);
+			
+			if (!fmTest.CanPass(currentUser))
+				return Forbid();
 			var test = new FiveMinuteTestViewModel
 			{
 				Name = fmt.Name,
 				FMTestId = fmTest.Id,
+				StartTime = fmTest.StartTime,
+				EndTime = fmTest.EndTime,
 				Questions = fmt.Questions.Where(x => !fmTest.IdToUninclude.Contains(x.Id))
 										 .Select(x => new QuestionViewModel
 				{
@@ -200,13 +207,15 @@ namespace FiveMinute.Controllers
 				FiveMinuteTemplateId = existingFMTest.FiveMinuteTemplate.Id,
 				Status = FMTestDetailViewModel.Status!=null?FMTestDetailViewModel.Status:existingFMTest.Status,
 				StartPlanned = FMTestDetailViewModel.StartPlanned!=null?FMTestDetailViewModel.StartPlanned:existingFMTest.StartPlanned,
-				StartTime = FMTestDetailViewModel.StartTime!=null?FMTestDetailViewModel.StartTime:existingFMTest.StartTime,
+				StartTime = FMTestDetailViewModel.StartTime!=null?FMTestDetailViewModel.StartTime.ToUniversalTime():existingFMTest.StartTime,
 				EndPlanned = FMTestDetailViewModel.EndPlanned!=null?FMTestDetailViewModel.EndPlanned:existingFMTest.EndPlanned,
-				EndTime = FMTestDetailViewModel.EndTime!=null?FMTestDetailViewModel.EndTime:existingFMTest.EndTime,
+				EndTime = FMTestDetailViewModel.EndTime!=null?FMTestDetailViewModel.EndTime.ToUniversalTime():existingFMTest.EndTime,
 				IdToUninclude =FMTestDetailViewModel.IdToUninclude,
 				Results = existingFMTest.Results
 			};
-			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);
+			if (!await fiveMinuteTestRepository.Update(existingFMTest,updatedTest))
+				return View("Error");
+			
 			return RedirectToAction("Detail");
 		}
 		

@@ -8,12 +8,14 @@ public class FiveMinuteTestViewModel
 {
     public string Name { get; set; }
     public int FMTestId;
+    public DateTime StartTime { get; set; }
+    public DateTime EndTime { get; set; }
     
-    [Display(Name = "Имя")]
-    public string? UserFirstName { get; set; }
-    [Display(Name = "Фамилия")]
-    public string? UserLastName { get; set; }
-    [Display(Name = "Группа")]
+    // [Display(Name = "Имя")]
+    // public string? UserFirstName { get; set; }
+    // [Display(Name = "Фамилия")]
+    // public string? UserLastName { get; set; }
+    // [Display(Name = "Группа")]
     
     public UserData StudentData { get; set; }
 

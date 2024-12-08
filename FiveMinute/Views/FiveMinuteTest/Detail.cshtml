@@ -91,7 +91,7 @@
             }-->
         </div>
 
-        <!-- Settings Tab Pane -->
+        <!-- Settings Tab Panel -->
         <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
             <h3>Настройки теста</h3>
 
@@ -125,12 +125,21 @@
 
                 <div class="mb-3">
                     <label for="startPlanned" class="form-label">Запланировать начало</label>
-                    <input type="checkbox" id="startPlanned" name="startPlanned" @(Model.StartPlanned ? "checked" : "") class="form-check-input" />
+                    @*Этот конкретный инпут и который ниже не работают, рот их ебал*@
+                    <input type="checkbox" id="startPlanned" name="StartPlanned" @(Model.StartPlanned ? "checked" : "") class="form-check-input" onchange="toggleStartTimeInput()" value="true"/>
+                    <div id="startTimeInput" class="mt-2" style="display: @(Model.StartPlanned ? "block" : "none")">
+                        <label for="startDateTime" class="form-label">Дата и время начала</label>
+                        <input type="datetime-local" id="startDateTime" name="StartTime" class="form-control" value="@Model.StartTime.ToString("yyyy-MM-ddTHH:mm")" />
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="endPlanned" class="form-label">Запланировать окончание</label>
-                    <input type="checkbox" id="endPlanned" name="endPlanned" @(Model.EndPlanned ? "checked" : "") class="form-check-input" />
+                    <input type="checkbox" id="endPlanned" name="EndPlanned" @(Model.EndPlanned ? "checked" : "") class="form-check-input" onchange="toggleEndTimeInput()" value="true"/>
+                    <div id="endTimeInput" class="mt-2" style="display: @(Model.EndPlanned ? "block" : "none")">
+                        <label for="endDateTime" class="form-label">Дата и время окончания</label>
+                        <input type="datetime-local" id="endDateTime" name="EndTime" class="form-control" value="@Model.EndTime.ToString("yyyy-MM-ddTHH:mm")"/>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Сохранить изменения</button>
@@ -147,5 +156,18 @@
     document.addEventListener('DOMContentLoaded', function() {
         console.log('DOM загружен, начинаем инициализацию...'); // Отладочная информация
         initializeQuestionCheckboxes('IdToUninclude');
+        toggleEndTimeInput();
+        toggleStartTimeInput();
     });
+    
+    function toggleStartTimeInput() {
+        var startPlanned = document.getElementById('startPlanned').checked;
+        
+        document.getElementById('startTimeInput').style.display = startPlanned ? 'block' : 'none';
+    }
+
+    function toggleEndTimeInput() {
+        var endPlanned = document.getElementById('endPlanned').checked;
+        document.getElementById('endTimeInput').style.display = endPlanned ? 'block' : 'none';
+    }
 </script>
