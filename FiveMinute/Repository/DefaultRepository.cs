@@ -27,7 +27,7 @@ public abstract class DefaultRepository<T> : IDefaultRepository<T>
     public async Task<bool> Save()
     {
         var saved = context.SaveChanges();
-        return saved > 0 ? true : false;
+        return saved >= 0 ? true : false;
     }
 
 }

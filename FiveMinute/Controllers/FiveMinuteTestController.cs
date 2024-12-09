@@ -213,10 +213,10 @@ namespace FiveMinute.Controllers
 				IdToUninclude =FMTestDetailViewModel.IdToUninclude,
 				Results = existingFMTest.Results
 			};
-			if (!await fiveMinuteTestRepository.Update(existingFMTest,updatedTest))
+			if(!await fiveMinuteTestRepository.Update(existingFMTest,updatedTest))
 				return View("Error");
 			
-			return RedirectToAction("Detail");
+			return RedirectToAction("Detail", new { testId = updatedTest.Id});
 		}
 		
 		// Statistics
