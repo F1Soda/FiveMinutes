@@ -1,9 +1,10 @@
 ﻿using System.Runtime.Intrinsics.X86;
 using FiveMinute.Models;
+using FiveMinute.ViewModels.Interfaces;
 
 namespace FiveMinute.ViewModels.FMTEditViewModels
 {
-    public class FiveMinuteTemplateEditViewModel
+    public class FiveMinuteTemplateEditViewModel: IInput<FiveMinuteTemplateEditViewModel,FiveMinuteTemplate>,IOutput<FiveMinuteTemplateEditViewModel,FiveMinuteTemplate>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -19,41 +20,18 @@ namespace FiveMinute.ViewModels.FMTEditViewModels
                 Name = fmt.Name,
                 ShowInProfile = fmt.ShowInProfile,
                 Questions = fmt.Questions
-                    .Select(x => new QuestionEditViewModel()
-                    {
-                        Id = x.Id,
-                        QuestionText = x.QuestionText,
-                        Position = x.Position,
-                        ResponseType = x.ResponseType,
-                        Answers = x.AnswerOptions.Select(x => new AnswerEditViewModel
-                        {
-                            Position = x.Position,
-                            Text = x.Text,
-                            IsCorrect = x.IsCorrect
-                        }).ToList()
-                    }).ToList()
+                    .Select(x => QuestionEditViewModel.CreateByModel(x)).ToList()
             };
         }
-        public FiveMinuteTemplate CreateByView()//надо кому-то это дажать у меня сил не хватило но идея класс
+        public static FiveMinuteTemplate CreateByView(FiveMinuteTemplateEditViewModel FiveMinuteTemplateView)
         {
             return new FiveMinuteTemplate
             {
-                Id = this.Id,
-                Name = this.Name,
-                ShowInProfile = this.ShowInProfile,
-                Questions = this.Questions
-                    .Select(x => new Question()
-                    {
-                        QuestionText = x.QuestionText,
-                        Position = x.Position,
-                        ResponseType = x.ResponseType,
-                        AnswerOptions = x.Answers.Select(x => new Answer()
-                        {
-                            Position = x.Position,
-                            Text = x.Text,
-                            IsCorrect = x.IsCorrect
-                        }).ToList()
-                    }).ToList()
+                Id = FiveMinuteTemplateView.Id,
+                Name = FiveMinuteTemplateView.Name,
+                ShowInProfile = FiveMinuteTemplateView.ShowInProfile,
+                Questions = FiveMinuteTemplateView.Questions
+                    .Select(x => QuestionEditViewModel.CreateByView(x)).ToList()
             };
         }
     }

@@ -103,49 +103,10 @@ namespace FiveMinute.Controllers
                     errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
                 }); //тут какая-то другая ошибка должна быть
             }
-            var template = new FiveMinuteTemplate
-            {
-                Id = fmt.Id,
-                Name = fmt.Name,
-                ShowInProfile = fmt.ShowInProfile,
-                LastModificationTime = DateTime.UtcNow,
-                Questions = GetQuestionsByFMTViewModel(fmt, existingFmt),
-                
-            };
+            var template = FiveMinuteTemplateEditViewModel.CreateByView(fmt);//#Ы в view модели у всех вопросов id =0,скорее всего гадость с фронта приходит 
             await fmTemplateReposity.Update(existingFmt, template);
             return Json(new { success = true, id = fmt.Id });
         }
-
-		public List<Question> GetQuestionsByFMTViewModel(FiveMinuteTemplateEditViewModel fmt, FiveMinuteTemplate existingFmt)
-		{
-			if (fmt.Questions.Any(x => x.QuestionText == ""))
-			{
-				Console.Write("Поступил Пустой вопрос");
-			}
-			Console.Write("\n\n\n\n\n\nПоступил Пустой вопрос\n\n\n\n\n");
-			if (fmt.Questions.Select(x => x.Answers)
-				.Any(x => x.Any(x => x.Text == null)))
-			{
-				Console.Write("Поступил Пустой ответ");
-			}
-			return fmt.Questions.Select(question => new Question
-			{
-				QuestionText = question.QuestionText,
-				FiveMinuteTemplate = existingFmt,
-				Position = question.Position,
-				ResponseType = question.ResponseType,
-				FiveMinuteTemplateId = fmt.Id,
-				AnswerOptions = question.Answers.Select(x => new Answer
-				{
-					IsCorrect = x.IsCorrect,
-					Position = x.Position,
-					Text = x.Text,
-					// Вот эту залупу починить как то надо или не надо ???
-					QuestionId = 0
-				}).ToList()
-			}).ToList();
-		}
-
 		public async Task<IActionResult> Copy(int testId)
 		{
 			var currentUser = await userManager.GetUserAsync(User);

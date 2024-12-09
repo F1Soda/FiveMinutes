@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using FiveMinute.ViewModels;
 using FiveMinute.Interfaces;
 using System.Net;
+using System.Runtime.Intrinsics.X86;
 
 namespace FiveMinute.Controllers
 {
@@ -54,19 +55,10 @@ namespace FiveMinute.Controllers
 			if (existingFMTest == null)
 				return View("NotFound");
 
-			var updatedTest = new FiveMinuteTest
-			{
-				Id = fmTestEditViewModel.Id,
-				Name = fmTestEditViewModel.Name,
-				FiveMinuteTemplate = fmTestEditViewModel.AttachedFMT,
-				FiveMinuteTemplateId = fmTestEditViewModel.AttachedFMT.Id,
-				Status = existingFMTest.Status,
-				StartPlanned = fmTestEditViewModel.StartPlanned,
-				StartTime = fmTestEditViewModel.StartTime,
-				EndPlanned = fmTestEditViewModel.EndPlanned,
-				EndTime = fmTestEditViewModel.EndTime,
-				Results = existingFMTest.Results,
-			};
+			var updatedTest = FiveMinuteTestEditViewModel.CreateByView(fmTestEditViewModel);
+			updatedTest.Status = existingFMTest.Status;
+			updatedTest.Results = existingFMTest.Results;
+
 
 			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);//не кулл надо бы update переделать так, чтобы одну принимал модель
 
@@ -119,18 +111,12 @@ namespace FiveMinute.Controllers
 			var user = await context.Users.Include(x => x.FMTTemplates).ThenInclude(x => x.Questions).FirstOrDefaultAsync(x => x.Id == currentUser.Id);
 			var attachedTemplate = user.FMTTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
 
-			var test = new FiveMinuteTest
-			{
-				Name = fmTestEditViewModel.Name,
-				FiveMinuteTemplate = attachedTemplate,
-				FiveMinuteTemplateId = fmTestEditViewModel.AttachedFMTId,
-				UserOrganizer = user,
-				UserOrganizerId = user.Id,
-				Results = new List<FiveMinuteTestResult>(),
-				CreationTime = DateTime.UtcNow,
-				IdToUninclude = new List<int>(),
-			};
-			
+			var test = FiveMinuteTestDetailViewModel.CreateByView(fmTestEditViewModel);//#Ы Мб стоит создать другую view модель
+			test.IdToUninclude = new List<int>();
+			test.FiveMinuteTemplate = attachedTemplate;
+			test.FiveMinuteTemplateId = fmTestEditViewModel.AttachedFMTId;
+			test.Results = new List<FiveMinuteTestResult>();
+			test.CreationTime = DateTime.UtcNow;
 			context.FiveMinuteTests.Add(test);
 			await context.SaveChangesAsync();
 			return RedirectToAction("Detail", new { testId = test.Id});
@@ -150,28 +136,7 @@ namespace FiveMinute.Controllers
 			
 			if (!fmTest.CanPass(currentUser))
 				return Forbid();
-			var test = new FiveMinuteTestViewModel
-			{
-				Name = fmt.Name,
-				FMTestId = fmTest.Id,
-				StartTime = fmTest.StartTime,
-				EndTime = fmTest.EndTime,
-				Questions = fmt.Questions.Where(x => !fmTest.IdToUninclude.Contains(x.Id))
-										 .Select(x => new QuestionViewModel
-				{
-					Id = x.Id,
-					Position = x.Position,
-					QuestionText = x.QuestionText,
-					ResponseType = x.ResponseType,
-					AnswerOptions = x.AnswerOptions.Select(answer => new AnswerViewModel()
-					{
-						Id = answer.Id,
-						QuestionId = answer.QuestionId,
-						Position = answer.Position,
-						Text = answer.Text,
-					}).ToList(),
-				}),
-			};
+			var test = FiveMinuteTestViewModel.CreateByModel(fmTest);
 			return View(test);
 		}
 
@@ -188,31 +153,19 @@ namespace FiveMinute.Controllers
 		}
 		
 		[HttpPost]
-		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailViewModel)
+		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailView)
 		{
-			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(FMTestDetailViewModel.Id);
+			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(FMTestDetailView.Id);
 			var currentUser = await userManager.GetUserAsync(User);
-
 			if (currentUser == null) // || !canCreate
 				return View("Error", new ErrorViewModel($"You don't have the rights to this action"));
 
 			if (existingFMTest == null)
 				return View("NotFound");
-
-			var updatedTest = new FiveMinuteTest
-			{
-				Id = FMTestDetailViewModel.Id,
-				Name =FMTestDetailViewModel.Name!=null?FMTestDetailViewModel.Name:existingFMTest.Name,
-				FiveMinuteTemplate = existingFMTest.FiveMinuteTemplate,
-				FiveMinuteTemplateId = existingFMTest.FiveMinuteTemplate.Id,
-				Status = FMTestDetailViewModel.Status!=null?FMTestDetailViewModel.Status:existingFMTest.Status,
-				StartPlanned = FMTestDetailViewModel.StartPlanned!=null?FMTestDetailViewModel.StartPlanned:existingFMTest.StartPlanned,
-				StartTime = FMTestDetailViewModel.StartTime!=null?FMTestDetailViewModel.StartTime.ToUniversalTime():existingFMTest.StartTime,
-				EndPlanned = FMTestDetailViewModel.EndPlanned!=null?FMTestDetailViewModel.EndPlanned:existingFMTest.EndPlanned,
-				EndTime = FMTestDetailViewModel.EndTime!=null?FMTestDetailViewModel.EndTime.ToUniversalTime():existingFMTest.EndTime,
-				IdToUninclude =FMTestDetailViewModel.IdToUninclude,
-				Results = existingFMTest.Results
-			};
+			var updatedTest = FiveMinuteTestDetailViewModel.CreateByView(FMTestDetailView);
+			updatedTest.FiveMinuteTemplate = existingFMTest.FiveMinuteTemplate;
+			updatedTest.FiveMinuteTemplateId = existingFMTest.FiveMinuteTemplate.Id;
+			updatedTest.Results = existingFMTest.Results;
 			if(!await fiveMinuteTestRepository.Update(existingFMTest,updatedTest))
 				return View("Error");
 			
@@ -230,12 +183,8 @@ namespace FiveMinute.Controllers
 			var currentUser = await userManager.GetUserAsync(User);
 			var result = fiveMinuteResultsRepository.GetById(resultId).Result;
 			var FMTest = fiveMinuteTestRepository.GetByIdAsync(result.FiveMinuteTestId).Result;
-			var fiveMinuteTestResultViewModel = new FiveMinuteTestResultViewModel
-			{
-				FiveMinuteTestName = FMTest.Name,
-				FiveMinuteTestResult = result,
-				Questions = FMTest.FiveMinuteTemplate.Questions.ToList()
-			};
+			var fiveMinuteTestResultViewModel = FiveMinuteTestResultViewModel.CreateByModel(FMTest);
+			fiveMinuteTestResultViewModel.FiveMinuteTestResult = result;
 
 			if (result is null || currentUser is null || FMTest.UserOrganizerId != currentUser.Id)
 				return View("Error", new ErrorViewModel(HttpStatusCode.NotFound.ToString()));

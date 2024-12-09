@@ -1,10 +1,11 @@
 ﻿using FiveMinute.Data;
 using FiveMinute.Models;
 using FiveMinute.ViewModels.FMTEditViewModels;
+using FiveMinute.ViewModels.Interfaces;
 
 namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 {
-	public class FMTestIndexViewModel
+	public class FMTestIndexViewModel: IInput<FMTestIndexViewModel,FiveMinuteTest>
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }

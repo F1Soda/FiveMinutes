@@ -36,23 +36,8 @@ namespace FiveMinute.Controllers
 						.ThenInclude(x => x.Questions)
 
 					.Include(x => x.FMTests)
-					.FirstOrDefaultAsync(x => x.Id == currentUser.Id);
-
-				model = new IndexViewModel
-				{
-					UserName = user.UserName,
-					Email = user.Email,
-					FMTemplates = user.FMTTemplates.Select(x => FMTemplateIndexViewModel.CreateByModel(x))
-						.OrderByDescending(x => x.lastModification).ToList(),
-					FMTests = user.FMTests
-						.OrderByDescending(x => x.CreationTime)
-						.Select(x => FMTestIndexViewModel.CreateByModel(x)).ToList(),
-					UserRole = currentUser.UserRole
-				};
-
-				model.ActiveFMTests = model.FMTests.Where(x => x.Status == TestStatus.Started).ToList();
-				model.RequiresRecheckingFMTests = model.FMTests.Where(x => x.Status == TestStatus.InRechekingProcess).ToList();
-				model.PlannedFMTests = model.FMTests.Where(x => x.Status == TestStatus.Planned).ToList();
+					.FirstOrDefaultAsync(x => x.Id == currentUser.Id);//не ну это пиздец
+				model = IndexViewModel.CreateByModel(user);
 			}
 			return View(model);
 		}

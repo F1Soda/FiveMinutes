@@ -34,34 +34,19 @@ public class FmtChecker(
             // throw new Exception($"Вопрос ,на который указывает ответ юзера {userAnswer} не существует в ");
             // Для текстового ответа надо подумать что делать
         }
-        return new UserAnswer
-        {
-            QuestionId = question.Id,
-            Text = userAnswer.Text ?? "",
-            Position = userAnswer.Position,
-            IsCorrect = (dbAnswer?.IsCorrect ?? false) && userAnswer.Text == dbAnswer?.Text,
-            QuestionPosition = userAnswer.QuestionPosition,
-            QuestionText = question?.QuestionText ?? "",
-        };
+
+        var rez =UserAnswerViewModel.CreateByView(userAnswer);
+        rez.QuestionId = question.Id;
+        rez.IsCorrect = (dbAnswer?.IsCorrect ?? false) && rez.Text == dbAnswer?.Text;
+        rez.QuestionText = question?.QuestionText ?? "";
+        return rez;
     }
 
     public async Task<FiveMinuteTestResult> ConvertViewModelToFiveMinuteResult(TestResultViewModel testResult)
     {
         var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testResult.FMTestId);
-        return new FiveMinuteTestResult
-        {
-            Answers = testResult.UserAnswers.Select(ans => CheckUserAnswer(ans, fmTest.FiveMinuteTemplate)).ToList(),
-            FiveMinuteTestId = testResult.FMTestId,
-            PassTime = DateTime.UtcNow,
-            // Тут нужна логика, чтобы обрабатывать, сразу ли ответы проверены или ещё что то сам препод долен чекнуть
-            Status = ResultStatus.Accepted,
-            UserId = testResult.UserName,
-            StudentData = testResult.StudentData??new UserData
-            {
-                FirstName = "UNKNOWN",
-                LastName = "UNKNOWN",
-                Group = "UNKNOWN",
-            },
-        };
+        var rez=TestResultViewModel.CreateByView(testResult);
+        rez.Answers = testResult.UserAnswers.Select(ans => CheckUserAnswer(ans, fmTest.FiveMinuteTemplate)).ToList();
+        return rez;
     }
 }

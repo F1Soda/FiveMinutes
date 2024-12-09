@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using FiveMinute.Data;
 using FiveMinute.Models;
+using FiveMinute.ViewModels.Interfaces;
 
 namespace FiveMinute.ViewModels;
 
-public class FiveMinuteTestViewModel
+public class FiveMinuteTestViewModel: IInput<FiveMinuteTestViewModel,FiveMinuteTest>
 {
     public string Name { get; set; }
     public int FMTestId;
@@ -22,4 +23,16 @@ public class FiveMinuteTestViewModel
     public string? UserGroup { get; set; }
 
     public IEnumerable<QuestionViewModel> Questions { get; set; }
+    public static FiveMinuteTestViewModel CreateByModel(FiveMinuteTest fmTest)
+    {
+        var fmTemplate = fmTest.FiveMinuteTemplate;
+        return new FiveMinuteTestViewModel
+        {
+            Name = fmTemplate.Name,
+            FMTestId = fmTemplate.Id,
+            StartTime = fmTest.StartTime,
+            EndTime = fmTest.EndTime,
+            Questions = fmTemplate.Questions.Select(x => QuestionViewModel.CreateByModel(x)),
+        };
+    }
 }

@@ -97,7 +97,8 @@
 
             <form method="post" action="@Url.Action("UpdateTestSettings", "FiveMinuteTest")">
                 <input type="hidden" name="Id" value="@Model.Id" />
-
+                <input type="hidden" name="Name" value="@Model.Name" />
+                <input type="hidden" name="Status" value="@Model.Status" />
                 <input type="hidden" id="IdToUninclude" name="IdToUninclude" />
 
                 <div class="mb-4">

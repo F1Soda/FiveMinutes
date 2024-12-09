@@ -1,9 +1,9 @@
 ﻿using FiveMinute.Models;
-using FiveMinute.ViewModels.FiveMinuteTestViewModels;
+using FiveMinute.ViewModels.Interfaces;
 
 namespace FiveMinute.ViewModels.FMTEditViewModels
 {
-	public class FMTemplateIndexViewModel
+	public class FMTemplateIndexViewModel : IInput<FMTemplateIndexViewModel,FiveMinuteTemplate>
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
