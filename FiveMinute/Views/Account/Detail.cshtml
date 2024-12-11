@@ -16,13 +16,13 @@
 			<div class="form-group row m-1">
 				<label class="col-sm-3 col-form-label">Имя</label>
 				<div class="col-sm-9">
-					<input class="form-control" value="@Model.StudentData.FirstName" />
+					<input class="form-control" name="FirstName" value="@Model.UserData?.FirstName" />
 				</div>
 			</div>
 			<div class="form-group row m-1">
 				<label class="col-sm-3 col-form-label">Фамилия</label>
 				<div class="col-sm-9">
-					<input class="form-control" value="@Model.StudentData.LastName" />
+					<input class="form-control" name="LastName" value="@Model.UserData?.LastName" />
 				</div>
 			</div>
 			@if (Model.UserRole is UserRoles.Student)
@@ -30,7 +30,7 @@
 				<div class="form-group row m-1">
 					<label class="col-sm-3 col-form-label">Группа</label>
 					<div class="col-sm-9">
-						<input class="form-control" value="@Model.StudentData.Group" />
+						<input class="form-control" name="Group" value="@Model.UserData?.Group" />
 					</div>
 				</div>
 			}

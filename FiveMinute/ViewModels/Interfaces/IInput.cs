@@ -1,6 +1,6 @@
 namespace FiveMinute.ViewModels.Interfaces;
 
-public interface IInput<TView, T>//из бекэнда в фронт
+public interface IInput<out TView, in T>//из бекэнда в фронт
 {
     static abstract TView CreateByModel(T model);
 }

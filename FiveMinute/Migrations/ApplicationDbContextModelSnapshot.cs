@@ -465,7 +465,7 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("FiveMinute.Models.AppUser", b =>
                 {
-                    b.OwnsOne("FiveMinute.Data.UserData", "StudentData", b1 =>
+                    b.OwnsOne("FiveMinute.Data.UserData", "UserData", b1 =>
                         {
                             b1.Property<string>("AppUserId")
                                 .HasColumnType("text");
@@ -490,7 +490,7 @@ namespace FiveMinute.Migrations
                                 .HasForeignKey("AppUserId");
                         });
 
-                    b.Navigation("StudentData");
+                    b.Navigation("UserData");
                 });
 
             modelBuilder.Entity("FiveMinute.Models.FiveMinuteTemplate", b =>
@@ -562,8 +562,7 @@ namespace FiveMinute.Migrations
                                 .HasForeignKey("FiveMinuteTestResultId");
                         });
 
-                    b.Navigation("StudentData")
-                        .IsRequired();
+                    b.Navigation("StudentData");
                 });
 
             modelBuilder.Entity("FiveMinute.Models.Folder", b =>

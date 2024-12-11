@@ -78,7 +78,7 @@ namespace FiveMinute.Controllers
                 UserRole = UserRoles.Student,
                 Email = registerViewModel.EmailAddress,
                 UserName = registerViewModel.EmailAddress,
-                StudentData = new UserData(registerViewModel.FirstName, registerViewModel.LastName, "")
+                UserData = new UserData(registerViewModel.FirstName, registerViewModel.LastName, "")
             };
             var newUserResponse = await userManager.CreateAsync(newUser, registerViewModel.Password);
 
@@ -152,7 +152,8 @@ namespace FiveMinute.Controllers
                 Tests = user.FMTests,
                 UserRole = currentUser.UserRole,
                 IsOwner = isOwner,
-                StudentData = user.StudentData,
+                UserData = user.UserData,
+                PassedTestResults = user.PassedTestResults
             };
 
             return View(model);
@@ -234,16 +235,20 @@ namespace FiveMinute.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> EditUser(string firstName, string lastName)
+        public async Task<IActionResult> EditUser(UserData userData)
         {
             var currentUser = await userManager.GetUserAsync(User);
-            if (currentUser == null || currentUser.UserRole != UserRoles.Student)
+            if (currentUser == null)
                 return Forbid();
-            currentUser.StudentData.FirstName = firstName;
-            currentUser.StudentData.FirstName = firstName;
+            // а я хуй его знает
+            if (currentUser.UserData is null)
+                currentUser.UserData = new();
+            currentUser.UserData.FirstName = userData.FirstName;
+            currentUser.UserData.LastName = userData.LastName;
+            currentUser.UserData.Group = userData.Group;
             
             await context.SaveChangesAsync();
-            return RedirectToAction("Detail", "Account");
+            return RedirectToAction("Detail", "Account", new { userId = currentUser.Id });
         }
 	}
 }
