@@ -30,6 +30,7 @@ namespace FiveMinute.Data
                     Email = email,
                     EmailConfirmed = true,
                     UserRole = role,
+                    UserData = new UserData("", "", "")
                 };
                 var res = await userManager.CreateAsync(newUser, password);
                 if (res.Succeeded)

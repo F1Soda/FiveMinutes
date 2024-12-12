@@ -8,31 +8,37 @@
 <p>Почта: @Model.Email</p>
 
 <h2>Редактирование пользователя</h2>
-@if (Model.UserRole is UserRoles.Student)
-{
-    <div class="row">
-        <div class="col-md-6">
-            <form asp-action="EditUser" asp-controller="Account" method="post">
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Имя</label>
-                    <div class="col-sm-9">
-                        <input class="form-control" value="@Model.StudentData.FirstName"/>
-                        <span class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Фамилия</label>
-                    <div class="col-sm-9">
-                        <input class="form-control" value="@Model.StudentData.LastName"/>
-                        <span class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-9 offset-sm-3">
-                        <button type="submit" class="btn btn-primary">Сохранить</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-}
+
+
+<div class="row">
+	<div class="col-md-6">
+		<form asp-action="EditUser" asp-controller="Account" method="post">
+			<div class="form-group row m-1">
+				<label class="col-sm-3 col-form-label">Имя</label>
+				<div class="col-sm-9">
+					<input class="form-control" name="FirstName" value="@Model.UserData?.FirstName" />
+				</div>
+			</div>
+			<div class="form-group row m-1">
+				<label class="col-sm-3 col-form-label">Фамилия</label>
+				<div class="col-sm-9">
+					<input class="form-control" name="LastName" value="@Model.UserData?.LastName" />
+				</div>
+			</div>
+			@if (Model.UserRole is UserRoles.Student)
+			{
+				<div class="form-group row m-1">
+					<label class="col-sm-3 col-form-label">Группа</label>
+					<div class="col-sm-9">
+						<input class="form-control" name="Group" value="@Model.UserData?.Group" />
+					</div>
+				</div>
+			}
+			<div class="form-group row p-1">
+				<div class="col-sm-9 offset-sm-3">
+					<button type="submit" class="btn btn-primary">Сохранить</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

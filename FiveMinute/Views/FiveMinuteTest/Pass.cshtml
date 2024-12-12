@@ -27,9 +27,15 @@
 
 <div class="container test-area">
 	<h1>@Model.Name</h1>
+	<div>Время окончания: 
+		<div>
+			@Model.EndTime.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss");
+		</div>
+		<div id="isoTime" style="display: none">@Model.EndTime.ToString("yyyy-MM-ddTHH:mm:ssZ")</div>
+	</div>
 	<div>
 		Оставшееся время:
-		<div id="timer">5:00</div>
+		<div id="timer">69</div>
 	</div>
 	@* @using (Html.BeginForm()) *@
 	<form asp-action="SendTestResults" asp-controller="FiveMinuteTest" method="post">
@@ -40,8 +46,8 @@
 			string userLastName="";
 			if (registered)
 			{
-				userFirstName = currentUser.StudentData.FirstName;
-				userLastName = currentUser.StudentData.LastName;
+				userFirstName = currentUser.UserData.FirstName;
+				userLastName = currentUser.UserData.LastName;
 			}
 			var userName = currentUser?.UserName?? "";
 			var userId = currentUser?.Id?? "";
@@ -152,7 +158,7 @@
 		<input class="btn btn-primary mt-3" id="submit" type="submit" value="Отправить ответы" />
 	</form>
 </div>
-
+<script src="~/js/timer.js"></script>
 <script>
 	function validateForm() {
 		const requiredFields = document.querySelectorAll('.required-field');
@@ -175,20 +181,7 @@
 	}
 </script>
 <script>
-	let timer = document.getElementById("timer");
-	let seconds = 300;
-	setInterval(() => {
-		seconds--;
-		let secondsString = (seconds % 60).toString();
-		if (seconds %60 < 10){
-			secondsString = "0" + secondsString;
-		}
-
-		timer.textContent = `${Math.floor(seconds / 60)}:${secondsString}`;
-		if (seconds == 0){
-			document.querySelector('#submit').click()
-		}
-	}, 1000);
+	
 
 	function setQuestionPosition(position, obj) {
 		// Установите значение hidden input для текущего выбранного ответа

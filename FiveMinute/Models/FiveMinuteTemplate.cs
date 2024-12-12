@@ -8,36 +8,36 @@ namespace FiveMinute.Models
 		public int Id { get; set; }
 		public string Name { get; set; }
 
-		public DateTime? CreationTime { get; set; }
-		public DateTime? LastModificationTime { get; set; }
+		public DateTime CreationTime { get; set; }
+		public DateTime LastModificationTime { get; set; }
 		public IEnumerable<Question> Questions { get; set; }
-		
+
 		[ForeignKey("FiveMinuteTemplate")]
 		public int? OriginId { get; set; }
 		public FiveMinuteTemplate? Origin { get; set; }
 
-        public bool ShowInProfile { get; set; }
+		public bool ShowInProfile { get; set; }
 
-        [ForeignKey("AppUser")]
-        public string? UserOwnerId { get; set; }
-        public AppUser? UserOwner { get; set; }
+		[ForeignKey("AppUser")]
+		public string UserOwnerId { get; set; }
+		public AppUser UserOwner { get; set; }
 
-        public FiveMinuteTemplate GetCopyToUser(AppUser newUserOwner)
-        {
-	        return new FiveMinuteTemplate
-	        {
-		        Name = $"{this.Name} (копия)",
-		        CreationTime = DateTime.UtcNow,
-		        LastModificationTime = DateTime.UtcNow,
-		        ShowInProfile = this.ShowInProfile,
-		        UserOwner = newUserOwner,
-		        UserOwnerId = newUserOwner.Id,
-		        Questions = this.Questions,
+		public FiveMinuteTemplate GetCopyToUser(AppUser newUserOwner)
+		{
+			return new FiveMinuteTemplate
+			{
+				Name = $"{this.Name} (копия)",
+				CreationTime = DateTime.UtcNow,
+				LastModificationTime = DateTime.UtcNow,
+				ShowInProfile = this.ShowInProfile,
+				UserOwner = newUserOwner,
+				UserOwnerId = newUserOwner.Id,
+				Questions = this.Questions,
 				Origin = this,
 				OriginId = this.OriginId
-			
-	        };
-        }
+
+			};
+		}
 
 		public static FiveMinuteTemplate CreateDefault(AppUser user)
 		{
@@ -54,6 +54,7 @@ namespace FiveMinute.Models
 						QuestionText = "Вопрос 1",
 						Position = 0,
 						ResponseType = Models.ResponseType.SingleChoice,
+						AnswerOptions = new List<Answer> { new Answer { Position = 0, Text = "ответ 1", Id = 0, QuestionId = 0, IsCorrect = true} }
 					}
 				},
 				ShowInProfile = true,

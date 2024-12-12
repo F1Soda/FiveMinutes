@@ -8,19 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FiveMinute.Controllers
 {
-    public class AccountController : Controller
-    { 
-        private readonly UserManager<AppUser> userManager;
-        private readonly SignInManager<AppUser> signInManager;
-        private readonly ApplicationDbContext context;
-
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ApplicationDbContext context)
-        {
-            this.context = context;
-            this.signInManager = signInManager;
-            this.userManager = userManager;
-        }
-
+    public class AccountController(
+        UserManager<AppUser> userManager,
+        SignInManager<AppUser> signInManager,
+        ApplicationDbContext context)
+        : Controller
+    {
         [HttpGet]
         public IActionResult Login()
         {
@@ -85,11 +78,7 @@ namespace FiveMinute.Controllers
                 UserRole = UserRoles.Student,
                 Email = registerViewModel.EmailAddress,
                 UserName = registerViewModel.EmailAddress,
-                StudentData = new StudentData
-                {
-                    FirstName = registerViewModel.FirstName,
-                    LastName = registerViewModel.LastName,
-                }
+                UserData = new UserData(registerViewModel.FirstName, registerViewModel.LastName, "")
             };
             var newUserResponse = await userManager.CreateAsync(newUser, registerViewModel.Password);
 
@@ -163,7 +152,8 @@ namespace FiveMinute.Controllers
                 Tests = user.FMTests,
                 UserRole = currentUser.UserRole,
                 IsOwner = isOwner,
-                StudentData = user.StudentData,
+                UserData = user.UserData,
+                PassedTestResults = user.PassedTestResults
             };
 
             return View(model);
@@ -245,16 +235,20 @@ namespace FiveMinute.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> EditUser(string firstName, string lastName)
+        public async Task<IActionResult> EditUser(UserData userData)
         {
             var currentUser = await userManager.GetUserAsync(User);
-            if (currentUser == null || currentUser.UserRole != UserRoles.Student)
+            if (currentUser == null)
                 return Forbid();
-            currentUser.StudentData.FirstName = firstName;
-            currentUser.StudentData.FirstName = firstName;
+            // а я хуй его знает
+            if (currentUser.UserData is null)
+                currentUser.UserData = new();
+            currentUser.UserData.FirstName = userData.FirstName;
+            currentUser.UserData.LastName = userData.LastName;
+            currentUser.UserData.Group = userData.Group;
             
             await context.SaveChangesAsync();
-            return RedirectToAction("Detail", "Account");
+            return RedirectToAction("Detail", "Account", new { userId = currentUser.Id });
         }
 	}
 }

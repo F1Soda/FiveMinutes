@@ -7,27 +7,20 @@ using FiveMinute.Data;
 using FiveMinute.ViewModels.AccountViewModels;
 using Microsoft.EntityFrameworkCore;
 using FiveMinute.ViewModels;
-using FiveMinute.Repository;
 using FiveMinute.Interfaces;
+using System.Net;
+using System.Runtime.Intrinsics.X86;
 
 namespace FiveMinute.Controllers
 {
-	public class FiveMinuteTestController : Controller
+	public class FiveMinuteTestController(
+		UserManager<AppUser> userManager,
+		ApplicationDbContext context,
+		IFiveMinuteTestRepository fiveMinuteTestRepository,
+		IFiveMinuteResultsRepository fiveMinuteResultsRepository,
+		IChecker fmtChecker)
+		: Controller
 	{
-		private readonly UserManager<AppUser> userManager;
-		private readonly ApplicationDbContext context;
-		
-		private readonly IFiveMinuteTestRepository fiveMinuteTestRepository;
-		private readonly IFiveMinuteResultsRepository fiveMinuteResultsRepository;
-
-		public FiveMinuteTestController(UserManager<AppUser> userManager, ApplicationDbContext context)
-		{
-			this.userManager = userManager;
-			this.context = context;
-			fiveMinuteTestRepository = new FiveMinuteTestRepository(context);
-			fiveMinuteResultsRepository = new FiveMinuteResultRepository(context);
-		}
-
 		public async Task<IActionResult> Edit(int testId)
 		{
 			var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testId);
@@ -62,21 +55,12 @@ namespace FiveMinute.Controllers
 			if (existingFMTest == null)
 				return View("NotFound");
 
-			var updatedTest = new FiveMinuteTest
-			{
-				Id = fmTestEditViewModel.Id,
-				Name = fmTestEditViewModel.Name,
-				FiveMinuteTemplate = fmTestEditViewModel.AttachedFMT,
-				FiveMinuteTemplateId = fmTestEditViewModel.AttachedFMT.Id,
-				Status = existingFMTest.Status,
-				StartPlanned = fmTestEditViewModel.StartPlanned,
-				StartTime = fmTestEditViewModel.StartTime,
-				EndPlanned = fmTestEditViewModel.EndPlanned,
-				EndTime = fmTestEditViewModel.EndTime,
-				Results = existingFMTest.Results,
-			};
+			var updatedTest = FiveMinuteTestEditViewModel.CreateByView(fmTestEditViewModel);
+			updatedTest.Status = existingFMTest.Status;
+			updatedTest.Results = existingFMTest.Results;
 
-			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);//не кулл надо бы update переделать так чтобы одну принимал модель
+
+			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);//не кулл надо бы update переделать так, чтобы одну принимал модель
 
 			return RedirectToAction("Detail", new { id = existingFMTest.Id });
 		}
@@ -127,38 +111,15 @@ namespace FiveMinute.Controllers
 			var user = await context.Users.Include(x => x.FMTTemplates).ThenInclude(x => x.Questions).FirstOrDefaultAsync(x => x.Id == currentUser.Id);
 			var attachedTemplate = user.FMTTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
 
-			var test = new FiveMinuteTest
-			{
-				Name = fmTestEditViewModel.Name,
-				FiveMinuteTemplate = attachedTemplate,
-				FiveMinuteTemplateId = fmTestEditViewModel.AttachedFMTId,
-				UserOrganizer = user,
-				UserOrganizerId = user.Id,
-				IdToUninclude = new List<int>(),
-				Results = new List<FiveMinuteTestResult>()
-			};
-			
+			var test = FiveMinuteTestDetailViewModel.CreateByView(fmTestEditViewModel);//#Ы Мб стоит создать другую view модель
+			test.IdToUninclude = new List<int>();
+			test.FiveMinuteTemplate = attachedTemplate;
+			test.FiveMinuteTemplateId = fmTestEditViewModel.AttachedFMTId;
+			test.Results = new List<FiveMinuteTestResult>();
+			test.CreationTime = DateTime.UtcNow;
 			context.FiveMinuteTests.Add(test);
 			await context.SaveChangesAsync();
 			return RedirectToAction("Detail", new { testId = test.Id});
-		}
-
-		[HttpPost]
-		public async Task<IActionResult> Delete([FromBody] int id)
-		{
-			var currentUser = await userManager.GetUserAsync(User);
-
-			if (currentUser == null || !currentUser.canCreate)
-				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
-
-			var test = await fiveMinuteTestRepository.GetByIdAsync(id); // Your repository method to fetch the test
-			if (test == null)
-			{
-				return NotFound();
-			}
-			if (await fiveMinuteTestRepository.Delete(test))
-				return Json(new { success = true });
-			return Json(new { success = false });
 		}
 
 		public async Task<IActionResult> Pass(int testId)
@@ -170,116 +131,65 @@ namespace FiveMinute.Controllers
 			}
 
 			var fmt = fmTest.FiveMinuteTemplate;
-			var test = new FiveMinuteTestViewModel
-			{
-				Name = fmt.Name,
-				FMTestId = fmTest.Id,
-				Questions = fmt.Questions.Where(x => !fmTest.IdToUninclude.Contains(x.Id))
-										 .Select(x => new QuestionViewModel
-				{
-					Id = x.Id,
-					Position = x.Position,
-					QuestionText = x.QuestionText,
-					ResponseType = x.ResponseType,
-					AnswerOptions = x.AnswerOptions.Select(answer => new AnswerViewModel()
-					{
-						Id = answer.Id,
-						QuestionId = answer.QuestionId,
-						Position = answer.Position,
-						Text = answer.Text,
-					}).ToList(),
-				}),
-			};
+			
+			var currentUser = await userManager.GetUserAsync(User);
+			
+			if (!fmTest.CanPass(currentUser))
+				return Forbid();
+			var test = FiveMinuteTestViewModel.CreateByModel(fmTest);
 			return View(test);
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> SendTestResults(TestResultViewModel testResultViewModel)
 		{
-			// TODO: По хорошему нужно создать в форме поле для имени, если чел не зареган
-
-			var testResult = await ConvertViewModelToFiveMinuteResult(testResultViewModel);
 			var currentUser = await userManager.GetUserAsync(User);
-
-
-			testResult.UserId = currentUser?.Id;
-			testResult.UserName = currentUser?.UserName;
-
-			if (!await fiveMinuteTestRepository.AddResultToTest(testResultViewModel.FMTestId, testResult))
-				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers"));
-
 			
-			if (currentUser != null)
-			{
-				currentUser.AddResult(testResult);
-			}
-			context.SaveChanges();
+			if (!await fmtChecker.CheckAndSave(currentUser, testResultViewModel))
+				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers")); ;
+			await context.SaveChangesAsync();
 
 			return RedirectToAction("Passed");
 		}
-
-		public UserAnswer CheckUserAnswer(UserAnswerViewModel userAnswer, FiveMinuteTemplate fiveMinuteTemplate)
-		{
-			var question = fiveMinuteTemplate.Questions.FirstOrDefault(q => q.Position == userAnswer.QuestionPosition);
-			var dbAnswer = question?.AnswerOptions.FirstOrDefault(x => x.Position == userAnswer.Position);
-			if (dbAnswer == null)
-			{
-				// throw new Exception($"Вопрос ,на который указывает ответ юзера {userAnswer} не существует в ");
-				// Для текстового ответа надо подумать что делать
-			}
-			return new UserAnswer
-			{
-				QuestionId = question.Id,
-				Text = userAnswer.Text ?? "",
-				Position = userAnswer.Position,
-				IsCorrect = (dbAnswer?.IsCorrect ?? false) && userAnswer.Text == dbAnswer?.Text,
-				QuestionPosition = userAnswer.QuestionPosition,
-				QuestionText = question?.QuestionText ?? "",
-			};
-		}
-
-		public async Task<FiveMinuteTestResult> ConvertViewModelToFiveMinuteResult(TestResultViewModel testResult)
-		{
-			var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testResult.FMTestId);
-			return new FiveMinuteTestResult
-			{
-				Answers = testResult.UserAnswers.Select(ans => CheckUserAnswer(ans, fmTest.FiveMinuteTemplate)).ToList(),
-				FiveMinuteTestId = testResult.FMTestId,
-				PassTime = DateTime.UtcNow,
-				// Тут нужна логика, чтобы обрабатывать, сразу ли ответы проверены или ещё что то сам препод долен чекнуть
-				Status = ResultStatus.Accepted,
-				UserId = testResult.UserName,
-				StudentData = testResult.StudentData,
-			};
-		}
+		
 		[HttpPost]
-		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailViewModel)
+		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailView)
 		{
-			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(FMTestDetailViewModel.Id);
+			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(FMTestDetailView.Id);
 			var currentUser = await userManager.GetUserAsync(User);
-
 			if (currentUser == null) // || !canCreate
 				return View("Error", new ErrorViewModel($"You don't have the rights to this action"));
 
 			if (existingFMTest == null)
 				return View("NotFound");
+			var updatedTest = FiveMinuteTestDetailViewModel.CreateByView(FMTestDetailView);
+			updatedTest.FiveMinuteTemplate = existingFMTest.FiveMinuteTemplate;
+			updatedTest.FiveMinuteTemplateId = existingFMTest.FiveMinuteTemplate.Id;
+			updatedTest.Results = existingFMTest.Results;
+			if(!await fiveMinuteTestRepository.Update(existingFMTest,updatedTest))
+				return View("Error");
+			
+			return RedirectToAction("Detail", new { testId = updatedTest.Id});
+		}
+		
+		// Statistics
+		// public async Task<IActionResult> ShowResults(int testId)
+		// {
+		// 	
+		// }
 
-			var updatedTest = new FiveMinuteTest
-			{
-				Id = FMTestDetailViewModel.Id,
-				Name =FMTestDetailViewModel.Name!=null?FMTestDetailViewModel.Name:existingFMTest.Name,
-				FiveMinuteTemplate = existingFMTest.FiveMinuteTemplate,
-				FiveMinuteTemplateId = existingFMTest.FiveMinuteTemplate.Id,
-				Status = FMTestDetailViewModel.Status!=null?FMTestDetailViewModel.Status:existingFMTest.Status,
-				StartPlanned = FMTestDetailViewModel.StartPlanned!=null?FMTestDetailViewModel.StartPlanned:existingFMTest.StartPlanned,
-				StartTime = FMTestDetailViewModel.StartTime!=null?FMTestDetailViewModel.StartTime:existingFMTest.StartTime,
-				EndPlanned = FMTestDetailViewModel.EndPlanned!=null?FMTestDetailViewModel.EndPlanned:existingFMTest.EndPlanned,
-				EndTime = FMTestDetailViewModel.EndTime!=null?FMTestDetailViewModel.EndTime:existingFMTest.EndTime,
-				IdToUninclude =FMTestDetailViewModel.IdToUninclude,
-				Results = existingFMTest.Results
-			};
-			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);
-			return RedirectToAction("Detail");
+		public async Task<IActionResult> FiveMinuteResult(int resultId)
+		{
+			var currentUser = await userManager.GetUserAsync(User);
+			var result = fiveMinuteResultsRepository.GetById(resultId).Result;
+			var FMTest = fiveMinuteTestRepository.GetByIdAsync(result.FiveMinuteTestId).Result;
+			var fiveMinuteTestResultViewModel = FiveMinuteTestResultViewModel.CreateByModel(FMTest);
+			fiveMinuteTestResultViewModel.FiveMinuteTestResult = result;
+
+			if (result is null || currentUser is null || FMTest.UserOrganizerId != currentUser.Id)
+				return View("Error", new ErrorViewModel(HttpStatusCode.NotFound.ToString()));
+
+			return View(fiveMinuteTestResultViewModel);
 		}
 	}
 }

@@ -14,12 +14,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="did what Степа said">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FiveMinutes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Controllers/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Models/AppUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Models/AppUser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FiveMinute/Views/Account/Detail.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FiveMinute/Views/Account/Detail.cshtml" afterDir="false" />
-    </list>
+    <list default="true" id="5ad47728-be05-4c2e-978d-8675f103d76f" name="Changes" comment="did what Степа said" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -72,7 +67,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "fe749e0c",
+    "git-widget-placeholder": "tim",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -293,14 +288,7 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/FiveMinute/Controllers/AccountController.cs</url>
           <line>82</line>
-          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinute\Controllers\AccountController.cs" containingFunctionPresentation="Method 'Register'">
-            <startOffsets>
-              <option value="3166" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3380" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\Тёма\Documents\GitHub\FiveMinutes\FiveMinute\Controllers\AccountController.cs" containingFunctionPresentation="Method 'Register'" />
           <option name="timeStamp" value="46" />
         </line-breakpoint>
       </breakpoints>

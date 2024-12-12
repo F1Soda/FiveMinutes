@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinute.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +33,9 @@ namespace FiveMinute.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     UserRole = table.Column<string>(type: "text", nullable: false),
+                    StudentData_FirstName = table.Column<string>(type: "text", nullable: true),
+                    StudentData_LastName = table.Column<string>(type: "text", nullable: true),
+                    StudentData_Group = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -185,11 +188,11 @@ namespace FiveMinute.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     OriginId = table.Column<int>(type: "integer", nullable: true),
                     ShowInProfile = table.Column<bool>(type: "boolean", nullable: false),
-                    UserOwnerId = table.Column<string>(type: "text", nullable: true)
+                    UserOwnerId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -198,7 +201,8 @@ namespace FiveMinute.Migrations
                         name: "FK_FiveMinuteTemplates_AspNetUsers_UserOwnerId",
                         column: x => x.UserOwnerId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_FiveMinuteTemplates_FiveMinuteTemplates_OriginId",
                         column: x => x.OriginId,
@@ -215,9 +219,10 @@ namespace FiveMinute.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     FiveMinuteTemplateId = table.Column<int>(type: "integer", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    PositionsToInclude = table.Column<List<int>>(type: "integer[]", nullable: false),
+                    IdToUninclude = table.Column<List<int>>(type: "integer[]", nullable: false),
                     UserOrganizerId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -264,7 +269,11 @@ namespace FiveMinute.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: true),
-                    UserName = table.Column<string>(type: "text", nullable: false),
+                    UserName = table.Column<string>(type: "text", nullable: true),
+                    StudentData_FirstName = table.Column<string>(type: "text", nullable: false),
+                    StudentData_LastName = table.Column<string>(type: "text", nullable: false),
+                    StudentData_Group = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
                     FiveMinuteTestId = table.Column<int>(type: "integer", nullable: false),
                     PassTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     AppUserId = table.Column<string>(type: "text", nullable: true)
