@@ -20,7 +20,7 @@ namespace FiveMinute.Models
 		public bool EndPlanned = false;
 		public DateTime EndTime { get; set; }
 
-		public List<int> PositionsToInclude { get; set; }
+		public List<int> IdToUninclude { get; set; }
 		public List<FiveMinuteTestResult> Results { get; set; }
 
 		[ForeignKey("AppUser")]

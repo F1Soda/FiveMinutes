@@ -10,77 +10,6 @@
 	ViewData["Title"] = "TestPassing";
 }
 
-@* <style> *@
-@*     .test-area { *@
-@*         /*font-family: Arial, sans-serif;*/ *@
-@*         line-height: 1.6; *@
-@*         color: #333; *@
-@*         background-color: #f4f4f4; *@
-@*         max-width: 800px; *@
-@*         margin: 0 auto; *@
-@*         padding: 20px; *@
-@*     } *@
-@*     /*.container {*/ *@
-@*     /*    background-color: #f4f4f4;*/ *@
-@*     /*    padding: 20px;*/ *@
-@*     /*    border-radius: 5px;*/ *@
-@*     /*    box-shadow: 0 2px 5px rgba(0,0,0,0.1);*/ *@
-@*     /*}*/ *@
-@*     h1 { *@
-@*         color: #2c3e50; *@
-@*         text-align: center; *@
-@*     } *@
-@*     .question { *@
-@*         margin-bottom: 20px; *@
-@*         padding: 15px; *@
-@*         background-color: #fff; *@
-@*         border-radius: 5px; *@
-@*         box-shadow: 0 1px 3px rgba(0,0,0,0.1); *@
-@*     } *@
-@*     .question-text { *@
-@*         font-weight: bold; *@
-@*         margin-bottom: 10px; *@
-@*     } *@
-@*     input[type="text"] { *@
-@*         width: 100%; *@
-@*         padding: 8px; *@
-@*         margin-top: 5px; *@
-@*         border: 1px solid #ddd; *@
-@*         border-radius: 4px; *@
-@*     } *@
-@*     label { *@
-@*         display: block; *@
-@*         margin-bottom: 5px; *@
-@*     } *@
-@*     input[type="radio"], *@
-@*     input[type="checkbox"] { *@
-@*         margin-right: 5px; *@
-@*     } *@
-@*     input[type="submit"] { *@
-@*         display: block; *@
-@*         width: 100%; *@
-@*         padding: 10px; *@
-@*         background-color: #3498db; *@
-@*         color: #fff; *@
-@*         border: none; *@
-@*         border-radius: 4px; *@
-@*         cursor: pointer; *@
-@*         font-size: 16px; *@
-@*         transition: background-color 0.3s; *@
-@*     } *@
-@*     input[type="submit"]:hover { *@
-@*         background-color: #2980b9; *@
-@*     } *@
-@*     @@media (max-width: 600px) { *@
-@*         body { *@
-@*             padding: 10px; *@
-@*         } *@
-@*         .container { *@
-@*             padding: 10px; *@
-@*         } *@
-@*     } *@
-@* </style> *@
-
 <style>
 	label {
 	display: block;
@@ -102,22 +31,51 @@
 		Оставшееся время:
 		<div id="timer">5:00</div>
 	</div>
+	@* @using (Html.BeginForm()) *@
 	<form asp-action="SendTestResults" asp-controller="FiveMinuteTest" method="post">
 		<input type="hidden" aria-label="" name="FMTestId" value="@Model.FMTestId" />
-		<div style="margin-bottom: 10px">
-			@{
-				var userName = currentUser?.UserName?? "";
-				var userId = currentUser?.Id?? "";
-			}
-			@if (userName == "")
+		@{
+			var registered = currentUser is not null;
+			string userFirstName="";
+			string userLastName="";
+			if (registered)
 			{
-				<h3>Внимание!</h3>
-				<p>Незарегистрированные пользователи не смогут просмотреть результаты пройденного теста</p>
-				<p>Пожалуйста заполните поля ФИО и группа</p>
+				userFirstName = currentUser.StudentData.FirstName;
+				userLastName = currentUser.StudentData.LastName;
 			}
-			<input type="hidden" aria-label="" name="UserId" value=@userId />
-			<input class="form-control" type="text" name="UserName" @(userName == "" ? "" : "readonly") value="@(userName)" />
-		</div>
+			var userName = currentUser?.UserName?? "";
+			var userId = currentUser?.Id?? "";
+
+			if (!registered)
+			{
+				<div style="margin-bottom: 10px">
+			
+					@if (userName == "")
+					{
+						<h3>Внимание!</h3>
+						<p>Незарегистрированные пользователи не смогут просмотреть результаты пройденного теста</p>
+						<p>Пожалуйста заполните поля ФИО и группа</p>
+					}
+					<input type="hidden" aria-label="" name="UserId" value=@userId />
+					<div>
+						<label asp-for="StudentData.FirstName"></label>
+						<input class="form-control" type="text" name="StudentData.FirstName"/>
+						<span asp-validation-for="StudentData.FirstName" class="text-danger"></span>
+					</div>
+					<div>
+						<label asp-for="StudentData.LastName"></label>
+						<input class="form-control" type="text" name="StudentData.LastName"/>
+						<span asp-validation-for="StudentData.LastName" class="text-danger"></span>
+					</div>
+					<div>
+						<label asp-for="StudentData.Group"></label>
+						<input class="form-control" type="text" name="StudentData.Group"/>
+						<span asp-validation-for="StudentData.Group" class="text-danger"></span>
+					</div>
+				</div>
+			}
+		}
+		
 
 		@{
 			var questionNumber = 0;
@@ -126,7 +84,7 @@
 		@foreach (var question in Model.Questions)
 		{
 			<div class="question card mt-3 question-card border-secondary border-3">
-				<h5 class="question-text card-title mb-2">@(questionNumber+1). @question.QuestionText</h5>
+				<h5 class="question-text card-title mb-2">@(questionNumber + 1). @question.QuestionText</h5>
 				@{
 					int position;
 				}
@@ -134,9 +92,9 @@
 				{
 					case ResponseType.Text:
 						<div class="mb-3">
-							<input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber" />
-							<input type="hidden" aria-label="" name="UserAnswers[@answerNumber].Position" value="0" />
-							<input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id" />
+							<input type="hidden" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber" />
+							<input type="hidden" name="UserAnswers[@answerNumber].Position" value="0" />
+							<input type="hidden" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id" />
 							<input type="text" aria-label="@question.QuestionText" name="UserAnswers[@answerNumber].Text" />
 						</div>
 						answerNumber++;
@@ -144,7 +102,7 @@
 					case ResponseType.SingleChoice:
 						<div class="card-body mb-3">
 							@{
-						position = 0;
+								position = 0;
 							}
 							<input type="hidden" name="UserAnswers[@answerNumber].QuestionPosition" value="@questionNumber" />
 							<input type="hidden" name="UserAnswers[@answerNumber].Position" value="@position" />
@@ -167,7 +125,7 @@
 					case ResponseType.MultipleChoice:
 						<div class="card-body mb-3">
 							@{
-						position = 0;
+								position = 0;
 							}
 							@foreach (var answer in question.AnswerOptions)
 							{

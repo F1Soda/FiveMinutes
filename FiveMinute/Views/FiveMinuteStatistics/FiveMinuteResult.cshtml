@@ -28,6 +28,20 @@
         <div style="margin-bottom: 10px">
             <input class="form-control" type="text" disabled value="@(Model.FiveMinuteTestResult.UserName)"/>
         </div>
+        <div style="margin-bottom: 10px">
+            <div>
+                <label>Фамилия</label>
+                <input class="form-control" type="text" value="@(Model.FiveMinuteTestResult.StudentData.LastName)"/>
+            </div>
+            <div>
+                <label>Имя</label>
+                <input class="form-control" type="text" readonly value="@Model.FiveMinuteTestResult.StudentData.FirstName"/>
+            </div>
+            <div>
+                <label>Группа</label>
+                <input class="form-control" type="text" value="@Model.FiveMinuteTestResult.StudentData.Group"/>
+            </div>
+        </div>
 
         @{
             var questionNumber = 0;

@@ -134,7 +134,7 @@ namespace FiveMinute.Controllers
 				FiveMinuteTemplateId = fmTestEditViewModel.AttachedFMTId,
 				UserOrganizer = user,
 				UserOrganizerId = user.Id,
-				PositionsToInclude = attachedTemplate.Questions.Select(x => x.Id).ToList(),
+				IdToUninclude = new List<int>(),
 				Results = new List<FiveMinuteTestResult>()
 			};
 			
@@ -174,7 +174,7 @@ namespace FiveMinute.Controllers
 			{
 				Name = fmt.Name,
 				FMTestId = fmTest.Id,
-				Questions = fmt.Questions.Where(x => fmTest.PositionsToInclude.Contains(x.Position))
+				Questions = fmt.Questions.Where(x => !fmTest.IdToUninclude.Contains(x.Id))
 										 .Select(x => new QuestionViewModel
 				{
 					Id = x.Id,
@@ -199,23 +199,21 @@ namespace FiveMinute.Controllers
 			// TODO: По хорошему нужно создать в форме поле для имени, если чел не зареган
 
 			var testResult = await ConvertViewModelToFiveMinuteResult(testResultViewModel);
+			var currentUser = await userManager.GetUserAsync(User);
 
 
-			testResult.UserId = testResultViewModel.UserId;
-			testResult.UserName = testResultViewModel.UserName;
+			testResult.UserId = currentUser?.Id;
+			testResult.UserName = currentUser?.UserName;
 
 			if (!await fiveMinuteTestRepository.AddResultToTest(testResultViewModel.FMTestId, testResult))
 				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers"));
 
-			if (testResultViewModel.UserId != "")
+			
+			if (currentUser != null)
 			{
-				var currentUser = await userManager.GetUserAsync(User);
-				if (currentUser != null)
-				{
-					currentUser.AddResult(testResult);
-				}
-				context.SaveChanges();
+				currentUser.AddResult(testResult);
 			}
+			context.SaveChanges();
 
 			return RedirectToAction("Passed");
 		}
@@ -250,12 +248,13 @@ namespace FiveMinute.Controllers
 				PassTime = DateTime.UtcNow,
 				// Тут нужна логика, чтобы обрабатывать, сразу ли ответы проверены или ещё что то сам препод долен чекнуть
 				Status = ResultStatus.Accepted,
+				UserId = testResult.UserName,
+				StudentData = testResult.StudentData,
 			};
 		}
 		[HttpPost]
 		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailViewModel)
 		{
-			//крч нихуя не работает модель говна приходит
 			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(FMTestDetailViewModel.Id);
 			var currentUser = await userManager.GetUserAsync(User);
 
@@ -270,13 +269,13 @@ namespace FiveMinute.Controllers
 				Id = FMTestDetailViewModel.Id,
 				Name =FMTestDetailViewModel.Name!=null?FMTestDetailViewModel.Name:existingFMTest.Name,
 				FiveMinuteTemplate = existingFMTest.FiveMinuteTemplate,
-				FiveMinuteTemplateId = existingFMTest.Id,
+				FiveMinuteTemplateId = existingFMTest.FiveMinuteTemplate.Id,
 				Status = FMTestDetailViewModel.Status!=null?FMTestDetailViewModel.Status:existingFMTest.Status,
 				StartPlanned = FMTestDetailViewModel.StartPlanned!=null?FMTestDetailViewModel.StartPlanned:existingFMTest.StartPlanned,
 				StartTime = FMTestDetailViewModel.StartTime!=null?FMTestDetailViewModel.StartTime:existingFMTest.StartTime,
 				EndPlanned = FMTestDetailViewModel.EndPlanned!=null?FMTestDetailViewModel.EndPlanned:existingFMTest.EndPlanned,
 				EndTime = FMTestDetailViewModel.EndTime!=null?FMTestDetailViewModel.EndTime:existingFMTest.EndTime,
-				PositionsToInclude = FMTestDetailViewModel.PositionsToInclude,
+				IdToUninclude =FMTestDetailViewModel.IdToUninclude,
 				Results = existingFMTest.Results
 			};
 			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);
