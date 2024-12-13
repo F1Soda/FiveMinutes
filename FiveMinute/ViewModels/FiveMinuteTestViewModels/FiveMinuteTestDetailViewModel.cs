@@ -13,9 +13,9 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 	public FiveMinuteTemplateEditViewModel AttachedFMT { get; set; }
 	public TestStatus Status { get; set; }
 
-	public bool StartPlanned;
+	public bool StartPlanned { get; set; }
 	public DateTime StartTime { get; set; }
-	public bool EndPlanned;
+	public bool EndPlanned  { get; set; }
 	public DateTime EndTime { get; set; }
 	public IEnumerable<FiveMinuteTestResult> Results { get; set; }
 	public List<int> IdToUninclude { get; set; }

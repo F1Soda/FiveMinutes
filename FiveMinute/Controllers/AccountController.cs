@@ -136,14 +136,27 @@ namespace FiveMinute.Controllers
             // Fetch the user being viewed
             var user = await context.Users.Include(x => x.FMTTemplates)
                 .Include(x => x.FMTests)
+                .Include(appUser => appUser.PassedTestResults)
                 .FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
                 return View("NotFound");
             }
-
+            
             // Get the role of the user being viewed (if needed)
-
+            var results = user.PassedTestResults
+                .Select(result => new FiveMinuteTestResultViewModel
+                {
+                    FiveMinuteTestName = context.FiveMinuteTests
+                        .FirstOrDefault(test => test.Id == result.FiveMinuteTestId)?.Name,
+                    FiveMinuteTestResult = result,
+                    Questions = context.FiveMinuteTests
+                        .Include(test => test.FiveMinuteTemplate)
+                            .ThenInclude(template => template.Questions)
+                        .FirstOrDefault(test => test.Id == result.FiveMinuteTestId)
+                        ?.FiveMinuteTemplate.Questions.ToList(),
+                })
+                .ToList();
             var model = new UserDetailViewModel
             {
                 UserName = user.UserName,
@@ -153,7 +166,7 @@ namespace FiveMinute.Controllers
                 UserRole = currentUser.UserRole,
                 IsOwner = isOwner,
                 UserData = user.UserData,
-                PassedTestResults = user.PassedTestResults
+                PassedTestResults = results,
             };
 
             return View(model);

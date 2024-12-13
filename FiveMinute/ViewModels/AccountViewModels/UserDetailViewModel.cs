@@ -13,6 +13,6 @@ namespace FiveMinute.ViewModels.AccountViewModels
         public string UserRole { get; set; }
         public ICollection<FiveMinuteTemplate> FMTs { get; set; }
         public ICollection<FiveMinuteTest> Tests { get; set; }
-        public ICollection<FiveMinuteTestResult> PassedTestResults { get; set; }
+        public ICollection<FiveMinuteTestResultViewModel> PassedTestResults { get; set; }
     }
 }
