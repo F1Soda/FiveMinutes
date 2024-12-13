@@ -46,8 +46,8 @@
 			string userLastName="";
 			if (registered)
 			{
-				userFirstName = currentUser.UserData.FirstName;
-				userLastName = currentUser.UserData.LastName;
+				userFirstName = currentUser.UserData?.FirstName;
+				userLastName = currentUser.UserData?.LastName;
 			}
 			var userName = currentUser?.UserName?? "";
 			var userId = currentUser?.Id?? "";

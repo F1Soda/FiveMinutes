@@ -1,4 +1,5 @@
 ﻿@using FiveMinute.Data
+@using FiveMinute.ViewModels.AccountViewModels
 @using Microsoft.AspNetCore.Identity
 @model FiveMinute.ViewModels.HomeViewModels.IndexViewModel
 
@@ -123,9 +124,9 @@
 			</div>
 		</div>
 	}
-	else
+	else if (Model.UserRole == "student")
 	{
-
+		
 	}
 }
 

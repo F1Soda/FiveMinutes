@@ -177,7 +177,7 @@ namespace FiveMinute.Controllers
 			var fiveMinuteTestResultViewModel = FiveMinuteTestResultViewModel.CreateByModel(FMTest);
 			fiveMinuteTestResultViewModel.FiveMinuteTestResult = result;
 
-			if (result is null || currentUser is null || FMTest.UserOrganizerId != currentUser.Id)
+			if (result is null || currentUser is null || (FMTest.UserOrganizerId != currentUser.Id && result.UserId != currentUser.Id))
 				return View("Error", new ErrorViewModel(HttpStatusCode.NotFound.ToString()));
 
 			return View(fiveMinuteTestResultViewModel);

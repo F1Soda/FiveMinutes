@@ -1,7 +1,7 @@
 ﻿@model FiveMinute.ViewModels.AccountViewModels.UserDetailViewModel
 @using FiveMinute.Data
 @using Microsoft.AspNetCore.Identity
-@inject UserManager<AppUser > UserManager
+@inject UserManager<AppUser> UserManager
 
 <h1>Данные о пользователе @Model.UserName</h1>
 <p>Пользовательское имя: @Model.UserName</p>
@@ -10,35 +10,60 @@
 <h2>Редактирование пользователя</h2>
 
 
-<div class="row">
-	<div class="col-md-6">
-		<form asp-action="EditUser" asp-controller="Account" method="post">
-			<div class="form-group row m-1">
-				<label class="col-sm-3 col-form-label">Имя</label>
-				<div class="col-sm-9">
-					<input class="form-control" name="FirstName" value="@Model.UserData?.FirstName" />
-				</div>
-			</div>
-			<div class="form-group row m-1">
-				<label class="col-sm-3 col-form-label">Фамилия</label>
-				<div class="col-sm-9">
-					<input class="form-control" name="LastName" value="@Model.UserData?.LastName" />
-				</div>
-			</div>
-			@if (Model.UserRole is UserRoles.Student)
-			{
-				<div class="form-group row m-1">
-					<label class="col-sm-3 col-form-label">Группа</label>
-					<div class="col-sm-9">
-						<input class="form-control" name="Group" value="@Model.UserData?.Group" />
+<ul class="nav nav-tabs">
+	<li class="nav-item">
+		<a id="info-tab" class="nav-link active" data-bs-toggle="tab" role="tab" href="#info" aria-controls="info" aria-selected="true">Информация</a>
+	</li>
+	<li class="nav-item">
+		<a id="results-tab" class="nav-link" data-bs-toggle="tab" role="tab" href="#results" aria-controls="results" aria-selected="false">Результаты</a>
+	</li>
+</ul>
+<div class="tab-content mt-3">
+	<div class="tab-pane fade show active" id="info" role="tabpanel"  aria-labelledby="info-tab">
+		<h3>Statistics</h3>
+		<div class="row">
+			<div class="col-md-6">
+				<form asp-action="EditUser" asp-controller="Account" method="post">
+					<div class="form-group row m-1">
+						<label class="col-sm-3 col-form-label">Имя</label>
+						<div class="col-sm-9">
+							<input class="form-control" name="FirstName" value="@Model.UserData?.FirstName"/>
+						</div>
 					</div>
-				</div>
-			}
-			<div class="form-group row p-1">
-				<div class="col-sm-9 offset-sm-3">
-					<button type="submit" class="btn btn-primary">Сохранить</button>
-				</div>
+					<div class="form-group row m-1">
+						<label class="col-sm-3 col-form-label">Фамилия</label>
+						<div class="col-sm-9">
+							<input class="form-control" name="LastName" value="@Model.UserData?.LastName"/>
+						</div>
+					</div>
+					@if (Model.UserRole is UserRoles.Student)
+					{
+						<div class="form-group row m-1">
+							<label class="col-sm-3 col-form-label">Группа</label>
+							<div class="col-sm-9">
+								<input class="form-control" name="Group" value="@Model.UserData?.Group"/>
+							</div>
+						</div>
+					}
+					<div class="form-group row p-1">
+						<div class="col-sm-9 offset-sm-3">
+							<button type="submit" class="btn btn-primary">Сохранить</button>
+						</div>
+					</div>
+				</form>
 			</div>
-		</form>
+		</div>
+
+
+	</div>
+	<div class="tab-pane fade" id="results" role="tabpanel"  aria-labelledby="results-tab">
+		@foreach (var result in Model.PassedTestResults)
+		{
+			<h3>@result.FiveMinuteTestName</h3>
+			<div>Баллы: 0</div>
+			<a asp-action="FiveMinuteResult" asp-controller="FiveMinuteTest"
+			   asp-route-resultId="@result.FiveMinuteTestResult.Id">Подробнее</a>
+		}
 	</div>
 </div>
+

@@ -139,12 +139,13 @@ namespace FiveMinute.Controllers
             var userr =
                 await context.Users.Include(x => x.FMTTemplates)
                 .Include(x => x.FMTests)
+                .Include(appUser => appUser.PassedTestResults)
                 .FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
                 return View("NotFound");
             }
-
+            
             // Get the role of the user being viewed (if needed)
 
             var model = UserDetailViewModel.CreateByModel(user);
