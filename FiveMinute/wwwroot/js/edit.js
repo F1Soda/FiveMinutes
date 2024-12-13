@@ -33,7 +33,7 @@ function getQuestionHtml(question, questionIndex) {
 				<div class="answers-container mt-2">
 					<!-- Answer options will be dynamically added here -->
 				</div>
-				<button type="button" class="add-answer-button btn btn-secondary mt-2" onclick="addAnswer(this)" style="${question["responseType"] === 2 ? 'display: none;' : ''}">Добавить вариант ответа</button>
+				<button type="button" class="add-answer-button btn btn-secondary mt-2" onclick="addAnswer(this)" style="${question["responseType"] === 3 ? 'display: none;' : ''}">Добавить вариант ответа</button>
 			</div>
 		</div>
 	`;
@@ -78,11 +78,7 @@ function handleResponseTypeChange(select) {
 	console.log(addAnswerButton);
 
 	answersContainer.innerHTML = '';
-	if (select.value === "2") { // Текстовый ответ
-		addAnswerButton.style.display = 'none';
-	} else {
-		addAnswerButton.style.display = 'block';
-	}
+	addAnswerButton.style.display = 'block';
 }
 
 function addAnswer(button) {
@@ -160,7 +156,6 @@ function save(isFinalSave = false) {
 		const responseType = parseInt($(this).find('select[name^="Questions"]').val(), 10);
 
 		// Проверка ответов для типов "Один вариант" и "Несколько вариантов"
-		if (responseType !== 2) {
 			const answers = $(this).find('.answers-container .answer-item');
 			if (answers.length === 0) {
 				showPopup("Добавьте варианты ответа", 'error');
@@ -176,7 +171,6 @@ function save(isFinalSave = false) {
 					return false;
 				}
 			});
-		}
 
 		if (!isValid) return false;
 	});

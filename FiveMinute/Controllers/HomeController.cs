@@ -33,8 +33,7 @@ namespace FiveMinute.Controllers
 			{
 				// ��� �������� ������� ������, �� ������ ��� �����
 				var user = await context.Users.Include(x => x.FMTTemplates)
-						.ThenInclude(x => x.Questions)
-
+					.ThenInclude(x => x.Questions)
 					.Include(x => x.FMTests)
 					.FirstOrDefaultAsync(x => x.Id == currentUser.Id);//не ну это пиздец
 				model = IndexViewModel.CreateByModel(user);

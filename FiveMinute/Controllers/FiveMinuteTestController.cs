@@ -89,14 +89,7 @@ namespace FiveMinute.Controllers
 			ViewData["templateId"] = templateId;
 			
 			var user = await context.Users.Include(x => x.FMTTemplates).FirstOrDefaultAsync(x => x.Id == currentUser.Id);
-			var model = new UserDetailViewModel
-			{
-				UserName = user.UserName,
-				Email = user.Email,
-				FMTs = user.FMTTemplates,
-				UserRole = user.UserRole,
-				IsOwner = true,
-			};
+			var model = UserDetailViewModel.CreateByModel(user);
 			
 			return View(model);
 		}
@@ -113,6 +106,8 @@ namespace FiveMinute.Controllers
 
 			var test = FiveMinuteTestDetailViewModel.CreateByView(fmTestEditViewModel);//#Ы Мб стоит создать другую view модель
 			test.IdToUninclude = new List<int>();
+			test.UserOrganizerId = user.Id;
+			test.UserOrganizer = user;
 			test.FiveMinuteTemplate = attachedTemplate;
 			test.FiveMinuteTemplateId = fmTestEditViewModel.AttachedFMTId;
 			test.Results = new List<FiveMinuteTestResult>();

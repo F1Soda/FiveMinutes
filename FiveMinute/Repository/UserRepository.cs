@@ -32,7 +32,10 @@ namespace FiveMinute.Repository
 
         public async Task<AppUser> GetUserById(string id)
         {
-            return await context.Users.FindAsync(id);
+            return await context.Users
+                .Include(x => x.FMTTemplates)
+                .Include(x => x.FMTests)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
         public async Task<bool> AddFMTtoUser(FiveMinuteTemplate fmt,AppUser user)
         {

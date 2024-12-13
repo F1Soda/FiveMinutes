@@ -1,7 +1,6 @@
 ﻿using FiveMinute.Data;
 using FiveMinute.Interfaces;
 using FiveMinute.Models;
-using FiveMinute.Repository;
 using FiveMinute.ViewModels.FMTEditViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +14,7 @@ namespace FiveMinute.Controllers
 		: Controller
 	{
 		private readonly ILogger<HomeController> _logger;
-
-		public IActionResult Index()
-		{
-			return View();
-		}
-
-
+		
 		[HttpGet]
 		public async Task<IActionResult> Create()
 		{
@@ -58,22 +51,6 @@ namespace FiveMinute.Controllers
 			HttpContext.Session.SetInt32("FmtViewModel", fmt.Id);
 			return View(fmtViewModel);
 		}
-
-		public IActionResult TestCreation()
-		{
-			return View();
-		}
-
-		public IActionResult AllFiveMinuteTemplates()
-		{
-			return View();
-		}
-
-		public IActionResult FiveMinuteFolder()
-		{
-			return View();
-		}
-
 		public async Task<JsonResult> Save([FromBody] FiveMinuteTemplateEditViewModel fmt)
 		{
 			if (!ModelState.IsValid)

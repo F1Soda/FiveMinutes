@@ -43,8 +43,9 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 			.FirstOrDefaultAsync(x => x.Id == id);
 	}
 
-	public async Task<bool> Update(FiveMinuteTest existingTest, FiveMinuteTest updatedTest)
+	public async Task<bool> Update(FiveMinuteTest updatedTest)
 	{
+		var existingTest=await this.GetByIdAsync(updatedTest.Id);
 		context.FiveMinuteTests.Attach(existingTest);
 		existingTest.Name = updatedTest.Name;
 

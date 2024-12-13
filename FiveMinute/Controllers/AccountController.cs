@@ -1,7 +1,7 @@
 ﻿using FiveMinute.Data;
+using FiveMinute.Interfaces;
 using FiveMinute.Models;
 using FiveMinute.ViewModels.AccountViewModels;
-using FiveMinute.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,8 @@ namespace FiveMinute.Controllers
     public class AccountController(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
-        ApplicationDbContext context)
+        ApplicationDbContext context,
+        IUserRepository userRepository)
         : Controller
     {
         [HttpGet]
@@ -134,7 +135,9 @@ namespace FiveMinute.Controllers
             }
 
             // Fetch the user being viewed
-            var user = await context.Users.Include(x => x.FMTTemplates)
+            var user = await userRepository.GetUserById(userId);
+            var userr =
+                await context.Users.Include(x => x.FMTTemplates)
                 .Include(x => x.FMTests)
                 .FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
@@ -144,18 +147,9 @@ namespace FiveMinute.Controllers
 
             // Get the role of the user being viewed (if needed)
 
-            var model = new UserDetailViewModel
-            {
-                UserName = user.UserName,
-                Email = user.Email,
-                FMTs = user.FMTTemplates,
-                Tests = user.FMTests,
-                UserRole = currentUser.UserRole,
-                IsOwner = isOwner,
-                UserData = user.UserData,
-                PassedTestResults = user.PassedTestResults
-            };
-
+            var model = UserDetailViewModel.CreateByModel(user);
+            model.UserRole = currentUser.UserRole;
+            model.IsOwner = isOwner;
             return View(model);
         }
 

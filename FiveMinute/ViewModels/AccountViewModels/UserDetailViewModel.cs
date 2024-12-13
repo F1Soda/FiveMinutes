@@ -1,9 +1,10 @@
 ﻿using FiveMinute.Data;
 using FiveMinute.Models;
+using FiveMinute.ViewModels.Interfaces;
 
 namespace FiveMinute.ViewModels.AccountViewModels
 {
-    public class UserDetailViewModel
+    public class UserDetailViewModel: IInput<UserDetailViewModel,AppUser>
     {
         public string Id { get; set; }
         public string UserName { get; set; }
@@ -14,5 +15,18 @@ namespace FiveMinute.ViewModels.AccountViewModels
         public ICollection<FiveMinuteTemplate> FMTs { get; set; }
         public ICollection<FiveMinuteTest> Tests { get; set; }
         public ICollection<FiveMinuteTestResult> PassedTestResults { get; set; }
+        public static UserDetailViewModel CreateByModel(AppUser user)
+        {
+            return new UserDetailViewModel
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                FMTs = user.FMTTemplates,
+                Tests = user.FMTests,
+                IsOwner = true,
+                UserData = user.UserData,
+                PassedTestResults = user.PassedTestResults
+            };
+        }
     }
 }
