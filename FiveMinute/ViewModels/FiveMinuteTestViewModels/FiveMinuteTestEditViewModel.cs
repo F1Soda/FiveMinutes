@@ -3,7 +3,8 @@ using FiveMinute.ViewModels.Interfaces;
 
 namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 {
-	public class FiveMinuteTestEditViewModel : IInput<FiveMinuteTestEditViewModel,FiveMinuteTest> , IOutput<FiveMinuteTestEditViewModel,FiveMinuteTest>
+	public class FiveMinuteTestEditViewModel : IInput<FiveMinuteTestEditViewModel, FiveMinuteTest>,
+											   IOutput<FiveMinuteTestEditViewModel, FiveMinuteTest>
 	{
 		public int Id;
 		public string Name { get; set; }

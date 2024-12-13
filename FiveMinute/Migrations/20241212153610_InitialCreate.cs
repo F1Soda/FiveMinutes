@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinute.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,9 +33,9 @@ namespace FiveMinute.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     UserRole = table.Column<string>(type: "text", nullable: false),
-                    StudentData_FirstName = table.Column<string>(type: "text", nullable: true),
-                    StudentData_LastName = table.Column<string>(type: "text", nullable: true),
-                    StudentData_Group = table.Column<string>(type: "text", nullable: true),
+                    UserData_FirstName = table.Column<string>(type: "text", nullable: true),
+                    UserData_LastName = table.Column<string>(type: "text", nullable: true),
+                    UserData_Group = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -270,9 +270,9 @@ namespace FiveMinute.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "text", nullable: true),
-                    StudentData_FirstName = table.Column<string>(type: "text", nullable: false),
-                    StudentData_LastName = table.Column<string>(type: "text", nullable: false),
-                    StudentData_Group = table.Column<string>(type: "text", nullable: false),
+                    StudentData_FirstName = table.Column<string>(type: "text", nullable: true),
+                    StudentData_LastName = table.Column<string>(type: "text", nullable: true),
+                    StudentData_Group = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     FiveMinuteTestId = table.Column<int>(type: "integer", nullable: false),
                     PassTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),

@@ -128,9 +128,9 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="startPlanned" class="form-label">Запланировать начало</label>
+                    <label for="StartPlanned" class="form-label">Запланировать начало</label>
                     @*Этот конкретный инпут и который ниже не работают, рот их ебал*@
-                    <input type="checkbox" id="startPlanned" name="StartPlanned" @(Model.StartPlanned ? "checked" : "") class="form-check-input" onchange="toggleStartTimeInput()" value="true"/>
+                    <input type="checkbox" id="startPlanned" name="StartPlanned" class="form-check-input" onchange="toggleStartTimeInput()" value="true" />
                     <div id="startTimeInput" class="mt-2" style="display: @(Model.StartPlanned ? "block" : "none")">
                         <label for="startDateTime" class="form-label">Дата и время начала</label>
                         <input type="datetime-local" id="startDateTime" name="StartTime" class="form-control" value="@Model.StartTime.ToString("yyyy-MM-ddTHH:mm")" />

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using FiveMinute.ViewModels;
 using FiveMinute.Interfaces;
 using System.Net;
-using System.Runtime.Intrinsics.X86;
+
 
 namespace FiveMinute.Controllers
 {
@@ -155,6 +155,8 @@ namespace FiveMinute.Controllers
 		[HttpPost]
 		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailView)
 		{
+			Console.WriteLine(FMTestDetailView.StartPlanned); // For debugging
+
 			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(FMTestDetailView.Id);
 			var currentUser = await userManager.GetUserAsync(User);
 			if (currentUser == null) // || !canCreate
@@ -172,12 +174,6 @@ namespace FiveMinute.Controllers
 			return RedirectToAction("Detail", new { testId = updatedTest.Id});
 		}
 		
-		// Statistics
-		// public async Task<IActionResult> ShowResults(int testId)
-		// {
-		// 	
-		// }
-
 		public async Task<IActionResult> FiveMinuteResult(int resultId)
 		{
 			var currentUser = await userManager.GetUserAsync(User);
