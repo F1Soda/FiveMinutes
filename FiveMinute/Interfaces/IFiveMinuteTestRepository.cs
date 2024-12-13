@@ -8,7 +8,7 @@ namespace FiveMinute.Repository.FiveMinuteTestRepository
 	{
 		public Task<FiveMinuteTest> GetByIdAsync(int id);
 
-		public Task<bool> Update(FiveMinuteTest existingTest, FiveMinuteTest updatedTest);
+		public Task<bool> Update(FiveMinuteTest updatedTest);
 
 		public Task<bool> AddResultToTest(int testId, FiveMinuteTestResult testResults);
 

@@ -29,7 +29,7 @@ public class FiveMinuteTestViewModel: IInput<FiveMinuteTestViewModel,FiveMinuteT
         return new FiveMinuteTestViewModel
         {
             Name = fmTemplate.Name,
-            FMTestId = fmTemplate.Id,
+            FMTestId = fmTest.Id,
             StartTime = fmTest.StartTime,
             EndTime = fmTest.EndTime,
             Questions = fmTemplate.Questions.Select(x => QuestionViewModel.CreateByModel(x)),

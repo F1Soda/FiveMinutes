@@ -56,14 +56,5 @@
 
 
 	</div>
-	<div class="tab-pane fade" id="results" role="tabpanel"  aria-labelledby="results-tab">
-		@foreach (var result in Model.PassedTestResults)
-		{
-			<h3>@result.FiveMinuteTestName</h3>
-			<div>Баллы: 0</div>
-			<a asp-action="FiveMinuteResult" asp-controller="FiveMinuteTest"
-			   asp-route-resultId="@result.FiveMinuteTestResult.Id">Подробнее</a>
-		}
-	</div>
 </div>
 

@@ -129,7 +129,6 @@
 
                 <div class="mb-3">
                     <label for="startPlanned" class="form-label">Запланировать начало</label>
-                    @*Этот конкретный инпут и который ниже не работают, рот их ебал*@
                     <input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"  onchange="toggleStartTimeInput()" value="true"/>
                     <div id="startTimeInput" class="mt-2" style="display: @(Model.StartPlanned ? "block" : "none")">
                         <label for="startDateTime" class="form-label">Дата и время начала</label>

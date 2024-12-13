@@ -10,7 +10,6 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 	public FiveMinuteTestRepository(ApplicationDbContext context) : base(context)
 	{
 	}
-
 	public async Task<bool> AddResultToTest(int testId, FiveMinuteTestResult testResults)
 	{
 		var FMTest = await GetByIdAsync(testId);
@@ -45,21 +44,31 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 
 	public async Task<bool> Update(FiveMinuteTest updatedTest)
 	{
-		var existingTest=await this.GetByIdAsync(updatedTest.Id);
+		var existingTest = await GetByIdAsync(updatedTest.Id);
+		if (existingTest == null)
+			throw new Exception();
+		
 		context.FiveMinuteTests.Attach(existingTest);
-		existingTest.Name = updatedTest.Name;
+		existingTest.Name = updatedTest.Name == null ? existingTest.Name : updatedTest.Name;
 
-		existingTest.FiveMinuteTemplateId = updatedTest.FiveMinuteTemplateId;
-		existingTest.FiveMinuteTemplate = updatedTest.FiveMinuteTemplate;
+		existingTest.FiveMinuteTemplateId =
+			updatedTest.FiveMinuteTemplateId == null
+				? existingTest.FiveMinuteTemplateId
+				: updatedTest.FiveMinuteTemplateId;
+		existingTest.FiveMinuteTemplate = updatedTest.FiveMinuteTemplate == null
+			? existingTest.FiveMinuteTemplate
+			: updatedTest.FiveMinuteTemplate;
 
-		existingTest.Status = updatedTest.Status;
-		existingTest.IdToUninclude = updatedTest.IdToUninclude;
-		existingTest.StartPlanned = updatedTest.StartPlanned;
-		existingTest.EndPlanned = updatedTest.EndPlanned;
-		existingTest.StartTime = updatedTest.StartTime;
-		existingTest.EndTime = updatedTest.EndTime;
+		existingTest.Status = updatedTest.Status == null ? existingTest.Status : updatedTest.Status;
+		existingTest.IdToUninclude =
+			updatedTest.IdToUninclude == null ? existingTest.IdToUninclude : updatedTest.IdToUninclude;
+		existingTest.StartPlanned =
+			updatedTest.StartPlanned == null ? existingTest.StartPlanned : updatedTest.StartPlanned;
+		existingTest.EndPlanned = updatedTest.EndPlanned == null ? existingTest.EndPlanned : updatedTest.EndPlanned;
+		existingTest.StartTime = updatedTest.StartTime == null ? existingTest.StartTime : updatedTest.StartTime;
+		existingTest.EndTime = updatedTest.EndTime == null ? existingTest.EndTime : updatedTest.EndTime;
 
-		existingTest.Results = updatedTest.Results;
+		existingTest.Results = updatedTest.Results == null ? existingTest.Results : updatedTest.Results;
 
 		return await Save();
 	}

@@ -15,7 +15,7 @@ namespace FiveMinute.Controllers
 {
 	public class FiveMinuteTestController(
 		UserManager<AppUser> userManager,
-		ApplicationDbContext context,
+		IUserRepository userRepository,
 		IFiveMinuteTestRepository fiveMinuteTestRepository,
 		IFiveMinuteResultsRepository fiveMinuteResultsRepository,
 		IChecker fmtChecker)
@@ -52,15 +52,14 @@ namespace FiveMinute.Controllers
 			if (currentUser == null) // || !canCreate
 				return View("Error", new ErrorViewModel($"You don't have the rights to this action"));
 
-			if (existingFMTest == null)
-				return View("NotFound");
+			
 
 			var updatedTest = FiveMinuteTestEditViewModel.CreateByView(fmTestEditViewModel);
 			updatedTest.Status = existingFMTest.Status;
 			updatedTest.Results = existingFMTest.Results;
 
 
-			await fiveMinuteTestRepository.Update(existingFMTest,updatedTest);//не кулл надо бы update переделать так, чтобы одну принимал модель
+			await fiveMinuteTestRepository.Update(updatedTest);
 
 			return RedirectToAction("Detail", new { id = existingFMTest.Id });
 		}
@@ -87,8 +86,7 @@ namespace FiveMinute.Controllers
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
 
 			ViewData["templateId"] = templateId;
-			
-			var user = await context.Users.Include(x => x.FMTTemplates).FirstOrDefaultAsync(x => x.Id == currentUser.Id);
+			var user =await userRepository.GetUserById(currentUser.Id);
 			var model = UserDetailViewModel.CreateByModel(user);
 			
 			return View(model);
@@ -101,7 +99,7 @@ namespace FiveMinute.Controllers
 			if (currentUser == null || !currentUser.canCreate)
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
 			
-			var user = await context.Users.Include(x => x.FMTTemplates).ThenInclude(x => x.Questions).FirstOrDefaultAsync(x => x.Id == currentUser.Id);
+			var user = await userRepository.GetUserById(currentUser.Id);
 			var attachedTemplate = user.FMTTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
 
 			var test = FiveMinuteTestDetailViewModel.CreateByView(fmTestEditViewModel);//#Ы Мб стоит создать другую view модель
@@ -112,8 +110,7 @@ namespace FiveMinute.Controllers
 			test.FiveMinuteTemplateId = fmTestEditViewModel.AttachedFMTId;
 			test.Results = new List<FiveMinuteTestResult>();
 			test.CreationTime = DateTime.UtcNow;
-			context.FiveMinuteTests.Add(test);
-			await context.SaveChangesAsync();
+			await fiveMinuteTestRepository.Add(test);
 			return RedirectToAction("Detail", new { testId = test.Id});
 		}
 
@@ -142,7 +139,7 @@ namespace FiveMinute.Controllers
 			
 			if (!await fmtChecker.CheckAndSave(currentUser, testResultViewModel))
 				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers")); ;
-			await context.SaveChangesAsync();
+			await userRepository.Save();
 
 			return RedirectToAction("Passed");
 		}
@@ -163,7 +160,7 @@ namespace FiveMinute.Controllers
 			updatedTest.FiveMinuteTemplate = existingFMTest.FiveMinuteTemplate;
 			updatedTest.FiveMinuteTemplateId = existingFMTest.FiveMinuteTemplate.Id;
 			updatedTest.Results = existingFMTest.Results;
-			if(!await fiveMinuteTestRepository.Update(existingFMTest,updatedTest))
+			if(!await fiveMinuteTestRepository.Update(updatedTest))
 				return View("Error");
 			
 			return RedirectToAction("Detail", new { testId = updatedTest.Id});

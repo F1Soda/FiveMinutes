@@ -16,8 +16,8 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 namespace FiveMinute.Controllers
 {
 	public class HomeController(
-		ApplicationDbContext context,
 		UserManager<AppUser> userManager,
+		IUserRepository userRepository,
 		IFiveMinuteTestRepository fiveMinuteTestRepository,
 		IFiveMinuteTemplateRepository fiveMinuteTemplateRepository,
 		ICompositeViewEngine viewEngine)
@@ -32,10 +32,7 @@ namespace FiveMinute.Controllers
 			if (currentUser != null)
 			{
 				// ��� �������� ������� ������, �� ������ ��� �����
-				var user = await context.Users.Include(x => x.FMTTemplates)
-					.ThenInclude(x => x.Questions)
-					.Include(x => x.FMTests)
-					.FirstOrDefaultAsync(x => x.Id == currentUser.Id);//не ну это пиздец
+				var user = await userRepository.GetUserById(currentUser.Id);
 				model = IndexViewModel.CreateByModel(user);
 			}
 			return View(model);

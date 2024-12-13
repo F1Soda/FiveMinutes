@@ -34,7 +34,9 @@ namespace FiveMinute.Repository
         {
             return await context.Users
                 .Include(x => x.FMTTemplates)
+                .ThenInclude(x => x.Questions)
                 .Include(x => x.FMTests)
+                .Include(appUser => appUser.PassedTestResults)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
         public async Task<bool> AddFMTtoUser(FiveMinuteTemplate fmt,AppUser user)

@@ -11,7 +11,6 @@ namespace FiveMinute.Controllers
     public class AccountController(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
-        ApplicationDbContext context,
         IUserRepository userRepository)
         : Controller
     {
@@ -136,11 +135,6 @@ namespace FiveMinute.Controllers
 
             // Fetch the user being viewed
             var user = await userRepository.GetUserById(userId);
-            var userr =
-                await context.Users.Include(x => x.FMTTemplates)
-                .Include(x => x.FMTests)
-                .Include(appUser => appUser.PassedTestResults)
-                .FirstOrDefaultAsync(x => x.Id == userId);
             if (user == null)
             {
                 return View("NotFound");
@@ -241,8 +235,7 @@ namespace FiveMinute.Controllers
             currentUser.UserData.FirstName = userData.FirstName;
             currentUser.UserData.LastName = userData.LastName;
             currentUser.UserData.Group = userData.Group;
-            
-            await context.SaveChangesAsync();
+            await userRepository.Save();
             return RedirectToAction("Detail", "Account", new { userId = currentUser.Id });
         }
 	}
