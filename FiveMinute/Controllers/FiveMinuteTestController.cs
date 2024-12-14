@@ -179,5 +179,26 @@ namespace FiveMinute.Controllers
 
 			return View(fiveMinuteTestResultViewModel);
 		}
+		
+		[HttpPost]
+		public async Task<IActionResult> UpdateAnswerCorrectness([FromBody] UpdateAnswerCorrectnessModel model)
+		{
+			var answer = await _context.UserAnswers.FirstOrDefaultAsync(a => a.Id == model.answerId);
+			if (answer == null)
+			{
+				return NotFound();
+			}
+
+			answer.IsCorrect = model.isCorrect;
+			await _context.SaveChangesAsync();
+			return Json(new { success = true });
+		}
+
+		public class UpdateAnswerCorrectnessModel
+		{
+			public int answerId { get; set; }
+			public bool isCorrect { get; set; }
+		}
+
 	}
 }

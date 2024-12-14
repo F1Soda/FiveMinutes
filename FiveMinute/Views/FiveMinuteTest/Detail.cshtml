@@ -48,50 +48,50 @@
                                 <div>Id пользователя: @result.UserId</div>
                                 <div>Имя пользователя: @result.UserName</div>
                                 <div>Время прохождения: @result.PassTime</div>
-                                <div>Всего баллов: @answersDict.Values.SelectMany(x => x).Sum(x => x.IsCorrect ? 1: 0)</div>
+                                <div>Всего баллов: @answersDict.Values.SelectMany(x => x).Sum(x => x.IsCorrect ? 1 : 0)</div>
                                 <a asp-action="FiveMinuteResult" asp-route-resultId="@result.Id">Подробнее</a>
                             </caption>
                             <thead>
-                            <tr>
-                                <th>Вопрос</th>
-                                @foreach(var number in answersDict.Keys.Order())
-                                {
-                                    var someAnswer = answersDict[number].FirstOrDefault();
-                                    <th>@someAnswer?.QuestionPosition. @someAnswer?.QuestionText</th>
-                                }
-                            </tr>
+                                <tr>
+                                    <th>Вопрос</th>
+                                    @foreach(var number in answersDict.Keys.Order())
+                                    {
+                                        var someAnswer = answersDict[number].FirstOrDefault();
+                                        <th>@someAnswer?.QuestionPosition. @someAnswer?.QuestionText</th>
+                                    }
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th>Ответ</th>
-                                @foreach (var number in answersDict.Keys.Order())
-                                {
-                                    <td>@string.Join(';', answersDict[number].Select(x => x.Text).Where(x => x != ""))</td>
-                                }
-                            </tr>
-                            <tr>
-                                <th>Балл</th>
-                                @foreach (var number in answersDict.Keys.Order())
-                                {
-                                    <td>@answersDict[number].Sum(x => x.IsCorrect ? 1 : 0)</td>
-                                }
-                            </tr>
+                                <tr>
+                                    <th>Ответ</th>
+                                    @foreach (var number in answersDict.Keys.Order())
+                                    {
+                                        <td>
+                                            @foreach (var answer in answersDict[number].Where(x => !string.IsNullOrEmpty(x.Text)))
+                                            {
+                                                <div class="answer-block" style="margin-bottom:10px;">
+                                                    <span class="answer-text">@answer.Text</span>
+                                                    <div class="mt-2">
+                                                        <button type="button" class="btn btn-sm btn-success mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="true">Правильно</button>
+                                                        <button type="button" class="btn btn-sm btn-danger mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="false">Неправильно</button>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+                                    }
+                                </tr>
+                                <tr>
+                                    <th>Балл</th>
+                                    @foreach (var number in answersDict.Keys.Order())
+                                    {
+                                        <td>@answersDict[number].Sum(x => x.IsCorrect ? 1 : 0)</td>
+                                    }
+                                </tr>
                             </tbody>
                         </table>
                     }
                 </div>
             </div>
-
-            <!-- Notification for Organizer -->
-            <!--@if (Model.StartPlanned && Model.Status == TestStatus.Completed && Model.IdToUninclude.Contains(1))
-                {
-                    <div class="alert alert-warning mt-4" role="alert">
-                        <strong>Notification:</strong> A new test result has been submitted, but manual review is required.
-                    </div>
-                }-->
-        </div>
-        <div>
-            
         </div>
 
         <!-- Settings Tab Panel -->
@@ -157,15 +157,46 @@
 <script src="~/js/questionCheckboxHandler.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM загружен, начинаем инициализацию...'); // Отладочная информация
+        console.log('DOM загружен, начинаем инициализацию...');
         initializeQuestionCheckboxes('IdToUninclude');
         toggleEndTimeInput();
         toggleStartTimeInput();
+
+        // Добавляем обработчик кликов по кнопкам "Правильно"/"Неправильно"
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('mark-correct-btn')) {
+                var answerId = e.target.getAttribute('data-answer-id');
+                var isCorrect = e.target.getAttribute('data-is-correct') === 'true';
+
+                // Отправляем AJAX-запрос на серверный метод UpdateAnswerCorrectness
+                fetch('@Url.Action("UpdateAnswerCorrectness", "FiveMinuteTest")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ answerId: parseInt(answerId), isCorrect: isCorrect })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json().catch(() => null); 
+                })
+                .then(data => {
+                    alert('Ответ обновлён!');
+                    var answerBlock = e.target.closest('.answer-block');
+                    if (answerBlock) {
+                        answerBlock.style.backgroundColor = isCorrect ? '#d4edda' : '#f8d7da';
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    alert('Ошибка при обновлении ответа.');
+                });
+            }
+        });
     });
     
     function toggleStartTimeInput() {
         var startPlanned = document.getElementById('startPlanned').checked;
-        
         document.getElementById('startTimeInput').style.display = startPlanned ? 'block' : 'none';
     }
 
