@@ -4,7 +4,7 @@ using FiveMinute.ViewModels.Interfaces;
 
 namespace FiveMinute.ViewModels;
 
-public class TestResultViewModel:IOutput<TestResultViewModel,FiveMinuteTestResult>
+public class TestResultViewModel:IOutput<TestResultViewModel, FiveMinuteTestResult>
 {
     public int FMTestId { get; set; }
 	public string UserId { get; set; }

@@ -8,6 +8,8 @@ public class UserAnswerViewModel:IOutput<UserAnswerViewModel,UserAnswer>
     public string Text { get; set; }
     public int Position { get; set; }
     public int QuestionPosition { get; set; }
+    
+    
     public static UserAnswer CreateByView(UserAnswerViewModel model)
     {
         return new UserAnswer
