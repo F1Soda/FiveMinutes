@@ -181,15 +181,9 @@ namespace FiveMinute.Controllers
 		}
 		
 		[HttpPost]
-		public async Task<IActionResult> UpdateAnswerCorrectness([FromBody] UpdateAnswerCorrectnessModel model)
+		public async Task<IActionResult> UpdateAnswerCorrectness([FromBody] CheckTextAnswerCorrectnessViewModel model)
 		{
 			return Json(new { success = true });
-		}
-
-		public class UpdateAnswerCorrectnessModel
-		{
-			public int answerId { get; set; }
-			public bool isCorrect { get; set; }
 		}
 
 	}

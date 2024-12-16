@@ -72,7 +72,7 @@
                                                 <div class="answer-block" style="margin-bottom:10px;">
                                                     <span class="answer-text">@answer.Text</span>
                                                     <div class="mt-2">
-                                                        <button type="button" class="btn btn-sm btn-success mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="true">Правильно</button>
+                                                        <button type="button" class="btn btn-sm btn-success mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="true" data-question-position="@answer.QuestionPosition" data-question-id = "@answer.QuestionId">Правильно</button>
                                                         <button type="button" class="btn btn-sm btn-danger mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="false">Неправильно</button>
                                                     </div>
                                                 </div>
@@ -161,19 +161,21 @@
         toggleEndTimeInput();
         toggleStartTimeInput();
 
-        // Добавляем обработчик кликов по кнопкам "Правильно"/"Неправильно"
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('mark-correct-btn')) {
                 var answerId = e.target.getAttribute('data-answer-id');
                 var isCorrect = e.target.getAttribute('data-is-correct') === 'true';
+                var questionPosition = e.target.getAttribute("data-question-position");
+                var questionId = e.target.getAttribute("data-question-id");
+                
 
-                // Отправляем AJAX-запрос на серверный метод UpdateAnswerCorrectness
                 fetch('@Url.Action("UpdateAnswerCorrectness", "FiveMinuteTest")', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ answerId: parseInt(answerId), isCorrect: isCorrect })
+                    body: JSON.stringify({ answerId: parseInt(answerId), isCorrect: isCorrect, 
+                    questionPosition: parseInt(questionPosition), questionId: parseInt(questionId) })
                 })
                 .then(response => {
                     if (!response.ok) throw new Error('Network response was not ok');
@@ -193,7 +195,7 @@
             }
         });
     });
-    
+
     function toggleStartTimeInput() {
         var startPlanned = document.getElementById('startPlanned').checked;
         document.getElementById('startTimeInput').style.display = startPlanned ? 'block' : 'none';
