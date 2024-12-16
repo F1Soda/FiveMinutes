@@ -5,17 +5,16 @@ namespace FiveMinute.ViewModels;
 
 public class CheckTextAnswerCorrectnessViewModel : IOutput<CheckTextAnswerCorrectnessViewModel, UserAnswer>
 {
-    public UserAnswerViewModel UserAnswerViewModel;
-    public bool IsCorrect;
-    //public int TestId;
+    public int Position { get; set; }
+    public bool IsCorrect { get; set; }
+    public int TestId { get; set; }
+
     
     public static UserAnswer CreateByView(CheckTextAnswerCorrectnessViewModel model)
     {
         return new UserAnswer
         {
-            Text = model.UserAnswerViewModel.Text ?? "",
-            Position = model.UserAnswerViewModel.Position,
-            QuestionPosition = model.UserAnswerViewModel.QuestionPosition,
+            Position = model.Position,
             IsCorrect = model.IsCorrect
         };
     }
