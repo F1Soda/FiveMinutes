@@ -13,8 +13,7 @@ namespace FiveMinute.Utils
 		{
 			this.viewEngine = viewEngine;
 		}
-
-		// Helper method to render partial views as strings
+		
 		private async Task<string> RenderPartialViewToString(string viewName, object model)
 		{
 			ViewData.Model = model;

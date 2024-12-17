@@ -7,8 +7,8 @@
 @{
 	string GetCreationTimeString(DateTime utcDateTime)
 	{
-		var localTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, TimeZoneInfo.Local); // Replace with your timezone ID
-		return localTime.ToString("dd.MM HH:mm"); // Format as per your requirement
+		var localTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, TimeZoneInfo.Local);
+		return localTime.ToString("dd.MM HH:mm");
 	}
 
 	string GetTimeAgoString(DateTime dateTime, TimeZoneInfo timeZone)

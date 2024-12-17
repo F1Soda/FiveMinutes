@@ -17,7 +17,6 @@ public class TestResultViewModel:IOutput<TestResultViewModel, FiveMinuteTestResu
 	    {
 		    FiveMinuteTestId = model.FMTestId,
 		    PassTime = DateTime.UtcNow,
-		    // Тут нужна логика, чтобы обрабатывать, сразу ли ответы проверены или ещё что то сам препод долен чекнуть
 		    Status = ResultStatus.Accepted,
 		    UserId = model.UserId,
 		    StudentData = model.StudentData??new UserData

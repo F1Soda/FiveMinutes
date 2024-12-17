@@ -31,8 +31,7 @@ public class FmtChecker(
         var dbAnswer = question?.AnswerOptions.FirstOrDefault(x => x.Position == userAnswer.Position);
         if (dbAnswer == null)
         {
-            // throw new Exception($"Вопрос ,на который указывает ответ юзера {userAnswer} не существует в ");
-            // Для текстового ответа надо подумать что делать
+            throw new Exception($"Вопрос ,на который указывает ответ юзера {userAnswer} не существует в БД");
         }
 
         var rez =UserAnswerViewModel.CreateByView(userAnswer);

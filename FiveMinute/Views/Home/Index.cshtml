@@ -8,10 +8,8 @@
 	@if (Model.UserRole == "teacher" || Model.UserRole == "admin")
 	{
 		<div class="full-width-wrapper">
-			<!-- Cards Row with Conditional Centering -->
 			<div class="d-flex justify-content-center bg-light-blue pt-3">
 				<div class="row container">
-					<!-- Planned Tests Card (only if there are planned tests) -->
 					@if (Model.PlannedFMTests.Any() || true)
 					{
 						<div class="col-md-4 mb-3">
@@ -19,7 +17,7 @@
 								<div class="card-header">Запланированные Тесты</div>
 								<div class="card-body">
 									<ul id="plannedTestsList">
-										@foreach (var test in Model.PlannedFMTests.Take(5)) // Show only the first 5
+										@foreach (var test in Model.PlannedFMTests.Take(5))
 										{
 											<li>
 												@test.Name
@@ -44,7 +42,7 @@
 								<div class="card-header">Активные Тесты</div>
 								<div class="card-body">
 									<ul id="activeTestsList">
-										@foreach (var test in Model.ActiveFMTests.Take(5)) // Show only the first 5
+										@foreach (var test in Model.ActiveFMTests.Take(5))
 										{
 											<li>
 												@test.Name
@@ -69,7 +67,7 @@
 								<div class="card-header">Тесты, требующие проверки</div>
 								<div class="card-body">
 									<ul id="recheckingTestsList">
-										@foreach (var test in Model.RequiresRecheckingFMTests.Take(5)) // Show only the first 5
+										@foreach (var test in Model.RequiresRecheckingFMTests.Take(5))
 										{
 											<li>
 												@test.Name

@@ -150,15 +150,14 @@
             console.log(userId);
             
             $.ajax({
-                url: '/Account/Delete', // Adjust the URL to match your controller's route
+                url: '/Account/Delete',
                 type: 'POST',
-                data: JSON.stringify({ userId: userId }), // Send userId as JSON
+                data: JSON.stringify({ userId: userId }),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 success: function (response) {
                     if (response.success) {
                         alert("User deleted successfully.");
-                        // Remove the deleted user's row from the table
                         $('tr').filter(`[data-user-id="${userId}"]`).remove();
                     } else {
                         alert(response.description || "Failed to delete the user.");
@@ -173,12 +172,10 @@
 
 
     function loginAsUser(userId) {
-        // Make an AJAX call or form submission to login as this user
         window.location.href = '/Account/LoginAs/' + userId;
     }
 
     function openCreateModal(role) {
-        // Set the role in the hidden input for the form
         document.getElementById("role").value = role;
         document.getElementById("createUserModalLabel").innerText = "Create " + role;
         $('#createUserModal').modal('show');
