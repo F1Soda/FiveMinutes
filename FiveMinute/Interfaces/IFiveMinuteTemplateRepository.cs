@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using FiveMinute.Models;
+﻿using FiveMinute.Models;
 
 namespace FiveMinute.Interfaces
 {
@@ -10,7 +9,6 @@ namespace FiveMinute.Interfaces
 		Task<FiveMinuteTemplate?> GetByIdAsyncNoTracking(int id);
 		Task<bool> Update(FiveMinuteTemplate fmt, FiveMinuteTemplate newFmt);
 
-		// Возможно лишнее, но пока оставлю
 		IEnumerable<FiveMinuteTemplate> GetAllFromUserId(string userId);
 
 		Task<bool> DeleteCascade(FiveMinuteTemplate template);

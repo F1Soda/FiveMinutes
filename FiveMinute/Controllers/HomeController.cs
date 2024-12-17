@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using FiveMinute.Models;
-using FiveMinute.Data;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using FiveMinute.ViewModels.HomeViewModels;
 using FiveMinute.ViewModels.FMTEditViewModels;
@@ -31,7 +29,6 @@ namespace FiveMinute.Controllers
 			IndexViewModel model = null!;
 			if (currentUser != null)
 			{
-				// ��� �������� ������� ������, �� ������ ��� �����
 				var user = await userRepository.GetUserById(currentUser.Id);
 				model = IndexViewModel.CreateByModel(user);
 			}
@@ -57,14 +54,13 @@ namespace FiveMinute.Controllers
 			if (currentUser == null || !currentUser.canCreate)
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
 
-			var template = await fiveMinuteTemplateRepository.GetByIdAsync(id); // Your repository method to fetch the template
+			var template = await fiveMinuteTemplateRepository.GetByIdAsync(id);
 			if (template == null)
 			{
 				return Json(new { success = false, reason = $"Where is no FMTemplate with id {id}" });
 			}
 			if (await fiveMinuteTemplateRepository.DeleteCascade(template))
 			{
-				// Fetch updated data for both tabs
 				var templates = fiveMinuteTemplateRepository.GetAllFromUserId(currentUser.Id)
 					?.OrderByDescending(x => x.LastModificationTime)
 					?.Select(FMTemplateIndexViewModel.CreateByModel);
@@ -81,7 +77,6 @@ namespace FiveMinute.Controllers
 					tests = (ICollection<FMTestIndexViewModel>)tests.ToList();
 				}
 
-				// Render updated HTML for both tables
 				var templatesHtml = await RenderPartialViewToString("_TemplatesTable", templates);
 				var testsHtml = await RenderPartialViewToString("_TestsTable", tests);
 
@@ -100,14 +95,13 @@ namespace FiveMinute.Controllers
 			if (currentUser == null || !currentUser.canCreate)
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
 
-			var test = await fiveMinuteTestRepository.GetByIdAsync(id); // Your repository method to fetch the test
+			var test = await fiveMinuteTestRepository.GetByIdAsync(id);
 			if (test == null)
 			{
 				return Json(new { success = false, reason = $"Where is no FMTest with id {id}" });
 			}
 			if (await fiveMinuteTestRepository.Delete(test))
 			{
-				// Fetch updated data for both tabs
 				var templates = fiveMinuteTemplateRepository.GetAllFromUserId(currentUser.Id)
 					?.OrderByDescending(x => x.LastModificationTime)
 					?.Select(FMTemplateIndexViewModel.CreateByModel);
@@ -124,7 +118,6 @@ namespace FiveMinute.Controllers
 					tests = (ICollection<FMTestIndexViewModel>)tests.ToList();
 				}
 
-				// Render updated HTML for both tables
 				var templatesHtml = await RenderPartialViewToString("_TemplatesTable", templates);
 				var testsHtml = await RenderPartialViewToString("_TestsTable", tests);
 
@@ -133,7 +126,6 @@ namespace FiveMinute.Controllers
 			return Json(new { success = false });
 		}
 
-		// Helper method to render partial views as strings
 		private async Task<string> RenderPartialViewToString(string viewName, object model)
 		{
 			ViewData.Model = model;

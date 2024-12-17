@@ -1,13 +1,11 @@
 ﻿using FiveMinute.Repository.FiveMinuteTestRepository;
 using FiveMinute.ViewModels.FiveMinuteTestViewModels;
-using FiveMinute.Models;
+using FiveMinute.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using FiveMinute.Data;
-using FiveMinute.ViewModels.AccountViewModels;
-using Microsoft.EntityFrameworkCore;
 using FiveMinute.ViewModels;
 using FiveMinute.Interfaces;
+using FiveMinute.Models;
 using System.Net;
 
 
@@ -49,7 +47,7 @@ namespace FiveMinute.Controllers
 			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(fmTestEditViewModel.Id);
 			var currentUser = await userManager.GetUserAsync(User);
 
-			if (currentUser == null) // || !canCreate
+			if (currentUser == null)
 				return View("Error", new ErrorViewModel($"You don't have the rights to this action"));
 
 			
@@ -102,7 +100,7 @@ namespace FiveMinute.Controllers
 			var user = await userRepository.GetUserById(currentUser.Id);
 			var attachedTemplate = user.FMTTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
 
-			var test = FiveMinuteTestDetailViewModel.CreateByView(fmTestEditViewModel);//#Ы Мб стоит создать другую view модель
+			var test = FiveMinuteTestDetailViewModel.CreateByView(fmTestEditViewModel);
 			test.IdToUninclude = new List<int>();
 			test.UserOrganizerId = user.Id;
 			test.UserOrganizer = user;
@@ -147,11 +145,11 @@ namespace FiveMinute.Controllers
 		[HttpPost]
 		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailView)
 		{
-			Console.WriteLine(FMTestDetailView.StartPlanned); // For debugging
+			Console.WriteLine(FMTestDetailView.StartPlanned);
 
 			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(FMTestDetailView.Id);
 			var currentUser = await userManager.GetUserAsync(User);
-			if (currentUser == null) // || !canCreate
+			if (currentUser == null) 
 				return View("Error", new ErrorViewModel($"You don't have the rights to this action"));
 
 			if (existingFMTest == null)

@@ -1,5 +1,4 @@
-﻿using FiveMinute.Interfaces;
-using FiveMinute.Models;
+﻿using FiveMinute.Models;
 
 namespace FiveMinute.Interfaces
 {

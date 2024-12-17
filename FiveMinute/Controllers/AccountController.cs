@@ -4,7 +4,6 @@ using FiveMinute.Models;
 using FiveMinute.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FiveMinute.Controllers
 {
@@ -17,9 +16,6 @@ namespace FiveMinute.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            // Типо прикол в том, что создав отдельную переменную, мы избавили пользователя от случая
-            // когда он случайно во время ввода может перезагрузить страницу и его пароли снова слетят
-            // и надо будет заново вводить 
             var response = new LoginViewModel();
             return View(response);
         }
@@ -41,8 +37,6 @@ namespace FiveMinute.Controllers
                         return RedirectToAction("Index", "Home");
                     }
                 }   
-                // TODO: Сделать позже это поле
-                // loginViewModel.PasswordIsCorrect = false;
                 TempData["Error"] = "Wrond credentials. Please, try again";
                 return View(loginViewModel);
             }
@@ -111,7 +105,7 @@ namespace FiveMinute.Controllers
             var currentUser = await userManager.GetUserAsync(User);
             if (currentUser == null)
             {
-                return RedirectToAction("Login", "Account"); // Redirect to login if the user is not authenticated
+                return RedirectToAction("Login", "Account");
             }
 
             if (currentUser.UserRole == UserRoles.Student && currentUser.Id != userId)
@@ -119,28 +113,21 @@ namespace FiveMinute.Controllers
                 return View("Error", new ErrorViewModel("You can't view someone else's profile"));
             }
 
-            // Get current user roles
             var currentUserRoles = await userManager.GetRolesAsync(currentUser);
 
-            // Allow access if the current user is Admin or Teacher, or if they are viewing their own profile
             bool isAdmin = currentUserRoles.Contains(UserRoles.Admin);
             bool isTeacher = currentUserRoles.Contains(UserRoles.Teacher);
             bool isOwner = currentUser.Id == userId;
 
-            if (!(isAdmin || isTeacher || isOwner))
-            {
-                // Redirect students trying to view other users' profiles
-                return Forbid(); // or RedirectToAction("AccessDenied") if you have an Access Denied page
+            if (!(isAdmin || isTeacher || isOwner)) {
+                return Forbid();
             }
 
-            // Fetch the user being viewed
             var user = await userRepository.GetUserById(userId);
             if (user == null)
             {
                 return View("NotFound");
             }
-            
-            // Get the role of the user being viewed (if needed)
 
             var model = UserDetailViewModel.CreateByModel(user);
             model.UserRole = currentUser.UserRole;
@@ -154,7 +141,7 @@ namespace FiveMinute.Controllers
 
 			if (currentUser == null)
 			{
-				return Forbid(); // Redirect to login if the user is not authenticated
+				return Forbid();
 			}
 
 			var currentUserRoles = await userManager.GetRolesAsync(currentUser);
@@ -229,7 +216,6 @@ namespace FiveMinute.Controllers
             var currentUser = await userManager.GetUserAsync(User);
             if (currentUser == null)
                 return Forbid();
-            // а я хуй его знает
             if (currentUser.UserData is null)
                 currentUser.UserData = new();
             currentUser.UserData.FirstName = userData.FirstName;

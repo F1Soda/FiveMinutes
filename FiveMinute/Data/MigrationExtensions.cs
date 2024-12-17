@@ -1,5 +1,4 @@
-﻿using FiveMinute.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace FiveMinute.Data
 {

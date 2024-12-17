@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FiveMinute.Interfaces
 {
-// Скорее всего он не нужен
     public interface IUserRepository : IDefaultRepository<AppUser>
     {
         Task<IEnumerable<AppUser>> GetAllUsers();

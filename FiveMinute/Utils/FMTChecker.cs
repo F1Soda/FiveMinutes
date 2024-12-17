@@ -1,5 +1,4 @@
-﻿using FiveMinute.Data;
-using FiveMinute.Interfaces;
+﻿using FiveMinute.Interfaces;
 using FiveMinute.Models;
 using FiveMinute.Repository.FiveMinuteTestRepository;
 using FiveMinute.ViewModels;
@@ -29,11 +28,6 @@ public class FmtChecker(
     {
         var question = fiveMinuteTemplate.Questions.FirstOrDefault(q => q.Position == userAnswer.QuestionPosition);
         var dbAnswer = question?.AnswerOptions.FirstOrDefault(x => x.Position == userAnswer.Position);
-        if (dbAnswer == null)
-        {
-            // throw new Exception($"Вопрос ,на который указывает ответ юзера {userAnswer} не существует в ");
-            // Для текстового ответа надо подумать что делать
-        }
 
         var rez =UserAnswerViewModel.CreateByView(userAnswer);
         rez.QuestionId = question.Id;
