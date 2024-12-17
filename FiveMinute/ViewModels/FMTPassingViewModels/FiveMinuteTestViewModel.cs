@@ -32,7 +32,7 @@ public class FiveMinuteTestViewModel: IInput<FiveMinuteTestViewModel,FiveMinuteT
             FMTestId = fmTest.Id,
             StartTime = fmTest.StartTime,
             EndTime = fmTest.EndTime,
-            Questions = fmTemplate.Questions.Select(x => QuestionViewModel.CreateByModel(x)),
+            Questions = fmTemplate.Questions.Where(x=>!fmTest.IdToUninclude.Contains(x.Id)).Select(x => QuestionViewModel.CreateByModel(x)),
         };
     }
 }
