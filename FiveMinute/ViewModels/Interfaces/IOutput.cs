@@ -1,6 +1,6 @@
 namespace FiveMinute.ViewModels.Interfaces;
 
-public interface IOutput<in TView, out T>//из фронта в бекенд
+public interface IOutput<in TView, out T>
 {
     static abstract T CreateByView(TView model);
 }

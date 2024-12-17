@@ -27,8 +27,8 @@
 
 @section Scripts {
 	<script>
-		const saveUrl = '@Url.Action("Save")'; // Pass the save URL to the external JavaScript file
-		const modelData = @Html.Raw(Json.Serialize(Model)); // Serialize model data for use in edit.js
+		const saveUrl = '@Url.Action("Save")';
+		const modelData = @Html.Raw(Json.Serialize(Model));
 	</script>
 	<script src="~/js/popup.js"></script>
 	<script src="~/js/edit.js"></script>

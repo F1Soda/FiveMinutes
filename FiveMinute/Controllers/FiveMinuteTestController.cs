@@ -177,5 +177,12 @@ namespace FiveMinute.Controllers
 
 			return View(fiveMinuteTestResultViewModel);
 		}
+		
+		[HttpPost]
+		public async Task<IActionResult> UpdateAnswerCorrectness([FromBody] CheckTextAnswerCorrectnessViewModel model)
+		{
+			return Json(new { success = true });
+		}
+
 	}
 }

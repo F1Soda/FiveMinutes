@@ -62,7 +62,6 @@
                         <a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteStatistics" asp-action="ShowResults">Статистика(DEPRICATED)</a>
                         <a class="btn btn-info" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Detail">Подробнее</a>
                         
-                        <!-- Кнопка удаления с атрибутами для скрипта confirmation-action-popup.js -->
                         <button class="btn btn-danger confirm-delete-button"
                                 data-delete-url="@Url.Action("DeleteTest", "Home")"
                                 data-id="@test.Id">

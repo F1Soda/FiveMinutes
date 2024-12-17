@@ -28,6 +28,13 @@ public class FmtChecker(
     {
         var question = fiveMinuteTemplate.Questions.FirstOrDefault(q => q.Position == userAnswer.QuestionPosition);
         var dbAnswer = question?.AnswerOptions.FirstOrDefault(x => x.Position == userAnswer.Position);
+<<<<<<< HEAD
+=======
+        if (dbAnswer == null)
+        {
+            throw new Exception($"Вопрос ,на который указывает ответ юзера {userAnswer} не существует в БД");
+        }
+>>>>>>> origin/cynpy
 
         var rez =UserAnswerViewModel.CreateByView(userAnswer);
         rez.QuestionId = question.Id;
