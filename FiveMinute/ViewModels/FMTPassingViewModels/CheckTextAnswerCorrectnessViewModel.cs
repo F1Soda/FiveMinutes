@@ -19,7 +19,8 @@ public class CheckTextAnswerCorrectnessViewModel : IOutput<CheckTextAnswerCorrec
             Position = model.Position,
             IsCorrect = model.IsCorrect,
             QuestionPosition = model.QuestionPosition,
-            QuestionId = model.QuestionId
+            QuestionId = model.QuestionId,
+            Id = model.TestId
         };
     }
 }

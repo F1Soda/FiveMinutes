@@ -71,10 +71,13 @@
                                             {
                                                 <div class="answer-block" style="margin-bottom:10px;">
                                                     <span class="answer-text">@answer.Text</span>
-                                                    <div class="mt-2">
-                                                        <button type="button" class="btn btn-sm btn-success mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="true" data-question-position="@answer.QuestionPosition" data-question-id = "@answer.QuestionId">Правильно</button>
-                                                        <button type="button" class="btn btn-sm btn-danger mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="false">Неправильно</button>
-                                                    </div>
+                                                    @if (Model.AttachedFMT.Questions.First(q => q.Id == answer.QuestionId).ResponseType == ResponseType.Text)
+                                                    {
+                                                        <div class="mt-2">
+                                                            <button type="button" class="btn btn-sm btn-success mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="true" data-question-position="@answer.QuestionPosition" data-question-id = "@answer.QuestionId" data-test-id = "@Model.Id">Правильно</button>
+                                                            <button type="button" class="btn btn-sm btn-danger mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="false" data-question-position="@answer.QuestionPosition" data-question-id = "@answer.QuestionId" data-test-id = "@Model.Id">Неправильно </button>
+                                                        </div>
+                                                    }
                                                 </div>
                                             }
                                         </td>
@@ -165,6 +168,7 @@
                 var isCorrect = e.target.getAttribute('data-is-correct') === 'true';
                 var questionPosition = e.target.getAttribute("data-question-position");
                 var questionId = e.target.getAttribute("data-question-id");
+                var testId = e.target.getAttribute("data-test-id")
                 
 
                 fetch('@Url.Action("UpdateAnswerCorrectness", "FiveMinuteTest")', {
@@ -173,7 +177,8 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ answerId: parseInt(answerId), isCorrect: isCorrect, 
-                    questionPosition: parseInt(questionPosition), questionId: parseInt(questionId) })
+                    questionPosition: parseInt(questionPosition), questionId: parseInt(questionId),
+                    testId : parseInt(testId)})
                 })
                 .then(response => {
                     if (!response.ok) throw new Error('Network response was not ok');
