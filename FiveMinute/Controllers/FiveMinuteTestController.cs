@@ -7,6 +7,7 @@ using FiveMinute.Interfaces;
 using FiveMinute.Models;
 using FiveMinute.Utils;
 using System.Net;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
 
@@ -99,7 +100,8 @@ namespace FiveMinute.Controllers
 			
 			var user = await userRepository.GetUserById(currentUser.Id);
 			var attachedTemplate = user.FMTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
-
+			if (attachedTemplate == null)
+				return View("Error", new ErrorViewModel($"Не указана пятиминутка. Пытался с валидацией разобраться, но не получилось"));
 			var test = FiveMinuteTestDetailViewModel.CreateByView(fmTestEditViewModel);
 			test.Status = Data.TestStatus.Started;
 			test.IdToUninclude = new List<int>();
@@ -127,7 +129,7 @@ namespace FiveMinute.Controllers
 			var currentUser = await userManager.GetUserAsync(User);
 			
 			if (!fmTest.CanPass(currentUser))
-				return Forbid();
+				return View("Error", new ErrorViewModel($"Невозможно пройти пятиминутку, так как она закончилась, либо еще не началась"));
 			var test = FMTestPassingViewModel.CreateByModel(fmTest);
 			if (currentUser != null && User.Identity.IsAuthenticated)
 			{
@@ -149,8 +151,12 @@ namespace FiveMinute.Controllers
 		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailView)
 		{
 			Console.WriteLine(FMTestDetailView.StartPlanned);
-
 			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(FMTestDetailView.Id);
+			if (FMTestDetailView.Validate(null).Count() != 0)
+			{
+				TempData["Error"] = "Неверная дата";
+				return View("Detail", FiveMinuteTestDetailViewModel.CreateByModel(existingFMTest));
+			}
 			var currentUser = await userManager.GetUserAsync(User);
 			if (currentUser == null) 
 				return View("Error", new ErrorViewModel($"You don't have the rights to this action"));
@@ -158,6 +164,7 @@ namespace FiveMinute.Controllers
 			if (existingFMTest == null)
 				return View("NotFound");
 			var updatedTest = FiveMinuteTestDetailViewModel.CreateByView(FMTestDetailView);
+			
 			updatedTest.FiveMinuteTemplate = existingFMTest.FiveMinuteTemplate;
 			updatedTest.FiveMinuteTemplateId = existingFMTest.FiveMinuteTemplate.Id;
 			updatedTest.Results = existingFMTest.Results;

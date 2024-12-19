@@ -7,11 +7,14 @@ using FiveMinute.ViewModels.Interfaces;
 
 namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 {
-	public class FiveMinuteTestDetailViewModel: IInput<FiveMinuteTestDetailViewModel,FiveMinuteTest>,IOutput<FiveMinuteTestDetailViewModel,FiveMinuteTest>
+	public class FiveMinuteTestDetailViewModel: IInput<FiveMinuteTestDetailViewModel,FiveMinuteTest>,IOutput<FiveMinuteTestDetailViewModel,FiveMinuteTest>,IValidatableObject
 	{
 	public int Id { get; set; }
+	[Required]
 	public string Name { get; set; }
+	[Required]
 	public int? AttachedFMTId { get; set; }
+	[Required]
 	public FiveMinuteTemplateEditViewModel AttachedFMT { get; set; }
 	public TestStatus Status { get; set; }
 
@@ -20,7 +23,6 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 	public DateTime StartTime { get; set; }
 	public bool EndPlanned  { get; set; }
 	public DateTime EndTime { get; set; }
-	[DateRange(ErrorMessage = "Дата начала должна быть меньше даты конца.")]
 	public bool IsValidDateRange => StartTime < EndTime;
 	public IEnumerable<FiveMinuteTestResult> Results { get; set; }
 	public List<int> IdToUninclude { get; set; }
@@ -56,20 +58,17 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 			IdToUninclude = FMTestView.IdToUninclude,
 		};
 	}
-	}
-}
-
-public class DateRangeAttribute : ValidationAttribute
-{
-	protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+	
+	public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 	{
-		var model = (FiveMinuteTestDetailViewModel)validationContext.ObjectInstance;
-
-		if (model.StartTime >= model.EndTime)
+		List<ValidationResult> errors = new List<ValidationResult>();
+ 
+		if (StartTime > EndTime)
 		{
-			return new ValidationResult(ErrorMessage);
+			errors.Add(new ValidationResult("Введите имя!", new List<string>() { "Name" }));
 		}
-
-		return ValidationResult.Success;
+ 
+		return errors;
+	}
 	}
 }

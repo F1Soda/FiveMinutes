@@ -167,6 +167,9 @@ namespace FiveMinute.Migrations
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("EndPlanned")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -180,6 +183,9 @@ namespace FiveMinute.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("StartPlanned")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone");

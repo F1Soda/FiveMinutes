@@ -26,7 +26,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 				EncryptedId = UrlEncryptor.Encrypt(model.Id),
 				Name = model.Name,
 				AttachedFMTemplateId = model.FiveMinuteTemplateId,
-				AttachedFMTemplateName = model.FiveMinuteTemplate.Name,
+				AttachedFMTemplateName = model.FiveMinuteTemplate?.Name,
 				StartPlanned = model.StartPlanned,
 				StartTime = model.StartTime,
 				EndPlanned = model.EndPlanned,

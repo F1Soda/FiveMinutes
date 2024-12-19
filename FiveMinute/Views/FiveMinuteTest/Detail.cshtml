@@ -22,6 +22,16 @@
 
     <!-- Tab Content -->
     <div class="tab-content mt-3" id="testDetailTabsContent">
+        @{
+            var startDateString = "";
+            var endDateString = "";
+            if (Model.StartTime != default)
+                startDateString = Model.StartTime.ToLocalTime().ToString("yyyy-MM-ddTHH:mm");
+            if (Model.EndTime != default)
+                endDateString = Model.EndTime.ToLocalTime().ToString("yyyy-MM-ddTHH:mm");
+            var startChecked = Model.StartPlanned ? "checked" : "";
+            var endChecked = Model.EndPlanned ? "checked" : "";
+        }
         <!-- Statistics Tab Pane -->
         <div class="tab-pane fade show active" id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
             <h3>Statistics</h3>
@@ -29,8 +39,8 @@
             <div class="row">
                 <div class="col-md-6">
                     <p><strong>Test Status:</strong> @Model.Status.ToString().Replace("InRechekingProcess", "In Rechecking Process")</p>
-                    <p><strong>Start Time:</strong> @Model.StartTime.ToString("yyyy-MM-dd HH:mm")</p>
-                    <p><strong>End Time:</strong> @Model.EndTime.ToString("yyyy-MM-dd HH:mm")</p>
+                    <p><strong>Start Time:</strong> @startDateString</p>
+                    <p><strong>End Time:</strong> @endDateString</p>
                 </div>
                 <div class="col-md-6">
                     <h4>Statistics for Passers</h4>
@@ -106,10 +116,11 @@
         <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
 
             <form method="post" action="@Url.Action("UpdateTestSettings", "FiveMinuteTest")">
-                <input type="hidden" name="Id" value="@Model.Id" />
-                <input type="hidden" name="Name" value="@Model.Name" />
-                <input type="hidden" name="Status" value="@Model.Status" />
-                <input type="hidden" id="IdToUninclude" name="IdToUninclude" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="Id" value="@Model.Id"/>
+                <input type="hidden" name="Name" value="@Model.Name"/>
+                <input type="hidden" name="Status" value="@Model.Status"/>
+                <input type="hidden" id="IdToUninclude" name="IdToUninclude"/>
 
                 <div class="mb-4">
                     <h4>Управление вопросами</h4>
@@ -127,35 +138,25 @@
                                            class="form-check-input question-checkbox"
                                            data-question-id="@question.Id"
                                            value="@question.Id"
-                                           @(isChecked ? "checked" : "") />
+                                           @(isChecked ? "checked" : "")/>
                                 </div>
                             </div>
                         }
                     </div>
                 </div>
-                @{
-                    var startDateString = "";
-                    var endDateString = "";
-                    if (Model.StartTime != default)
-                        startDateString = Model.StartTime.ToLocalTime().ToString("yyyy-MM-ddTHH:mm");
-                    if (Model.EndTime != default)
-                        endDateString = Model.EndTime.ToLocalTime().ToString("yyyy-MM-ddTHH:mm");
-                    var startChecked = Model.StartPlanned? "checked":"";
-                    var endChecked = Model.EndPlanned? "checked":"";
-                }
                 <div class="mb-3">
                     <label for="startPlanned" class="form-label">Запланировать начало</label>
-                    <input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"  onchange="toggleStartTimeInput()" value="true" checked="@startChecked"/>
+                    <input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned" onchange="toggleStartTimeInput()" value="true" checked="@startChecked"/>
                     <div id="startTimeInput" class="mt-2" style="display: @(Model.StartPlanned ? "block" : "none")">
                         <label for="startDateTime" class="form-label">Дата и время начала</label>
-                        <input type="datetime-local" id="startDateTime" asp-for="StartTime" class="form-control" value="@startDateString" />
+                        <input type="datetime-local" id="startDateTime" asp-for="StartTime" class="form-control" value="@startDateString"/>
                         <span asp-validation-for="IsValidDateRange"></span>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="endPlanned" class="form-label">Запланировать окончание</label>
-                    <input type="checkbox" id="endPlanned" asp-for="EndPlanned"  class="form-check-input" onchange="toggleEndTimeInput()" value="true" checked="@endChecked"/>
+                    <input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input" onchange="toggleEndTimeInput()" value="true" checked="@endChecked"/>
                     <div id="endTimeInput" class="mt-2" style="display: @(Model.EndPlanned ? "block" : "none")">
                         <label for="endDateTime" class="form-label">Дата и время окончания</label>
                         <input type="datetime-local" id="endDateTime" asp-for="EndTime" class="form-control" value="@endDateString"/>
