@@ -79,8 +79,8 @@
                                                     @if (Model.AttachedFMT.Questions.FirstOrDefault(q => q.Id == answer.QuestionId).ResponseType == ResponseType.Text)
                                                     {
                                                         <div class="mt-2">
-                                                            <button type="button" class="btn btn-sm btn-success mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="true" data-question-position="@answer.QuestionPosition" data-question-id = "@answer.QuestionId" data-test-id = "@Model.Id">Правильно</button>
-                                                            <button type="button" class="btn btn-sm btn-danger mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="false" data-question-position="@answer.QuestionPosition" data-question-id = "@answer.QuestionId" data-test-id = "@Model.Id">Неправильно </button>
+                                                            <button type="button" class="btn btn-sm btn-success mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="true" data-question-position="@answer.QuestionPosition" data-question-id = "@answer.QuestionId" data-test-id = "@Model.Id" data-answer-text="@answer.Text">Правильно</button>
+                                                            <button type="button" class="btn btn-sm btn-danger mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="false" data-question-position="@answer.QuestionPosition" data-question-id = "@answer.QuestionId" data-test-id = "@Model.Id" data-answer-text="@answer.Text">Неправильно </button>
                                                         </div>
                                                     }
                                                 </div>
@@ -170,9 +170,9 @@
             if (e.target.classList.contains('mark-correct-btn')) {
                 var answerId = e.target.getAttribute('data-answer-id');
                 var isCorrect = e.target.getAttribute('data-is-correct') === 'true';
-                var questionPosition = e.target.getAttribute("data-question-position");
                 var questionId = e.target.getAttribute("data-question-id");
-                var testId = e.target.getAttribute("data-test-id")
+                var testId = e.target.getAttribute("data-test-id");
+                var text = e.target.getAttribute("data-answer-text");
                 
 
                 fetch('@Url.Action("UpdateAnswerCorrectness", "FiveMinuteTest")', {
@@ -181,8 +181,9 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ answerId: parseInt(answerId), isCorrect: isCorrect, 
-                    questionPosition: parseInt(questionPosition), questionId: parseInt(questionId),
-                    testId : parseInt(testId)})
+                    questionId: parseInt(questionId), testId : parseInt(testId),
+                    text: text
+                    }),
                 })
                 .then(response => {
                     if (!response.ok) throw new Error('Network response was not ok');

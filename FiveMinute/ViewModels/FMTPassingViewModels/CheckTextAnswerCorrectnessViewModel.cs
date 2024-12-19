@@ -7,9 +7,9 @@ public class CheckTextAnswerCorrectnessViewModel : IOutput<CheckTextAnswerCorrec
 {
     public int Position { get; set; }
     public int QuestionId { get; set; }
-    public int QuestionPosition { get; set; }
     public bool IsCorrect { get; set; }
     public int TestId { get; set; }
+    public string Text { get; set; }
 
     
     public static UserAnswer CreateByView(CheckTextAnswerCorrectnessViewModel model)
@@ -18,7 +18,7 @@ public class CheckTextAnswerCorrectnessViewModel : IOutput<CheckTextAnswerCorrec
         {
             Position = model.Position,
             IsCorrect = model.IsCorrect,
-            QuestionPosition = model.QuestionPosition,
+            Text = model.Text,
             QuestionId = model.QuestionId,
             Id = model.TestId
         };
