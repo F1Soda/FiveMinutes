@@ -8,8 +8,7 @@ public class FiveMinuteTestResult
 	[Key]
 	public int Id { get; set; }
 	public string? UserId { get; set; }
-	public string? UserName { get; set; }
-	public UserData? StudentData { get; set; }
+	public UserData UserData { get; set; }
 	public ResultStatus Status { get; set; }
 	public int FiveMinuteTestId { get; set; }
 	public IEnumerable<UserAnswer> Answers { get; set; }

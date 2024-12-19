@@ -66,16 +66,6 @@ namespace FiveMinute.Data
         {
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {
-                ////Roles
-                //var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-                //if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
-                //    await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-                //if (!await roleManager.RoleExistsAsync(UserRoles.Student))
-                //    await roleManager.CreateAsync(new IdentityRole(UserRoles.Student));
-                //if (!await roleManager.RoleExistsAsync(UserRoles.Teacher))
-                //    await roleManager.CreateAsync(new IdentityRole(UserRoles.Teacher));
-
                 var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
                 string adminUserEmail = "golik.tima@gmail.com";
 

@@ -63,6 +63,5 @@ namespace FiveMinute.Models
 
 			return fmt;
 		}
-
 	}
 }

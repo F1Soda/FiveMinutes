@@ -31,7 +31,7 @@ namespace FiveMinute.Repository
 
 		public IEnumerable<FiveMinuteTemplate> GetAllFromUserId(string userId)
 		{
-			return context.Users.Include(x => x.FMTTemplates).FirstOrDefault(x => x.Id == userId)?.FMTTemplates;
+			return context.Users.Include(x => x.FMTemplates).FirstOrDefault(x => x.Id == userId)?.FMTemplates;
 		}
 
 		public async Task<bool> Update(FiveMinuteTemplate existingTemplate, FiveMinuteTemplate newTemplate)
@@ -47,17 +47,13 @@ namespace FiveMinute.Repository
 
 		public async Task<bool> DeleteCascade(FiveMinuteTemplate template)
 		{
-
-			// Delete related entities first
 			var relatedEntities = context.FiveMinuteTests
 				.Where(x => x.FiveMinuteTemplateId == template.Id);
 			context.FiveMinuteTests.RemoveRange(relatedEntities);
 			
-
 			context.Remove(template!);
 			return await Save();
 		}
-
 	}
 }
 

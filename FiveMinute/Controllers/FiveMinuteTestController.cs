@@ -1,12 +1,11 @@
-﻿using FiveMinute.Repository.FiveMinuteTestRepository;
+using FiveMinute.Repository.FiveMinuteTestRepository;
 using FiveMinute.ViewModels.FiveMinuteTestViewModels;
-using FiveMinute.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using FiveMinute.Data;
-using FiveMinute.ViewModels.AccountViewModels;
 using FiveMinute.ViewModels;
 using FiveMinute.Interfaces;
+using FiveMinute.Models;
+using FiveMinute.Utils;
 using System.Net;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
@@ -49,7 +48,7 @@ namespace FiveMinute.Controllers
 			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(fmTestEditViewModel.Id);
 			var currentUser = await userManager.GetUserAsync(User);
 
-			if (currentUser == null) // || !canCreate
+			if (currentUser == null)
 				return View("Error", new ErrorViewModel($"You don't have the rights to this action"));
 
 			
@@ -87,9 +86,8 @@ namespace FiveMinute.Controllers
 
 			ViewData["templateId"] = templateId;
 			var user =await userRepository.GetUserById(currentUser.Id);
-			var model = UserDetailViewModel.CreateByModel(user);
-			
-			return View(model);
+
+			return View(user.FMTemplates);
 		}
 	
 		[HttpPost]
@@ -100,9 +98,10 @@ namespace FiveMinute.Controllers
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
 			
 			var user = await userRepository.GetUserById(currentUser.Id);
-			var attachedTemplate = user.FMTTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
+			var attachedTemplate = user.FMTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
 
-			var test = FiveMinuteTestDetailViewModel.CreateByView(fmTestEditViewModel);//#Ы Мб стоит создать другую view модель
+			var test = FiveMinuteTestDetailViewModel.CreateByView(fmTestEditViewModel);
+			test.Status = Data.TestStatus.Started;
 			test.IdToUninclude = new List<int>();
 			test.UserOrganizerId = user.Id;
 			test.UserOrganizer = user;
@@ -114,8 +113,9 @@ namespace FiveMinute.Controllers
 			return RedirectToAction("Detail", new { testId = test.Id});
 		}
 
-		public async Task<IActionResult> Pass(int testId)
+		public async Task<IActionResult> Pass(string encryptedId)
 		{
+			var testId = UrlEncryptor.Decrypt(encryptedId);
 			var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testId);
 			if (fmTest is null)
 			{
@@ -128,30 +128,31 @@ namespace FiveMinute.Controllers
 			
 			if (!fmTest.CanPass(currentUser))
 				return Forbid();
-			var test = FiveMinuteTestViewModel.CreateByModel(fmTest);
+			var test = FMTestPassingViewModel.CreateByModel(fmTest);
+			if (currentUser != null && User.Identity.IsAuthenticated)
+			{
+				test.UserData = currentUser.UserData;
+				test.userId = currentUser.Id;
+			}
 			return View(test);
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> SendTestResults(TestResultViewModel testResultViewModel)
-		{
-			var currentUser = await userManager.GetUserAsync(User);
-			
-			if (!await fmtChecker.CheckAndSave(currentUser, testResultViewModel))
+		{			
+			if (!await fmtChecker.CheckAndSave(testResultViewModel))
 				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers")); ;
-			await userRepository.Save();
-
 			return RedirectToAction("Passed");
 		}
 		
 		[HttpPost]
 		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailView)
 		{
-			Console.WriteLine(FMTestDetailView.StartPlanned); // For debugging
+			Console.WriteLine(FMTestDetailView.StartPlanned);
 
 			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(FMTestDetailView.Id);
 			var currentUser = await userManager.GetUserAsync(User);
-			if (currentUser == null) // || !canCreate
+			if (currentUser == null) 
 				return View("Error", new ErrorViewModel($"You don't have the rights to this action"));
 
 			if (existingFMTest == null)
@@ -188,6 +189,5 @@ namespace FiveMinute.Controllers
 			var userAnswer= CheckTextAnswerCorrectnessViewModel.CreateByView(model);
 			return Json(new { success = true });
 		}
-
 	}
 }

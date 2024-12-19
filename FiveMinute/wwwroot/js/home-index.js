@@ -2,12 +2,14 @@
 $(document).ready(function () {
     $(document).on('click', '#delete-template', function (e) { 
 		e.preventDefault(); // Prevent the default behavior
-		delete_template(this); // Pass the clicked button element to the function
+        delete_template(this); // Pass the clicked button element to the function
+        
     });
 
     $(document).on('click', '#delete-test', function (e) {
         e.preventDefault(); // Prevent the default behavior
         delete_test(this); // Pass the clicked button element to the function
+        console.log("Delete test")
     });
 });
 
@@ -24,6 +26,7 @@ function delete_template(button) {
             if (response.success) {
                 $("#FMTemplateTable").html(response.templatesHtml);
                 $("#FMTestTable").html(response.testsHtml);
+                $("#TestCardsRow").html(response.testCardsRowHtml);   
             } else {
                 alert(response.reason);
             }
@@ -48,6 +51,8 @@ function delete_test(button) {
                 // Update the content of both tabs
                 $("#FMTemplateTable").html(response.templatesHtml);
                 $("#FMTestTable").html(response.testsHtml);
+                $("#TestCardsRow").html(response.testCardsRowHtml);
+                console.log(response.testCardsRowHtml)
             } else {
                 alert(response.reason);
             }

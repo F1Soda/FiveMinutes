@@ -37,17 +37,17 @@
 							</li>
 							<li class="nav-item">
 								<form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-									<button class="btn btn-outline-danger">Logout</button>
+									<button class="btn btn-outline-danger">Выйти</button>
 								</form>
 							</li>
 						}
 						else
 						{
 							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Вход</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Регистрация</a>
 							</li>
 						}
 					</ul>
@@ -62,18 +62,18 @@
 	</div>
 
 
-	@if (isAdmin)
-	{
-		<div id="admin-debug-dropdown" class="admin-debug-dropdown">
-			<button class="dropdown-toggle btn btn-secondary" onclick="toggleDropdown()">Admin Tools</button>
-			<div class="dropdown-menu">
-				<a class="dropdown-item" asp-controller="Account" asp-action="All">All Users</a>
-				<a class="dropdown-item" asp-controller="Admin" asp-action="AllTests">All Tests</a>
-				<a class="dropdown-item" asp-controller="Admin" asp-action="AllFMT">All FMT</a>
-				<!-- Add other links as needed -->
-			</div>
-		</div>
-	}
+	@* @if (isAdmin) *@
+	@* { *@
+	@* 	<div id="admin-debug-dropdown" class="admin-debug-dropdown"> *@
+	@* 		<button class="dropdown-toggle btn btn-secondary" onclick="toggleDropdown()">Admin Tools</button> *@
+	@* 		<div class="dropdown-menu"> *@
+	@* 			<a class="dropdown-item" asp-controller="Account" asp-action="All">All Users</a> *@
+	@* 			<a class="dropdown-item" asp-controller="Admin" asp-action="AllTests">All Tests</a> *@
+	@* 			<a class="dropdown-item" asp-controller="Admin" asp-action="AllFMT">All FMT</a> *@
+	@* 			<!-- Add other links as needed --> *@
+	@* 		</div> *@
+	@* 	</div> *@
+	@* } *@
 
 
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -1,25 +1,23 @@
 ﻿using FiveMinute.Data;
 using FiveMinute.Interfaces;
 using FiveMinute.Models;
+using FiveMinute.Repository.FiveMinuteTestRepository;
 using FiveMinute.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FiveMinute.Controllers
 {
     public class AccountController(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
-        IUserRepository userRepository)
+        IUserRepository userRepository,
+        IFiveMinuteTestRepository fiveMinuteTestRepository)
         : Controller
     {
         [HttpGet]
         public IActionResult Login()
         {
-            // Типо прикол в том, что создав отдельную переменную, мы избавили пользователя от случая
-            // когда он случайно во время ввода может перезагрузить страницу и его пароли снова слетят
-            // и надо будет заново вводить 
             var response = new LoginViewModel();
             return View(response);
         }
@@ -41,12 +39,10 @@ namespace FiveMinute.Controllers
                         return RedirectToAction("Index", "Home");
                     }
                 }   
-                // TODO: Сделать позже это поле
-                // loginViewModel.PasswordIsCorrect = false;
-                TempData["Error"] = "Wrond credentials. Please, try again";
+                TempData["Error"] = "Нерпавильные учетные данные. Попробуйте снова";
                 return View(loginViewModel);
             }
-            TempData["Error"] = "Wrong credentials. Please try again";
+            TempData["Error"] = "Нерпавильные учетные данные. Попробуйте снова";
             return View(loginViewModel);
         }
 
@@ -64,12 +60,12 @@ namespace FiveMinute.Controllers
             var user = await userManager.FindByEmailAsync(registerViewModel.EmailAddress);
             if (user != null)
             {
-                TempData["Error"] = "This emal address is already is use";
+                TempData["Error"] = "Данный электронный адрес уже используется. ";
                 return View(registerViewModel);
             }
             if (registerViewModel.Password != registerViewModel.ConfirmPassword)
             {
-                TempData["Error"] = "The passwords are not the same";
+                TempData["Error"] = "Пароли не одинаковые.";
                 return View(registerViewModel);
             }
 
@@ -78,23 +74,25 @@ namespace FiveMinute.Controllers
                 UserRole = UserRoles.Student,
                 Email = registerViewModel.EmailAddress,
                 UserName = registerViewModel.EmailAddress,
-                UserData = new UserData(registerViewModel.FirstName, registerViewModel.LastName, "")
+                UserData = new UserData(registerViewModel.FirstName, registerViewModel.LastName, registerViewModel.Group)
             };
             var newUserResponse = await userManager.CreateAsync(newUser, registerViewModel.Password);
 
             if (newUserResponse.Succeeded)
             {
                 await userManager.AddToRoleAsync(newUser, UserRoles.Student);
-                return RedirectToAction("Index", "Home");
+				await signInManager.SignInAsync(newUser, isPersistent: false);
+
+				return RedirectToAction("Index", "Home");
             }
             else if (newUserResponse.Errors.First().Description.Contains("Password"))
             {
-                TempData["Error"] = "Your password is too short";
+                TempData["Error"] = "Паролль слишком короткий";
                 return View(registerViewModel);
             }
             else
             {
-                TempData["Error"] = "Enter the correct email";
+                TempData["Error"] = "Введите корректную электронную почту";
                 return View(registerViewModel);
             }
         }
@@ -111,7 +109,7 @@ namespace FiveMinute.Controllers
             var currentUser = await userManager.GetUserAsync(User);
             if (currentUser == null)
             {
-                return RedirectToAction("Login", "Account"); // Redirect to login if the user is not authenticated
+                return RedirectToAction("Login", "Account");
             }
 
             if (currentUser.UserRole == UserRoles.Student && currentUser.Id != userId)
@@ -119,30 +117,29 @@ namespace FiveMinute.Controllers
                 return View("Error", new ErrorViewModel("You can't view someone else's profile"));
             }
 
-            // Get current user roles
             var currentUserRoles = await userManager.GetRolesAsync(currentUser);
 
-            // Allow access if the current user is Admin or Teacher, or if they are viewing their own profile
             bool isAdmin = currentUserRoles.Contains(UserRoles.Admin);
             bool isTeacher = currentUserRoles.Contains(UserRoles.Teacher);
             bool isOwner = currentUser.Id == userId;
 
-            if (!(isAdmin || isTeacher || isOwner))
-            {
-                // Redirect students trying to view other users' profiles
-                return Forbid(); // or RedirectToAction("AccessDenied") if you have an Access Denied page
+            if (!(isAdmin || isTeacher || isOwner)) {
+                return Forbid();
             }
 
-            // Fetch the user being viewed
             var user = await userRepository.GetUserById(userId);
             if (user == null)
             {
                 return View("NotFound");
             }
-            
-            // Get the role of the user being viewed (if needed)
 
             var model = UserDetailViewModel.CreateByModel(user);
+            foreach (var result in model.PassedTestResults)
+            {
+                var fmtest = await fiveMinuteTestRepository.GetByIdAsync(result.FiveMinuteTestId);
+                result.FMTestName = fmtest.Name;
+			}
+
             model.UserRole = currentUser.UserRole;
             model.IsOwner = isOwner;
             return View(model);
@@ -154,7 +151,7 @@ namespace FiveMinute.Controllers
 
 			if (currentUser == null)
 			{
-				return Forbid(); // Redirect to login if the user is not authenticated
+				return Forbid();
 			}
 
 			var currentUserRoles = await userManager.GetRolesAsync(currentUser);
@@ -224,17 +221,17 @@ namespace FiveMinute.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> EditUser(UserData userData)
+        public async Task<IActionResult> EditUser(UserDataChangeViewModel userDataChange)
         {
             var currentUser = await userManager.GetUserAsync(User);
             if (currentUser == null)
                 return Forbid();
-            // а я хуй его знает
-            if (currentUser.UserData is null)
-                currentUser.UserData = new();
-            currentUser.UserData.FirstName = userData.FirstName;
-            currentUser.UserData.LastName = userData.LastName;
-            currentUser.UserData.Group = userData.Group;
+
+            currentUser.UserData.FirstName = userDataChange.FirstName;
+            currentUser.UserData.LastName = userDataChange.LastName;
+            currentUser.UserData.Group = userDataChange.Group;
+            currentUser.Email = userDataChange.Email;
+            
             await userRepository.Save();
             return RedirectToAction("Detail", "Account", new { userId = currentUser.Id });
         }

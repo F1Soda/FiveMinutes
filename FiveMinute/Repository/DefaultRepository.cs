@@ -1,5 +1,3 @@
-using FiveMinute.Models;
-using System.Diagnostics;
 using FiveMinute.Data;
 using FiveMinute.Interfaces;
 

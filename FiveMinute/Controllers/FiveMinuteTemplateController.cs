@@ -13,8 +13,6 @@ namespace FiveMinute.Controllers
 		IUserRepository userRepository)
 		: Controller
 	{
-		private readonly ILogger<HomeController> _logger;
-		
 		[HttpGet]
 		public async Task<IActionResult> Create()
 		{
@@ -47,7 +45,6 @@ namespace FiveMinute.Controllers
 
 			var fmtViewModel = FiveMinuteTemplateEditViewModel.CreateByModel(fmt);
 
-			// Change !!!
 			HttpContext.Session.SetInt32("FmtViewModel", fmt.Id);
 			return View(fmtViewModel);
 		}
@@ -78,9 +75,9 @@ namespace FiveMinute.Controllers
                 {
                     success = false,
                     errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
-                }); //тут какая-то другая ошибка должна быть
+                });
             }
-            var template = FiveMinuteTemplateEditViewModel.CreateByView(fmt);//#Ы в view модели у всех вопросов id =0,скорее всего гадость с фронта приходит 
+            var template = FiveMinuteTemplateEditViewModel.CreateByView(fmt);
             await fmTemplateReposity.Update(existingFmt, template);
             return Json(new { success = true, id = fmt.Id });
         }
@@ -89,7 +86,7 @@ namespace FiveMinute.Controllers
 			var currentUser = await userManager.GetUserAsync(User);
 			if (currentUser == null)
 			{
-				return RedirectToAction("Login", "Account"); // Redirect to login if the user is not authenticated
+				return RedirectToAction("Login", "Account");
 			}
 
 			var currentUserRoles = await userManager.GetRolesAsync(currentUser);
@@ -98,8 +95,7 @@ namespace FiveMinute.Controllers
 
 			if (isStudent)
 			{
-				// Redirect students trying to view other users' profiles
-				return Forbid(); // or RedirectToAction("AccessDenied") if you have an Access Denied page
+				return Forbid();
 			}
 
 			var fmt = await fmTemplateReposity.GetByIdAsync(testId);

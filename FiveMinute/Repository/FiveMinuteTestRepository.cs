@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using FiveMinute.Data;
 using FiveMinute.Models;
-using FiveMinute.ViewModels;
 
 namespace FiveMinute.Repository.FiveMinuteTestRepository;
 

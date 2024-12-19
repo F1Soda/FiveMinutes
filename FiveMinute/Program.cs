@@ -27,7 +27,6 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireLowercase = false;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 
-// ???
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();

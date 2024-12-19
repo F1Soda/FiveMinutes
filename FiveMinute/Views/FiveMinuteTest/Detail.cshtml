@@ -12,10 +12,10 @@
     <!-- Tab Navigation -->
     <ul class="nav nav-tabs" id="testDetailTabs" role="tablist">
         <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="statistics-tab" data-bs-toggle="tab" href="#statistics" role="tab" aria-controls="statistics" aria-selected="true">Statistics</a>
+            <a class="nav-link active" id="statistics-tab" data-bs-toggle="tab" href="#statistics" role="tab" aria-controls="statistics" aria-selected="true">Статистика</a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link" id="settings-tab" data-bs-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
+            <a class="nav-link" id="settings-tab" data-bs-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Настройки</a>
         </li>
     </ul>
 
@@ -47,7 +47,7 @@
                         <table class="table table-bordered table-striped mt-3">
                             <caption>
                                 <div>Id пользователя: @result.UserId</div>
-                                <div>Имя пользователя: @result.UserName</div>
+                                <div>Имя пользователя: @result.UserData.FirstName @result.UserData.FirstName</div>
                                 <div>Время прохождения: @result.PassTime</div>
                                 <div>Всего баллов: @answersDict.Values.SelectMany(x => x).Sum(x => x.IsCorrect ? 1 : 0)</div>
                                 <a asp-action="FiveMinuteResult" asp-route-resultId="@result.Id">Подробнее</a>
@@ -103,7 +103,6 @@
         </div>
         
         <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-            <h3>Настройки теста</h3>
 
             <form method="post" action="@Url.Action("UpdateTestSettings", "FiveMinuteTest")">
                 <input type="hidden" name="Id" value="@Model.Id" />

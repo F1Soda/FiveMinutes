@@ -1,5 +1,4 @@
-﻿using System.Runtime.Intrinsics.X86;
-using FiveMinute.Models;
+﻿using FiveMinute.Models;
 using FiveMinute.ViewModels.Interfaces;
 
 namespace FiveMinute.ViewModels.FMTEditViewModels

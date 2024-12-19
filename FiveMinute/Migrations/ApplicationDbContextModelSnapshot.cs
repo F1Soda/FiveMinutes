@@ -222,9 +222,6 @@ namespace FiveMinute.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
-                    b.Property<string>("UserName")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
@@ -500,7 +497,7 @@ namespace FiveMinute.Migrations
                         .HasForeignKey("OriginId");
 
                     b.HasOne("FiveMinute.Models.AppUser", "UserOwner")
-                        .WithMany("FMTTemplates")
+                        .WithMany("FMTemplates")
                         .HasForeignKey("UserOwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -537,7 +534,7 @@ namespace FiveMinute.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("FiveMinute.Data.UserData", "StudentData", b1 =>
+                    b.OwnsOne("FiveMinute.Data.UserData", "UserData", b1 =>
                         {
                             b1.Property<int>("FiveMinuteTestResultId")
                                 .HasColumnType("integer");
@@ -562,7 +559,8 @@ namespace FiveMinute.Migrations
                                 .HasForeignKey("FiveMinuteTestResultId");
                         });
 
-                    b.Navigation("StudentData");
+                    b.Navigation("UserData")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FiveMinute.Models.Folder", b =>
@@ -645,7 +643,7 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("FiveMinute.Models.AppUser", b =>
                 {
-                    b.Navigation("FMTTemplates");
+                    b.Navigation("FMTemplates");
 
                     b.Navigation("FMTests");
 
