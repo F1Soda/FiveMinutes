@@ -9,81 +9,8 @@
 	{
 		<div class="full-width-wrapper">
 			<div class="d-flex justify-content-center bg-light-blue pt-3">
-				<div class="row container">
-					@if (Model.PlannedFMTests.Any() || true)
-					{
-						<div class="col-md-4 mb-3">
-							<div class="card text-dark">
-								<div class="card-header">Запланированные Тесты</div>
-								<div class="card-body">
-									<ul id="plannedTestsList">
-										@foreach (var test in Model.PlannedFMTests.Take(5))
-										{
-											<li>
-												@test.Name
-												<a href="@Url.Action("Edit", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
-											</li>
-										}
-									</ul>
-									@if (Model.PlannedFMTests.Count > 5)
-									{
-										<button class="btn btn-link" id="expandPlannedTests" onclick="toggleList('plannedTestsList')">Показать все</button>
-									}
-								</div>
-							</div>
-						</div>
-					}
-
-					<!-- Active Tests Card (only if there are active tests) -->
-					@if (Model.ActiveFMTests.Any() || true)
-					{
-						<div class="col-md-4 mb-3">
-							<div class="card text-dark">
-								<div class="card-header">Активные Тесты</div>
-								<div class="card-body">
-									<ul id="activeTestsList">
-										@foreach (var test in Model.ActiveFMTests.Take(5))
-										{
-											<li>
-												@test.Name
-												<a href="@Url.Action("Edit", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
-											</li>
-										}
-									</ul>
-									@if (Model.ActiveFMTests.Count > 5)
-									{
-										<button class="btn btn-link" id="expandActiveTests" onclick="toggleList('activeTestsList')">Показать все</button>
-									}
-								</div>
-							</div>
-						</div>
-					}
-
-					<!-- Rechecking Tests Card (only if there are tests requiring rechecking) -->
-					@if (Model.RequiresRecheckingFMTests.Any() || true)
-					{
-						<div class="col-md-4 mb-3">
-							<div class="card text-dark">
-								<div class="card-header">Тесты, требующие проверки</div>
-								<div class="card-body">
-									<ul id="recheckingTestsList">
-										@foreach (var test in Model.RequiresRecheckingFMTests.Take(5))
-										{
-											<li>
-												@test.Name
-												<a href="@Url.Action("Edit", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
-											</li>
-										}
-									</ul>
-									@if (Model.RequiresRecheckingFMTests.Count > 5)
-									{
-										<button class="btn btn-link" id="expandRecheckingTests" onclick="toggleList('recheckingTestsList')">Показать все</button>
-									}
-								</div>
-							</div>
-						</div>
-					}
-
+				<div id="TestCardsRow" class="row container justify-content-center">
+					@await Html.PartialAsync("_TestCardsRow", Model.FMTests)
 				</div>
 			</div>
 		</div>
@@ -105,7 +32,7 @@
 						@await Html.PartialAsync("_TemplatesTable", Model.FMTemplates)
 					</div>
 					<l1 class="nav-item">
-						<a class="btn" asp-area="" asp-controller="FiveMinuteTemplate" asp-action="Create">Создать пятиминутку</a>
+						<a class="btn btn-success" asp-area="" asp-controller="FiveMinuteTemplate" asp-action="Create">Создать пятиминутку</a>
 					</l1>
 				</div>
 
@@ -114,7 +41,7 @@
 						@await Html.PartialAsync("_TestsTable", Model.FMTests)
 					</div>
 					<l1 class="nav-item">
-						<a class="btn btn-secondary" asp-area="" asp-controller="FiveMinuteTest" asp-action="Create">Создать тест</a>
+						<a class="btn btn-success" asp-area="" asp-controller="FiveMinuteTest" asp-action="Create">Создать тест</a>
 					</l1>
 				</div>
 
@@ -135,7 +62,6 @@
 		const deleteTestUrl = '@Url.Action("DeleteTest")';
 	</script>
 	<script src="~/js/popup.js"></script>
-	<script src="~/js/confirmation-action-popup.js"></script>
 	<script src="~/js/home-index.js"></script>
 	<!-- Подключение Bootstrap CSS и JS для работы вкладок -->
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">

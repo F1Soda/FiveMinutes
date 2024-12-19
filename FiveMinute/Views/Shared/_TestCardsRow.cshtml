@@ -1,0 +1,80 @@
+﻿@using FiveMinute.Data
+@model ICollection<FiveMinute.ViewModels.FiveMinuteTestViewModels.FMTestIndexViewModel>
+
+@{
+	var plannedFMTests = Model.Where(x => x.Status == TestStatus.Planned);
+	var activeFMTests = Model.Where(x => x.Status == TestStatus.Started);
+	var requiresRecheckingFMTests = Model.Where(x => x.Status == TestStatus.InRechekingProcess);
+}
+@if (plannedFMTests.Any())
+{
+	<div class="col-md-4 mb-3">
+		<div class="card text-dark">
+			<div class="card-header">Запланированные Тесты</div>
+			<div class="card-body">
+				<ul id="plannedTestsList">
+					@foreach (var test in plannedFMTests.Take(5))
+					{
+						<li class="p-1">
+							@test.Name
+							<a href="@Url.Action("Detail", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
+						</li>
+					}
+				</ul>
+				@if (plannedFMTests.Count() > 5)
+				{
+					<button class="btn btn-link" id="expandPlannedTests" onclick="toggleList('plannedTestsList')">Показать все</button>
+				}
+			</div>
+		</div>
+	</div>
+}
+
+
+@if (activeFMTests.Any())
+{
+	<div class="col-md-4 mb-3">
+		<div class="card text-dark">
+			<div class="card-header">Активные Тесты</div>
+			<div class="card-body">
+				<ul id="activeTestsList">
+					@foreach (var test in activeFMTests.Take(5))
+					{
+						<li class="p-1">
+							@test.Name
+							<a href="@Url.Action("Detail", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
+						</li>
+					}
+				</ul>
+				@if (activeFMTests.Count() > 5)
+				{
+					<button class="btn btn-link" id="expandActiveTests" onclick="toggleList('activeTestsList')">Показать все</button>
+				}
+			</div>
+		</div>
+	</div>
+}
+
+@if (requiresRecheckingFMTests.Any())
+{
+	<div class="col-md-4 mb-3">
+		<div class="card text-dark">
+			<div class="card-header">Тесты, требующие проверки</div>
+			<div class="card-body">
+				<ul id="recheckingTestsList">
+					@foreach (var test in requiresRecheckingFMTests.Take(5))
+					{
+						<li class="p-1">
+							@test.Name
+							<a href="@Url.Action("Detail", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
+						</li>
+					}
+				</ul>
+				@if (requiresRecheckingFMTests.Count() > 5)
+				{
+					<button class="btn btn-link" id="expandRecheckingTests" onclick="toggleList('recheckingTestsList')">Показать все</button>
+				}
+			</div>
+		</div>
+	</div>
+}

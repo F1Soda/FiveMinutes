@@ -101,6 +101,7 @@ namespace FiveMinute.Controllers
 			var attachedTemplate = user.FMTTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
 
 			var test = FiveMinuteTestDetailViewModel.CreateByView(fmTestEditViewModel);
+			test.Status = Data.TestStatus.Started;
 			test.IdToUninclude = new List<int>();
 			test.UserOrganizerId = user.Id;
 			test.UserOrganizer = user;
@@ -183,6 +184,5 @@ namespace FiveMinute.Controllers
 		{
 			return Json(new { success = true });
 		}
-
 	}
 }

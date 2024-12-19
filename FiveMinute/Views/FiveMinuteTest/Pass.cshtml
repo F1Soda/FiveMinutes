@@ -27,16 +27,16 @@
 
 <div class="container test-area">
 	<h1>@Model.Name</h1>
-	<div>Время окончания: 
-		<div>
-			@Model.EndTime.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss");
-		</div>
-		<div id="isoTime" style="display: none">@Model.EndTime.ToString("yyyy-MM-ddTHH:mm:ssZ")</div>
-	</div>
-	<div>
-		Оставшееся время:
-		<div id="timer">69</div>
-	</div>
+	@* <div>Время окончания:  *@
+	@* 	<div> *@
+	@* 		@Model.EndTime.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss"); *@
+	@* 	</div> *@
+	@* 	<div id="isoTime" style="display: none">@Model.EndTime.ToString("yyyy-MM-ddTHH:mm:ssZ")</div> *@
+	@* </div> *@
+	@* <div> *@
+	@* 	Оставшееся время: *@
+	@* 	<div id="timer">69</div> *@
+	@* </div> *@
 	@* @using (Html.BeginForm()) *@
 	<form asp-action="SendTestResults" asp-controller="FiveMinuteTest" method="post">
 		<input type="hidden" aria-label="" name="FMTestId" value="@Model.FMTestId" />

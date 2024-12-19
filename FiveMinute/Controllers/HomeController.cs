@@ -79,8 +79,9 @@ namespace FiveMinute.Controllers
 
 				var templatesHtml = await RenderPartialViewToString("_TemplatesTable", templates);
 				var testsHtml = await RenderPartialViewToString("_TestsTable", tests);
+				var testCardsRowHtml = await RenderPartialViewToString("_TestCardsRow", tests);
 
-				return Json(new { success = true, templatesHtml, testsHtml });
+				return Json(new { success = true, templatesHtml, testsHtml, testCardsRowHtml});
 			}
 			return Json(new { success = false });
 		}
@@ -120,8 +121,9 @@ namespace FiveMinute.Controllers
 
 				var templatesHtml = await RenderPartialViewToString("_TemplatesTable", templates);
 				var testsHtml = await RenderPartialViewToString("_TestsTable", tests);
+				var testCardsRowHtml = await RenderPartialViewToString("_TestCardsRow", tests);
 
-				return Json(new { success = true, templatesHtml, testsHtml });
+				return Json(new { success = true, templatesHtml, testsHtml, testCardsRowHtml });
 			}
 			return Json(new { success = false });
 		}
