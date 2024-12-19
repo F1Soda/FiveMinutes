@@ -43,7 +43,6 @@
                     <td>@GetTimeAgoString(template.lastModification, TimeZoneInfo.Local)</td>
                     <td>
                         <a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@template.Id" class="btn btn-primary">Редактировать</a>
-
                         <button class="btn btn-danger btn-delete" id="delete-template" data-id="@template.Id">Удалить</button>
                     </td>
                 </tr>

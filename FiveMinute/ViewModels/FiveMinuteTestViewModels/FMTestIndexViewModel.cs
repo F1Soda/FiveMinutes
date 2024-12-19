@@ -1,7 +1,6 @@
 ﻿using FiveMinute.Data;
 using FiveMinute.Models;
 using FiveMinute.Utils;
-using FiveMinute.ViewModels.FMTEditViewModels;
 using FiveMinute.ViewModels.Interfaces;
 
 namespace FiveMinute.ViewModels.FiveMinuteTestViewModels

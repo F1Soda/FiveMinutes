@@ -66,8 +66,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach (var template in Model.FMTs)
-					{
+					@foreach (var template in Model.FMTs) {
 						<tr data-id="@template.Id"
 							data-name="@template.Name"
 							onclick="selectTemplate(this)"

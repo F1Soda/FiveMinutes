@@ -35,7 +35,6 @@
 						<a class="btn btn-success" asp-area="" asp-controller="FiveMinuteTemplate" asp-action="Create">Создать пятиминутку</a>
 					</l1>
 				</div>
-
 				<div id="fiveMinuteTests" class="tab-pane fade">
 					<div id="FMTestTable">
 						@await Html.PartialAsync("_TestsTable", Model.FMTests)
@@ -44,8 +43,6 @@
 						<a class="btn btn-success" asp-area="" asp-controller="FiveMinuteTest" asp-action="Create">Создать тест</a>
 					</l1>
 				</div>
-
-
 			</div>
 		</div>
 	}
