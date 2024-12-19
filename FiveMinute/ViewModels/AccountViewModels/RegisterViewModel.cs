@@ -17,7 +17,11 @@ namespace FiveMinute.ViewModels.AccountViewModels
         [Required(ErrorMessage = "Введите имя")]
         public string FirstName { get; set; }
 
-        [Required]
+		[Display(Name = "Группа")]
+		[Required(ErrorMessage = "Введите группу")]
+		public string Group { get; set; }
+
+		[Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

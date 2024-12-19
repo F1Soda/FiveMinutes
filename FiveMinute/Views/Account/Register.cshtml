@@ -2,19 +2,19 @@
 @model RegisterViewModel
 
 @{
-    ViewData["Title"] = "Sign up";
+    ViewData["Title"] = "Регистрация";
 }
 
 <div class="row">
     <div class="col-md-6 offset-3">
         <p>
-            <h4>Sign up for a new account</h4>
+            <h4>Регистрация</h4>
         </p>
 
         @if (TempData["Error"] != null)
         {
             <div class="col-md-12 alert alert-danger">
-                <span><b>Sorry!</b> - @TempData["Error"] </span>
+                <span><b>Извините!</b> - @TempData["Error"] </span>
             </div>
         }
 
@@ -33,6 +33,11 @@
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
+                        <label asp-for="Group" class="control-label"></label>
+                        <input asp-for="Group" class="form-control" />
+                        <span asp-validation-for="Group" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
                         <label asp-for="EmailAddress" class="control-label"></label>
                         <input asp-for="EmailAddress" class="form-control" />
                         <span asp-validation-for="EmailAddress" class="text-danger"></span>
@@ -49,8 +54,7 @@
                     </div>
 
                     <div class="form-group">
-                        <input class="btn btn-outline-success float-right" type="submit" value="Sign up" />
-                        <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Cancel</a>
+                        <input class="btn btn-outline-success float-right mt-2" type="submit" value="Зарегистрироваться" />
                     </div>
                 </form>
             </div>

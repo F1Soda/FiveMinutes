@@ -3,13 +3,14 @@
 @model LoginViewModel
 
 @{
-	ViewData["Title"] = "Login";
+	ViewData["Title"] = "Вход";
 }
+
 
 <div class="row">
 	<div class="col-md-6 offset-3">
 		<p>
-			<h4>Log in to your account</h4>
+			<h4>Вход в аккаунт</h4>
 		</p>
 		@if (TempData["Error"] != null)
 		{
@@ -33,7 +34,7 @@
 					</div>
 					<div class="form-group">
 						<input class="btn btn-outline-success float right" type="submit" value="Log in" />
-						<a class="btn btn-outline-secondary">Cancel</a>
+						<a class="btn btn-outline-secondary">Отменить</a>
 					</div>
 				</form>
 			</div>

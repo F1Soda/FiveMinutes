@@ -74,14 +74,16 @@ namespace FiveMinute.Controllers
                 UserRole = UserRoles.Student,
                 Email = registerViewModel.EmailAddress,
                 UserName = registerViewModel.EmailAddress,
-                UserData = new UserData(registerViewModel.FirstName, registerViewModel.LastName, "")
+                UserData = new UserData(registerViewModel.FirstName, registerViewModel.LastName, registerViewModel.Group)
             };
             var newUserResponse = await userManager.CreateAsync(newUser, registerViewModel.Password);
 
             if (newUserResponse.Succeeded)
             {
                 await userManager.AddToRoleAsync(newUser, UserRoles.Student);
-                return RedirectToAction("Index", "Home");
+				await signInManager.SignInAsync(newUser, isPersistent: false);
+
+				return RedirectToAction("Index", "Home");
             }
             else if (newUserResponse.Errors.First().Description.Contains("Password"))
             {
