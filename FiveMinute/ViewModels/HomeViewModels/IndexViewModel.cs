@@ -4,6 +4,7 @@ using FiveMinute.ViewModels.FMTEditViewModels;
 using FiveMinute.ViewModels.Interfaces;
 using FiveMinute.Data;
 using FiveMinute.ViewModels.FMResultViewModels;
+using System.Collections;
 
 namespace FiveMinute.ViewModels.HomeViewModels
 {
@@ -12,6 +13,9 @@ namespace FiveMinute.ViewModels.HomeViewModels
 		public string UserName { get; set; }
 		public string Email { get; set; }
 		public string UserRole { get; set; }
+
+		public IEnumerable<string> Quotes { get; set; }
+
 		public ICollection<FMTemplateIndexViewModel> FMTemplates { get; set; }
 		public ICollection<FMTestIndexViewModel> FMTests { get; set; }
 		public ICollection<FMTResultForIndexHomeViewModel> FMTResults { get; set; }
@@ -24,7 +28,7 @@ namespace FiveMinute.ViewModels.HomeViewModels
 		{
 			var rez = new IndexViewModel
 			{
-				UserName = user.UserName,
+				UserName = user.UserData.FullName,
 				Email = user.Email,
 				FMTemplates = user.FMTemplates.Select(FMTemplateIndexViewModel.CreateByModel)
 					.OrderByDescending(x => x.lastModification).ToList(),
@@ -33,6 +37,7 @@ namespace FiveMinute.ViewModels.HomeViewModels
 					.Select(x => FMTestIndexViewModel.CreateByModel(x)).ToList(),
 				UserRole = user.UserRole,
 				FMTResults = user.PassedTestResults.Select(FMTResultForIndexHomeViewModel.CreateByModel).ToList()
+
 			};
 
 			rez.ActiveFMTests = rez.FMTests.Where(x => x.Status == TestStatus.Started).ToList();

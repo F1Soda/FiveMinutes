@@ -33,7 +33,7 @@
 						@if (User.Identity.IsAuthenticated && currentUser is not null)
 						{
 							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Detail" asp-route-userId="@currentUser.Id">@User.Identity.Name</a>
+								<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Detail" asp-route-userId="@currentUser.Id">@currentUser.UserData.FullName</a>
 							</li>
 							<li class="nav-item">
 								<form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
