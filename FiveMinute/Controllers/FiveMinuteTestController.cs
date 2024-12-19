@@ -185,8 +185,17 @@ namespace FiveMinute.Controllers
 		public async Task<IActionResult> UpdateAnswerCorrectness([FromBody] CheckTextAnswerCorrectnessViewModel model)
 		{
 			var test =await fiveMinuteTestRepository.GetByIdAsync(model.TestId);
-			var q = test.FiveMinuteTemplate.Questions.Where(question => question.Id == model.QuestionId).First();
+			var curentUserAnswer=test.Results
+				.Select(result => result.Answers)
+				.First(result => result.Where(answer => answer.Text == model.Text).Count() != 0)
+				.Where(answer => answer.Text==model.Text);
 			var userAnswer= CheckTextAnswerCorrectnessViewModel.CreateByView(model);
+			foreach (var answer in curentUserAnswer)
+			{
+				answer.IsCorrect = userAnswer.IsCorrect;
+			}
+
+			fiveMinuteTestRepository.Save();
 			return Json(new { success = true });
 		}
 	}
