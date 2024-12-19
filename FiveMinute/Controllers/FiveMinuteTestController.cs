@@ -7,6 +7,7 @@ using FiveMinute.ViewModels;
 using FiveMinute.Interfaces;
 using FiveMinute.Models;
 using System.Net;
+using FiveMinute.Utils;
 
 
 namespace FiveMinute.Controllers
@@ -113,8 +114,9 @@ namespace FiveMinute.Controllers
 			return RedirectToAction("Detail", new { testId = test.Id});
 		}
 
-		public async Task<IActionResult> Pass(int testId)
+		public async Task<IActionResult> Pass(string encryptedId)
 		{
+			var testId = UrlEncryptor.Decrypt(encryptedId);
 			var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testId);
 			if (fmTest is null)
 			{

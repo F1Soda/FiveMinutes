@@ -1,5 +1,6 @@
 ﻿using FiveMinute.Data;
 using FiveMinute.Models;
+using FiveMinute.Utils;
 using FiveMinute.ViewModels.FMTEditViewModels;
 using FiveMinute.ViewModels.Interfaces;
 
@@ -8,6 +9,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 	public class FMTestIndexViewModel: IInput<FMTestIndexViewModel,FiveMinuteTest>
 	{
 		public int Id { get; set; }
+		public string EncryptedId { get; set; }
 		public string Name { get; set; }
 		public int? AttachedFMTemplateId { get; set; }
 		public string AttachedFMTemplateName { get; set; }
@@ -22,6 +24,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 			return new FMTestIndexViewModel
 			{
 				Id = model.Id,
+				EncryptedId = UrlEncryptor.Encrypt(model.Id),
 				Name = model.Name,
 				AttachedFMTemplateId = model.FiveMinuteTemplateId,
 				AttachedFMTemplateName = model.FiveMinuteTemplate.Name,
