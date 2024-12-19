@@ -20,5 +20,10 @@ public class UserData
         Group = group;
     }
 
+    public UserData GetCopy()
+    {
+        return new UserData(FirstName, LastName, Group);
+    }
+
     public UserData() { }
 }

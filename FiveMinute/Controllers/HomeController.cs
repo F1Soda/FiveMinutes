@@ -31,6 +31,12 @@ namespace FiveMinute.Controllers
 			{
 				var user = await userRepository.GetUserById(currentUser.Id);
 				model = IndexViewModel.CreateByModel(user);
+				foreach (var result in model.FMTResults)
+				{
+					var fmtest = await fiveMinuteTestRepository.GetByIdAsync(result.FiveMinuteTestId);
+					result.FMTestName = fmtest.Name;
+					result.FMTestOrganizer = $"{fmtest.UserOrganizer.UserData.FirstName} {fmtest.UserOrganizer.UserData.LastName}";
+				}
 			}
 			return View(model);
 		}

@@ -8,9 +8,9 @@ public class TestResultViewModel:IOutput<TestResultViewModel, FiveMinuteTestResu
 {
     public int FMTestId { get; set; }
 	public string UserId { get; set; }
-	public string UserName { get; set; }
-	public UserData StudentData { get; set; }
+	public UserData UserData { get; set; }
     public IEnumerable<UserAnswerViewModel> UserAnswers { get; set; }
+
     public static FiveMinuteTestResult CreateByView(TestResultViewModel model)
     {
 	    return new FiveMinuteTestResult
@@ -19,12 +19,7 @@ public class TestResultViewModel:IOutput<TestResultViewModel, FiveMinuteTestResu
 		    PassTime = DateTime.UtcNow,
 		    Status = ResultStatus.Accepted,
 		    UserId = model.UserId,
-		    StudentData = model.StudentData??new UserData
-		    {
-			    FirstName = "UNKNOWN",
-			    LastName = "UNKNOWN",
-			    Group = "UNKNOWN",
-		    },
+		    UserData = model.UserData.GetCopy()
 	    };
     }
 }

@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinute.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241212153610_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241219130435_FUCK_THIS_APP")]
+    partial class FUCK_THIS_APP
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -223,9 +223,6 @@ namespace FiveMinute.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserName")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -540,7 +537,7 @@ namespace FiveMinute.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("FiveMinute.Data.UserData", "StudentData", b1 =>
+                    b.OwnsOne("FiveMinute.Data.UserData", "UserData", b1 =>
                         {
                             b1.Property<int>("FiveMinuteTestResultId")
                                 .HasColumnType("integer");
@@ -565,7 +562,8 @@ namespace FiveMinute.Migrations
                                 .HasForeignKey("FiveMinuteTestResultId");
                         });
 
-                    b.Navigation("StudentData");
+                    b.Navigation("UserData")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FiveMinute.Models.Folder", b =>

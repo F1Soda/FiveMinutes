@@ -1,6 +1,5 @@
 ﻿using FiveMinute.Repository.FiveMinuteTestRepository;
 using FiveMinute.ViewModels.FiveMinuteTestViewModels;
-using FiveMinute.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using FiveMinute.ViewModels;
@@ -128,19 +127,20 @@ namespace FiveMinute.Controllers
 			
 			if (!fmTest.CanPass(currentUser))
 				return Forbid();
-			var test = FiveMinuteTestViewModel.CreateByModel(fmTest);
+			var test = FMTestPassingViewModel.CreateByModel(fmTest);
+			if (currentUser != null && User.Identity.IsAuthenticated)
+			{
+				test.UserData = currentUser.UserData;
+				test.userId = currentUser.Id;
+			}
 			return View(test);
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> SendTestResults(TestResultViewModel testResultViewModel)
-		{
-			var currentUser = await userManager.GetUserAsync(User);
-			
-			if (!await fmtChecker.CheckAndSave(currentUser, testResultViewModel))
+		{			
+			if (!await fmtChecker.CheckAndSave(testResultViewModel))
 				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers")); ;
-			await userRepository.Save();
-
 			return RedirectToAction("Passed");
 		}
 		

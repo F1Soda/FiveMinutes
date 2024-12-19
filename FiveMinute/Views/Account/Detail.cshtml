@@ -1,34 +1,43 @@
 ﻿@model FiveMinute.ViewModels.AccountViewModels.UserDetailViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+
+@{
+	var currentUser = await UserManager.GetUserAsync(User);
+	bool isStudent = currentUser != null && currentUser.UserRole == "student";
+}
 
 <div class="container pt-2">
 	<div class="row">
-		<div class="col-md pt-1">
-			<h3>Пройденые тесты</h3>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Название</th>
-						<th>Время прохождения</th>
-						<th>Результат</th>
-						<th>Действия</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var result in Model.PassedTestResults)
-					{
+		@if (!isStudent)
+		{
+			<div class="col-md pt-1">
+				<h3>Пройденые тесты</h3>
+				<table class="table">
+					<thead>
 						<tr>
-							<td>@result.FMTestName</td>
-							<td>@result.PassTime</td>
-							<td>0</td>
-							<td>
-								<a asp-action="FiveMinuteResult" asp-controller="FiveMinuteTest" asp-route-resultId="@result.Id" class="btn btn-primary">Подробнее</a>
-							</td>
+							<th>Название</th>
+							<th>Время прохождения</th>
+							<th>Результат</th>
+							<th>Действия</th>
 						</tr>
-					}
-				</tbody>
-			</table>
-		</div>
-
+					</thead>
+					<tbody>
+						@foreach (var result in Model.PassedTestResults)
+						{
+							<tr>
+								<td>@result.FMTestName</td>
+								<td>@result.PassTime</td>
+								<td>0</td>
+								<td>
+									<a asp-action="FiveMinuteResult" asp-controller="FiveMinuteTest" asp-route-resultId="@result.Id" class="btn btn-primary">Подробнее</a>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		}
 		<div class="col-md">
 			<h3>Данные профиля</h3>
 			<form asp-action="EditUser" asp-controller="Account" method="post">
@@ -42,12 +51,13 @@
 						<label for="LastName">Фамилия</label>
 						<input type="text" id="LastName" name="LastName" value="@Model.UserData.LastName" class="form-control" />
 					</div>
-
-					<div class="form-group">
-						<label for="Group">Группа</label>
-						<input type="text" id="Group" name="Group" value="@Model.UserData.Group" class="form-control" />
-					</div>
-
+					@if (isStudent)
+					{
+						<div class="form-group">
+							<label for="Group">Группа</label>
+							<input type="text" id="Group" name="Group" value="@Model.UserData.Group" class="form-control" />
+						</div>
+					}
 					<div class="form-group">
 						<label for="Email">Эл. почта</label>
 						<input type="email" id="Email" name="Email" value="@Model.Email" class="form-control" />
@@ -55,64 +65,15 @@
 
 					<button type="submit" class="btn btn-primary mt-2">Сохранить изменения</button>
 				</div>
-            </form>
-
-			<p class="alert-info">Обращем внимание, что введённые вами имя, фамилия и группа будут автоматический отправляться преподавателю при прохождении теста. Убедитьесь, что данные введены корректно.</p>
+			</form>
+			@if (isStudent)
+			{
+				<p class="alert-info">Обращем внимание, что введённые вами имя, фамилия и группа будут автоматический отправляться преподавателю при прохождении теста. Убедитьесь, что данные введены корректно.</p>
+			}
+			else
+			{
+				<p class="alert-info">Обращем внимание, что введённые вами имя, фамилия будут отображены студентам. Убедитьесь, что данные введены корректно.</p>
+			}
 		</div>
 	</div>
 </div>
-
-
-@* <h2>Редактирование пользователя</h2> *@
-
-
-@* <ul class="nav nav-tabs"> *@
-@* 	<li class="nav-item"> *@
-@* 		<a id="info-tab" class="nav-link active" data-bs-toggle="tab" role="tab" href="#info" aria-controls="info" aria-selected="true">Информация</a> *@
-@* 	</li> *@
-@* 	<li class="nav-item"> *@
-@* 		<a id="results-tab" class="nav-link" data-bs-toggle="tab" role="tab" href="#results" aria-controls="results" aria-selected="false">Результаты</a> *@
-@* 	</li> *@
-@* </ul> *@
-@* <div class="tab-content mt-3"> *@
-@* 	<div class="tab-pane fade" id="info" role="tabpanel"  aria-labelledby="info-tab"> *@
-@* 		<div class="row"> *@
-@* 			<div class="col-md-6"> *@
-@* 				<form asp-action="EditUser" asp-controller="Account" method="post"> *@
-@* 					<div class="form-group row m-1"> *@
-@* 						<label class="col-sm-3 col-form-label">Имя</label> *@
-@* 						<div class="col-sm-9"> *@
-@* 							<input class="form-control" name="FirstName" value="@Model.UserData?.FirstName"/> *@
-@* 						</div> *@
-@* 					</div> *@
-@* 					<div class="form-group row m-1"> *@
-@* 						<label class="col-sm-3 col-form-label">Фамилия</label> *@
-@* 						<div class="col-sm-9"> *@
-@* 							<input class="form-control" name="LastName" value="@Model.UserData?.LastName"/> *@
-@* 						</div> *@
-@* 					</div> *@
-@* 					@if (Model.UserRole is UserRoles.Student) *@
-@* 					{ *@
-@* 						<div class="form-group row m-1"> *@
-@* 							<label class="col-sm-3 col-form-label">Группа</label> *@
-@* 							<div class="col-sm-9"> *@
-@* 								<input class="form-control" name="Group" value="@Model.UserData?.Group"/> *@
-@* 							</div> *@
-@* 						</div> *@
-@* 					} *@
-@* 					<div class="form-group row p-1"> *@
-@* 						<div class="col-sm-9 offset-sm-3"> *@
-@* 							<button type="submit" class="btn btn-primary">Сохранить</button> *@
-@* 						</div> *@
-@* 					</div> *@
-@* 				</form> *@
-@* 			</div> *@
-@* 		</div> *@
-@* 	</div> *@
-@* 	<div class="tab-pane fade show active" id="results" role="tabpanel" aria-labelledby="info-tab"> *@
-@* 		<div class="row"> *@
-
-@* 		</div> *@
-@* 	</div> *@
-@* </div> *@
-

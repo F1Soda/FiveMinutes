@@ -15,26 +15,23 @@
 		@if (TempData["Error"] != null)
 		{
 			<div class="col-md-12 alert alert-danger">
-				<span><b>Sorry!</b> - @TempData["Error"]</span>
+				<span><b>Упс!</b> - @TempData["Error"]</span>
 			</div>
 		}
 		<div class="row">
-			<div class="col-md-8 offset-2">
+			<div class="col-md-8 offset-2 ">
 				<form asp-action="Login">
 					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 					<div class="form-group">
-						<label asp-for="EmailAddress" class="control-label"></label>
+						<label for="Email">Эл. почта</label>
 						<input asp-for="EmailAddress" class="form-control">
-						<span asp-validation-for="EmailAddress" class="text-danger"></span>
 					</div>
 					<div class="form-group">
-						<label asp-for="Password" class="control-label"></label>
+						<label for="Password">Пароль</label>
 						<input asp-for="Password" class="form-control" />
-						<span asp-validation-for="Password" class="text-danger"></span>
 					</div>
-					<div class="form-group">
-						<input class="btn btn-outline-success float right" type="submit" value="Log in" />
-						<a class="btn btn-outline-secondary">Отменить</a>
+					<div class="form-group mt-3">
+						<input class="btn btn-outline-success float right" type="submit" value="Войти" />
 					</div>
 				</form>
 			</div>

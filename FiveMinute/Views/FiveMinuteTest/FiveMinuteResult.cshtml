@@ -23,20 +23,17 @@
     <form asp-action="SendTestResults" asp-controller="TestPassing" method="post">
         <input type="hidden" aria-label="" name="FMTId" value = "@Model.FiveMinuteTestResult.Id"/>
         <div style="margin-bottom: 10px">
-            <input class="form-control" type="text" disabled value="@(Model.FiveMinuteTestResult.UserName)"/>
-        </div>
-        <div style="margin-bottom: 10px">
             <div>
                 <label>Фамилия</label>
-                <input class="form-control" type="text" readonly value="@(Model.FiveMinuteTestResult.StudentData.LastName)"/>
+                <input class="form-control" type="text" readonly value="@(Model.FiveMinuteTestResult.UserData.LastName)"/>
             </div>
             <div>
                 <label>Имя</label>
-                <input class="form-control" type="text" readonly value="@Model.FiveMinuteTestResult.StudentData.FirstName"/>
+                <input class="form-control" type="text" readonly value="@Model.FiveMinuteTestResult.UserData.FirstName"/>
             </div>
             <div>
                 <label>Группа</label>
-                <input class="form-control" type="text" readonly value="@Model.FiveMinuteTestResult.StudentData.Group"/>
+                <input class="form-control" type="text" readonly value="@Model.FiveMinuteTestResult.UserData.Group"/>
             </div>
         </div>
 

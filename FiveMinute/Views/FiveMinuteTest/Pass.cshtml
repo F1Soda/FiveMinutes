@@ -1,89 +1,92 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject UserManager<AppUser> UserManager
 
 @using FiveMinute.ViewModels
 @using Microsoft.AspNetCore.Mvc.RazorPages
-@model FiveMinute.ViewModels.FiveMinuteTestViewModel
+@model FiveMinute.ViewModels.FMTestPassingViewModel
 
 @{
-	var currentUser = await UserManager.GetUserAsync(User);
 	ViewData["Title"] = "TestPassing";
 }
 
 <style>
 	label {
-	display: block;
-	margin-left: 5px;
+		display: block;
+		margin-left: 5px;
 	}
 
 	.question {
-	margin-bottom: 20px;
-	padding: 15px;
-	background-color: #fff;
-	border-radius: 5px;
-	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+		margin-bottom: 20px;
+		padding: 15px;
+		background-color: #fff;
+		border-radius: 5px;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 	}
 </style>
 
 <div class="container test-area">
 	<h1>@Model.Name</h1>
-	@* <div>Время окончания:  *@
-	@* 	<div> *@
-	@* 		@Model.EndTime.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss"); *@
-	@* 	</div> *@
-	@* 	<div id="isoTime" style="display: none">@Model.EndTime.ToString("yyyy-MM-ddTHH:mm:ssZ")</div> *@
-	@* </div> *@
-	@* <div> *@
-	@* 	Оставшееся время: *@
-	@* 	<div id="timer">69</div> *@
-	@* </div> *@
-	@* @using (Html.BeginForm()) *@
 	<form asp-action="SendTestResults" asp-controller="FiveMinuteTest" method="post">
 		<input type="hidden" aria-label="" name="FMTestId" value="@Model.FMTestId" />
 		@{
-			var registered = currentUser is not null;
-			string userFirstName="";
-			string userLastName="";
-			if (registered)
+			var userFirstName = "";
+			var userLastName = "";
+			var userGroup = "";
+			var registered = false;
+			if (Model.UserData != null)
 			{
-				userFirstName = currentUser.UserData?.FirstName;
-				userLastName = currentUser.UserData?.LastName;
+				registered = true;
+				userFirstName = Model.UserData.FirstName;
+				userLastName = Model.UserData.LastName;
+				userGroup = Model.UserData.Group;
 			}
-			var userName = currentUser?.UserName?? "";
-			var userId = currentUser?.Id?? "";
+			var userId = Model.userId ?? "";
 
-			if (!registered)
-			{
-				<div style="margin-bottom: 10px">
-			
-					@if (userName == "")
-					{
-						<h3>Внимание!</h3>
-						<p>Незарегистрированные пользователи не смогут просмотреть результаты пройденного теста</p>
-						<p>Пожалуйста заполните поля ФИО и группа</p>
-					}
-					<input type="hidden" aria-label="" name="UserId" value=@userId />
-					<div>
-						<label asp-for="StudentData.FirstName"></label>
-						<input class="form-control" type="text" name="StudentData.FirstName"/>
-						<span asp-validation-for="StudentData.FirstName" class="text-danger"></span>
-					</div>
-					<div>
-						<label asp-for="StudentData.LastName"></label>
-						<input class="form-control" type="text" name="StudentData.LastName"/>
-						<span asp-validation-for="StudentData.LastName" class="text-danger"></span>
-					</div>
-					<div>
-						<label asp-for="StudentData.Group"></label>
-						<input class="form-control" type="text" name="StudentData.Group"/>
-						<span asp-validation-for="StudentData.Group" class="text-danger"></span>
-					</div>
-				</div>
-			}
-		}
-		
+			<div style="margin-bottom: 10px">
+				<input type="hidden" aria-label="" name="UserId" value=@userId />
+				@if (!registered)
+				{
+					<h3>Внимание!</h3>
+					<p>Незарегистрированные пользователи не смогут просмотреть результаты пройденного теста</p>
+					<p>Пожалуйста заполните поля ФИО и группа</p>
 
-		@{
+					<div>
+						<label asp-for="UserData.FirstName"></label>
+						<input class="form-control" type="text" name="UserData.FirstName" />
+						<span asp-validation-for="UserData.FirstName" class="text-danger"></span>
+					</div>
+					<div>
+						<label asp-for="UserData.LastName"></label>
+						<input class="form-control" type="text" name="UserData.LastName" />
+						<span asp-validation-for="UserData.LastName" class="text-danger"></span>
+					</div>
+					<div>
+						<label asp-for="UserData.Group"></label>
+						<input class="form-control" type="text" name="UserData.Group" />
+						<span asp-validation-for="UserData.Group" class="text-danger"></span>
+					</div>
+				}
+				else
+				{
+					<div style="margin-bottom: 10px">
+						<div>
+							<label>Фамилия</label>
+							<input class="form-control" type="text" name="UserData.FirstName" readonly value=@userFirstName />
+							<span asp-validation-for="UserData.FirstName" class="text-danger"></span>
+						</div>
+						<div>
+							<label>Имя</label>
+							<input class="form-control" type="text" name="UserData.LastName" readonly value=@userLastName />
+							<span asp-validation-for="UserData.LastName" class="text-danger"></span>
+						</div>
+						<div>
+							<label>Группа</label>
+							<input class="form-control" type="text" name="UserData.Group" readonly value=@userGroup />
+							<span asp-validation-for="UserData.Group" class="text-danger"></span>
+						</div>
+					</div>
+				}
+			</div>
+
 			var questionNumber = 0;
 			var answerNumber = 0;
 		}
@@ -117,12 +120,11 @@
 							{
 								<div class="form-check">
 									<input type="radio" class="form-check-input" name="UserAnswers[@answerNumber].Text" value="@answer.Text"
-									       id="answer_@(questionNumber)_@(position)" onchange="setQuestionPosition(@position, this)">
+										   id="answer_@(questionNumber)_@(position)" onchange="setQuestionPosition(@position, this)">
 									<label class="form-check-label" for="answer_@(questionNumber)_@(position)">
 										@answer.Text
 									</label>
 								</div>
-								// answerNumber++;
 								position++;
 							}
 						</div>
@@ -140,7 +142,7 @@
 									<input type="hidden" aria-label="" name="UserAnswers[@answerNumber].Position" value="@position" />
 									<input type="hidden" aria-label="" name="UserAnswers[@answerNumber].QuestionId" value="@question.Id" />
 									<input type="checkbox" class="form-check-input" name="UserAnswers[@answerNumber].Text" value="@answer.Text"
-									       id="answer_@(questionNumber)_@(position)">
+										   id="answer_@(questionNumber)_@(position)">
 									<label class="form-check-label" for="answer_@(questionNumber)_@(position)">
 										@answer.Text
 									</label>
@@ -181,8 +183,6 @@
 	}
 </script>
 <script>
-	
-
 	function setQuestionPosition(position, obj) {
 		// Установите значение hidden input для текущего выбранного ответа
 		var hiddenInput = obj.closest('.card-body').querySelector(`input[name="${obj.name.split('.')[0]}.Position"]`);

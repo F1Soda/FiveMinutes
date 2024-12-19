@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinute.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class FUCK_THIS_APP : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -269,10 +269,9 @@ namespace FiveMinute.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: true),
-                    UserName = table.Column<string>(type: "text", nullable: true),
-                    StudentData_FirstName = table.Column<string>(type: "text", nullable: true),
-                    StudentData_LastName = table.Column<string>(type: "text", nullable: true),
-                    StudentData_Group = table.Column<string>(type: "text", nullable: true),
+                    UserData_FirstName = table.Column<string>(type: "text", nullable: false),
+                    UserData_LastName = table.Column<string>(type: "text", nullable: false),
+                    UserData_Group = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     FiveMinuteTestId = table.Column<int>(type: "integer", nullable: false),
                     PassTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),

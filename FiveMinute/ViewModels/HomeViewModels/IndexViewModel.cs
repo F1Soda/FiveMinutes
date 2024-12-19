@@ -3,6 +3,7 @@ using FiveMinute.ViewModels.FiveMinuteTestViewModels;
 using FiveMinute.ViewModels.FMTEditViewModels;
 using FiveMinute.ViewModels.Interfaces;
 using FiveMinute.Data;
+using FiveMinute.ViewModels.FMResultViewModels;
 
 namespace FiveMinute.ViewModels.HomeViewModels
 {
@@ -13,6 +14,7 @@ namespace FiveMinute.ViewModels.HomeViewModels
 		public string UserRole { get; set; }
 		public ICollection<FMTemplateIndexViewModel> FMTemplates { get; set; }
 		public ICollection<FMTestIndexViewModel> FMTests { get; set; }
+		public ICollection<FMTResultForIndexHomeViewModel> FMTResults { get; set; }
 
 		public ICollection<FMTestIndexViewModel> ActiveFMTests { get; set; }
 		public ICollection<FMTestIndexViewModel> PlannedFMTests { get; set; }
@@ -24,12 +26,13 @@ namespace FiveMinute.ViewModels.HomeViewModels
 			{
 				UserName = user.UserName,
 				Email = user.Email,
-				FMTemplates = user.FMTemplates.Select(x => FMTemplateIndexViewModel.CreateByModel(x))
+				FMTemplates = user.FMTemplates.Select(FMTemplateIndexViewModel.CreateByModel)
 					.OrderByDescending(x => x.lastModification).ToList(),
 				FMTests = user.FMTests
 					.OrderByDescending(x => x.CreationTime)
 					.Select(x => FMTestIndexViewModel.CreateByModel(x)).ToList(),
-				UserRole = user.UserRole
+				UserRole = user.UserRole,
+				FMTResults = user.PassedTestResults.Select(FMTResultForIndexHomeViewModel.CreateByModel).ToList()
 			};
 
 			rez.ActiveFMTests = rez.FMTests.Where(x => x.Status == TestStatus.Started).ToList();

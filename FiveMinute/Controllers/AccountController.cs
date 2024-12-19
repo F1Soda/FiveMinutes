@@ -39,10 +39,10 @@ namespace FiveMinute.Controllers
                         return RedirectToAction("Index", "Home");
                     }
                 }   
-                TempData["Error"] = "Wrond credentials. Please, try again";
+                TempData["Error"] = "Нерпавильные учетные данные. Попробуйте снова";
                 return View(loginViewModel);
             }
-            TempData["Error"] = "Wrong credentials. Please try again";
+            TempData["Error"] = "Нерпавильные учетные данные. Попробуйте снова";
             return View(loginViewModel);
         }
 
@@ -60,12 +60,12 @@ namespace FiveMinute.Controllers
             var user = await userManager.FindByEmailAsync(registerViewModel.EmailAddress);
             if (user != null)
             {
-                TempData["Error"] = "This emal address is already is use";
+                TempData["Error"] = "Данный электронный адрес уже используется. ";
                 return View(registerViewModel);
             }
             if (registerViewModel.Password != registerViewModel.ConfirmPassword)
             {
-                TempData["Error"] = "The passwords are not the same";
+                TempData["Error"] = "Пароли не одинаковые.";
                 return View(registerViewModel);
             }
 
@@ -87,12 +87,12 @@ namespace FiveMinute.Controllers
             }
             else if (newUserResponse.Errors.First().Description.Contains("Password"))
             {
-                TempData["Error"] = "Your password is too short";
+                TempData["Error"] = "Паролль слишком короткий";
                 return View(registerViewModel);
             }
             else
             {
-                TempData["Error"] = "Enter the correct email";
+                TempData["Error"] = "Введите корректную электронную почту";
                 return View(registerViewModel);
             }
         }

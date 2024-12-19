@@ -8,5 +8,5 @@ public interface IChecker
     /// <summary>
     /// Возвращает, успешно ли добавлено все в бд
     /// </summary>
-    Task<bool> CheckAndSave(AppUser currentUser, TestResultViewModel testResultViewModel);
+    Task<bool> CheckAndSave(TestResultViewModel testResultViewModel);
 }
