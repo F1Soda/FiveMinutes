@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using FiveMinute.ViewModels;
 using FiveMinute.Interfaces;
 using FiveMinute.Models;
-using System.Net;
 using FiveMinute.Utils;
+using System.Net;
 
 
 namespace FiveMinute.Controllers
@@ -86,9 +86,8 @@ namespace FiveMinute.Controllers
 
 			ViewData["templateId"] = templateId;
 			var user =await userRepository.GetUserById(currentUser.Id);
-			var model = UserDetailViewModel.CreateByModel(user);
-			
-			return View(model);
+
+			return View(user.FMTemplates);
 		}
 	
 		[HttpPost]
@@ -99,7 +98,7 @@ namespace FiveMinute.Controllers
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
 			
 			var user = await userRepository.GetUserById(currentUser.Id);
-			var attachedTemplate = user.FMTTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
+			var attachedTemplate = user.FMTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
 
 			var test = FiveMinuteTestDetailViewModel.CreateByView(fmTestEditViewModel);
 			test.Status = Data.TestStatus.Started;

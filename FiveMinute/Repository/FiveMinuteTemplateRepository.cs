@@ -31,7 +31,7 @@ namespace FiveMinute.Repository
 
 		public IEnumerable<FiveMinuteTemplate> GetAllFromUserId(string userId)
 		{
-			return context.Users.Include(x => x.FMTTemplates).FirstOrDefault(x => x.Id == userId)?.FMTTemplates;
+			return context.Users.Include(x => x.FMTemplates).FirstOrDefault(x => x.Id == userId)?.FMTemplates;
 		}
 
 		public async Task<bool> Update(FiveMinuteTemplate existingTemplate, FiveMinuteTemplate newTemplate)

@@ -1,6 +1,7 @@
 ﻿using FiveMinute.Data;
 using FiveMinute.Interfaces;
 using FiveMinute.Models;
+using FiveMinute.Repository.FiveMinuteTestRepository;
 using FiveMinute.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,8 @@ namespace FiveMinute.Controllers
     public class AccountController(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
-        IUserRepository userRepository)
+        IUserRepository userRepository,
+        IFiveMinuteTestRepository fiveMinuteTestRepository)
         : Controller
     {
         [HttpGet]
@@ -130,6 +132,12 @@ namespace FiveMinute.Controllers
             }
 
             var model = UserDetailViewModel.CreateByModel(user);
+            foreach (var result in model.PassedTestResults)
+            {
+                var fmtest = await fiveMinuteTestRepository.GetByIdAsync(result.FiveMinuteTestId);
+                result.FMTestName = fmtest.Name;
+			}
+
             model.UserRole = currentUser.UserRole;
             model.IsOwner = isOwner;
             return View(model);

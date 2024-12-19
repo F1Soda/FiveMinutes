@@ -24,7 +24,7 @@ namespace FiveMinute.ViewModels.HomeViewModels
 			{
 				UserName = user.UserName,
 				Email = user.Email,
-				FMTemplates = user.FMTTemplates.Select(x => FMTemplateIndexViewModel.CreateByModel(x))
+				FMTemplates = user.FMTemplates.Select(x => FMTemplateIndexViewModel.CreateByModel(x))
 					.OrderByDescending(x => x.lastModification).ToList(),
 				FMTests = user.FMTests
 					.OrderByDescending(x => x.CreationTime)

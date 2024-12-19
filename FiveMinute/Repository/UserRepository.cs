@@ -33,7 +33,7 @@ namespace FiveMinute.Repository
         public async Task<AppUser> GetUserById(string id)
         {
             return await context.Users
-                .Include(x => x.FMTTemplates)
+                .Include(x => x.FMTemplates)
                 .ThenInclude(x => x.Questions)
                 .Include(x => x.FMTests)
                 .Include(appUser => appUser.PassedTestResults)

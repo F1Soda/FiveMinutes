@@ -500,7 +500,7 @@ namespace FiveMinute.Migrations
                         .HasForeignKey("OriginId");
 
                     b.HasOne("FiveMinute.Models.AppUser", "UserOwner")
-                        .WithMany("FMTTemplates")
+                        .WithMany("FMTemplates")
                         .HasForeignKey("UserOwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -645,7 +645,7 @@ namespace FiveMinute.Migrations
 
             modelBuilder.Entity("FiveMinute.Models.AppUser", b =>
                 {
-                    b.Navigation("FMTTemplates");
+                    b.Navigation("FMTemplates");
 
                     b.Navigation("FMTests");
 
