@@ -219,16 +219,17 @@ namespace FiveMinute.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> EditUser(UserData userData)
+        public async Task<IActionResult> EditUser(UserDataChangeViewModel userDataChange)
         {
             var currentUser = await userManager.GetUserAsync(User);
             if (currentUser == null)
                 return Forbid();
-            if (currentUser.UserData is null)
-                currentUser.UserData = new();
-            currentUser.UserData.FirstName = userData.FirstName;
-            currentUser.UserData.LastName = userData.LastName;
-            currentUser.UserData.Group = userData.Group;
+
+            currentUser.UserData.FirstName = userDataChange.FirstName;
+            currentUser.UserData.LastName = userDataChange.LastName;
+            currentUser.UserData.Group = userDataChange.Group;
+            currentUser.Email = userDataChange.Email;
+            
             await userRepository.Save();
             return RedirectToAction("Detail", "Account", new { userId = currentUser.Id });
         }

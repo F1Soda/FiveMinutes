@@ -31,13 +31,8 @@
 
 		<div class="col-md">
 			<h3>Данные профиля</h3>
-            <form asp-action="SaveChanges" method="post">
+			<form asp-action="EditUser" asp-controller="Account" method="post">
 				<div class="profile-container p-2">
-					<div class="form-group">
-						<label for="Username">Логин</label>
-						<input type="text" id="Username" name="Username" value="@Model.UserName" class="form-control" readonly />
-					</div>
-
 					<div class="form-group">
 						<label for="FirstName">Имя</label>
 						<input type="text" id="FirstName" name="FirstName" value="@Model.UserData.FirstName" class="form-control" />
