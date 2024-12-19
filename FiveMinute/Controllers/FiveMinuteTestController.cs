@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using FiveMinute.Data;
 using FiveMinute.ViewModels.AccountViewModels;
-using Microsoft.EntityFrameworkCore;
 using FiveMinute.ViewModels;
 using FiveMinute.Interfaces;
 using System.Net;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 
 namespace FiveMinute.Controllers
@@ -183,6 +183,9 @@ namespace FiveMinute.Controllers
 		[HttpPost]
 		public async Task<IActionResult> UpdateAnswerCorrectness([FromBody] CheckTextAnswerCorrectnessViewModel model)
 		{
+			var test =await fiveMinuteTestRepository.GetByIdAsync(model.TestId);
+			var q = test.FiveMinuteTemplate.Questions.Where(question => question.Id == model.QuestionId).First();
+			var userAnswer= CheckTextAnswerCorrectnessViewModel.CreateByView(model);
 			return Json(new { success = true });
 		}
 
