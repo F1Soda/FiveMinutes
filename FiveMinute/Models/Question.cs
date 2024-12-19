@@ -13,6 +13,7 @@ public class Question
     [Required(ErrorMessage = "Текст вопроса обязателен")]
     public string QuestionText { get; set; }
     public ResponseType ResponseType { get; set; }
+    public int Сost  { get; set; }
     public ICollection<Answer> AnswerOptions { get; set; } = new List<Answer>();
 
     [ForeignKey("FiveMinuteTemplate")]

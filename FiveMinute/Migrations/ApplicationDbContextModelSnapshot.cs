@@ -216,6 +216,9 @@ namespace FiveMinute.Migrations
                     b.Property<DateTime>("PassTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("Score")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
@@ -272,6 +275,9 @@ namespace FiveMinute.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("ResponseType")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Сost")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");

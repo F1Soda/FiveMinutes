@@ -11,6 +11,7 @@ public class UserAnswer
     public string Text { get; set; } = "";
     public int Position {get; set;}
     public bool IsCorrect { get; set; }
+    public int Score { get; set; }
 
     [ForeignKey("Question")]
     public int QuestionId { get; set; }

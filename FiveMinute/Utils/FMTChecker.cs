@@ -47,6 +47,13 @@ public class FmtChecker(
 		var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testResult.FMTestId);
 		var rez = TestResultViewModel.CreateByView(testResult);
 		rez.Answers = testResult.UserAnswers.Select(ans => CheckUserAnswer(ans, fmTest.FiveMinuteTemplate)).ToList();
+		rez=await UpdateScore(rez);
 		return rez;
+	}
+
+	public async Task<FiveMinuteTestResult> UpdateScore(FiveMinuteTestResult testResult)
+	{
+		testResult.Score = testResult.Answers.Sum(answer=>answer.Score);
+		return testResult;
 	}
 }
