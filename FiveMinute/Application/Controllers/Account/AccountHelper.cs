@@ -29,9 +29,8 @@ public partial class AccountController {
 		await userManager.AddToRoleAsync(newUser, UserRoles.Student);
 		await signInManager.SignInAsync(newUser, isPersistent: false);
 	}
-	
-	private void HandleUserCreationErrors(IdentityResult result)
-	{
+
+	private void HandleUserCreationErrors(IdentityResult result) {
 		var errorMessage = result.Errors.Any(e => e.Description.Contains("Password"))
 			? "Паролль слишком короткий"
 			: "Введите корректную электронную почту";
@@ -39,19 +38,16 @@ public partial class AccountController {
 		SetTempDataError(errorMessage);
 	}
 
-	private bool CanViewUserProfile(AppUser currentUser, string userId)
-	{
+	private bool CanViewUserProfile(AppUser currentUser, string userId) {
 		if (currentUser.UserRole == UserRoles.Student && currentUser.Id != userId) return false;
 
 		var roles = userManager.GetRolesAsync(currentUser).Result;
 		return roles.Contains(UserRoles.Admin) || roles.Contains(UserRoles.Teacher) || currentUser.Id == userId;
 	}
 
-	private async Task<UserDetailViewModel> BuildUserDetailViewModel(AppUser user, AppUser currentUser, string userId)
-	{
+	private async Task<UserDetailViewModel> BuildUserDetailViewModel(AppUser user, AppUser currentUser, string userId) {
 		var model = UserDetailViewModel.CreateByModel(user);
-		foreach (var result in model.PassedTestResults)
-		{
+		foreach (var result in model.PassedTestResults) {
 			var fmTest = await fiveMinuteTestRepository.GetByIdAsync(result.FiveMinuteTestId);
 			result.FMTestName = fmTest!.Name;
 		}
@@ -62,8 +58,7 @@ public partial class AccountController {
 		return model;
 	}
 
-	private void UpdateUserData(AppUser currentUser, UserDataChangeViewModel userDataChange)
-	{
+	private void UpdateUserData(AppUser currentUser, UserDataChangeViewModel userDataChange) {
 		currentUser.UserData.FirstName = userDataChange.FirstName;
 		currentUser.UserData.LastName = userDataChange.LastName;
 		currentUser.UserData.Group = userDataChange.Group;
