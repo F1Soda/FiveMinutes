@@ -12,13 +12,10 @@ namespace FiveMinute.Controllers {
 		SignInManager<AppUser> signInManager,
 		IUserRepository userRepository,
 		IFiveMinuteTestRepository fiveMinuteTestRepository)
-		: Controller {
-		[HttpGet]
-		public IActionResult Login() {
-			var response = new LoginViewModel();
-			return View(response);
-		}
-
+		: Controller 
+	{
+		public IActionResult Login() => View( new LoginViewModel());
+		
 		[HttpPost]
 		public async Task<IActionResult> Login(LoginViewModel loginViewModel) {
 			if (!ModelState.IsValid) return View(loginViewModel);
@@ -28,9 +25,8 @@ namespace FiveMinute.Controllers {
 				var passwordCheck = await userManager.CheckPasswordAsync(user, loginViewModel.Password);
 				if (passwordCheck) {
 					var result = await signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
-					if (result.Succeeded) {
+					if (result.Succeeded)
 						return RedirectToAction("Index", "Home");
-					}
 				}
 
 				TempData["Error"] = "Нерпавильные учетные данные. Попробуйте снова";
@@ -41,10 +37,7 @@ namespace FiveMinute.Controllers {
 			return View(loginViewModel);
 		}
 
-		public IActionResult Register() {
-			var response = new RegisterViewModel();
-			return View(response);
-		}
+		public IActionResult Register() => View( new RegisterViewModel());
 
 		[HttpPost]
 		public async Task<IActionResult> Register(RegisterViewModel registerViewModel) {
@@ -110,7 +103,7 @@ namespace FiveMinute.Controllers {
 				return Forbid();
 			}
 
-			var user = await userRepository.GetUserById(userId);
+			var user = await userRepository.GetFullUserDataById(userId);
 			if (user == null) {
 				return View("NotFound");
 			}

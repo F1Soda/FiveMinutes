@@ -20,7 +20,7 @@ namespace FiveMinute.Controllers {
 
 			var newFMT = FiveMinuteTemplate.CreateDefault(currentUser);
 			if (fmTemplateReposity.Add(newFMT).Result) {
-				await userRepository.AddFMTtoUser(newFMT, currentUser);
+				await userRepository.AddFmTtoUser(newFMT, currentUser);
 
 				return RedirectToAction("Edit", new { newFMT.Id });
 			}
@@ -96,7 +96,7 @@ namespace FiveMinute.Controllers {
 			var copyFMT = fmt.GetCopyToUser(currentUser);
 
 			if (fmTemplateReposity.Add(copyFMT).Result) {
-				await userRepository.AddFMTtoUser(copyFMT, currentUser);
+				await userRepository.AddFmTtoUser(copyFMT, currentUser);
 				return RedirectToAction("Edit", new { copyFMT.Id });
 			}
 

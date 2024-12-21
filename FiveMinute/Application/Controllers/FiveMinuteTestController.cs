@@ -76,7 +76,7 @@ namespace FiveMinute.Controllers {
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
 
 			ViewData["templateId"] = templateId;
-			var user = await userRepository.GetUserById(currentUser.Id);
+			var user = await userRepository.GetFullUserDataById(currentUser.Id);
 
 			return View(user.FMTemplates);
 		}
@@ -87,7 +87,7 @@ namespace FiveMinute.Controllers {
 			if (currentUser == null || !currentUser.canCreate)
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
 
-			var user = await userRepository.GetUserById(currentUser.Id);
+			var user = await userRepository.GetFullUserDataById(currentUser.Id);
 			var attachedTemplate = user.FMTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
 
 			var test = FiveMinuteTestDetailViewModel.CreateByView(fmTestEditViewModel);

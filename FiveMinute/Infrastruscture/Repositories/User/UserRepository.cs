@@ -9,37 +9,22 @@ namespace FiveMinute.Repository
     public class UserRepository : DefaultRepository<AppUser> ,IUserRepository
     {
         private readonly ApplicationDbContext context;
+        private readonly UserManager<AppUser> userManager;
 
-        public UserRepository(ApplicationDbContext context) : base(context)
-        {
-            this.context = context;
-        }
-        public Task<IdentityResult> CreateAsync(AppUser user)
-        {
-            throw new NotImplementedException();
-        }
+        public UserRepository(ApplicationDbContext context) : base(context) 
+            => this.context = context;
 
-
-        public Task<AppUser?> FindByEmailAsync(string email)
+        public async Task<AppUser> GetFullUserDataById(string id)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<AppUser>> GetAllUsers()
-        {
-            return await context.Users.ToListAsync();
-        }
-
-        public async Task<AppUser> GetUserById(string id)
-        {
-            return await context.Users
+            var user = await context.Users
                 .Include(x => x.FMTemplates)
                 .ThenInclude(x => x.Questions)
                 .Include(x => x.FMTests)
                 .Include(appUser => appUser.PassedTestResults)
                 .FirstOrDefaultAsync(x => x.Id == id);
+            return user!;
         }
-        public async Task<bool> AddFMTtoUser(FiveMinuteTemplate fmt,AppUser user)
+        public async Task<bool> AddFmTtoUser(FiveMinuteTemplate fmt,AppUser user)
         {
             user.AddFMT(fmt);
             return await Save();
