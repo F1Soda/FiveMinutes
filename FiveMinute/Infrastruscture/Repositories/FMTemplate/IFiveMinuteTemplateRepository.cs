@@ -11,7 +11,7 @@ namespace FiveMinute.Interfaces
 
 		IEnumerable<FiveMinuteTemplate> GetAllFromUserId(string userId);
 
-		Task<bool> DeleteCascade(FiveMinuteTemplate template);
+		Task<bool> Delete(FiveMinuteTemplate template);
 
 	}
 }

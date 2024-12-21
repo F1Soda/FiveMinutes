@@ -45,7 +45,7 @@ namespace FiveMinute.Repository
 			return await Save();
 		}
 
-		public async Task<bool> DeleteCascade(FiveMinuteTemplate template)
+		public async Task<bool> Delete(FiveMinuteTemplate template)
 		{
 			var relatedEntities = context.FiveMinuteTests
 				.Where(x => x.FiveMinuteTemplateId == template.Id);
