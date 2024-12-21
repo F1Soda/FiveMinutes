@@ -7,21 +7,17 @@ using FiveMinute.Interfaces;
 using FiveMinute.Models;
 using FiveMinute.Utils;
 using System.Net;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 
 
-namespace FiveMinute.Controllers
-{
+namespace FiveMinute.Controllers {
 	public class FiveMinuteTestController(
 		UserManager<AppUser> userManager,
 		IUserRepository userRepository,
 		IFiveMinuteTestRepository fiveMinuteTestRepository,
 		IFiveMinuteResultsRepository fiveMinuteResultsRepository,
 		IChecker fmtChecker)
-		: Controller
-	{
-		public async Task<IActionResult> Edit(int testId)
-		{
+		: Controller {
+		public async Task<IActionResult> Edit(int testId) {
 			var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testId);
 			var currentUser = await userManager.GetUserAsync(User);
 
@@ -37,21 +33,18 @@ namespace FiveMinute.Controllers
 			return View(fmTestViewModel);
 		}
 
-		public IActionResult Passed()
-		{
+		public IActionResult Passed() {
 			return View();
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Edit(FiveMinuteTestEditViewModel fmTestEditViewModel)
-		{
+		public async Task<IActionResult> Edit(FiveMinuteTestEditViewModel fmTestEditViewModel) {
 			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(fmTestEditViewModel.Id);
 			var currentUser = await userManager.GetUserAsync(User);
 
 			if (currentUser == null)
 				return View("Error", new ErrorViewModel($"You don't have the rights to this action"));
 
-			
 
 			var updatedTest = FiveMinuteTestEditViewModel.CreateByView(fmTestEditViewModel);
 			updatedTest.Status = existingFMTest.Status;
@@ -63,8 +56,7 @@ namespace FiveMinute.Controllers
 			return RedirectToAction("Detail", new { id = existingFMTest.Id });
 		}
 
-		public async Task<IActionResult> Detail(int testId)
-		{
+		public async Task<IActionResult> Detail(int testId) {
 			var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testId);
 			var currentUser = await userManager.GetUserAsync(User);
 
@@ -77,26 +69,24 @@ namespace FiveMinute.Controllers
 			return View(FiveMinuteTestDetailViewModel.CreateByModel(fmTest));
 		}
 
-		public async Task<IActionResult> Create(int templateId)
-		{
+		public async Task<IActionResult> Create(int templateId) {
 			var currentUser = await userManager.GetUserAsync(User);
 
 			if (currentUser == null || !currentUser.canCreate)
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
 
 			ViewData["templateId"] = templateId;
-			var user =await userRepository.GetUserById(currentUser.Id);
+			var user = await userRepository.GetUserById(currentUser.Id);
 
 			return View(user.FMTemplates);
 		}
-	
+
 		[HttpPost]
-		public async Task<IActionResult> Create(FiveMinuteTestDetailViewModel fmTestEditViewModel)
-		{
+		public async Task<IActionResult> Create(FiveMinuteTestDetailViewModel fmTestEditViewModel) {
 			var currentUser = await userManager.GetUserAsync(User);
 			if (currentUser == null || !currentUser.canCreate)
 				return View("Error", new ErrorViewModel($"You don't have the rights for this action"));
-			
+
 			var user = await userRepository.GetUserById(currentUser.Id);
 			var attachedTemplate = user.FMTemplates.FirstOrDefault(x => x.Id == fmTestEditViewModel.AttachedFMTId);
 
@@ -110,49 +100,46 @@ namespace FiveMinute.Controllers
 			test.Results = new List<FiveMinuteTestResult>();
 			test.CreationTime = DateTime.UtcNow;
 			await fiveMinuteTestRepository.Add(test);
-			return RedirectToAction("Detail", new { testId = test.Id});
+			return RedirectToAction("Detail", new { testId = test.Id });
 		}
 
-		public async Task<IActionResult> Pass(string encryptedId)
-		{
+		public async Task<IActionResult> Pass(string encryptedId) {
 			var testId = UrlEncryptor.Decrypt(encryptedId);
 			var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testId);
-			if (fmTest is null)
-			{
+			if (fmTest is null) {
 				return View("NotFound");
 			}
 
 			var fmt = fmTest.FiveMinuteTemplate;
-			
+
 			var currentUser = await userManager.GetUserAsync(User);
-			
+
 			if (!fmTest.CanPass(currentUser))
 				return Forbid();
 			var test = FMTestPassingViewModel.CreateByModel(fmTest);
-			if (currentUser != null && User.Identity.IsAuthenticated)
-			{
+			if (currentUser != null && User.Identity.IsAuthenticated) {
 				test.UserData = currentUser.UserData;
 				test.userId = currentUser.Id;
 			}
+
 			return View(test);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> SendTestResults(TestResultViewModel testResultViewModel)
-		{			
+		public async Task<IActionResult> SendTestResults(TestResultViewModel testResultViewModel) {
 			if (!await fmtChecker.CheckAndSave(testResultViewModel))
-				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers")); ;
+				return View("Error", new ErrorViewModel($"Something is wrong. Could not save your answers"));
+			;
 			return RedirectToAction("Passed");
 		}
-		
+
 		[HttpPost]
-		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailView)
-		{
+		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel FMTestDetailView) {
 			Console.WriteLine(FMTestDetailView.StartPlanned);
 
 			var existingFMTest = await fiveMinuteTestRepository.GetByIdAsync(FMTestDetailView.Id);
 			var currentUser = await userManager.GetUserAsync(User);
-			if (currentUser == null) 
+			if (currentUser == null)
 				return View("Error", new ErrorViewModel($"You don't have the rights to this action"));
 
 			if (existingFMTest == null)
@@ -161,37 +148,35 @@ namespace FiveMinute.Controllers
 			updatedTest.FiveMinuteTemplate = existingFMTest.FiveMinuteTemplate;
 			updatedTest.FiveMinuteTemplateId = existingFMTest.FiveMinuteTemplate.Id;
 			updatedTest.Results = existingFMTest.Results;
-			if(!await fiveMinuteTestRepository.Update(updatedTest))
+			if (!await fiveMinuteTestRepository.Update(updatedTest))
 				return View("Error");
-			
-			return RedirectToAction("Detail", new { testId = updatedTest.Id});
+
+			return RedirectToAction("Detail", new { testId = updatedTest.Id });
 		}
-		
-		public async Task<IActionResult> FiveMinuteResult(int resultId)
-		{
+
+		public async Task<IActionResult> FiveMinuteResult(int resultId) {
 			var currentUser = await userManager.GetUserAsync(User);
 			var result = fiveMinuteResultsRepository.GetById(resultId).Result;
 			var FMTest = fiveMinuteTestRepository.GetByIdAsync(result.FiveMinuteTestId).Result;
 			var fiveMinuteTestResultViewModel = FiveMinuteTestResultViewModel.CreateByModel(FMTest);
 			fiveMinuteTestResultViewModel.FiveMinuteTestResult = result;
 
-			if (result is null || currentUser is null || (FMTest.UserOrganizerId != currentUser.Id && result.UserId != currentUser.Id))
+			if (result is null || currentUser is null ||
+			    (FMTest.UserOrganizerId != currentUser.Id && result.UserId != currentUser.Id))
 				return View("Error", new ErrorViewModel(HttpStatusCode.NotFound.ToString()));
 
 			return View(fiveMinuteTestResultViewModel);
 		}
-		
+
 		[HttpPost]
-		public async Task<IActionResult> UpdateAnswerCorrectness([FromBody] CheckTextAnswerCorrectnessViewModel model)
-		{
-			var test =await fiveMinuteTestRepository.GetByIdAsync(model.TestId);
-			var curentUserAnswer=test.Results
-				.Select(result => result.Answers)
-				.First(result => result.Where(answer => answer.Text == model.Text).Count() != 0)
-				.Where(answer => answer.Text==model.Text);
-			var userAnswer= CheckTextAnswerCorrectnessViewModel.CreateByView(model);
-			foreach (var answer in curentUserAnswer)
-			{
+		public async Task<IActionResult> UpdateAnswerCorrectness([FromBody] CheckTextAnswerCorrectnessViewModel model) {
+			var test = await fiveMinuteTestRepository.GetByIdAsync(model.TestId);
+			var curentUserAnswer = test.Results
+			                           .Select(result => result.Answers)
+			                           .First(result => result.Where(answer => answer.Text == model.Text).Count() != 0)
+			                           .Where(answer => answer.Text == model.Text);
+			var userAnswer = CheckTextAnswerCorrectnessViewModel.CreateByView(model);
+			foreach (var answer in curentUserAnswer) {
 				answer.IsCorrect = userAnswer.IsCorrect;
 			}
 

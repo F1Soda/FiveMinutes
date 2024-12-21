@@ -5,35 +5,31 @@ using FiveMinute.ViewModels.FMTEditViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FiveMinute.Controllers
-{
+namespace FiveMinute.Controllers {
 	public class FiveMinuteTemplateController(
 		UserManager<AppUser> userManager,
 		IFiveMinuteTemplateRepository fmTemplateReposity,
 		IUserRepository userRepository)
-		: Controller
-	{
+		: Controller {
 		[HttpGet]
-		public async Task<IActionResult> Create()
-		{
+		public async Task<IActionResult> Create() {
 			var currentUser = await userManager.GetUserAsync(User);
 
 			if (currentUser == null || !currentUser.canCreate)
 				return View("Error", new ErrorViewModel($"You don't have the rights to create a five-minute"));
 
 			var newFMT = FiveMinuteTemplate.CreateDefault(currentUser);
-			if (fmTemplateReposity.Add(newFMT).Result)
-			{
+			if (fmTemplateReposity.Add(newFMT).Result) {
 				await userRepository.AddFMTtoUser(newFMT, currentUser);
 
 				return RedirectToAction("Edit", new { newFMT.Id });
 			}
+
 			return View("Error", new ErrorViewModel("Fail to add FMT to db"));
 		}
 
 
-		public async Task<IActionResult> Edit(int id)
-		{
+		public async Task<IActionResult> Edit(int id) {
 			var fmt = await fmTemplateReposity.GetByIdAsync(id);
 			var currentUser = await userManager.GetUserAsync(User);
 
@@ -48,44 +44,38 @@ namespace FiveMinute.Controllers
 			HttpContext.Session.SetInt32("FmtViewModel", fmt.Id);
 			return View(fmtViewModel);
 		}
-		public async Task<JsonResult> Save([FromBody] FiveMinuteTemplateEditViewModel fmt)
-		{
-			if (!ModelState.IsValid)
-			{
-				return Json(new
-				{
+
+		public async Task<JsonResult> Save([FromBody] FiveMinuteTemplateEditViewModel fmt) {
+			if (!ModelState.IsValid) {
+				return Json(new {
 					success = false
 				});
 			}
 
 			var currentFMTId = HttpContext.Session.GetInt32("FmtViewModel");
-			if (currentFMTId is null)
-			{
-				return Json(new
-				{
+			if (currentFMTId is null) {
+				return Json(new {
 					success = false,
 					errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
 				});
 			}
 
-            var existingFmt = await fmTemplateReposity.GetByIdAsyncNoTracking(currentFMTId.Value);
-            if (existingFmt is null)
-            {
-                return Json(new
-                {
-                    success = false,
-                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
-                });
-            }
-            var template = FiveMinuteTemplateEditViewModel.CreateByView(fmt);
-            await fmTemplateReposity.Update(existingFmt, template);
-            return Json(new { success = true, id = fmt.Id });
-        }
-		public async Task<IActionResult> Copy(int testId)
-		{
+			var existingFmt = await fmTemplateReposity.GetByIdAsyncNoTracking(currentFMTId.Value);
+			if (existingFmt is null) {
+				return Json(new {
+					success = false,
+					errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage),
+				});
+			}
+
+			var template = FiveMinuteTemplateEditViewModel.CreateByView(fmt);
+			await fmTemplateReposity.Update(existingFmt, template);
+			return Json(new { success = true, id = fmt.Id });
+		}
+
+		public async Task<IActionResult> Copy(int testId) {
 			var currentUser = await userManager.GetUserAsync(User);
-			if (currentUser == null)
-			{
+			if (currentUser == null) {
 				return RedirectToAction("Login", "Account");
 			}
 
@@ -93,25 +83,23 @@ namespace FiveMinute.Controllers
 
 			bool isStudent = currentUserRoles.Contains(UserRoles.Student);
 
-			if (isStudent)
-			{
+			if (isStudent) {
 				return Forbid();
 			}
 
 			var fmt = await fmTemplateReposity.GetByIdAsync(testId);
 
-			if (fmt == null)
-			{
+			if (fmt == null) {
 				return RedirectToAction("NotFound");
 			}
 
 			var copyFMT = fmt.GetCopyToUser(currentUser);
 
-			if (fmTemplateReposity.Add(copyFMT).Result)
-			{
+			if (fmTemplateReposity.Add(copyFMT).Result) {
 				await userRepository.AddFMTtoUser(copyFMT, currentUser);
 				return RedirectToAction("Edit", new { copyFMT.Id });
 			}
+
 			return View("Error", new ErrorViewModel("Fail to add FMT to db"));
 		}
 	}

@@ -25,8 +25,7 @@ namespace FiveMinute.Controllers
 		public async Task<IActionResult> Index()
 		{
 			var currentUser = await userManager.GetUserAsync(User);
-
-
+			
 			IndexViewModel model = new IndexViewModel();
 			if (currentUser != null)
 			{
@@ -41,11 +40,6 @@ namespace FiveMinute.Controllers
 			}
 			model.Quotes = QuotesHandler.GetDailyQuotes();
 			return View(model);
-		}
-
-		public IActionResult Privacy()
-		{
-			return View();
 		}
 
 		public class DeleteRequestId
@@ -162,9 +156,7 @@ namespace FiveMinute.Controllers
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		public IActionResult Error()
-		{
-			return View(new ErrorViewModel(Activity.Current?.Id ?? HttpContext.TraceIdentifier));
-		}
+		public IActionResult Error() => 
+			View(new ErrorViewModel(Activity.Current?.Id ?? HttpContext.TraceIdentifier));
 	}
 }
