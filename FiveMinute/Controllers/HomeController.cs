@@ -10,6 +10,7 @@ using FiveMinute.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using FiveMinute.Utils;
 
 namespace FiveMinute.Controllers
 {
@@ -26,7 +27,7 @@ namespace FiveMinute.Controllers
 			var currentUser = await userManager.GetUserAsync(User);
 
 
-			IndexViewModel model = null!;
+			IndexViewModel model = new IndexViewModel();
 			if (currentUser != null)
 			{
 				var user = await userRepository.GetUserById(currentUser.Id);
@@ -38,6 +39,7 @@ namespace FiveMinute.Controllers
 					result.FMTestOrganizer = $"{fmtest.UserOrganizer.UserData.FirstName} {fmtest.UserOrganizer.UserData.LastName}";
 				}
 			}
+			model.Quotes = QuotesHandler.GetDailyQuotes();
 			return View(model);
 		}
 

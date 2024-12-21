@@ -13,6 +13,8 @@ public class UserData
     [Display(Name = "Группа")]
     public string Group{ get; set; }
 
+    public string FullName => FirstName + " " + LastName;
+
     public UserData(string firstName, string  lastName, string group)
     {
         FirstName = firstName;

@@ -19,7 +19,7 @@ namespace FiveMinute.Data
             }
         }
 
-        public static async Task AddUser(UserManager<AppUser> userManager, string email, string name, string password, string role)
+        public static async Task AddUser(UserManager<AppUser> userManager, string email, string name, string password, string role, UserData userData)
         {
             var adminUser = await userManager.FindByEmailAsync(email);
             if (adminUser == null)
@@ -30,17 +30,15 @@ namespace FiveMinute.Data
                     Email = email,
                     EmailConfirmed = true,
                     UserRole = role,
-                    UserData = new UserData("", "", "")
+                    UserData = userData
                 };
                 var res = await userManager.CreateAsync(newUser, password);
                 if (res.Succeeded)
                 {
-                    Console.WriteLine($"YESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSs: {role}");
                     await userManager.AddToRoleAsync(newUser, role);
                 }
                 else
                 {
-                    Console.WriteLine("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOo");
                     foreach (var error in res.Errors)
                         Console.WriteLine(error.Description);
                 }
@@ -54,11 +52,9 @@ namespace FiveMinute.Data
             {
                 await AddRoles(applicationBuilder);
 				var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-                await AddUser(userManager, "golik.tima@gmail.com", "golikdev", "Coding@13421212?", UserRoles.Admin);
-                await AddUser(userManager, "1@c.com", "1", "1", UserRoles.Admin);
-                await AddUser(userManager, "g.t@gmail.com", "GolikTimofey", "Coding@1234?", UserRoles.Student);
-				await AddUser(userManager, "michail.zukov@kontur.ru", "Micha", "123456", UserRoles.Student);
-                await AddUser(userManager, "maria.filatova@mail.ru", "Maria", "123456", UserRoles.Teacher);
+                await AddUser(userManager, "golik.tima@gmail.com", "golikdev", "Coding@13421212?", UserRoles.Admin, new UserData("Тимофей", "Голик", "ФТ-204"));
+				await AddUser(userManager, "michail.zukov@kontur.ru", "Micha", "123456", UserRoles.Student, new UserData("Михаил", "Зюков", "ФТ-203"));
+                await AddUser(userManager, "maria.filatova@mail.ru", "Maria", "123456", UserRoles.Teacher, new UserData("Мария", "Филатовна", "-"));
             }
         }
 
@@ -77,7 +73,8 @@ namespace FiveMinute.Data
                         UserRole = UserRoles.Admin,
                         UserName = "golikdev",
                         Email = adminUserEmail,
-                        EmailConfirmed = true
+                        EmailConfirmed = true,
+                        UserData = new UserData("Тимофей", "Голик", "ФТ-204")
                     };
                     await userManager.CreateAsync(newAdminUser, "Coding@1234?");
                     await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
