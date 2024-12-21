@@ -6,15 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FiveMinute.Repository
 {
-    public class UserRepository : DefaultRepository<AppUser> ,IUserRepository
-    {
-        private readonly ApplicationDbContext context;
-        private readonly UserManager<AppUser> userManager;
+    public class UserRepository(ApplicationDbContext context) : DefaultRepository<AppUser>(context), IUserRepository {
+        private readonly ApplicationDbContext context = context;
 
-        public UserRepository(ApplicationDbContext context) : base(context) 
-            => this.context = context;
-
-        public async Task<AppUser> GetFullUserDataById(string id)
+        public async Task<AppUser?> GetFullUserDataById(string id)
         {
             var user = await context.Users
                 .Include(x => x.FMTemplates)
