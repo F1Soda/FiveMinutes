@@ -1,6 +1,6 @@
-﻿@using FiveMinute.Data
-@using FiveMinute.ViewModels.FMTEditViewModels
-@model FiveMinute.ViewModels.FiveMinuteTestViewModels.FiveMinuteTestDetailViewModel
+﻿@model FiveMinute.ViewModels.FiveMinuteTestViewModels.FiveMinuteTestDetailViewModel
+
+<partial name="_Popup" />
 
 @{
     ViewData["Title"] = "Test Details";
@@ -12,10 +12,12 @@
     <!-- Tab Navigation -->
     <ul class="nav nav-tabs" id="testDetailTabs" role="tablist">
         <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="statistics-tab" data-bs-toggle="tab" href="#statistics" role="tab" aria-controls="statistics" aria-selected="true">Статистика</a>
+            <a class="nav-link active" id="statistics-tab" data-bs-toggle="tab" href="#statistics" role="tab"
+               aria-controls="statistics" aria-selected="true">Статистика</a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link" id="settings-tab" data-bs-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Настройки</a>
+            <a class="nav-link" id="settings-tab" data-bs-toggle="tab" href="#settings" role="tab"
+               aria-controls="settings" aria-selected="false">Настройки</a>
         </li>
     </ul>
 
@@ -27,7 +29,9 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>Test Status:</strong> @Model.Status.ToString().Replace("InRechekingProcess", "In Rechecking Process")</p>
+                    <p><strong>Test
+                            Status:</strong> @Model.Status.ToString().Replace("InRechekingProcess", "In Rechecking Process")
+                    </p>
                     <p><strong>Start Time:</strong> @Model.StartTime.ToString("yyyy-MM-dd HH:mm")</p>
                     <p><strong>End Time:</strong> @Model.EndTime.ToString("yyyy-MM-dd HH:mm")</p>
                 </div>
@@ -35,11 +39,9 @@
                     <h4>Statistics for Passers</h4>
                     <h6>Всего прохождений: @Model.Results.Count()</h6>
 
-                    @foreach (var result in Model.Results)
-                    {
+                    @foreach (var result in Model.Results) {
                         var answersDict = new Dictionary<int, List<UserAnswer>>();
-                        foreach (var answer in result.Answers)
-                        {
+                        foreach (var answer in result.Answers) {
                             answersDict.TryAdd(answer.QuestionPosition, new List<UserAnswer>());
                             answersDict[answer.QuestionPosition].Add(answer);
                         }
@@ -49,72 +51,80 @@
                                 <div>Id пользователя: @result.UserId</div>
                                 <div>Имя пользователя: @result.UserData.FirstName @result.UserData.FirstName</div>
                                 <div>Время прохождения: @result.PassTime</div>
-                                <div>Всего баллов: @answersDict.Values.SelectMany(x => x).Sum(x => x.IsCorrect ? 1 : 0)</div>
+                                <div>Всего
+                                    баллов: @answersDict.Values.SelectMany(x => x).Sum(x => x.IsCorrect ? 1 : 0)</div>
                                 <a asp-action="FiveMinuteResult" asp-route-resultId="@result.Id">Подробнее</a>
                             </caption>
                             <thead>
-                                <tr>
-                                    <th>Вопрос</th>
-                                    @foreach(var number in answersDict.Keys.Order())
-                                    {
-                                        var someAnswer = answersDict[number].FirstOrDefault();
-                                        <th>@someAnswer?.QuestionPosition. @someAnswer?.QuestionText</th>
-                                    }
-                                </tr>
+                            <tr>
+                                <th>Вопрос</th>
+                                @foreach (var number in answersDict.Keys.Order()) {
+                                    var someAnswer = answersDict[number].FirstOrDefault();
+                                    <th>@someAnswer?.QuestionPosition. @someAnswer?.QuestionText</th>
+                                }
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th>Ответ</th>
-                                    @foreach (var number in answersDict.Keys.Order())
-                                    {
-                                        <td>
-                                            @foreach (var answer in answersDict[number].Where(x => !string.IsNullOrEmpty(x.Text)))
-                                            {
-                                                <div class="answer-block" style="margin-bottom:10px;">
-                                                    <span class="answer-text">@answer.Text</span>
-                                                    @if (Model.AttachedFMT.Questions.FirstOrDefault(q => q.Id == answer.QuestionId) == null)
-                                                    {
-                                                        continue;
-                                                    }
-                                                    @if (Model.AttachedFMT.Questions.FirstOrDefault(q => q.Id == answer.QuestionId).ResponseType == ResponseType.Text)
-                                                    {
-                                                        <div class="mt-2">
-                                                            <button type="button" class="btn btn-sm btn-success mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="true" data-question-position="@answer.QuestionPosition" data-question-id = "@answer.QuestionId" data-test-id = "@Model.Id" data-answer-text="@answer.Text">Правильно</button>
-                                                            <button type="button" class="btn btn-sm btn-danger mark-correct-btn" data-answer-id="@answer.Id" data-is-correct="false" data-question-position="@answer.QuestionPosition" data-question-id = "@answer.QuestionId" data-test-id = "@Model.Id" data-answer-text="@answer.Text">Неправильно </button>
-                                                        </div>
-                                                    }
-                                                </div>
-                                            }
-                                        </td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <th>Балл</th>
-                                    @foreach (var number in answersDict.Keys.Order())
-                                    {
-                                        <td>@answersDict[number].Sum(x => x.IsCorrect ? 1 : 0)</td>
-                                    }
-                                </tr>
+                            <tr>
+                                <th>Ответ</th>
+                                @foreach (var number in answersDict.Keys.Order()) {
+                                    <td>
+                                        @foreach (var answer in answersDict[number].Where(x => !string.IsNullOrEmpty(x.Text))) {
+                                            <div class="answer-block" style="margin-bottom:10px;">
+                                                <span class="answer-text">@answer.Text</span>
+                                                @if (Model.AttachedFMT.Questions.FirstOrDefault(q => q.Id == answer.QuestionId) == null) {
+                                                    continue;
+                                                }
+                                                @if (Model.AttachedFMT.Questions.FirstOrDefault(q => q.Id == answer.QuestionId).ResponseType == ResponseType.Text) {
+                                                    <div class="mt-2">
+                                                        <button type="button"
+                                                                class="btn btn-sm btn-success mark-correct-btn"
+                                                                data-answer-id="@answer.Id" data-is-correct="true"
+                                                                data-question-position="@answer.QuestionPosition"
+                                                                data-question-id="@answer.QuestionId"
+                                                                data-test-id="@Model.Id"
+                                                                data-answer-text="@answer.Text">Правильно
+                                                        </button>
+                                                        <button type="button"
+                                                                class="btn btn-sm btn-danger mark-correct-btn"
+                                                                data-answer-id="@answer.Id" data-is-correct="false"
+                                                                data-question-position="@answer.QuestionPosition"
+                                                                data-question-id="@answer.QuestionId"
+                                                                data-test-id="@Model.Id"
+                                                                data-answer-text="@answer.Text">Неправильно
+                                                        </button>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                            <tr>
+                                <th>Балл</th>
+                                @foreach (var number in answersDict.Keys.Order()) {
+                                    <td>@answersDict[number].Sum(x => x.IsCorrect ? 1 : 0)</td>
+                                }
+                            </tr>
                             </tbody>
                         </table>
                     }
                 </div>
             </div>
         </div>
-        
+
         <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
 
             <form method="post" action="@Url.Action("UpdateTestSettings", "FiveMinuteTest")">
-                <input type="hidden" name="Id" value="@Model.Id" />
-                <input type="hidden" name="Name" value="@Model.Name" />
-                <input type="hidden" name="Status" value="@Model.Status" />
-                <input type="hidden" id="IdToUninclude" name="IdToUninclude" />
+                <input type="hidden" name="Id" value="@Model.Id"/>
+                <input type="hidden" name="Name" value="@Model.Name"/>
+                <input type="hidden" name="Status" value="@Model.Status"/>
+                <input type="hidden" id="IdToUninclude" name="IdToUninclude"/>
 
                 <div class="mb-4">
                     <h4>Управление вопросами</h4>
                     <div class="list-group">
-                        @for (int i = 0; i < Model.AttachedFMT.Questions.Count; i++)
-                        {
+                        @for (int i = 0; i < Model.AttachedFMT.Questions.Count; i++) {
                             var question = Model.AttachedFMT.Questions[i];
                             bool isChecked = !Model.IdToUninclude.Contains(question.Id);
                             <div class="list-group-item d-flex justify-content-between align-items-center">
@@ -126,7 +136,7 @@
                                            class="form-check-input question-checkbox"
                                            data-question-id="@question.Id"
                                            value="@question.Id"
-                                           @(isChecked ? "checked" : "") />
+                                           @(isChecked ? "checked" : "")/>
                                 </div>
                             </div>
                         }
@@ -135,82 +145,38 @@
 
                 <div class="mb-3">
                     <label for="startPlanned" class="form-label">Запланировать начало</label>
-                    <input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"  onchange="toggleStartTimeInput()" value="true"/>
+                    <input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"
+                           onchange="toggleStartTimeInput()" value="true"/>
                     <div id="startTimeInput" class="mt-2" style="display: @(Model.StartPlanned ? "block" : "none")">
                         <label for="startDateTime" class="form-label">Дата и время начала</label>
-                        <input type="datetime-local" id="startDateTime" name="StartTime" class="form-control" value="@Model.StartTime.ToString("yyyy-MM-ddTHH:mm")" />
+                        <input type="datetime-local" id="startDateTime" name="StartTime" class="form-control"
+                               value="@Model.StartTime.ToString("yyyy-MM-ddTHH:mm")"/>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="endPlanned" class="form-label">Запланировать окончание</label>
-                    <input type="checkbox" id="endPlanned" asp-for="EndPlanned"  class="form-check-input" onchange="toggleEndTimeInput()" value="true"/>
+                    <input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input"
+                           onchange="toggleEndTimeInput()" value="true"/>
                     <div id="endTimeInput" class="mt-2" style="display: @(Model.EndPlanned ? "block" : "none")">
                         <label for="endDateTime" class="form-label">Дата и время окончания</label>
-                        <input type="datetime-local" id="endDateTime" name="EndTime" class="form-control" value="@Model.EndTime.ToString("yyyy-MM-ddTHH:mm")"/>
+                        <input type="datetime-local" id="endDateTime" name="EndTime" class="form-control"
+                               value="@Model.EndTime.ToString("yyyy-MM-ddTHH:mm")"/>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                <button type="submit" , id="submit" class="btn btn-primary">Сохранить изменения</button>
             </form>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-<script src="~/js/questionCheckboxHandler.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        initializeQuestionCheckboxes('IdToUninclude');
-        toggleEndTimeInput();
-        toggleStartTimeInput();
-
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('mark-correct-btn')) {
-                var answerId = e.target.getAttribute('data-answer-id');
-                var isCorrect = e.target.getAttribute('data-is-correct') === 'true';
-                var questionId = e.target.getAttribute("data-question-id");
-                var testId = e.target.getAttribute("data-test-id");
-                var text = e.target.getAttribute("data-answer-text");
-                
-
-                fetch('@Url.Action("UpdateAnswerCorrectness", "FiveMinuteTest")', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ answerId: parseInt(answerId), isCorrect: isCorrect, 
-                    questionId: parseInt(questionId), testId : parseInt(testId),
-                    text: text
-                    }),
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.json().catch(() => null); 
-                })
-                .then(data => {
-                    alert('Ответ обновлён!');
-                    var answerBlock = e.target.closest('.answer-block');
-                    if (answerBlock) {
-                        answerBlock.style.backgroundColor = isCorrect ? '#d4edda' : '#f8d7da';
-                    }
-                })
-                .catch(error => {
-                    console.error('Fetch error:', error);
-                    alert('Ошибка при обновлении ответа.');
-                });
-            }
-        });
-    });
-
-    function toggleStartTimeInput() {
-        var startPlanned = document.getElementById('startPlanned').checked;
-        document.getElementById('startTimeInput').style.display = startPlanned ? 'block' : 'none';
-    }
-
-    function toggleEndTimeInput() {
-        var endPlanned = document.getElementById('endPlanned').checked;
-        document.getElementById('endTimeInput').style.display = endPlanned ? 'block' : 'none';
-    }
-</script>
+@section Scripts {
+    <script>
+        const questionCount = @Model.AttachedFMT.Questions.Count;
+    </script>
+    <script src="~/js/questionCheckboxHandler.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/popup.js"></script>
+    <script src="~/js/FMTest/detail.js"></script>
+}

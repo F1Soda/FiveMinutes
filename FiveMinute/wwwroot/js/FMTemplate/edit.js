@@ -3,7 +3,6 @@ let fmt = modelData;
 let questionCount = 0;
 let hasUnsavedChanges = false;
 
-document.addEventListener('DOMContentLoaded', initQuestions);
 
 $(document).ready(function () {
 	initialize();
@@ -124,6 +123,7 @@ function initQuestions() {
 	questionsContainer.innerHTML = ''; // Clear any existing questions
 
 	fmt["questions"].forEach((question, questionIndex) => {
+		questionCount++;
 		// Insert question HTML
 		const questionHtml = getQuestionHtml(question, questionIndex);
 		questionsContainer.insertAdjacentHTML('beforeend', questionHtml);
