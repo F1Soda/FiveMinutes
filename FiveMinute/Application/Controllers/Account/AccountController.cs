@@ -1,6 +1,6 @@
 ﻿using FiveMinute.Interfaces;
 using FiveMinute.Models;
-using FiveMinute.Repository.FiveMinuteTestRepository;
+using FiveMinute.Repository.FMTestRepository;
 using FiveMinute.ViewModels.AccountViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

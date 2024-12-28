@@ -1,10 +1,12 @@
+using FiveMinute.Data;
+
 namespace FiveMinute.Interfaces;
 
 public interface IDefaultRepository<T>
 {
-    Task<bool> Add(T fmt);
+    Task<ResultOperationInDatabase> Add(T fmt);
 
-    Task<bool> Delete(T fmt);
+    Task<ResultOperationInDatabase> Delete(T fmt);
 
-    Task<bool> Save();
+    Task<ResultOperationInDatabase> Save();
 }

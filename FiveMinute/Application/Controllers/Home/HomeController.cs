@@ -3,7 +3,7 @@ using System.Diagnostics;
 using FiveMinute.Models;
 using Microsoft.AspNetCore.Identity;
 using FiveMinute.ViewModels.HomeViewModels;
-using FiveMinute.Repository.FiveMinuteTestRepository;
+using FiveMinute.Repository.FMTestRepository;
 using FiveMinute.Interfaces;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using FiveMinute.Utils;

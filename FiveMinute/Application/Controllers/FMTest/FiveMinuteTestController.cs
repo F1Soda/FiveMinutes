@@ -1,4 +1,4 @@
-using FiveMinute.Repository.FiveMinuteTestRepository;
+using FiveMinute.Repository.FMTestRepository;
 using FiveMinute.ViewModels.FiveMinuteTestViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

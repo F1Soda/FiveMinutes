@@ -11,21 +11,26 @@ public abstract class DefaultRepository<T> : IDefaultRepository<T>
     {
         this.context = context;
     }
-    public async Task<bool> Add(T obj)
+    public async Task<ResultOperationInDatabase> Add(T obj)
     {
         context.Add(obj);
         return await Save();
     }
 
-    public async Task<bool> Delete(T obj)
+    public virtual async Task<ResultOperationInDatabase> Delete(T obj)
     {
         context.Remove(obj);
         return await Save();
     }
-    public async Task<bool> Save()
+    public async Task<ResultOperationInDatabase> Save()
     {
-        var saved = context.SaveChanges();
-        return saved >= 0 ? true : false;
+        try {
+            var saved = await context.SaveChangesAsync();
+            return new ResultOperationInDatabase(saved >= 0, null);
+        }
+        catch (Exception e) {
+            return new ResultOperationInDatabase(false, e);
+        }
     }
 
 }

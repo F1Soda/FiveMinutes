@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using FiveMinute.Data;
 using FiveMinute.Models;
 
-namespace FiveMinute.Repository.FiveMinuteTestRepository;
+namespace FiveMinute.Repository.FMTestRepository;
 
 public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFiveMinuteTestRepository
 {

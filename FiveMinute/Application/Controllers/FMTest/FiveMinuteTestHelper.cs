@@ -30,6 +30,7 @@ public partial class FiveMinuteTestController {
 			IdToUninclude = new List<int>(),
 			UserOrganizerId = user.Id,
 			UserOrganizer = user,
+			Name = viewModel.Name,
 			FiveMinuteTemplate = attachedTemplate,
 			FiveMinuteTemplateId = viewModel.AttachedFMTId,
 			Results = new List<FiveMinuteTestResult>(),

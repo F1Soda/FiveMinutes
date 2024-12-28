@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinute.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241219155448_StyopaCantCreateButICan")]
-    partial class StyopaCantCreateButICan
+    [Migration("20241228182628_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -140,9 +140,6 @@ namespace FiveMinute.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("OriginId")
-                        .HasColumnType("integer");
-
                     b.Property<bool>("ShowInProfile")
                         .HasColumnType("boolean");
 
@@ -151,8 +148,6 @@ namespace FiveMinute.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OriginId");
 
                     b.HasIndex("UserOwnerId");
 
@@ -499,22 +494,17 @@ namespace FiveMinute.Migrations
                                 .HasForeignKey("AppUserId");
                         });
 
-                    b.Navigation("UserData");
+                    b.Navigation("UserData")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FiveMinute.Models.FiveMinuteTemplate", b =>
                 {
-                    b.HasOne("FiveMinute.Models.FiveMinuteTemplate", "Origin")
-                        .WithMany()
-                        .HasForeignKey("OriginId");
-
                     b.HasOne("FiveMinute.Models.AppUser", "UserOwner")
                         .WithMany("FMTemplates")
                         .HasForeignKey("UserOwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Origin");
 
                     b.Navigation("UserOwner");
                 });

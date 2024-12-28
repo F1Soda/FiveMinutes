@@ -14,15 +14,16 @@ public partial class HomeController {
 	}
 
 	private async Task<IActionResult> TryDeleteEntity(int entityId, AppUser currentUser, dynamic repository) {
-		var test = await repository.GetByIdAsync(entityId);
-		if (test == null)
+		var entity = await repository.GetByIdAsync(entityId);
+		if (entity == null)
 			return Json(new { success = false, reason = $"Where is no element with id {entityId}" });
-		if (await repository.Delete(test)) {
+		var status = await repository.Delete(entity);
+		if (status) {
 			var (templatesHtml, testsHtml, testCardsRowHtml) = await GetUpdatedHmtlTableString(currentUser);
 			return Json(new { success = true, templatesHtml, testsHtml, testCardsRowHtml });
 		}
 
-		return Json(new { success = false, reason = "Occur some error while cascade element" });
+		return Json(new { success = false, reason = $"Occur some error while cascade element: {status.Exception}" });
 	}
 
 	private async Task<(string templatesHtml, string testsHtml, string testCardsRowHtml)> GetUpdatedHmtlTableString(

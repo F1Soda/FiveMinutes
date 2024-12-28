@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinute.Migrations
 {
     /// <inheritdoc />
-    public partial class FUCK_THIS_APP : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,9 +33,9 @@ namespace FiveMinute.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     UserRole = table.Column<string>(type: "text", nullable: false),
-                    UserData_FirstName = table.Column<string>(type: "text", nullable: true),
-                    UserData_LastName = table.Column<string>(type: "text", nullable: true),
-                    UserData_Group = table.Column<string>(type: "text", nullable: true),
+                    UserData_FirstName = table.Column<string>(type: "text", nullable: false),
+                    UserData_LastName = table.Column<string>(type: "text", nullable: false),
+                    UserData_Group = table.Column<string>(type: "text", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -190,7 +190,6 @@ namespace FiveMinute.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    OriginId = table.Column<int>(type: "integer", nullable: true),
                     ShowInProfile = table.Column<bool>(type: "boolean", nullable: false),
                     UserOwnerId = table.Column<string>(type: "text", nullable: false)
                 },
@@ -203,11 +202,6 @@ namespace FiveMinute.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FiveMinuteTemplates_FiveMinuteTemplates_OriginId",
-                        column: x => x.OriginId,
-                        principalTable: "FiveMinuteTemplates",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -249,6 +243,7 @@ namespace FiveMinute.Migrations
                     Position = table.Column<int>(type: "integer", nullable: false),
                     QuestionText = table.Column<string>(type: "text", nullable: false),
                     ResponseType = table.Column<int>(type: "integer", nullable: false),
+                    Сost = table.Column<int>(type: "integer", nullable: false),
                     FiveMinuteTemplateId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -273,6 +268,7 @@ namespace FiveMinute.Migrations
                     UserData_LastName = table.Column<string>(type: "text", nullable: false),
                     UserData_Group = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
+                    Score = table.Column<int>(type: "integer", nullable: false),
                     FiveMinuteTestId = table.Column<int>(type: "integer", nullable: false),
                     PassTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     AppUserId = table.Column<string>(type: "text", nullable: true)
@@ -324,6 +320,7 @@ namespace FiveMinute.Migrations
                     Text = table.Column<string>(type: "text", nullable: false),
                     Position = table.Column<int>(type: "integer", nullable: false),
                     IsCorrect = table.Column<bool>(type: "boolean", nullable: false),
+                    Score = table.Column<int>(type: "integer", nullable: false),
                     QuestionId = table.Column<int>(type: "integer", nullable: false),
                     QuestionText = table.Column<string>(type: "text", nullable: false),
                     QuestionPosition = table.Column<int>(type: "integer", nullable: false),
@@ -390,11 +387,6 @@ namespace FiveMinute.Migrations
                 name: "IX_FiveMinuteResults_FiveMinuteTestId",
                 table: "FiveMinuteResults",
                 column: "FiveMinuteTestId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FiveMinuteTemplates_OriginId",
-                table: "FiveMinuteTemplates",
-                column: "OriginId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FiveMinuteTemplates_UserOwnerId",

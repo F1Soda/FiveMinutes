@@ -1,7 +1,7 @@
 ﻿using FiveMinute.Models;
 using FiveMinute.Interfaces;
 
-namespace FiveMinute.Repository.FiveMinuteTestRepository
+namespace FiveMinute.Repository.FMTestRepository
 {
 	public interface IFiveMinuteTestRepository : IDefaultRepository<FiveMinuteTest>
 	{

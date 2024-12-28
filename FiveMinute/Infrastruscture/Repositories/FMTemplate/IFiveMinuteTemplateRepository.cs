@@ -1,4 +1,5 @@
-﻿using FiveMinute.Models;
+﻿using FiveMinute.Data;
+using FiveMinute.Models;
 
 namespace FiveMinute.Interfaces
 {
@@ -10,8 +11,5 @@ namespace FiveMinute.Interfaces
 		Task<bool> Update(FiveMinuteTemplate fmt, FiveMinuteTemplate newFmt);
 
 		IEnumerable<FiveMinuteTemplate> GetAllFromUserId(string userId);
-
-		Task<bool> Delete(FiveMinuteTemplate template);
-
 	}
 }

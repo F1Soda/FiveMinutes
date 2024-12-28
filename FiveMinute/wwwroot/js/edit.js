@@ -143,6 +143,12 @@ function save(isFinalSave = false) {
 	// Проверка на пустые поля перед сериализацией
 	let isValid = true;
 
+	if (questionCount == 0) {
+		showPopup("Шаблон должен содержать хотя бы один вопрос!", 'error');
+		isValid = false;
+		return false; // Прервать перебор
+	}
+	
 	$('#questions-container .card').each(function() {
 		// Проверка текста вопроса
 		const questionText = $(this).find('input[name^="Questions"]').val().trim();
