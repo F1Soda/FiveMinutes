@@ -17,9 +17,9 @@ public class FiveMinuteTest
 
 	public DateTime CreationTime { get; set; }
 	
-	public bool StartPlanned = false;
+	public bool StartPlanned { get; set; }
 	public DateTime StartTime { get; set; }
-	public bool EndPlanned = false;
+	public bool EndPlanned { get; set; }
 	public DateTime EndTime { get; set; }
 
 	public List<int> IdToUninclude { get; set; }
@@ -31,9 +31,9 @@ public class FiveMinuteTest
 
 	public bool CanPass(AppUser? user)
 	{
-		var currentTime = DateTime.UtcNow;
+		var currentTime = DateTime.UtcNow.ToUniversalTime();
 		var tooEarly = StartPlanned && (currentTime < StartTime);
-		var tooLate = EndPlanned && currentTime < EndTime;
+		var tooLate = EndPlanned && currentTime > EndTime;
 		if ((tooEarly || tooLate) && user.Id != UserOrganizerId)
 			return false;
 		return true;

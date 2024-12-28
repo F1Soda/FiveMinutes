@@ -69,7 +69,8 @@ namespace FiveMinute.Controllers {
 			if (fmTest == null) return NotFoundError();
 
 			var currentUser = await _userManager.GetUserAsync(User);
-			if (!fmTest.CanPass(currentUser)) return Forbid();
+			if (!fmTest.CanPass(currentUser)) 
+				return View("Error", new ErrorViewModel($"Невозможно пройти пятиминутку, так как она закончилась, либо еще не началась"));
 
 			var viewModel = FMTestPassingViewModel.CreateByModel(fmTest);
 			if (currentUser != null && User.Identity!.IsAuthenticated) {
@@ -95,7 +96,10 @@ namespace FiveMinute.Controllers {
 			if (existingFmTest == null) return NotFoundError();
 
 			var updatedTest = UpdateTestFromViewModel(viewModel, existingFmTest);
-			if (!await _fiveMinuteTestRepository.Update(updatedTest)) return View("Error");
+			// viewModel.StartTime = viewModel.StartTime.ToUniversalTime();
+			// viewModel.EndTime = viewModel.EndTime.ToUniversalTime();
+			var status = await _fiveMinuteTestRepository.Update(updatedTest);
+			if (!status) return View("Error", new ErrorViewModel($"ERROR: {status.Exception}"));
 
 			return RedirectToAction("Detail", new { testId = updatedTest.Id });
 		}

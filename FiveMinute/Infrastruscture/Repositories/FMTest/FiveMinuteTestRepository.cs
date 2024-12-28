@@ -9,7 +9,7 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 	public FiveMinuteTestRepository(ApplicationDbContext context) : base(context)
 	{
 	}
-	public async Task<bool> AddResultToTest(int testId, FiveMinuteTestResult testResults)
+	public async Task<ResultOperationInDatabase> AddResultToTest(int testId, FiveMinuteTestResult testResults)
 	{
 		var FMTest = await GetByIdAsync(testId);
 
@@ -41,7 +41,7 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 			.FirstOrDefaultAsync(x => x.Id == id);
 	}
 
-	public async Task<bool> Update(FiveMinuteTest updatedTest)
+	public async Task<ResultOperationInDatabase> Update(FiveMinuteTest updatedTest)
 	{
 		var existingTest = await GetByIdAsync(updatedTest.Id);
 		if (existingTest == null)

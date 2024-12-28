@@ -1,4 +1,5 @@
-﻿using FiveMinute.Models;
+﻿using FiveMinute.Data;
+using FiveMinute.Models;
 using FiveMinute.Interfaces;
 
 namespace FiveMinute.Repository.FMTestRepository
@@ -7,9 +8,9 @@ namespace FiveMinute.Repository.FMTestRepository
 	{
 		public Task<FiveMinuteTest?> GetByIdAsync(int id);
 
-		public Task<bool> Update(FiveMinuteTest updatedTest);
+		public Task<ResultOperationInDatabase> Update(FiveMinuteTest updatedTest);
 
-		public Task<bool> AddResultToTest(int testId, FiveMinuteTestResult testResults);
+		public Task<ResultOperationInDatabase> AddResultToTest(int testId, FiveMinuteTestResult testResults);
 
 		IEnumerable<FiveMinuteTest> GetAllFromUserId(string userId);
 	}
