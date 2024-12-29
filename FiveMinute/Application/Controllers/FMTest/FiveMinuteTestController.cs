@@ -123,9 +123,14 @@ namespace FiveMinute.Controllers {
 			if (currentUser == null) return Json(new { success = false, exception = "Not allowed"});
 
 			if (existingFmTest == null) return Json(new { success = false, exception = "Not Found"});
-
-			// TODO: Тут надо добавить дополнительную логику -- если есть текстовые ответы, то статус : на проверке
+			
 			existingFmTest.Status = TestStatus.Completed;
+			foreach (var question in existingFmTest.FiveMinuteTemplate.Questions) {
+				if (question.ResponseType == ResponseType.Text) {
+					existingFmTest.Status = TestStatus.InRechekingProcess;
+					break;
+				}
+			}
 			var status = await _fiveMinuteTestRepository.Update(existingFmTest);
 			if (!status) return Json(new { success = false, exception = status.Exception});
 
