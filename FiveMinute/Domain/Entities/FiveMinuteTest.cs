@@ -34,7 +34,7 @@ public class FiveMinuteTest
 		var currentTime = DateTime.UtcNow.ToUniversalTime();
 		var tooEarly = StartPlanned && (currentTime < StartTime);
 		var tooLate = EndPlanned && currentTime > EndTime;
-		if ((tooEarly || tooLate) && user.Id != UserOrganizerId)
+		if ((tooEarly || tooLate || Status == TestStatus.Completed) && user.Id != UserOrganizerId)
 			return false;
 		return true;
 	}

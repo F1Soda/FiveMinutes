@@ -7,6 +7,7 @@ using FiveMinute.Interfaces;
 using FiveMinute.Models;
 using FiveMinute.Utils;
 using System.Net;
+using FiveMinute.Data;
 
 namespace FiveMinute.Controllers {
 	public partial class FiveMinuteTestController : Controller {
@@ -91,17 +92,44 @@ namespace FiveMinute.Controllers {
 		[HttpPost]
 		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel viewModel) {
 			var (currentUser, existingFmTest) = await GetCurrentUserAndTest(viewModel.Id);
-			if (currentUser == null) return UnauthorizedAccessError();
+			if (currentUser == null || !currentUser.canCreate) return UnauthorizedAccessError();
 
 			if (existingFmTest == null) return NotFoundError();
 
 			var updatedTest = UpdateTestFromViewModel(viewModel, existingFmTest);
-			// viewModel.StartTime = viewModel.StartTime.ToUniversalTime();
-			// viewModel.EndTime = viewModel.EndTime.ToUniversalTime();
 			var status = await _fiveMinuteTestRepository.Update(updatedTest);
 			if (!status) return View("Error", new ErrorViewModel($"ERROR: {status.Exception}"));
 
 			return RedirectToAction("Detail", new { testId = updatedTest.Id });
+		}
+		
+		[HttpPost]
+		public async Task<IActionResult> ActivateTest([FromBody] SwitchStatusRequestId switchStatusRequestId) {
+			var (currentUser, existingFmTest) = await GetCurrentUserAndTest(switchStatusRequestId.Id);
+			if (currentUser == null) return Json(new { success = false, exception = "Not allowed"});
+
+			if (existingFmTest == null) return Json(new { success = false, exception = "Not Found"});
+			
+			existingFmTest.Status = TestStatus.Started;
+			var status = await _fiveMinuteTestRepository.Update(existingFmTest);
+			if (!status) return Json(new { success = false, exception = status.Exception});
+
+			return Json(new { success = true, exception = ""});
+		}
+		
+		[HttpPost]
+		public async Task<JsonResult> DeactivateTest([FromBody] SwitchStatusRequestId switchStatusRequestId) {
+			var (currentUser, existingFmTest) = await GetCurrentUserAndTest(switchStatusRequestId.Id);
+			if (currentUser == null) return Json(new { success = false, exception = "Not allowed"});
+
+			if (existingFmTest == null) return Json(new { success = false, exception = "Not Found"});
+
+			// TODO: Тут надо добавить дополнительную логику -- если есть текстовые ответы, то статус : на проверке
+			existingFmTest.Status = TestStatus.Completed;
+			var status = await _fiveMinuteTestRepository.Update(existingFmTest);
+			if (!status) return Json(new { success = false, exception = status.Exception});
+
+			return Json(new { success = true, exception = ""});
 		}
 
 		public async Task<IActionResult> FiveMinuteResult(int resultId) {

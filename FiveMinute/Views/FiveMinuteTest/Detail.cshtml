@@ -1,13 +1,30 @@
-﻿@model FiveMinute.ViewModels.FiveMinuteTestViewModels.FiveMinuteTestDetailViewModel
+﻿@using FiveMinute.Data
+@model FiveMinute.ViewModels.FiveMinuteTestViewModels.FiveMinuteTestDetailViewModel
 
-<partial name="_Popup" />
+<partial name="_Popup"/>
 
 @{
     ViewData["Title"] = "Test Details";
 }
 
+
+
 <div class="container mt-4">
-    <h1>@Model.Name</h1>
+    <div class="container">
+        <div class="row">
+            <h1>@Model.Name</h1>
+
+            @{
+                var buttonText = "Открыть";
+                var buttonClass = "btn btn-success";
+                if (Model.Status == TestStatus.Planned || Model.Status == TestStatus.Started) {
+                    buttonText = "Закрыть";
+                    buttonClass = "btn btn-danger btn-delete";
+                }
+            }
+            <input id="closeOpenTest" class="@buttonClass" value="@buttonText"/>
+        </div>
+    </div>
 
     <!-- Tab Navigation -->
     <ul class="nav nav-tabs" id="testDetailTabs" role="tablist">
@@ -30,8 +47,6 @@
                 startDateString = Model.StartTime.ToLocalTime().ToString("yyyy-MM-ddTHH:mm");
             if (Model.EndTime != default)
                 endDateString = Model.EndTime.ToLocalTime().ToString("yyyy-MM-ddTHH:mm");
-            var startChecked = Model.StartPlanned ? "checked" : "";
-            var endChecked = Model.EndPlanned ? "checked" : "";
         }
         <!-- Statistics Tab Pane -->
         <div class="tab-pane fade show active" id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
@@ -153,18 +168,21 @@
                         }
                     </div>
                 </div>
-                
+
                 <div class="mb-3">
                     <label for="startPlanned" class="form-label">Запланировать начало</label>
                     @if (Model.StartPlanned) {
-                        <input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned" onchange="toggleStartTimeInput()" checked/>
+                        <input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"
+                               onchange="toggleStartTimeInput()" checked/>
                     }
                     else {
-                        <input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned" onchange="toggleStartTimeInput()"/>
+                        <input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"
+                               onchange="toggleStartTimeInput()"/>
                     }
                     <div id="startTimeInput" class="mt-2" style="display: @(Model.StartPlanned ? "block" : "none")">
                         <label for="startDateTime" class="form-label">Дата и время начала</label>
-                        <input type="datetime-local" id="startDateTime" asp-for="StartTime" class="form-control" value="@startDateString" />
+                        <input type="datetime-local" id="startDateTime" asp-for="StartTime" class="form-control"
+                               value="@startDateString"/>
                         <span asp-validation-for="IsValidDateRange"></span>
                     </div>
                 </div>
@@ -172,14 +190,17 @@
                 <div class="mb-3">
                     <label for="endPlanned" class="form-label">Запланировать окончание</label>
                     @if (Model.EndPlanned) {
-                        <input type="checkbox" id="endPlanned" asp-for="EndPlanned"  class="form-check-input" onchange="toggleEndTimeInput()" checked/>
+                        <input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input"
+                               onchange="toggleEndTimeInput()" checked/>
                     }
                     else {
-                        <input type="checkbox" id="endPlanned" asp-for="EndPlanned"  class="form-check-input" onchange="toggleEndTimeInput()"/>
+                        <input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input"
+                               onchange="toggleEndTimeInput()"/>
                     }
                     <div id="endTimeInput" class="mt-2" style="display: @(Model.EndPlanned ? "block" : "none")">
                         <label for="endDateTime" class="form-label">Дата и время окончания</label>
-                        <input type="datetime-local" id="endDateTime" asp-for="EndTime" class="form-control" value="@endDateString"/>
+                        <input type="datetime-local" id="endDateTime" asp-for="EndTime" class="form-control"
+                               value="@endDateString"/>
                         <span asp-validation-for="IsValidDateRange"></span>
                     </div>
                 </div>
@@ -193,6 +214,9 @@
 @section Scripts {
     <script>
         const questionCount = @Model.AttachedFMT.Questions.Count;
+        let testIsOpen = @((Model.Status == TestStatus.Started).ToString().ToLower());
+        let testId = '@Model.Id';
+        const buttonCloseOpenTest = document.getElementById('closeOpenTest');
     </script>
     <script src="~/js/questionCheckboxHandler.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

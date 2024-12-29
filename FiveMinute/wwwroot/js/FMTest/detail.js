@@ -1,3 +1,8 @@
+console.log('Test is open:', testIsOpen); // Should log true or false
+console.log('Test ID:', testId); // Should log the string value of test ID
+console.log('Number of questions:', questionCount); // Should log the number of questions
+
+
 document.addEventListener('DOMContentLoaded', function () {
 
     // Bind the submit function to the Save button's click event
@@ -46,6 +51,42 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.error('Fetch error:', error);
                     alert('Ошибка при обновлении ответа.');
                 });
+        }
+    });
+
+    document.getElementById('closeOpenTest').addEventListener('click', async () => {
+        try {
+            let input = '/FiveMinuteTest/ActivateTest';
+            if (testIsOpen) {
+                input = '/FiveMinuteTest/DeactivateTest';
+            }
+            const response = await fetch(input, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest' // Ensures it’s an AJAX request
+                },
+                body: JSON.stringify({Id: testId}) // Adjust if your action requires parameters
+            });
+            const result = await response.json();
+            if (result.success) {
+                showPopup("Статус теста обновлен!", "notification");
+                testIsOpen = !testIsOpen;
+
+                if (testIsOpen) {
+                    buttonCloseOpenTest.className = 'btn btn-danger btn-delete';
+                    buttonCloseOpenTest.value = 'Закрыть';
+                } else {
+                    buttonCloseOpenTest.className = 'btn btn-success';
+                    buttonCloseOpenTest.value = 'Открыть';
+                }
+                
+            } else {
+                alert(result.exception);
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            alert('Something went wrong!');
         }
     });
 });

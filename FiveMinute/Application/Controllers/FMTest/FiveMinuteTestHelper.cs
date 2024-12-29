@@ -5,6 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace FiveMinute.Controllers;
 
 public partial class FiveMinuteTestController {
+	public class SwitchStatusRequestId {
+		public int Id { get; set; }
+	}
+
+	
 	private async Task<AppUser?> GetCurrentUser() {
 		return await _userManager.GetUserAsync(User);
 	}
