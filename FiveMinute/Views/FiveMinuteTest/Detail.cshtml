@@ -147,6 +147,17 @@
                 <input type="hidden" name="Status" value="@Model.Status"/>
                 <input type="hidden" id="IdToUninclude" name="IdToUninclude"/>
 
+                <div class="form-group">
+                    <label for="testName" class="form-label">Название</label>
+                    <input type="text" id="testName" asp-for="Name" class="form-control"/>
+
+                    @* <div id="nameInput" class="mt-2" style="display: @(Model.EndPlanned ? "block" : "none")"> *@
+                    @*     <label for="testName" class="form-label">ДНазвание</label> *@
+                    @*     <input type="datetime-local" id="endDateTime" asp-for="EndTime" class="form-control" *@
+                    @*            value="@endDateString"/> *@
+                    @* </div> *@
+                </div>
+
                 <div class="mb-4">
                     <h4>Управление вопросами</h4>
                     <div class="list-group">
