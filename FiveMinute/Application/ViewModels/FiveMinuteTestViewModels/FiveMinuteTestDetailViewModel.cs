@@ -12,6 +12,9 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels {
 		[Required] public string Name { get; set; }
 		[Required] public int AttachedFMTId { get; set; }
 		[Required] public FiveMinuteTemplateEditViewModel AttachedFMT { get; set; }
+		
+		public string kekForKek { get; set; }
+		
 		public TestStatus Status { get; set; }
 		public bool IsValidDateRange => StartTime < EndTime;
 

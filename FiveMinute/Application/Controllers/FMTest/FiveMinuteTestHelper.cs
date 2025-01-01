@@ -49,6 +49,7 @@ public partial class FiveMinuteTestController {
 		updatedTest.FiveMinuteTemplate = existingFmTest.FiveMinuteTemplate;
 		updatedTest.FiveMinuteTemplateId = existingFmTest.FiveMinuteTemplate.Id;
 		updatedTest.Results = existingFmTest.Results;
+		updatedTest.Name = viewModel.kekForKek;
 		return updatedTest;
 	}
 }

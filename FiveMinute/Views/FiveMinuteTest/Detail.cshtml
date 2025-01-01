@@ -4,7 +4,7 @@
 <partial name="_Popup"/>
 
 @{
-    ViewData["Title"] = "Test Details";
+    ViewData["Title"] = "Детали теста";
 }
 
 
@@ -141,23 +141,13 @@
         <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
 
             <form method="post" action="@Url.Action("UpdateTestSettings", "FiveMinuteTest")">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
                 <input type="hidden" name="Id" value="@Model.Id"/>
                 <input type="hidden" name="Name" value="@Model.Name"/>
                 <input type="hidden" name="Status" value="@Model.Status"/>
                 <input type="hidden" id="IdToUninclude" name="IdToUninclude"/>
 
-                <div class="form-group">
-                    <label for="testName" class="form-label">Название</label>
-                    <input type="text" id="testName" asp-for="Name" class="form-control"/>
-
-                    @* <div id="nameInput" class="mt-2" style="display: @(Model.EndPlanned ? "block" : "none")"> *@
-                    @*     <label for="testName" class="form-label">ДНазвание</label> *@
-                    @*     <input type="datetime-local" id="endDateTime" asp-for="EndTime" class="form-control" *@
-                    @*            value="@endDateString"/> *@
-                    @* </div> *@
-                </div>
-
+ 
                 <div class="mb-4">
                     <h4>Управление вопросами</h4>
                     <div class="list-group">
@@ -180,6 +170,12 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    @* Не осуждайте меня. Эта залупа ни в какую не хочет сохранять имя в существующий параметр. Придумал такой костыль *@
+                    <label asp-for="kekForKek">Имя</label>
+                    <input asp-for="kekForKek" type="text" id="kekForKek" class="form-control" value="@Model.Name"/>
+                </div>
+                
                 <div class="mb-3">
                     <label for="startPlanned" class="form-label">Запланировать начало</label>
                     @if (Model.StartPlanned) {
