@@ -70,6 +70,23 @@ document.addEventListener('DOMContentLoaded', function () {
 			UpdateTestStatus('/FiveMinuteTest/ActivateTest');
 		});
 	}
+
+	$(document).on('click', '#copyUrlButton', function (e) {
+		// Construct the URL dynamically
+		let encryptedId = document.getElementById('copyUrlButton').getAttribute('encryptedId');
+
+		let url = `${window.location.origin}/FiveMinuteTest/Pass?encryptedId=${encryptedId}`;
+
+		// Copy the URL to the clipboard
+		navigator.clipboard.writeText(url)
+			.then(() => {
+				showPopup("Ссылка успешно скопирована в буфер обмена!", "notification");
+			})
+			.catch(err => {
+				console.error('Ошибка при копировании ссылки:', err);
+				showPopup('Не удалось скопировать ссылку.', "error");
+			});
+	});
 });
 
 
@@ -91,13 +108,20 @@ async function UpdateTestStatus(input) {
 			//buttonCloseTest.className = 'btn btn-danger btn-delete';
 			buttonCloseTest.value = 'Закрыть';
 			buttonOpenTest.value = 'Открыть';
-				
+			uncheckTimePlaneCheckboxes();
+			let subStatus = document.getElementById('sub-status');
+
+			if (subStatus != null) {
+				subStatus.hidden = true;
+			}
+
+
 			if (testIsOpen) {
 				buttonCloseTest.hidden = false;
 				buttonOpenTest.hidden = true;
 			} else {
 				buttonCloseTest.hidden = true;
-				buttonOpenTest.hidden = false;	
+				buttonOpenTest.hidden = false;
 			}
 
 			// Update status badge
@@ -113,6 +137,17 @@ async function UpdateTestStatus(input) {
 		alert('Something went wrong!');
 	}
 }
+
+
+function uncheckTimePlaneCheckboxes() {
+	document.getElementById('startPlanned').checked = false;
+	document.getElementById('endPlanned').checked = false;
+
+	toggleStartTimeInput();
+	toggleEndTimeInput();
+
+}
+
 
 function toggleStartTimeInput() {
 	var startPlanned = document.getElementById('startPlanned').checked;

@@ -55,6 +55,10 @@ public partial class FiveMinuteTestController {
 		{
 			updatedTest.Status = Data.TestStatus.Planned;
 		}
+		else
+		{
+			updatedTest.Status = Data.TestStatus.Closed;
+		}
 
 		return updatedTest;
 	}

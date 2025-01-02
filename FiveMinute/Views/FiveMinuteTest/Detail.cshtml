@@ -47,8 +47,16 @@
 				{
 					<div class="">
 						<a class="btn btn-secondary" asp-area="" asp-route-encryptedId="@Model.EncryptedId" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
-						<input id="closeTest" type="button" class="btn btn-danger btn-delete" value="Закрыть преждвременно" />
-						<input id="openTest" type="button" class="btn btn-success" value="Открыть преждвременно" />
+						@if (Model.CanPass())
+						{
+							<input id="closeTest" type="button" class="btn btn-danger btn-delete" value="Закрыть преждвременно" />
+							<input id="openTest" type="button" class="btn btn-primary" hidden value="Открыть преждвременно" />
+						}
+						else{
+							<input id="closeTest" type="button" class="btn btn-danger btn-delete" hidden value="Закрыть преждвременно" />
+							<input id="openTest" type="button" class="btn btn-primary" value="Открыть преждвременно" />
+						}
+						
 					</div>
 				}
 				else if (Model.Status == TestStatus.Started)
@@ -56,15 +64,15 @@
 					<div class="">
 						<a class="btn btn-secondary" asp-area="" asp-route-encryptedId="@Model.EncryptedId" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
 						<input id="closeTest" type="button" class="btn btn-danger btn-delete" value="Закрыть" />
-						<input id="openTest" type="button" class="btn btn-success" hidden value="Открыть" />
+						<input id="openTest" type="button" class="btn btn-primary" hidden value="Открыть" />
 					</div>
 				}
-				else if (Model.Status == TestStatus.Completed)
+				else if (Model.Status == TestStatus.Closed)
 				{
 					<div class="">
 						<a class="btn btn-secondary" asp-area="" asp-route-encryptedId="@Model.EncryptedId" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
 						<input id="closeTest" type="button" class="btn btn-danger btn-delete" hidden value="Закрыть" />
-						<input id="openTest" type="button" class="btn btn-success" value="Открыть" />
+						<input id="openTest" type="button" class="btn btn-primary" value="Открыть" />
 					</div>
 				}
 
@@ -78,10 +86,10 @@
 			{
 				if (Model.CanPass())
 				{
-					<span class="badge @GetStatusClass(TestStatus.Started) text-white">@ConvertEnumToString(TestStatus.Started)</span>
+					<span id="sub-status" class="badge @GetStatusClass(TestStatus.Started) text-white">@ConvertEnumToString(TestStatus.Started)</span>
 				}
 				else{
-					<span class="badge @GetStatusClass(TestStatus.Closed) text-white">@ConvertEnumToString(TestStatus.Closed)</span>
+					<span id="sub-status" class="badge @GetStatusClass(TestStatus.Closed) text-white">@ConvertEnumToString(TestStatus.Closed)</span>
 				}
 			}
 			
@@ -92,6 +100,9 @@
 				@Model.AttachedFMT.Name
 			</a>
 		</p>
+
+		<a class="btn btn-secondary" id="copyUrlButton" encryptedId="@Model.EncryptedId">Скопировать ссылку</a>
+		
 
 		@if (Model.StartPlanned)
 		{

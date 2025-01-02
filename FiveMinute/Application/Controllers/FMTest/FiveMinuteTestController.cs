@@ -86,8 +86,11 @@ namespace FiveMinute.Controllers
 
 			var currentUser = await _userManager.GetUserAsync(User);
 
-			if ((currentUser != null && currentUser.Id != fmTest.UserOrganizerId) || !fmTest.CanPass())
-				return View("Error", new ErrorViewModel($"Невозможно пройти пятиминутку, так как она закончилась, либо еще не началась"));
+			if (currentUser == null || currentUser.Id != fmTest.UserOrganizerId)
+			{
+				if (!fmTest.CanPass())
+					return View("Error", new ErrorViewModel($"Невозможно пройти пятиминутку, так как она закончилась, либо еще не началась"));
+			}
 
 			var viewModel = FMTestPassingViewModel.CreateByModel(fmTest);
 			if (currentUser != null && User.Identity!.IsAuthenticated)
@@ -133,6 +136,8 @@ namespace FiveMinute.Controllers
 			if (existingFmTest == null) return Json(new { success = false, exception = "Not Found" });
 
 			existingFmTest.Status = TestStatus.Started;
+			existingFmTest.StartPlanned = false;
+			existingFmTest.EndPlanned = false;
 			var status = await _fiveMinuteTestRepository.Update(existingFmTest);
 			if (!status) return Json(new { success = false, exception = status.Exception});
 
@@ -147,9 +152,11 @@ namespace FiveMinute.Controllers
 
 			if (existingFmTest == null) return Json(new { success = false, exception = "Not Found" });
 
-			existingFmTest.Status = TestStatus.Completed;
-			var statusText = "Завершена";
-			var statusClass = "bg-success";
+			existingFmTest.Status = TestStatus.Closed;
+			existingFmTest.StartPlanned = false;
+			existingFmTest.EndPlanned = false;
+			var statusText = "Закрыта";
+			var statusClass = "bg-danger";
 			foreach (var res in existingFmTest.Results)			{
 				if (res.Status == ResultStatus.Accepted)
 				{
@@ -159,6 +166,7 @@ namespace FiveMinute.Controllers
 					break;
 				}
 			}
+
 			var status = await _fiveMinuteTestRepository.Update(existingFmTest);
 			if (!status) return Json(new { success = false, exception = status.Exception});
 

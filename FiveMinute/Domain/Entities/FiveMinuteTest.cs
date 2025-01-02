@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using FiveMinute.Data;
+using FiveMinute.Domain.FMTestChecker;
 
 namespace FiveMinute.Models;
 
@@ -29,13 +30,6 @@ public class FiveMinuteTest
 	public string? UserOrganizerId { get; set; }
 	public AppUser? UserOrganizer { get; set; }
 
-	public bool CanPass()
-	{
-		var currentTime = DateTime.UtcNow.ToUniversalTime();
-		var tooEarly = StartPlanned && (currentTime < StartTime);
-		var tooLate = EndPlanned && currentTime > EndTime;
-		if ((tooEarly || tooLate || Status == TestStatus.Completed))
-			return false;
-		return true;
-	}
+	public bool CanPass() => PassChecker.CanPass(this);
+	
 }

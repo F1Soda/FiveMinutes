@@ -11,7 +11,7 @@ namespace FiveMinute.Domain.FMTestChecker
 			var currentTime = DateTime.UtcNow.ToUniversalTime();
 			var tooEarly = FMTest.StartPlanned && (currentTime < FMTest.StartTime);
 			var tooLate = FMTest.EndPlanned && currentTime > FMTest.EndTime;
-			if ((tooEarly || tooLate || FMTest.Status == TestStatus.Completed))
+			if ((tooEarly || tooLate || FMTest.Status == TestStatus.Closed))
 				return false;
 			return true;
 		}
@@ -22,7 +22,7 @@ namespace FiveMinute.Domain.FMTestChecker
 			var currentTime = DateTime.UtcNow.ToUniversalTime();
 			var tooEarly = FMTest.StartPlanned && (currentTime < FMTest.StartTime);
 			var tooLate = FMTest.EndPlanned && currentTime > FMTest.EndTime;
-			if ((tooEarly || tooLate || FMTest.Status == TestStatus.Completed))
+			if ((tooEarly || tooLate || FMTest.Status == TestStatus.Closed))
 				return false;
 			return true;
 		}
