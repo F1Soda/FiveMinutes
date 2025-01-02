@@ -18,7 +18,7 @@ public class FMTestPassingViewModel : IInput<FMTestPassingViewModel, FiveMinuteT
 		var fmTemplate = fmTest.FiveMinuteTemplate;
 		return new FMTestPassingViewModel
 		{
-			Name = fmTemplate.Name,
+			Name = fmTest.Name,
 			FMTestId = fmTest.Id,
 			StartTime = fmTest.StartTime,
 			EndTime = fmTest.EndTime,

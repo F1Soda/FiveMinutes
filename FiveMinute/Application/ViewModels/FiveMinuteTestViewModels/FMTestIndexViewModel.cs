@@ -1,4 +1,5 @@
 ﻿using FiveMinute.Data;
+using FiveMinute.Domain.FMTestChecker;
 using FiveMinute.Models;
 using FiveMinute.Utils;
 using FiveMinute.ViewModels.Interfaces;
@@ -17,6 +18,9 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 		public DateTime StartTime { get; set; }
 		public bool EndPlanned = false;
 		public DateTime EndTime { get; set; }
+
+		// Используется для случая, когда тест запланирован
+		public bool isActive { get; set; }
 	
 		public static FMTestIndexViewModel CreateByModel(FiveMinuteTest model)
 		{
@@ -32,6 +36,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 				EndPlanned = model.EndPlanned,
 				EndTime = model.EndTime,
 				Status = model.Status,
+				isActive = PassChecker.CanPass(model)
 			};
 		}
 	}

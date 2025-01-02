@@ -5,6 +5,7 @@ using FiveMinute.ViewModels.Interfaces;
 using FiveMinute.Data;
 using FiveMinute.ViewModels.FMResultViewModels;
 using System.Collections;
+using FiveMinute.Domain.FMTestChecker;
 
 namespace FiveMinute.ViewModels.HomeViewModels
 {
@@ -40,9 +41,9 @@ namespace FiveMinute.ViewModels.HomeViewModels
 
 			};
 
-			rez.ActiveFMTests = rez.FMTests.Where(x => x.Status == TestStatus.Started).ToList();
+			rez.ActiveFMTests = rez.FMTests.Where(x => x.Status == TestStatus.Started || (x.Status == TestStatus.Planned && x.isActive)).ToList();
 			rez.RequiresRecheckingFMTests = rez.FMTests.Where(x => x.Status == TestStatus.InRechekingProcess).ToList();
-			rez.PlannedFMTests = rez.FMTests.Where(x => x.Status == TestStatus.Planned).ToList();
+			rez.PlannedFMTests = rez.FMTests.Where(x => x.Status == TestStatus.Planned && !x.isActive).ToList();
 			return rez;
 		}
 	}

@@ -11,6 +11,23 @@ $(document).ready(function () {
         delete_test(this); // Pass the clicked button element to the function
         console.log("Delete test")
     });
+
+    $(document).on('click', '#copyUrlButton', function (e) {
+        // Construct the URL dynamically
+        let encryptedId = document.getElementById('copyUrlButton').getAttribute('encryptedId');
+
+        let url = `${window.location.origin}/FiveMinuteTest/Pass?encryptedId=${encryptedId}`;
+
+        // Copy the URL to the clipboard
+        navigator.clipboard.writeText(url)
+            .then(() => {
+                showPopup("Ссылка успешно скопирована в буфер обмена!", "notification");
+            })
+            .catch(err => {
+                console.error('Ошибка при копировании ссылки:', err);
+                showPopup('Не удалось скопировать ссылку.', "error");
+            });
+    });
 });
 
 function delete_template(button) {
@@ -62,3 +79,4 @@ function delete_test(button) {
         }
     });
 }
+

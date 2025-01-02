@@ -1,5 +1,7 @@
 ﻿@model FiveMinute.ViewModels.HomeViewModels.IndexViewModel
 
+<partial name="_Popup" />
+
 @if (Model != null)
 {
 	@if (Model.UserRole == "teacher" || Model.UserRole == "admin")

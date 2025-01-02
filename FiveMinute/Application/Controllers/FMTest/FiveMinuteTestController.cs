@@ -9,8 +9,10 @@ using FiveMinute.Utils;
 using System.Net;
 using FiveMinute.Data;
 
-namespace FiveMinute.Controllers {
-	public partial class FiveMinuteTestController : Controller {
+namespace FiveMinute.Controllers
+{
+	public partial class FiveMinuteTestController : Controller
+	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly IUserRepository _userRepository;
 		private readonly IFiveMinuteTestRepository _fiveMinuteTestRepository;
@@ -22,7 +24,8 @@ namespace FiveMinute.Controllers {
 			IUserRepository userRepository,
 			IFiveMinuteTestRepository fiveMinuteTestRepository,
 			IFiveMinuteResultsRepository fiveMinuteResultsRepository,
-			IChecker fmtChecker) {
+			IChecker fmtChecker)
+		{
 			_userManager = userManager;
 			_userRepository = userRepository;
 			_fiveMinuteTestRepository = fiveMinuteTestRepository;
@@ -32,7 +35,8 @@ namespace FiveMinute.Controllers {
 
 		public IActionResult Passed() => View();
 
-		public async Task<IActionResult> Detail(int testId) {
+		public async Task<IActionResult> Detail(int testId)
+		{
 			var (currentUser, fmTest) = await GetCurrentUserAndTest(testId);
 			if (currentUser == null || !currentUser.canCreate) return UnauthorizedAccessError();
 
@@ -41,7 +45,8 @@ namespace FiveMinute.Controllers {
 			return View(FiveMinuteTestDetailViewModel.CreateByModel(fmTest));
 		}
 
-		public async Task<IActionResult> Create(int templateId) {
+		public async Task<IActionResult> Create(int templateId)
+		{
 			var currentUser = await GetCurrentUser();
 			if (currentUser == null || !currentUser.canCreate) return UnauthorizedAccessError();
 
@@ -52,7 +57,8 @@ namespace FiveMinute.Controllers {
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Create(FiveMinuteTestDetailViewModel viewModel) {
+		public async Task<IActionResult> Create(FiveMinuteTestDetailViewModel viewModel)
+		{
 			var currentUser = await GetCurrentUser();
 			if (currentUser == null || !currentUser.canCreate) return UnauthorizedAccessError();
 
@@ -64,17 +70,28 @@ namespace FiveMinute.Controllers {
 			return RedirectToAction("Detail", new { testId = newTest.Id });
 		}
 
-		public async Task<IActionResult> Pass(string encryptedId) {
-			var testId = UrlEncryptor.Decrypt(encryptedId);
+		public async Task<IActionResult> Pass(string encryptedId)
+		{
+
+			var testId = 0;
+			try
+			{
+				testId = UrlEncryptor.Decrypt(encryptedId);
+			}
+			catch (Exception ex)
+			{
+			}
 			var fmTest = await _fiveMinuteTestRepository.GetByIdAsync(testId);
 			if (fmTest == null) return NotFoundError();
 
 			var currentUser = await _userManager.GetUserAsync(User);
-			if (!fmTest.CanPass(currentUser)) 
+
+			if ((currentUser != null && currentUser.Id != fmTest.UserOrganizerId) || !fmTest.CanPass())
 				return View("Error", new ErrorViewModel($"Невозможно пройти пятиминутку, так как она закончилась, либо еще не началась"));
 
 			var viewModel = FMTestPassingViewModel.CreateByModel(fmTest);
-			if (currentUser != null && User.Identity!.IsAuthenticated) {
+			if (currentUser != null && User.Identity!.IsAuthenticated)
+			{
 				viewModel.UserData = currentUser.UserData;
 				viewModel.userId = currentUser.Id;
 			}
@@ -83,14 +100,16 @@ namespace FiveMinute.Controllers {
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> SendTestResults(TestResultViewModel viewModel) {
+		public async Task<IActionResult> SendTestResults(TestResultViewModel viewModel)
+		{
 			if (!await _fmtChecker.CheckAndSave(viewModel))
 				return View("Error", new ErrorViewModel("Something is wrong. Could not save your answers"));
 			return RedirectToAction("Passed");
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel viewModel) {
+		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel viewModel)
+		{
 			var (currentUser, existingFmTest) = await GetCurrentUserAndTest(viewModel.Id);
 			if (currentUser == null || !currentUser.canCreate) return UnauthorizedAccessError();
 
@@ -100,50 +119,61 @@ namespace FiveMinute.Controllers {
 			var status = await _fiveMinuteTestRepository.Update(updatedTest);
 			if (!status) return View("Error", new ErrorViewModel($"ERROR: {status.Exception}"));
 
+			
+
 			return RedirectToAction("Detail", new { testId = updatedTest.Id });
 		}
-		
-		[HttpPost]
-		public async Task<IActionResult> ActivateTest([FromBody] SwitchStatusRequestId switchStatusRequestId) {
-			var (currentUser, existingFmTest) = await GetCurrentUserAndTest(switchStatusRequestId.Id);
-			if (currentUser == null) return Json(new { success = false, exception = "Not allowed"});
 
-			if (existingFmTest == null) return Json(new { success = false, exception = "Not Found"});
-			
+		[HttpPost]
+		public async Task<IActionResult> ActivateTest([FromBody] SwitchStatusRequestId switchStatusRequestId)
+		{
+			var (currentUser, existingFmTest) = await GetCurrentUserAndTest(switchStatusRequestId.Id);
+			if (currentUser == null) return Json(new { success = false, exception = "Not allowed" });
+
+			if (existingFmTest == null) return Json(new { success = false, exception = "Not Found" });
+
 			existingFmTest.Status = TestStatus.Started;
 			var status = await _fiveMinuteTestRepository.Update(existingFmTest);
 			if (!status) return Json(new { success = false, exception = status.Exception});
 
-			return Json(new { success = true, exception = ""});
+			return Json(new { success = true, exception = "", statusText = "Активна", statusClass = "bg-primary" });
 		}
-		
-		[HttpPost]
-		public async Task<JsonResult> DeactivateTest([FromBody] SwitchStatusRequestId switchStatusRequestId) {
-			var (currentUser, existingFmTest) = await GetCurrentUserAndTest(switchStatusRequestId.Id);
-			if (currentUser == null) return Json(new { success = false, exception = "Not allowed"});
 
-			if (existingFmTest == null) return Json(new { success = false, exception = "Not Found"});
-			
+		[HttpPost]
+		public async Task<JsonResult> DeactivateTest([FromBody] SwitchStatusRequestId switchStatusRequestId)
+		{
+			var (currentUser, existingFmTest) = await GetCurrentUserAndTest(switchStatusRequestId.Id);
+			if (currentUser == null) return Json(new { success = false, exception = "Not allowed" });
+
+			if (existingFmTest == null) return Json(new { success = false, exception = "Not Found" });
+
 			existingFmTest.Status = TestStatus.Completed;
-			foreach (var question in existingFmTest.FiveMinuteTemplate.Questions) {
-				if (question.ResponseType == ResponseType.Text) {
+			var statusText = "Завершена";
+			var statusClass = "bg-success";
+			foreach (var res in existingFmTest.Results)			{
+				if (res.Status == ResultStatus.Accepted)
+				{
 					existingFmTest.Status = TestStatus.InRechekingProcess;
+					statusText = "Требует проверки";
+					statusClass = "bg-brown";
 					break;
 				}
 			}
 			var status = await _fiveMinuteTestRepository.Update(existingFmTest);
 			if (!status) return Json(new { success = false, exception = status.Exception});
 
-			return Json(new { success = true, exception = ""});
+			return Json(new { success = true, exception = "", statusText, statusClass });
 		}
 
-		public async Task<IActionResult> FiveMinuteResult(int resultId) {
+		public async Task<IActionResult> FiveMinuteResult(int resultId)
+		{
 			var currentUser = await GetCurrentUser();
 			var result = await _fiveMinuteResultsRepository.GetById(resultId);
 			var fmTest = await _fiveMinuteTestRepository.GetByIdAsync(result?.FiveMinuteTestId ?? 0);
 
 			if (result == null || currentUser == null ||
-			    (fmTest?.UserOrganizerId != currentUser.Id && result.UserId != currentUser.Id)) {
+				(fmTest?.UserOrganizerId != currentUser.Id && result.UserId != currentUser.Id))
+			{
 				return View("Error", new ErrorViewModel(HttpStatusCode.NotFound.ToString()));
 			}
 
@@ -154,14 +184,17 @@ namespace FiveMinute.Controllers {
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> UpdateAnswerCorrectness([FromBody] CheckTextAnswerCorrectnessViewModel model) {
+		public async Task<IActionResult> UpdateAnswerCorrectness([FromBody] CheckTextAnswerCorrectnessViewModel model)
+		{
 			var test = await _fiveMinuteTestRepository.GetByIdAsync(model.TestId);
 			var answers = test?.Results
-			                  .SelectMany(r => r.Answers)
-			                  .Where(a => a.Text == model.Text);
+							  .SelectMany(r => r.Answers)
+							  .Where(a => a.Text == model.Text);
 
-			if (answers != null) {
-				foreach (var answer in answers) {
+			if (answers != null)
+			{
+				foreach (var answer in answers)
+				{
 					answer.IsCorrect = model.IsCorrect;
 				}
 

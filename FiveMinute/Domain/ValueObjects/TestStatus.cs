@@ -6,6 +6,6 @@
         Started,
         InRechekingProcess,
         Completed,
-        Cancelled,
+        Closed,
     }
 }

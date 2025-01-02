@@ -29,12 +29,12 @@ public class FiveMinuteTest
 	public string? UserOrganizerId { get; set; }
 	public AppUser? UserOrganizer { get; set; }
 
-	public bool CanPass(AppUser? user)
+	public bool CanPass()
 	{
 		var currentTime = DateTime.UtcNow.ToUniversalTime();
 		var tooEarly = StartPlanned && (currentTime < StartTime);
 		var tooLate = EndPlanned && currentTime > EndTime;
-		if ((tooEarly || tooLate || Status == TestStatus.Completed) && user.Id != UserOrganizerId)
+		if ((tooEarly || tooLate || Status == TestStatus.Completed))
 			return false;
 		return true;
 	}

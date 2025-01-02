@@ -50,6 +50,12 @@ public partial class FiveMinuteTestController {
 		updatedTest.FiveMinuteTemplateId = existingFmTest.FiveMinuteTemplate.Id;
 		updatedTest.Results = existingFmTest.Results;
 		updatedTest.Name = viewModel.kekForKek;
+
+		if (viewModel.StartPlanned || viewModel.EndPlanned)
+		{
+			updatedTest.Status = Data.TestStatus.Planned;
+		}
+
 		return updatedTest;
 	}
 }

@@ -13,7 +13,7 @@ public class UserAnswer
     public bool IsCorrect { get; set; }
     public int Score { get; set; }
 
-    [ForeignKey("Question")]
+	[ForeignKey("Question")]
     public int QuestionId { get; set; }
 
     public string QuestionText { get; set; } = "";

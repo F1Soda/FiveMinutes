@@ -1,232 +1,325 @@
 ﻿@using FiveMinute.Data
 @model FiveMinute.ViewModels.FiveMinuteTestViewModels.FiveMinuteTestDetailViewModel
 
-<partial name="_Popup"/>
+<partial name="_Popup" />
 
 @{
-    ViewData["Title"] = "Детали теста";
+	ViewData["Title"] = "Детали теста";
+}
+
+@{
+	string GetStatusClass(TestStatus status)
+	{
+		return status switch
+		{
+			TestStatus.Planned => "bg-warning",
+			TestStatus.Started => "bg-primary",
+			TestStatus.InRechekingProcess => "bg-brown",
+			TestStatus.Completed => "bg-success",
+			TestStatus.Closed => "bg-danger",
+			_ => "bg-light"
+		};
+	}
+
+	string ConvertEnumToString(TestStatus status)
+	{
+		return status switch
+		{
+			TestStatus.Planned => "Запланирована",
+			TestStatus.Started => "Активна",
+			TestStatus.InRechekingProcess => "Требует проверки",
+			TestStatus.Completed => "Завершена",
+			TestStatus.Closed => "Закрыта",
+			_ => "Неизвестный статус"
+		};
+	}
 }
 
 
 
 <div class="container mt-4">
-    <div class="container">
-        <div class="row">
-            <h1>@Model.Name</h1>
+	<div class="container">
+		<div class="row pb-3">
+			<div class="col d-flex align-items-center justify-content-between">
+				<h1 class="mb-0">@Model.Name</h1>
 
-            @{
-                var buttonText = "Открыть";
-                var buttonClass = "btn btn-success";
-                if (Model.Status == TestStatus.Planned || Model.Status == TestStatus.Started) {
-                    buttonText = "Закрыть";
-                    buttonClass = "btn btn-danger btn-delete";
-                }
-            }
-            <input id="closeOpenTest" class="@buttonClass" value="@buttonText"/>
-        </div>
-    </div>
+				@if (Model.Status == TestStatus.Planned)
+				{
+					<div class="">
+						<a class="btn btn-secondary" asp-area="" asp-route-encryptedId="@Model.EncryptedId" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
+						<input id="closeTest" type="button" class="btn btn-danger btn-delete" value="Закрыть преждвременно" />
+						<input id="openTest" type="button" class="btn btn-success" value="Открыть преждвременно" />
+					</div>
+				}
+				else if (Model.Status == TestStatus.Started)
+				{
+					<div class="">
+						<a class="btn btn-secondary" asp-area="" asp-route-encryptedId="@Model.EncryptedId" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
+						<input id="closeTest" type="button" class="btn btn-danger btn-delete" value="Закрыть" />
+						<input id="openTest" type="button" class="btn btn-success" hidden value="Открыть" />
+					</div>
+				}
+				else if (Model.Status == TestStatus.Completed)
+				{
+					<div class="">
+						<a class="btn btn-secondary" asp-area="" asp-route-encryptedId="@Model.EncryptedId" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
+						<input id="closeTest" type="button" class="btn btn-danger btn-delete" hidden value="Закрыть" />
+						<input id="openTest" type="button" class="btn btn-success" value="Открыть" />
+					</div>
+				}
 
-    <!-- Tab Navigation -->
-    <ul class="nav nav-tabs" id="testDetailTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="statistics-tab" data-bs-toggle="tab" href="#statistics" role="tab"
-               aria-controls="statistics" aria-selected="true">Статистика</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="settings-tab" data-bs-toggle="tab" href="#settings" role="tab"
-               aria-controls="settings" aria-selected="false">Настройки</a>
-        </li>
-    </ul>
 
-    <!-- Tab Content -->
-    <div class="tab-content mt-3" id="testDetailTabsContent">
-        @{
-            var startDateString = "";
-            var endDateString = "";
-            if (Model.StartTime != default)
-                startDateString = Model.StartTime.ToLocalTime().ToString("yyyy-MM-ddTHH:mm");
-            if (Model.EndTime != default)
-                endDateString = Model.EndTime.ToLocalTime().ToString("yyyy-MM-ddTHH:mm");
-        }
-        <!-- Statistics Tab Pane -->
-        <div class="tab-pane fade show active" id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
-            <h3>Statistics</h3>
+			</div>
+		</div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Test
-                            Status:</strong> @Model.Status.ToString().Replace("InRechekingProcess", "In Rechecking Process")
-                    </p>
-                    <p><strong>Start Time:</strong> @startDateString</p>
-                    <p><strong>End Time:</strong> @endDateString</p>
-                </div>
-                <div class="col-md-6">
-                    <h4>Statistics for Passers</h4>
-                    <h6>Всего прохождений: @Model.Results.Count()</h6>
+		<p>Статус теста:   
+			<span class="badge @GetStatusClass(Model.Status) text-white">@ConvertEnumToString(Model.Status)</span>
+			@if (Model.Status == TestStatus.Planned)
+			{
+				if (Model.CanPass())
+				{
+					<span class="badge @GetStatusClass(TestStatus.Started) text-white">@ConvertEnumToString(TestStatus.Started)</span>
+				}
+				else{
+					<span class="badge @GetStatusClass(TestStatus.Closed) text-white">@ConvertEnumToString(TestStatus.Closed)</span>
+				}
+			}
+			
+		</p>
+		<p>
+			Привязанная пятиминутка:
+			<a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@Model.AttachedFMTId">
+				@Model.AttachedFMT.Name
+			</a>
+		</p>
 
-                    @foreach (var result in Model.Results) {
-                        var answersDict = new Dictionary<int, List<UserAnswer>>();
-                        foreach (var answer in result.Answers) {
-                            answersDict.TryAdd(answer.QuestionPosition, new List<UserAnswer>());
-                            answersDict[answer.QuestionPosition].Add(answer);
-                        }
+		@if (Model.StartPlanned)
+		{
+			<p>Запланированное время начала: @Model.StartTime.ToLocalTime()</p>
+		}
 
-                        <table class="table table-bordered table-striped mt-3">
-                            <caption>
-                                <div>Id пользователя: @result.UserId</div>
-                                <div>Имя пользователя: @result.UserData.FirstName @result.UserData.FirstName</div>
-                                <div>Время прохождения: @result.PassTime</div>
-                                <div>Всего
-                                    баллов: @answersDict.Values.SelectMany(x => x).Sum(x => x.IsCorrect ? 1 : 0)</div>
-                                <a asp-action="FiveMinuteResult" asp-route-resultId="@result.Id">Подробнее</a>
-                            </caption>
-                            <thead>
-                            <tr>
-                                <th>Вопрос</th>
-                                @foreach (var number in answersDict.Keys.Order()) {
-                                    var someAnswer = answersDict[number].FirstOrDefault();
-                                    <th>@someAnswer?.QuestionPosition. @someAnswer?.QuestionText</th>
-                                }
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th>Ответ</th>
-                                @foreach (var number in answersDict.Keys.Order()) {
-                                    <td>
-                                        @foreach (var answer in answersDict[number].Where(x => !string.IsNullOrEmpty(x.Text))) {
-                                            <div class="answer-block" style="margin-bottom:10px;">
-                                                <span class="answer-text">@answer.Text</span>
-                                                @if (Model.AttachedFMT.Questions.FirstOrDefault(q => q.Id == answer.QuestionId) == null) {
-                                                    continue;
-                                                }
-                                                @if (Model.AttachedFMT.Questions.FirstOrDefault(q => q.Id == answer.QuestionId).ResponseType == ResponseType.Text) {
-                                                    <div class="mt-2">
-                                                        <button type="button"
-                                                                class="btn btn-sm btn-success mark-correct-btn"
-                                                                data-answer-id="@answer.Id" data-is-correct="true"
-                                                                data-question-position="@answer.QuestionPosition"
-                                                                data-question-id="@answer.QuestionId"
-                                                                data-test-id="@Model.Id"
-                                                                data-answer-text="@answer.Text">Правильно
-                                                        </button>
-                                                        <button type="button"
-                                                                class="btn btn-sm btn-danger mark-correct-btn"
-                                                                data-answer-id="@answer.Id" data-is-correct="false"
-                                                                data-question-position="@answer.QuestionPosition"
-                                                                data-question-id="@answer.QuestionId"
-                                                                data-test-id="@Model.Id"
-                                                                data-answer-text="@answer.Text">Неправильно
-                                                        </button>
-                                                    </div>
-                                                }
-                                            </div>
-                                        }
-                                    </td>
-                                }
-                            </tr>
-                            <tr>
-                                <th>Балл</th>
-                                @foreach (var number in answersDict.Keys.Order()) {
-                                    <td>@answersDict[number].Sum(x => x.IsCorrect ? 1 : 0)</td>
-                                }
-                            </tr>
-                            </tbody>
-                        </table>
-                    }
-                </div>
-            </div>
-        </div>
+		@if (Model.EndPlanned)
+		{
+			<p>Запланированное время окончания: @Model.EndTime.ToLocalTime()</p>
+		}
 
-        <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+		
+	</div>
 
-            <form method="post" action="@Url.Action("UpdateTestSettings", "FiveMinuteTest")">
-                @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
-                <input type="hidden" name="Id" value="@Model.Id"/>
-                <input type="hidden" name="Name" value="@Model.Name"/>
-                <input type="hidden" name="Status" value="@Model.Status"/>
-                <input type="hidden" id="IdToUninclude" name="IdToUninclude"/>
 
- 
-                <div class="mb-4">
-                    <h4>Управление вопросами</h4>
-                    <div class="list-group">
-                        @for (int i = 0; i < Model.AttachedFMT.Questions.Count; i++) {
-                            var question = Model.AttachedFMT.Questions[i];
-                            bool isChecked = !Model.IdToUninclude.Contains(question.Id);
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="question-text">@question.QuestionText</span>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox"
-                                           class="form-check-input question-checkbox"
-                                           data-question-id="@question.Id"
-                                           value="@question.Id"
-                                           @(isChecked ? "checked" : "")/>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
+	<!-- Tab Navigation -->
+	<ul class="nav nav-tabs" id="testDetailTabs" role="tablist">
+		<li class="nav-item" role="presentation">
+			<a class="nav-link active" id="statistics-tab" data-bs-toggle="tab" href="#statistics" role="tab"
+			   aria-controls="statistics" aria-selected="true">Статистика</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="settings-tab" data-bs-toggle="tab" href="#settings" role="tab"
+			   aria-controls="settings" aria-selected="false">Настройки</a>
+		</li>
+	</ul>
 
-                <div class="form-group">
-                    @* Не осуждайте меня. Эта залупа ни в какую не хочет сохранять имя в существующий параметр. Придумал такой костыль *@
-                    <label asp-for="kekForKek">Имя</label>
-                    <input asp-for="kekForKek" type="text" id="kekForKek" class="form-control" value="@Model.Name"/>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="startPlanned" class="form-label">Запланировать начало</label>
-                    @if (Model.StartPlanned) {
-                        <input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"
-                               onchange="toggleStartTimeInput()" checked/>
-                    }
-                    else {
-                        <input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"
-                               onchange="toggleStartTimeInput()"/>
-                    }
-                    <div id="startTimeInput" class="mt-2" style="display: @(Model.StartPlanned ? "block" : "none")">
-                        <label for="startDateTime" class="form-label">Дата и время начала</label>
-                        <input type="datetime-local" id="startDateTime" asp-for="StartTime" class="form-control"
-                               value="@startDateString"/>
-                        <span asp-validation-for="IsValidDateRange"></span>
-                    </div>
-                </div>
+	<!-- Tab Content -->
+	<div class="tab-content mt-3" id="testDetailTabsContent">
+		@{
+			var startDateString = "";
+			var endDateString = "";
+			if (Model.StartTime != default)
+				startDateString = Model.StartTime.ToLocalTime().ToString("yyyy-MM-ddTHH:mm");
+			if (Model.EndTime != default)
+				endDateString = Model.EndTime.ToLocalTime().ToString("yyyy-MM-ddTHH:mm");
+		}
+		<!-- Statistics Tab Pane -->
+		<div class="tab-pane fade show active" id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
+			<div class="row">
+				<div class="col-md-6">
+					<h4>Statistics for Passers</h4>
+					<h6>Всего прохождений: @Model.Results.Count()</h6>
 
-                <div class="mb-3">
-                    <label for="endPlanned" class="form-label">Запланировать окончание</label>
-                    @if (Model.EndPlanned) {
-                        <input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input"
-                               onchange="toggleEndTimeInput()" checked/>
-                    }
-                    else {
-                        <input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input"
-                               onchange="toggleEndTimeInput()"/>
-                    }
-                    <div id="endTimeInput" class="mt-2" style="display: @(Model.EndPlanned ? "block" : "none")">
-                        <label for="endDateTime" class="form-label">Дата и время окончания</label>
-                        <input type="datetime-local" id="endDateTime" asp-for="EndTime" class="form-control"
-                               value="@endDateString"/>
-                        <span asp-validation-for="IsValidDateRange"></span>
-                    </div>
-                </div>
+					@foreach (var result in Model.Results)
+					{
+						var answersDict = new Dictionary<int, List<UserAnswer>>();
+						foreach (var answer in result.Answers)
+						{
+							answersDict.TryAdd(answer.QuestionPosition, new List<UserAnswer>());
+							answersDict[answer.QuestionPosition].Add(answer);
+						}
 
-                <button type="submit" , id="submit" class="btn btn-primary">Сохранить изменения</button>
-            </form>
-        </div>
-    </div>
+						<table class="table table-bordered table-striped mt-3">
+							<caption>
+								<div>Id пользователя: @result.UserId</div>
+								<div>Имя пользователя: @result.UserData.FirstName @result.UserData.FirstName</div>
+								<div>Время прохождения: @result.PassTime</div>
+								<div>
+									Всего
+									баллов: @answersDict.Values.SelectMany(x => x).Sum(x => x.IsCorrect ? 1 : 0)
+								</div>
+								<a asp-action="FiveMinuteResult" asp-route-resultId="@result.Id">Подробнее</a>
+							</caption>
+							<thead>
+								<tr>
+									<th>Вопрос</th>
+									@foreach (var number in answersDict.Keys.Order())
+									{
+										var someAnswer = answersDict[number].FirstOrDefault();
+										<th>@someAnswer?.QuestionPosition. @someAnswer?.QuestionText</th>
+									}
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th>Ответ</th>
+									@foreach (var number in answersDict.Keys.Order())
+									{
+										<td>
+											@foreach (var answer in answersDict[number].Where(x => !string.IsNullOrEmpty(x.Text)))
+											{
+												<div class="answer-block" style="margin-bottom:10px;">
+													<span class="answer-text">@answer.Text</span>
+													@if (Model.AttachedFMT.Questions.FirstOrDefault(q => q.Id == answer.QuestionId) == null)
+													{
+														continue;
+													}
+													@if (Model.AttachedFMT.Questions.FirstOrDefault(q => q.Id == answer.QuestionId).ResponseType == ResponseType.Text)
+													{
+														<div class="mt-2">
+															<button type="button"
+																	class="btn btn-sm btn-success mark-correct-btn"
+																	data-answer-id="@answer.Id" data-is-correct="true"
+																	data-question-position="@answer.QuestionPosition"
+																	data-question-id="@answer.QuestionId"
+																	data-test-id="@Model.Id"
+																	data-answer-text="@answer.Text">
+																Правильно
+															</button>
+															<button type="button"
+																	class="btn btn-sm btn-danger mark-correct-btn"
+																	data-answer-id="@answer.Id" data-is-correct="false"
+																	data-question-position="@answer.QuestionPosition"
+																	data-question-id="@answer.QuestionId"
+																	data-test-id="@Model.Id"
+																	data-answer-text="@answer.Text">
+																Неправильно
+															</button>
+														</div>
+													}
+												</div>
+											}
+										</td>
+									}
+								</tr>
+								<tr>
+									<th>Балл</th>
+									@foreach (var number in answersDict.Keys.Order())
+									{
+										<td>@answersDict[number].Sum(x => x.IsCorrect ? 1 : 0)</td>
+									}
+								</tr>
+							</tbody>
+						</table>
+					}
+				</div>
+			</div>
+		</div>
+
+		<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+
+			<form method="post" action="@Url.Action("UpdateTestSettings", "FiveMinuteTest")">
+				@* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+				<input type="hidden" name="Id" value="@Model.Id" />
+				<input type="hidden" name="Name" value="@Model.Name" />
+				<input type="hidden" name="Status" value="@Model.Status" />
+				<input type="hidden" id="IdToUninclude" name="IdToUninclude" />
+
+				<div class="form-group mb-4">
+					<h4>Название</h4>
+					@* Не осуждайте меня. Эта залупа ни в какую не хочет сохранять имя в существующий параметр. Придумал такой костыль *@
+					<input asp-for="kekForKek" type="text" id="kekForKek" class="form-control" value="@Model.Name" />
+				</div>
+
+				<div class="mb-4">
+					<h4>Управление вопросами</h4>
+					<p>Укажите вопросы, которые буду включены в данный тест</p>
+					<div class="list-group">
+						@for (int i = 0; i < Model.AttachedFMT.Questions.Count; i++)
+						{
+							var question = Model.AttachedFMT.Questions[i];
+							bool isChecked = !Model.IdToUninclude.Contains(question.Id);
+							<div class="list-group-item d-flex justify-content-between align-items-center">
+								<div>
+									<span class="question-text">@question.QuestionText</span>
+								</div>
+								<div class="form-check">
+									<input type="checkbox"
+										   class="form-check-input question-checkbox"
+										   data-question-id="@question.Id"
+										   value="@question.Id"
+									@(isChecked ? "checked" : "") />
+								</div>
+							</div>
+						}
+					</div>
+				</div>
+
+
+				<div class="mb-4">
+					<h4>Запланировать время</h4>
+
+					<label for="startPlanned" class="form-label">Запланировать начало</label>
+					@if (Model.StartPlanned)
+					{
+						<input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"
+							   onchange="toggleStartTimeInput()" checked />
+					}
+					else
+					{
+						<input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"
+							   onchange="toggleStartTimeInput()" />
+					}
+					<div id="startTimeInput" class="mt-2" style="display: @(Model.StartPlanned ? "block" : "none")">
+						<label for="startDateTime" class="form-label">Дата и время начала</label>
+						<input type="datetime-local" id="startDateTime" asp-for="StartTime" class="form-control"
+							   value="@startDateString" />
+						<span asp-validation-for="IsValidDateRange"></span>
+					</div>
+				</div>
+
+				<div class="mb-3">
+					<label for="endPlanned" class="form-label">Запланировать окончание</label>
+					@if (Model.EndPlanned)
+					{
+						<input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input"
+							   onchange="toggleEndTimeInput()" checked />
+					}
+					else
+					{
+						<input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input"
+							   onchange="toggleEndTimeInput()" />
+					}
+					<div id="endTimeInput" class="mt-2" style="display: @(Model.EndPlanned ? "block" : "none")">
+						<label for="endDateTime" class="form-label">Дата и время окончания</label>
+						<input type="datetime-local" id="endDateTime" asp-for="EndTime" class="form-control"
+							   value="@endDateString" />
+						<span asp-validation-for="IsValidDateRange"></span>
+					</div>
+				</div>
+
+				<button type="submit" , id="submit" class="btn btn-primary">Сохранить изменения</button>
+			</form>
+		</div>
+	</div>
 </div>
 
 @section Scripts {
-    <script>
-        const questionCount = @Model.AttachedFMT.Questions.Count;
-        let testIsOpen = @((Model.Status == TestStatus.Started).ToString().ToLower());
-        let testId = '@Model.Id';
-        const buttonCloseOpenTest = document.getElementById('closeOpenTest');
-    </script>
-    <script src="~/js/questionCheckboxHandler.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/popup.js"></script>
-    <script src="~/js/FMTest/detail.js"></script>
+	<script>
+		const questionCount = @Model.AttachedFMT.Questions.Count;
+		let testIsOpen = @((Model.Status == TestStatus.Started).ToString().ToLower());
+		let testId = '@Model.Id';
+		const buttonOpenTest = document.getElementById('openTest');
+		const buttonCloseTest = document.getElementById('closeTest');
+	</script>
+	<script src="~/js/questionCheckboxHandler.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/popup.js"></script>
+	<script src="~/js/FMTest/detail.js"></script>
 }
