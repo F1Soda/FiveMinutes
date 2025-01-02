@@ -52,11 +52,19 @@
 							<input id="closeTest" type="button" class="btn btn-danger btn-delete" value="Закрыть преждвременно" />
 							<input id="openTest" type="button" class="btn btn-primary" hidden value="Открыть преждвременно" />
 						}
-						else{
+						else
+						{
 							<input id="closeTest" type="button" class="btn btn-danger btn-delete" hidden value="Закрыть преждвременно" />
-							<input id="openTest" type="button" class="btn btn-primary" value="Открыть преждвременно" />
+
+							if (Model.StartTime.ToUniversalTime() < DateTime.UtcNow)
+							{
+								<input id="openTest" type="button" class="btn btn-primary"hidden value="Открыть преждвременно" />
+							}
+							else{
+								<input id="openTest" type="button" class="btn btn-primary"  value="Открыть преждвременно" />
+							}
 						}
-						
+
 					</div>
 				}
 				else if (Model.Status == TestStatus.Started)
@@ -80,7 +88,8 @@
 			</div>
 		</div>
 
-		<p>Статус теста:   
+		<p>
+			Статус теста:
 			<span class="badge @GetStatusClass(Model.Status) text-white">@ConvertEnumToString(Model.Status)</span>
 			@if (Model.Status == TestStatus.Planned)
 			{
@@ -88,11 +97,12 @@
 				{
 					<span id="sub-status" class="badge @GetStatusClass(TestStatus.Started) text-white">@ConvertEnumToString(TestStatus.Started)</span>
 				}
-				else{
+				else
+				{
 					<span id="sub-status" class="badge @GetStatusClass(TestStatus.Closed) text-white">@ConvertEnumToString(TestStatus.Closed)</span>
 				}
 			}
-			
+
 		</p>
 		<p>
 			Привязанная пятиминутка:
@@ -102,7 +112,7 @@
 		</p>
 
 		<a class="btn btn-secondary" id="copyUrlButton" encryptedId="@Model.EncryptedId">Скопировать ссылку</a>
-		
+
 
 		@if (Model.StartPlanned)
 		{
@@ -114,7 +124,7 @@
 			<p>Запланированное время окончания: @Model.EndTime.ToLocalTime()</p>
 		}
 
-		
+
 	</div>
 
 
