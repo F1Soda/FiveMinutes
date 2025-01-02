@@ -8,6 +8,7 @@ using FiveMinute.Models;
 using FiveMinute.Utils;
 using System.Net;
 using FiveMinute.Data;
+using FiveMinute.Application.ViewModels;
 
 namespace FiveMinute.Controllers
 {
@@ -33,7 +34,7 @@ namespace FiveMinute.Controllers
 			_fmtChecker = fmtChecker;
 		}
 
-		public IActionResult Passed() => View();
+		public IActionResult PassInfo(PassInfoViewModel passInfoViewModel) => View(passInfoViewModel);
 
 		public async Task<IActionResult> Detail(int testId)
 		{
@@ -89,7 +90,7 @@ namespace FiveMinute.Controllers
 			if (currentUser == null || currentUser.Id != fmTest.UserOrganizerId)
 			{
 				if (!fmTest.CanPass())
-					return View("Error", new ErrorViewModel($"Невозможно пройти пятиминутку, так как она закончилась, либо еще не началась"));
+					return View("PassInfo", new PassInfoViewModel($"Пятиминутка на данный момент закрыта."));
 			}
 
 			var viewModel = FMTestPassingViewModel.CreateByModel(fmTest);
@@ -106,8 +107,8 @@ namespace FiveMinute.Controllers
 		public async Task<IActionResult> SendTestResults(TestResultViewModel viewModel)
 		{
 			if (!await _fmtChecker.CheckAndSave(viewModel))
-				return View("Error", new ErrorViewModel("Something is wrong. Could not save your answers"));
-			return RedirectToAction("Passed");
+				return View("PassInfo", new PassInfoViewModel($"Что-то пошло не так. Не удалось сохранить ваши ответы."));
+			return View("PassInfo", new PassInfoViewModel($"Результаты сохранены.")); ;
 		}
 
 		[HttpPost]
