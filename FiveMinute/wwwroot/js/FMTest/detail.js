@@ -122,7 +122,6 @@ async function UpdateTestStatus(input) {
 			const statusBadge = document.querySelector('.badge');
 			statusBadge.className = `badge ${result.statusClass} text-white`; // Update CSS class
 			statusBadge.textContent = result.statusText; // Update text content
-
 		} else {
 			alert(result.exception);
 		}

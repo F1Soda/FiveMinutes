@@ -29,10 +29,11 @@
 
 							if (Model.StartTime.ToUniversalTime() < DateTime.UtcNow)
 							{
-								<input id="openTest" type="button" class="btn btn-primary"hidden value="Открыть преждвременно" />
+								<input id="openTest" type="button" class="btn btn-primary" hidden value="Открыть преждвременно" />
 							}
-							else{
-								<input id="openTest" type="button" class="btn btn-primary"  value="Открыть преждвременно" />
+							else
+							{
+								<input id="openTest" type="button" class="btn btn-primary" value="Открыть преждвременно" />
 							}
 						}
 
@@ -62,8 +63,7 @@
 		<p>
 			Статус теста:
 			<span class="badge @TestStatusHelper.GetStatusClass(Model.Status) text-white">@TestStatusHelper.ConvertEnumToString(Model.Status)</span>
-			<input asp-for="Status"/>
-			
+
 			@if (Model.EndPlanned || Model.StartPlanned)
 			{
 				if (Model.CanPass())

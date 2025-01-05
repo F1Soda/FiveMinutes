@@ -51,6 +51,7 @@ public partial class FiveMinuteTestController {
 		updatedTest.Results = existingFmTest.Results;
 		updatedTest.Name = viewModel.kekForKek;
 
+		updatedTest.Status = existingFmTest.Status;
 
 		return updatedTest;
 	}

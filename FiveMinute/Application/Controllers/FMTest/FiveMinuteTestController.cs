@@ -139,10 +139,11 @@ namespace FiveMinute.Controllers
 			existingFmTest.Status = TestStatus.Open;
 			existingFmTest.StartPlanned = false;
 			existingFmTest.EndPlanned = false;
+			var statusValue = TestStatus.Open;
 			var status = await _fiveMinuteTestRepository.Update(existingFmTest);
 			if (!status) return Json(new { success = false, exception = status.Exception});
 
-			return Json(new { success = true, exception = "", statusText = "Активна", statusClass = "bg-primary" });
+			return Json(new { success = true, exception = "", statusText = "Активна", statusClass = "bg-primary", statusValue });
 		}
 
 		[HttpPost]
@@ -158,6 +159,7 @@ namespace FiveMinute.Controllers
 			existingFmTest.EndPlanned = false;
 			var statusText = "Закрыта";
 			var statusClass = "bg-danger";
+			var statusValue = TestStatus.Closed;
 			foreach (var res in existingFmTest.Results)			{
 				if (res.Status == ResultStatus.Accepted)
 				{
@@ -170,7 +172,7 @@ namespace FiveMinute.Controllers
 			var status = await _fiveMinuteTestRepository.Update(existingFmTest);
 			if (!status) return Json(new { success = false, exception = status.Exception});
 
-			return Json(new { success = true, exception = "", statusText, statusClass });
+			return Json(new { success = true, exception = "", statusText, statusClass, statusValue});
 		}
 
 		public async Task<IActionResult> FiveMinuteResult(int resultId)
