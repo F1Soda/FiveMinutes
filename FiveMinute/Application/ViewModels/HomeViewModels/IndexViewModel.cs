@@ -35,11 +35,16 @@ namespace FiveMinute.ViewModels.HomeViewModels
 					.OrderByDescending(x => x.lastModification).ToList(),
 				FMTests = user.FMTests
 					.OrderByDescending(x => x.CreationTime)
-					.Select(x => FMTestIndexViewModel.CreateByModel(x)).ToList(),
+					.Select(FMTestIndexViewModel.CreateByModel).ToList(),
 				UserRole = user.UserRole,
 				FMTResults = user.PassedTestResults.Select(FMTResultForIndexHomeViewModel.CreateByModel).ToList()
 
 			};
+
+
+			rez.ActiveFMTests = rez.FMTests.Where(x => x.Status == TestStatus.Open).ToList();
+			rez.RequiresRecheckingFMTests = rez.FMTests.Where(x => x.HasUncheckedAnswers).ToList();
+			rez.PlannedFMTests = rez.FMTests.Where(x => x.EndPlanned || x.StartPlanned).ToList();
 
 			return rez;
 		}

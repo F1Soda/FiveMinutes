@@ -1,11 +1,10 @@
-﻿@using FiveMinute.Data
-@model ICollection<FiveMinute.ViewModels.FiveMinuteTestViewModels.FMTestIndexViewModel>
+﻿@using FiveMinute.Application.ViewModels.HomeViewModels
+@model CardRowTestInfoViewModel
 
 @{
-	var activeFMTests = Model.Where(x => x.Status == TestStatus.Open || ((x.StartPlanned || x.EndPlanned) && x.isActive)).ToList();
-	var requiresRecheckingFMTests = Model.Where(x => (x.StartPlanned || x.EndPlanned)).ToList();
-	var plannedFMTests = Model.Where(x => (x.StartPlanned || x.EndPlanned) && !x.isActive).ToList();
-
+	var activeFMTests = Model.ActiveFMTests;
+	var requiresRecheckingFMTests = Model.RequiresRecheckingFMTests;
+	var plannedFMTests = Model.PlannedFMTests;
 }
 @if (plannedFMTests.Any())
 {

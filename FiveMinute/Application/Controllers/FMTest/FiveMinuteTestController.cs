@@ -123,8 +123,6 @@ namespace FiveMinute.Controllers
 			var status = await _fiveMinuteTestRepository.Update(updatedTest);
 			if (!status) return View("Error", new ErrorViewModel($"ERROR: {status.Exception}"));
 
-			
-
 			return RedirectToAction("Detail", new { testId = updatedTest.Id });
 		}
 
@@ -137,8 +135,6 @@ namespace FiveMinute.Controllers
 			if (existingFmTest == null) return Json(new { success = false, exception = "Not Found" });
 
 			existingFmTest.Status = TestStatus.Open;
-			existingFmTest.StartPlanned = false;
-			existingFmTest.EndPlanned = false;
 			var statusValue = TestStatus.Open;
 			var status = await _fiveMinuteTestRepository.Update(existingFmTest);
 			if (!status) return Json(new { success = false, exception = status.Exception});
@@ -155,19 +151,17 @@ namespace FiveMinute.Controllers
 			if (existingFmTest == null) return Json(new { success = false, exception = "Not Found" });
 
 			existingFmTest.Status = TestStatus.Closed;
-			existingFmTest.StartPlanned = false;
-			existingFmTest.EndPlanned = false;
 			var statusText = "Закрыта";
 			var statusClass = "bg-danger";
 			var statusValue = TestStatus.Closed;
-			foreach (var res in existingFmTest.Results)			{
-				if (res.Status == ResultStatus.Accepted)
-				{
-					statusText = "Требует проверки";
-					statusClass = "bg-brown";
-					break;
-				}
-			}
+			//foreach (var res in existingFmTest.Results)			{
+			//	if (res.Status != ResultStatus.Verified)
+			//	{
+			//		statusText = "Требует проверки";
+			//		statusClass = "bg-brown";
+			//		break;
+			//	}
+			//}
 
 			var status = await _fiveMinuteTestRepository.Update(existingFmTest);
 			if (!status) return Json(new { success = false, exception = status.Exception});

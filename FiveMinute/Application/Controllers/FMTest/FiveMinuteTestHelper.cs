@@ -1,3 +1,4 @@
+using FiveMinute.Domain.FMTestChecker;
 using FiveMinute.Models;
 using FiveMinute.ViewModels.FiveMinuteTestViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -51,7 +52,19 @@ public partial class FiveMinuteTestController {
 		updatedTest.Results = existingFmTest.Results;
 		updatedTest.Name = viewModel.kekForKek;
 
+		// Косытль
 		updatedTest.Status = existingFmTest.Status;
+
+		if (viewModel.StartPlanned || viewModel.EndPlanned)
+		{
+			if (PassChecker.CanPass(viewModel)) {
+				updatedTest.Status = Data.TestStatus.Open;
+			}
+			else
+			{
+				updatedTest.Status = Data.TestStatus.Closed;
+			}
+		}
 
 		return updatedTest;
 	}

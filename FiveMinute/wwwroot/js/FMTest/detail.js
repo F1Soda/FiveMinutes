@@ -99,17 +99,6 @@ async function UpdateTestStatus(input) {
 			showPopup("Статус теста обновлен!", "notification");
 			testIsOpen = !testIsOpen;
 
-			//buttonCloseTest.className = 'btn btn-danger btn-delete';
-			buttonCloseTest.value = 'Закрыть';
-			buttonOpenTest.value = 'Открыть';
-			uncheckTimePlaneCheckboxes();
-			let subStatus = document.getElementById('sub-status');
-
-			if (subStatus != null) {
-				subStatus.hidden = true;
-			}
-
-
 			if (testIsOpen) {
 				buttonCloseTest.hidden = false;
 				buttonOpenTest.hidden = true;
@@ -133,12 +122,18 @@ async function UpdateTestStatus(input) {
 
 
 function uncheckTimePlaneCheckboxes() {
+	uncheckStartPlanned();
+	uncheckEndPlanned();
+}
+
+function uncheckStartPlanned() {
 	document.getElementById('startPlanned').checked = false;
-	document.getElementById('endPlanned').checked = false;
-
 	toggleStartTimeInput();
-	toggleEndTimeInput();
+}
 
+function uncheckStartPlanned() {
+	document.getElementById('endPlanned').checked = false;
+	toggleEndTimeInput();
 }
 
 

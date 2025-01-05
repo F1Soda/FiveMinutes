@@ -1,4 +1,5 @@
-﻿@model FiveMinute.ViewModels.HomeViewModels.IndexViewModel
+﻿@using FiveMinute.Application.ViewModels.HomeViewModels
+@model FiveMinute.ViewModels.HomeViewModels.IndexViewModel
 
 <partial name="_Popup" />
 
@@ -9,7 +10,7 @@
 		<div class="full-width-wrapper">
 			<div class="d-flex justify-content-center bg-light-blue pt-3">
 				<div id="TestCardsRow" class="row container justify-content-center">
-					@await Html.PartialAsync("_TestCardsRow", Model.FMTests)
+					@await Html.PartialAsync("_TestCardsRow", new CardRowTestInfoViewModel(Model.ActiveFMTests, Model.RequiresRecheckingFMTests, Model.PlannedFMTests))
 				</div>
 			</div>
 		</div>

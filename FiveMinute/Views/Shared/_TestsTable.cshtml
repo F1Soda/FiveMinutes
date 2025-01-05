@@ -22,25 +22,12 @@
 					<td>@test.Id</td>
 					<td>@test.Name</td>
 					<td>
-						<span class="badge @TestStatusHelper.GetStatusClass(test.Status) text-white">
-							@TestStatusHelper.ConvertEnumToString(test.Status)
-						</span>
+						<span class="badge @TestStatusHelper.GetStatusClass(test.Status) text-white">@TestStatusHelper.ConvertEnumToString(test.Status)</span>
 
-						@if (test.StartPlanned || test.EndPlanned)
+						@if (test.EndPlanned || test.StartPlanned)
 						{
-							@if (test.isActive)
-							{
-								<span class="badge @TestStatusHelper.GetStatusClass(TestStatus.Open) text-white">@TestStatusHelper.ConvertEnumToString(TestStatus.Open)</span>
-							}
-							else
-							{
-								<span class="badge @TestStatusHelper.GetStatusClass(TestStatus.Closed) text-white">@TestStatusHelper.ConvertEnumToString(TestStatus.Closed)</span>
-							}
-
+							<span id="sub-status" class="badge bg-warning text-white">Запланирована</span>
 						}
-
-
-
 					</td>
 					<td>@test.AttachedFMTemplateName</td>
 					<td>

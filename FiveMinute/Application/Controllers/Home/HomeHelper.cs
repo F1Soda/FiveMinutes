@@ -5,6 +5,7 @@ using FiveMinute.ViewModels.FMTEditViewModels;
 using FiveMinute.ViewModels.FiveMinuteTestViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using FiveMinute.Application.ViewModels.HomeViewModels;
 
 namespace FiveMinute.Controllers;
 
@@ -37,7 +38,7 @@ public partial class HomeController {
 
 		var templatesHtml = await RenderPartialViewToString("_TemplatesTable", templates);
 		var testsHtml = await RenderPartialViewToString("_TestsTable", tests);
-		var testCardsRowHtml = await RenderPartialViewToString("_TestCardsRow", tests);
+		var testCardsRowHtml = await RenderPartialViewToString("_TestCardsRow", new CardRowTestInfoViewModel(tests));
 		return (templatesHtml, testsHtml, testCardsRowHtml);
 	}
 

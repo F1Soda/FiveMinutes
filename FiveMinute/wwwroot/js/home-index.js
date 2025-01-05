@@ -75,7 +75,7 @@ function delete_test(button) {
             }
         },
         error: function () {
-            alert("An error occurred while deleting the template.");
+            alert("An error occurred while deleting the test.");
         }
     });
 }

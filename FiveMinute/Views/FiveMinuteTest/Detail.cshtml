@@ -18,24 +18,9 @@
 				{
 					<div class="">
 						<a class="btn btn-secondary" asp-area="" asp-route-encryptedId="@Model.EncryptedId" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
-						@if (Model.CanPass())
-						{
-							<input id="closeTest" type="button" class="btn btn-danger btn-delete" value="Закрыть преждвременно" />
-							<input id="openTest" type="button" class="btn btn-primary" hidden value="Открыть преждвременно" />
-						}
-						else
-						{
-							<input id="closeTest" type="button" class="btn btn-danger btn-delete" hidden value="Закрыть преждвременно" />
 
-							if (Model.StartTime.ToUniversalTime() < DateTime.UtcNow)
-							{
-								<input id="openTest" type="button" class="btn btn-primary" hidden value="Открыть преждвременно" />
-							}
-							else
-							{
-								<input id="openTest" type="button" class="btn btn-primary" value="Открыть преждвременно" />
-							}
-						}
+						<input id="closeTest" type="button" class="btn btn-danger btn-delete" @(Model.Status == TestStatus.Open ? "" : "hidden") value="Закрыть" />
+						<input id="openTest" type="button" class="btn btn-primary" @(Model.Status == TestStatus.Closed ? "" : "hidden") value="Открыть" />
 
 					</div>
 				}
@@ -66,14 +51,7 @@
 
 			@if (Model.EndPlanned || Model.StartPlanned)
 			{
-				if (Model.CanPass())
-				{
-					<span id="sub-status" class="badge @TestStatusHelper.GetStatusClass(TestStatus.Open) text-white">@TestStatusHelper.ConvertEnumToString(TestStatus.Open)</span>
-				}
-				else
-				{
-					<span id="sub-status" class="badge @TestStatusHelper.GetStatusClass(TestStatus.Closed) text-white">@TestStatusHelper.ConvertEnumToString(TestStatus.Closed)</span>
-				}
+				<span id="sub-status" class="badge bg-warning text-white">Запланирована</span>
 			}
 
 		</p>

@@ -1,4 +1,5 @@
 ﻿using FiveMinute.Data;
+using FiveMinute.Models;
 using FiveMinute.Repository.FMTestRepository;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,20 +22,25 @@ namespace FiveMinute.Application
 				{
 					var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-					var testsToUpdate = context.FiveMinuteTests
-						.Where(test => test.EndPlanned && test.EndTime <= DateTime.UtcNow);
-
-					foreach (var test in testsToUpdate)
+					foreach (var test in context.FiveMinuteTests)
 					{
-						test.Status = TestStatus.Closed;
-						context.FiveMinuteTests.Update(test);
+						if (test.Status == TestStatus.Open && test.EndPlanned && test.EndTime < DateTime.UtcNow)
+						{
+							test.Status = TestStatus.Closed;
+							context.FiveMinuteTests.Update(test);
+						}
+						if (test.Status == TestStatus.Closed && test.StartPlanned && test.StartTime >= DateTime.UtcNow)
+						{
+							test.Status = TestStatus.Open;
+							context.FiveMinuteTests.Update(test);
+						}
 					}
 
 					await context.SaveChangesAsync();
 				}
 
-				// Wait before checking again
-				await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
+				// Тут нужно логику хорошую сделать
+				await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
 			}
 		}
 	}
