@@ -121,6 +121,11 @@ namespace FiveMinute.Controllers
 			return View("PassInfo", new PassInfoViewModel($"Результаты сохранены.")); ;
 		}
 
+		public async Task<IActionResult> Checking(int fmTestId)
+		{
+			return View();
+		}
+
 
 		[HttpPost]
 		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel viewModel)

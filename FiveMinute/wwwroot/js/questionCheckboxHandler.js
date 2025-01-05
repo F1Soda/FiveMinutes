@@ -5,7 +5,6 @@ function initializeQuestionCheckboxes(hiddenInputId) {
     // Функция обновления скрытого поля с ID исключенных вопросов
     function updateExcludedIds() {
         const uncheckedIds = [];
-        console.log('zZZZ');
         checkboxes.forEach(chk => {
             if (!chk.checked) {
                 uncheckedIds.push(chk.value);

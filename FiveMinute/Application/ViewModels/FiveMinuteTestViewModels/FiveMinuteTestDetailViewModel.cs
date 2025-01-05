@@ -27,6 +27,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels {
 		public IEnumerable<FiveMinuteTestResult> Results { get; set; }
 		public List<int> IdToUninclude { get; set; }
 		public string EncryptedId { get; set; }
+		public bool HasUncheckedAnswers { get; set; }
 
 		public static FiveMinuteTestDetailViewModel CreateByModel(FiveMinuteTest fmTest) {
 			var attachedFMTemplate = FiveMinuteTemplateEditViewModel.CreateByModel(fmTest.FiveMinuteTemplate);
@@ -43,7 +44,8 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels {
 				Results = fmTest.Results,
 				Status = fmTest.Status,
 				IdToUninclude = fmTest.IdToUninclude,
-				EncryptedId = UrlEncryptor.Encrypt(fmTest.Id)
+				EncryptedId = UrlEncryptor.Encrypt(fmTest.Id),
+				HasUncheckedAnswers = fmTest.Results.Any(x => x.Status != ResultStatus.Verified)
 			};
 		}
 
