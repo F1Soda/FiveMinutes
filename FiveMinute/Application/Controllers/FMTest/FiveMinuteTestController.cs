@@ -102,22 +102,20 @@ namespace FiveMinute.Controllers
 			return View(viewModel);
 		}
 
-		[HttpPost]
-		public async Task<JsonResult> SendTestResultsAutomatically(TestResultViewModel viewModel)
-		{
-			if (!await _fmtChecker.CheckAndSave(viewModel))
-			{
-				// Return a JSON response indicating failure
-				return Json(new { success = false, message = "Что-то пошло не так. Не удалось сохранить ваши ответы." });
-			}
-
-			// Return a JSON response indicating success
-			return Json(new { success = true, message = "Результаты сохранены." });
-		}
 
 		[HttpPost]
 		public async Task<IActionResult> SendTestResults(TestResultViewModel viewModel)
 		{
+			var fmTest = await _fiveMinuteTestRepository.GetByIdAsync(viewModel.FMTestId);
+			if (fmTest == null) return NotFoundError();
+
+			if (fmTest.Status == TestStatus.Closed)
+				if (!fmTest.EndPlanned || (DateTime.UtcNow - fmTest.EndTime).Seconds > 10)
+				{
+					return View("PassInfo", new PassInfoViewModel($"Тест уже закрыт. Ответы не приняты"));
+				}
+			
+
 			if (!await _fmtChecker.CheckAndSave(viewModel))
 				return View("PassInfo", new PassInfoViewModel($"Что-то пошло не так. Не удалось сохранить ваши ответы."));
 			return View("PassInfo", new PassInfoViewModel($"Результаты сохранены.")); ;

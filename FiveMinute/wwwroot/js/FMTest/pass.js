@@ -1,6 +1,6 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
 	const timerElement = document.getElementById('timer');
-	const totalSeconds = parseInt(timerElement.getAttribute('data-duration'), 10);
+	const totalSeconds = duration;
 	const form = document.getElementById('autoSubmitForm');
 
 	function formatTime(seconds) {

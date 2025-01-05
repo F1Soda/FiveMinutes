@@ -5,12 +5,11 @@
 
 @{
 	ViewData["Title"] = "TestPassing";
+	var duration = Model.StartPlanned ? Model.EndTime - Model.StartTime : Model.EndTime - DateTime.UtcNow;
 }
 
 @if (Model.EndPlanned)
 {
-	var duration = Model.StartPlanned ? Model.EndTime - Model.StartTime : Model.EndTime - DateTime.UtcNow;
-
 	if (duration.Days >= 1)
 	{
 		<div class="bottom-timer">
@@ -22,8 +21,7 @@
 	{
 		<div class="bottom-timer">
 			<h6>Оставшееся время:</h6>
-			@* <span id="timer" data-duration="@duration.TotalSeconds"></span> *@
-			<span id="timer" data-duration="5"></span>
+			<span id="timer" data-duration="@duration.TotalSeconds"></span>
 		</div>
 	}
 }
@@ -166,4 +164,12 @@
 		<input class="btn btn-primary mt-3" id="submit" type="submit" value="Отправить ответы" />
 	</form>
 </div>
-<script src="~/js/FMTest/pass.js"></script>
+
+@section Scripts {
+	<script>
+		const duration = @((int)duration.TotalSeconds);
+	</script>
+
+	<script src="~/js/FMTest/pass.js"></script>
+}
+
