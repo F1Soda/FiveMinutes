@@ -2,6 +2,9 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<AppUser> UserManager
 
+<partial name="_Popup" />
+
+
 @{
 	var currentUser = await UserManager.GetUserAsync(User);
 	bool isStudent = currentUser != null && currentUser.UserRole == "student";
@@ -40,7 +43,7 @@
 		}
 		<div class="col-md">
 			<h3>Данные профиля</h3>
-			<form asp-action="EditUser" asp-controller="Account" method="post">
+			<form asp-action="EditUser" asp-controller="Account" method="post" id="edit-user-form">
 				<div class="profile-container p-2">
 					<div class="form-group">
 						<label for="FirstName">Имя</label>
@@ -51,19 +54,18 @@
 						<label for="LastName">Фамилия</label>
 						<input type="text" id="LastName" name="LastName" value="@Model.UserData.LastName" class="form-control" />
 					</div>
-					@if (isStudent)
-					{
-						<div class="form-group">
-							<label for="Group">Группа</label>
-							<input type="text" id="Group" name="Group" value="@Model.UserData.Group" class="form-control" />
-						</div>
-					}
+
+					<div class="form-group" @(!isStudent ? "hidden" : "")>
+						<label for="Group">Группа</label>
+						<input type="text" id="Group" name="Group" value="@Model.UserData.Group" class="form-control" />
+					</div>
+
 					<div class="form-group">
 						<label for="Email">Эл. почта</label>
 						<input type="email" id="Email" name="Email" value="@Model.Email" class="form-control" />
 					</div>
 
-					<button type="submit" class="btn btn-primary mt-2">Сохранить изменения</button>
+					<button type="submit" id="save-changes-btn" class="btn btn-primary mt-2">Сохранить изменения</button>
 				</div>
 			</form>
 			@if (isStudent)
@@ -77,3 +79,7 @@
 		</div>
 	</div>
 </div>
+@section Scripts {
+	<script src="~/js/popup.js"></script>
+	<script src="~/js/Account/detail.js"></script>
+}

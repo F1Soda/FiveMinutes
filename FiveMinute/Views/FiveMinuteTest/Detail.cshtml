@@ -1,4 +1,5 @@
-﻿@using FiveMinute.Data
+﻿@using FiveMinute.Application.Helpers
+@using FiveMinute.Data
 @model FiveMinute.ViewModels.FiveMinuteTestViewModels.FiveMinuteTestDetailViewModel
 
 <partial name="_Popup" />
@@ -7,43 +8,13 @@
 	ViewData["Title"] = "Детали теста";
 }
 
-@{
-	string GetStatusClass(TestStatus status)
-	{
-		return status switch
-		{
-			TestStatus.Planned => "bg-warning",
-			TestStatus.Started => "bg-primary",
-			TestStatus.InRechekingProcess => "bg-brown",
-			TestStatus.Completed => "bg-success",
-			TestStatus.Closed => "bg-danger",
-			_ => "bg-light"
-		};
-	}
-
-	string ConvertEnumToString(TestStatus status)
-	{
-		return status switch
-		{
-			TestStatus.Planned => "Запланирована",
-			TestStatus.Started => "Активна",
-			TestStatus.InRechekingProcess => "Требует проверки",
-			TestStatus.Completed => "Завершена",
-			TestStatus.Closed => "Закрыта",
-			_ => "Неизвестный статус"
-		};
-	}
-}
-
-
-
 <div class="container mt-4">
 	<div class="container">
 		<div class="row pb-3">
 			<div class="col d-flex align-items-center justify-content-between">
 				<h1 class="mb-0">@Model.Name</h1>
 
-				@if (Model.Status == TestStatus.Planned)
+				@if (Model.EndPlanned || Model.StartPlanned)
 				{
 					<div class="">
 						<a class="btn btn-secondary" asp-area="" asp-route-encryptedId="@Model.EncryptedId" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
@@ -67,7 +38,7 @@
 
 					</div>
 				}
-				else if (Model.Status == TestStatus.Started)
+				else if (Model.Status == TestStatus.Open)
 				{
 					<div class="">
 						<a class="btn btn-secondary" asp-area="" asp-route-encryptedId="@Model.EncryptedId" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
@@ -90,16 +61,18 @@
 
 		<p>
 			Статус теста:
-			<span class="badge @GetStatusClass(Model.Status) text-white">@ConvertEnumToString(Model.Status)</span>
-			@if (Model.Status == TestStatus.Planned)
+			<span class="badge @TestStatusHelper.GetStatusClass(Model.Status) text-white">@TestStatusHelper.ConvertEnumToString(Model.Status)</span>
+			<input asp-for="Status"/>
+			
+			@if (Model.EndPlanned || Model.StartPlanned)
 			{
 				if (Model.CanPass())
 				{
-					<span id="sub-status" class="badge @GetStatusClass(TestStatus.Started) text-white">@ConvertEnumToString(TestStatus.Started)</span>
+					<span id="sub-status" class="badge @TestStatusHelper.GetStatusClass(TestStatus.Open) text-white">@TestStatusHelper.ConvertEnumToString(TestStatus.Open)</span>
 				}
 				else
 				{
-					<span id="sub-status" class="badge @GetStatusClass(TestStatus.Closed) text-white">@ConvertEnumToString(TestStatus.Closed)</span>
+					<span id="sub-status" class="badge @TestStatusHelper.GetStatusClass(TestStatus.Closed) text-white">@TestStatusHelper.ConvertEnumToString(TestStatus.Closed)</span>
 				}
 			}
 
@@ -334,7 +307,7 @@
 @section Scripts {
 	<script>
 		const questionCount = @Model.AttachedFMT.Questions.Count;
-		let testIsOpen = @((Model.Status == TestStatus.Started).ToString().ToLower());
+		let testIsOpen = @((Model.Status == TestStatus.Open).ToString().ToLower());
 		let testId = '@Model.Id';
 		const buttonOpenTest = document.getElementById('openTest');
 		const buttonCloseTest = document.getElementById('closeTest');

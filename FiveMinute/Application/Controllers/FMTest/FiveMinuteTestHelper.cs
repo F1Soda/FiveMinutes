@@ -31,7 +31,7 @@ public partial class FiveMinuteTestController {
 	private FiveMinuteTest CreateNewTest(FiveMinuteTestDetailViewModel viewModel, AppUser user,
 	                                     FiveMinuteTemplate attachedTemplate) {
 		return new FiveMinuteTest {
-			Status = Data.TestStatus.Started,
+			Status = Data.TestStatus.Open,
 			IdToUninclude = new List<int>(),
 			UserOrganizerId = user.Id,
 			UserOrganizer = user,
@@ -51,14 +51,6 @@ public partial class FiveMinuteTestController {
 		updatedTest.Results = existingFmTest.Results;
 		updatedTest.Name = viewModel.kekForKek;
 
-		if (viewModel.StartPlanned || viewModel.EndPlanned)
-		{
-			updatedTest.Status = Data.TestStatus.Planned;
-		}
-		else
-		{
-			updatedTest.Status = Data.TestStatus.Closed;
-		}
 
 		return updatedTest;
 	}

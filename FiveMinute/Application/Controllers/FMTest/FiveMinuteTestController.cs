@@ -136,7 +136,7 @@ namespace FiveMinute.Controllers
 
 			if (existingFmTest == null) return Json(new { success = false, exception = "Not Found" });
 
-			existingFmTest.Status = TestStatus.Started;
+			existingFmTest.Status = TestStatus.Open;
 			existingFmTest.StartPlanned = false;
 			existingFmTest.EndPlanned = false;
 			var status = await _fiveMinuteTestRepository.Update(existingFmTest);
@@ -161,7 +161,6 @@ namespace FiveMinute.Controllers
 			foreach (var res in existingFmTest.Results)			{
 				if (res.Status == ResultStatus.Accepted)
 				{
-					existingFmTest.Status = TestStatus.InRechekingProcess;
 					statusText = "Требует проверки";
 					statusClass = "bg-brown";
 					break;

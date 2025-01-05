@@ -2,10 +2,7 @@
 {
     public enum TestStatus
     {
-        Planned,
-        Started,
-        InRechekingProcess,
-        Completed,
-        Closed,
+		Closed,
+		Open,
     }
 }

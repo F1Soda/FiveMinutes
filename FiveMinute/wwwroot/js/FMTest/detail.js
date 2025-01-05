@@ -1,8 +1,3 @@
-console.log('Test is open:', testIsOpen); // Should log true or false
-console.log('Test ID:', testId); // Should log the string value of test ID
-console.log('Number of questions:', questionCount); // Should log the number of questions
-
-
 document.addEventListener('DOMContentLoaded', function () {
 
 	// Bind the submit function to the Save button's click event
@@ -61,7 +56,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			UpdateTestStatus('/FiveMinuteTest/DeactivateTest');
 		});
 	}
-
 
 	let openButton = document.getElementById('openTest');
 

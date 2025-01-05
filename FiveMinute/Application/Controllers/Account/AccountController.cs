@@ -102,16 +102,22 @@ namespace FiveMinute.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EditUser(UserDataChangeViewModel userDataChange)
-        {
-            var currentUser = await userManager.GetUserAsync(User);
-            if (currentUser == null) return Forbid();
+		[HttpPost]
+		public async Task<JsonResult> EditUser([FromBody] UserDataChangeViewModel userDataChange)
+		{
+			var currentUser = await userManager.GetUserAsync(User);
+			if (currentUser == null) return Json(new { success = false, exception = "Not allowed" });
 
-            UpdateUserData(currentUser, userDataChange);
-            await userRepository.Save();
+			UpdateUserData(currentUser, userDataChange);
 
-            return RedirectToAction("Detail", "Account", new { userId = currentUser.Id });
-        }
-    }
+			var res = await userRepository.Save();
+			if (!res)
+			{
+				return Json(new { success = false, exception = res.Exception });
+			}
+
+			// Return success JSON response
+			return Json(new { success = true, message = "User data updated successfully!" });
+		}
+	}
 }

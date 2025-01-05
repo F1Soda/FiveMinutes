@@ -22,7 +22,7 @@ namespace FiveMinute.Application
 					var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 					var testsToUpdate = context.FiveMinuteTests
-						.Where(test => test.Status == TestStatus.Planned && test.EndPlanned && test.EndTime <= DateTime.UtcNow);
+						.Where(test => test.EndPlanned && test.EndTime <= DateTime.UtcNow);
 
 					foreach (var test in testsToUpdate)
 					{

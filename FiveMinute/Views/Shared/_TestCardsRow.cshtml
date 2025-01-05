@@ -2,9 +2,9 @@
 @model ICollection<FiveMinute.ViewModels.FiveMinuteTestViewModels.FMTestIndexViewModel>
 
 @{
-	var activeFMTests = Model.Where(x => x.Status == TestStatus.Started || (x.Status == TestStatus.Planned && x.isActive)).ToList();
-	var requiresRecheckingFMTests = Model.Where(x => x.Status == TestStatus.InRechekingProcess).ToList();
-	var plannedFMTests = Model.Where(x => x.Status == TestStatus.Planned && !x.isActive).ToList();
+	var activeFMTests = Model.Where(x => x.Status == TestStatus.Open || ((x.StartPlanned || x.EndPlanned) && x.isActive)).ToList();
+	var requiresRecheckingFMTests = Model.Where(x => (x.StartPlanned || x.EndPlanned)).ToList();
+	var plannedFMTests = Model.Where(x => (x.StartPlanned || x.EndPlanned) && !x.isActive).ToList();
 
 }
 @if (plannedFMTests.Any())

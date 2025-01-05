@@ -41,9 +41,6 @@ namespace FiveMinute.ViewModels.HomeViewModels
 
 			};
 
-			rez.ActiveFMTests = rez.FMTests.Where(x => x.Status == TestStatus.Started || (x.Status == TestStatus.Planned && x.isActive)).ToList();
-			rez.RequiresRecheckingFMTests = rez.FMTests.Where(x => x.Status == TestStatus.InRechekingProcess).ToList();
-			rez.PlannedFMTests = rez.FMTests.Where(x => x.Status == TestStatus.Planned && !x.isActive).ToList();
 			return rez;
 		}
 	}

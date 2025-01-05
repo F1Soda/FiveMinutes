@@ -1,33 +1,7 @@
 ﻿@using FiveMinute.Data
+@using FiveMinute.Application.Helpers
 @model ICollection<FiveMinute.ViewModels.FiveMinuteTestViewModels.FMTestIndexViewModel>
 
-@{
-	string GetStatusClass(TestStatus status)
-	{
-		return status switch
-		{
-			TestStatus.Planned => "bg-warning",
-			TestStatus.Started => "bg-primary",
-			TestStatus.InRechekingProcess => "bg-brown",
-			TestStatus.Completed => "bg-success",
-			TestStatus.Closed => "bg-danger",
-			_ => "bg-light"
-		};
-	}
-
-	string ConvertEnumToString(TestStatus status)
-	{
-		return status switch
-		{
-			TestStatus.Planned => "Запланирована",
-			TestStatus.Started => "Активна",
-			TestStatus.InRechekingProcess => "Требует проверки",
-			TestStatus.Completed => "Завершена",
-			TestStatus.Closed => "Закрыта",
-			_ => "Неизвестный статус"
-		};
-	}
-}
 
 @if (Model != null && Model.Any())
 {
@@ -48,19 +22,19 @@
 					<td>@test.Id</td>
 					<td>@test.Name</td>
 					<td>
-						<span class="badge @GetStatusClass(test.Status) text-white">
-							@ConvertEnumToString(test.Status)
+						<span class="badge @TestStatusHelper.GetStatusClass(test.Status) text-white">
+							@TestStatusHelper.ConvertEnumToString(test.Status)
 						</span>
 
 						@if (test.StartPlanned || test.EndPlanned)
 						{
 							@if (test.isActive)
 							{
-								<span class="badge @GetStatusClass(TestStatus.Started) text-white">@ConvertEnumToString(TestStatus.Started)</span>
+								<span class="badge @TestStatusHelper.GetStatusClass(TestStatus.Open) text-white">@TestStatusHelper.ConvertEnumToString(TestStatus.Open)</span>
 							}
 							else
 							{
-								<span class="badge @GetStatusClass(TestStatus.Closed) text-white">@ConvertEnumToString(TestStatus.Closed)</span>
+								<span class="badge @TestStatusHelper.GetStatusClass(TestStatus.Closed) text-white">@TestStatusHelper.ConvertEnumToString(TestStatus.Closed)</span>
 							}
 
 						}
