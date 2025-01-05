@@ -12,10 +12,11 @@ $(document).ready(function () {
         console.log("Delete test")
     });
 
-    $(document).on('click', '#copyUrlButton', function (e) {
-        // Construct the URL dynamically
-        let encryptedId = document.getElementById('copyUrlButton').getAttribute('encryptedId');
+    $(document).on('click', '.copyUrlButton', function (e) {
+        // Get the encryptedId from the clicked button
+        let encryptedId = $(this).attr('encryptedId');
 
+        // Construct the URL dynamically
         let url = `${window.location.origin}/FiveMinuteTest/Pass?encryptedId=${encryptedId}`;
 
         // Copy the URL to the clipboard
@@ -28,6 +29,7 @@ $(document).ready(function () {
                 showPopup('Не удалось скопировать ссылку.', "error");
             });
     });
+
 });
 
 function delete_template(button) {

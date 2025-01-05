@@ -31,7 +31,8 @@
 					</td>
 					<td>@test.AttachedFMTemplateName</td>
 					<td>
-						<a class="btn btn-secondary" id="copyUrlButton" encryptedId="@test.EncryptedId">Скопировать ссылку</a>
+						<a class="btn btn-secondary copyUrlButton" encryptedId="@test.EncryptedId">Скопировать ссылку</a>
+
 						<a class="btn btn-primary" asp-area="" asp-route-testId="@test.Id" asp-controller="FiveMinuteTest" asp-action="Detail">Подробнее</a>
 
 						<button class="btn btn-danger btn-delete" id="delete-test" data-id="@test.Id">Удалить</button>
