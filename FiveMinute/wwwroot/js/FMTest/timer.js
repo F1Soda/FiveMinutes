@@ -3,8 +3,8 @@ let timer = document.getElementById("timer");
 let isoEndTime = document.getElementById("isoTime").innerHTML;
 let endTime = new Date(isoEndTime);
     // console.log(timer, isoEndTime, endTime)
-updateRemainingTime();
-setInterval(updateRemainingTime, 1000);
+// updateRemainingTime();
+//setInterval(updateRemainingTime, 1000);
 
 // Функция для обновления оставшегося времени
 function updateRemainingTime() {

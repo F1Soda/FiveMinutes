@@ -25,11 +25,27 @@
 
 <div class="container test-area">
 	<h1>@Model.Name</h1>
-	<div>
-		Оставшееся время:
-		<div id="timer">5:00</div>
-	</div>
-	
+
+	@if (Model.EndPlanned)
+	{
+		var duration = Model.StartPlanned ? Model.EndTime - Model.StartTime : Model.EndTime - DateTime.UtcNow;
+
+		if (duration.Days > 1)
+		{
+			<div>
+				Требуется сдать до: @Model.EndTime.ToLocalTime()
+			</div>
+		}
+		else
+		{
+			<div>
+				Оставшееся время:
+				<div id="timer">duration</div>
+			</div>
+		}
+
+	}
+
 	<form asp-action="SendTestResults" asp-controller="FiveMinuteTest" method="post">
 		<input type="hidden" aria-label="" name="FMTestId" value="@Model.FMTestId" />
 		@{

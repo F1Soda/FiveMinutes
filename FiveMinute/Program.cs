@@ -1,3 +1,4 @@
+using FiveMinute.Application;
 using FiveMinute.Data;
 using FiveMinute.Interfaces;
 using FiveMinute.Models;
@@ -15,17 +16,17 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("LocalConnection"));
+	options.UseNpgsql(builder.Configuration.GetConnectionString("LocalConnection"));
 });
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
-    options.Password.RequiredUniqueChars = 0;
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 2;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
+	options.Password.RequiredUniqueChars = 0;
+	options.Password.RequireDigit = false;
+	options.Password.RequiredLength = 2;
+	options.Password.RequireNonAlphanumeric = false;
+	options.Password.RequireUppercase = false;
+	options.Password.RequireLowercase = false;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddMemoryCache();
@@ -38,6 +39,9 @@ builder.Services.AddScoped<IFiveMinuteTestRepository, FiveMinuteTestRepository>(
 builder.Services.AddScoped<IFiveMinuteResultsRepository, FiveMinuteResultRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IChecker, FmtChecker>();
+
+// Register the background service BEFORE builder.Build()
+builder.Services.AddHostedService<FMTestStatusScheduler>();
 
 var app = builder.Build();
 

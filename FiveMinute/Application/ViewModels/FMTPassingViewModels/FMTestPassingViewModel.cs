@@ -9,7 +9,9 @@ public class FMTestPassingViewModel : IInput<FMTestPassingViewModel, FiveMinuteT
 	public string Name { get; set; }
 	public int FMTestId;
 	public DateTime StartTime { get; set; }
+	public bool StartPlanned { get; set; }
 	public DateTime EndTime { get; set; }
+	public bool EndPlanned { get; set; }
 	public UserData UserData { get; set; }
 	public string userId { get; set; }
 	public IEnumerable<QuestionViewModel> Questions { get; set; }
@@ -23,6 +25,8 @@ public class FMTestPassingViewModel : IInput<FMTestPassingViewModel, FiveMinuteT
 			StartTime = fmTest.StartTime,
 			EndTime = fmTest.EndTime,
 			Questions = fmTemplate.Questions.Where(x => !fmTest.IdToUninclude.Contains(x.Id)).Select(x => QuestionViewModel.CreateByModel(x)),
+			StartPlanned = fmTest.StartPlanned,
+			EndPlanned = fmTest.EndPlanned,
 		};
 	}
 }
