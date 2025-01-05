@@ -1,5 +1,6 @@
 ﻿@model FiveMinute.ViewModels.AccountViewModels.UserDetailViewModel
 @using Microsoft.AspNetCore.Identity
+@using FiveMinute.Application.Helpers
 @inject UserManager<AppUser> UserManager
 
 <partial name="_Popup" />
@@ -26,11 +27,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach (var result in Model.PassedTestResults)
+						@foreach (var result in Model.PassedTestResults.OrderByDescending(x => x.PassTime))
 						{
 							<tr>
 								<td>@result.FMTestName</td>
-								<td>@result.PassTime</td>
+								<td>@TimeAgoHelper.GetTimeAgoString(result.PassTime, TimeZoneInfo.Local)</td>
 								<td>0</td>
 								<td>
 									<a asp-action="FiveMinuteResult" asp-controller="FiveMinuteTest" asp-route-resultId="@result.Id" class="btn btn-primary">Подробнее</a>

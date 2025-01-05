@@ -73,7 +73,6 @@ namespace FiveMinute.Controllers
 
 		public async Task<IActionResult> Pass(string encryptedId)
 		{
-
 			var testId = 0;
 			try
 			{
@@ -104,12 +103,26 @@ namespace FiveMinute.Controllers
 		}
 
 		[HttpPost]
+		public async Task<JsonResult> SendTestResultsAutomatically(TestResultViewModel viewModel)
+		{
+			if (!await _fmtChecker.CheckAndSave(viewModel))
+			{
+				// Return a JSON response indicating failure
+				return Json(new { success = false, message = "Что-то пошло не так. Не удалось сохранить ваши ответы." });
+			}
+
+			// Return a JSON response indicating success
+			return Json(new { success = true, message = "Результаты сохранены." });
+		}
+
+		[HttpPost]
 		public async Task<IActionResult> SendTestResults(TestResultViewModel viewModel)
 		{
 			if (!await _fmtChecker.CheckAndSave(viewModel))
 				return View("PassInfo", new PassInfoViewModel($"Что-то пошло не так. Не удалось сохранить ваши ответы."));
 			return View("PassInfo", new PassInfoViewModel($"Результаты сохранены.")); ;
 		}
+
 
 		[HttpPost]
 		public async Task<IActionResult> UpdateTestSettings(FiveMinuteTestDetailViewModel viewModel)
@@ -154,14 +167,6 @@ namespace FiveMinute.Controllers
 			var statusText = "Закрыта";
 			var statusClass = "bg-danger";
 			var statusValue = TestStatus.Closed;
-			//foreach (var res in existingFmTest.Results)			{
-			//	if (res.Status != ResultStatus.Verified)
-			//	{
-			//		statusText = "Требует проверки";
-			//		statusClass = "bg-brown";
-			//		break;
-			//	}
-			//}
 
 			var status = await _fiveMinuteTestRepository.Update(existingFmTest);
 			if (!status) return Json(new { success = false, exception = status.Exception});
