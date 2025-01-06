@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinute.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -214,7 +214,9 @@ namespace FiveMinute.Migrations
                     FiveMinuteTemplateId = table.Column<int>(type: "integer", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    StartPlanned = table.Column<bool>(type: "boolean", nullable: false),
                     StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndPlanned = table.Column<bool>(type: "boolean", nullable: false),
                     EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IdToUninclude = table.Column<List<int>>(type: "integer[]", nullable: false),
                     UserOrganizerId = table.Column<string>(type: "text", nullable: true)
@@ -242,6 +244,7 @@ namespace FiveMinute.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Position = table.Column<int>(type: "integer", nullable: false),
                     QuestionText = table.Column<string>(type: "text", nullable: false),
+                    QuestionScore = table.Column<float>(type: "real", nullable: false),
                     ResponseType = table.Column<int>(type: "integer", nullable: false),
                     Сost = table.Column<int>(type: "integer", nullable: false),
                     FiveMinuteTemplateId = table.Column<int>(type: "integer", nullable: false)
@@ -268,7 +271,7 @@ namespace FiveMinute.Migrations
                     UserData_LastName = table.Column<string>(type: "text", nullable: false),
                     UserData_Group = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    Score = table.Column<int>(type: "integer", nullable: false),
+                    Score = table.Column<float>(type: "real", nullable: false),
                     FiveMinuteTestId = table.Column<int>(type: "integer", nullable: false),
                     PassTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     AppUserId = table.Column<string>(type: "text", nullable: true)
@@ -320,7 +323,7 @@ namespace FiveMinute.Migrations
                     Text = table.Column<string>(type: "text", nullable: false),
                     Position = table.Column<int>(type: "integer", nullable: false),
                     IsCorrect = table.Column<bool>(type: "boolean", nullable: false),
-                    Score = table.Column<int>(type: "integer", nullable: false),
+                    Score = table.Column<float>(type: "real", nullable: false),
                     QuestionId = table.Column<int>(type: "integer", nullable: false),
                     QuestionText = table.Column<string>(type: "text", nullable: false),
                     QuestionPosition = table.Column<int>(type: "integer", nullable: false),

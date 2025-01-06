@@ -76,7 +76,7 @@ namespace FiveMinute.Controllers
 			var testId = 0;
 			try
 			{
-				testId = UrlEncryptor.Decrypt(encryptedId);
+				testId = UrlEncryptor.Decrypt(encryptedId.Replace(' ', '+'));
 			}
 			catch (Exception ex)
 			{

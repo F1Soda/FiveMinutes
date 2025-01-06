@@ -39,6 +39,11 @@ public class FmtChecker(
 		rez.QuestionId = question.Id;
 		rez.IsCorrect = (dbAnswer?.IsCorrect ?? false) && rez.Text == dbAnswer?.Text;
 		rez.QuestionText = question?.QuestionText ?? "";
+		if (rez.IsCorrect)
+		{
+			var count = question.AnswerOptions.Count(x => x.IsCorrect);
+			rez.Score = question.QuestionScore / count;
+		}
 		return rez;
 	}
 
@@ -47,7 +52,7 @@ public class FmtChecker(
 		var fmTest = await fiveMinuteTestRepository.GetByIdAsync(testResult.FMTestId);
 		var rez = TestResultViewModel.CreateByView(testResult);
 		rez.Answers = testResult.UserAnswers.Select(ans => CheckUserAnswer(ans, fmTest.FiveMinuteTemplate)).ToList();
-		rez=await UpdateScore(rez);
+		rez = await UpdateScore(rez);
 		return rez;
 	}
 

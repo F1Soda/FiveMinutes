@@ -217,8 +217,8 @@ namespace FiveMinute.Migrations
                     b.Property<DateTime>("PassTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Score")
-                        .HasColumnType("integer");
+                    b.Property<float>("Score")
+                        .HasColumnType("real");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -271,6 +271,9 @@ namespace FiveMinute.Migrations
                     b.Property<int>("Position")
                         .HasColumnType("integer");
 
+                    b.Property<float>("QuestionScore")
+                        .HasColumnType("real");
+
                     b.Property<string>("QuestionText")
                         .IsRequired()
                         .HasColumnType("text");
@@ -315,8 +318,8 @@ namespace FiveMinute.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Score")
-                        .HasColumnType("integer");
+                    b.Property<float>("Score")
+                        .HasColumnType("real");
 
                     b.Property<string>("Text")
                         .IsRequired()

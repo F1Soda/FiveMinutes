@@ -8,6 +8,7 @@ namespace FiveMinute.ViewModels.FMTEditViewModels
         public int Id { get; set; }
         public int Position { get; set; }
         public string QuestionText { get; set; }
+        public float QuestionScore { get; set; }
         public ResponseType ResponseType { get; set; }
         public ICollection<AnswerEditViewModel> Answers { get; set; } = new List<AnswerEditViewModel>();
         public static QuestionEditViewModel CreateByModel(Question model)
@@ -16,6 +17,7 @@ namespace FiveMinute.ViewModels.FMTEditViewModels
             {
                 Id = model.Id,
                 QuestionText = model.QuestionText,
+                QuestionScore = model.QuestionScore,
                 Position = model.Position,
                 ResponseType = model.ResponseType,
                 Answers = model.AnswerOptions.Select(x => AnswerEditViewModel.CreateByModel(x)).ToList()
@@ -26,6 +28,7 @@ namespace FiveMinute.ViewModels.FMTEditViewModels
         {
            return new Question{
                 QuestionText = model.QuestionText,
+                QuestionScore = model.QuestionScore,
                 Position = model.Position,
                 ResponseType = model.ResponseType,
                 AnswerOptions = model.Answers.Select(x => AnswerEditViewModel.CreateByView(x)).ToList()

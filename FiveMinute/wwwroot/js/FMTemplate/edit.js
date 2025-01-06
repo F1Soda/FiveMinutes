@@ -11,12 +11,17 @@ $(document).ready(function () {
 
 // Function to generate HTML for a question card
 function getQuestionHtml(question, questionIndex) {
-	console.log(question);
 	return `
 		<div class="card mt-3 question-card border-secondary border-3">
 			<div class="card-body">
 				<h5 class="card-title">Вопрос	 ${questionIndex + 1}</h5>
 				<button type="button" class="delete-answer-button btn btn-danger btn-sm mb-2" onclick="deleteQuestion(this)">Удалить вопрос</button>
+				<div class="form-group row">
+					<label>Количество баллов:</label>
+					<div class="col-sm-1">
+						<input type="number" name="Questions[${questionIndex}].QuestionScore" class="form-control" style="text-align: center;" value="${question["questionScore"] || 0}" min="0" />
+            		</div>				
+            	</div>
 				<div class="form-group">
 					<label>Текст вопроса:</label>
 					<input type="text" name="Questions[${questionIndex}].QuestionText" class="form-control" value="${question["questionText"]}" required />
@@ -60,6 +65,7 @@ function addQuestion() {
 	// Define a default question object to pass to getQuestionHtml
 	const newQuestion = {
 		questionText: '',
+		questionScore: 0,
 		responseType: 0, // Default to "Один вариант"
 		answers: [] // Start with no answers
 	};
@@ -74,8 +80,6 @@ function addQuestion() {
 function handleResponseTypeChange(select) {
 	const answersContainer = select.closest('.card-body').querySelector('.answers-container');
 	const addAnswerButton = select.closest('.card-body').querySelector('.add-answer-button');
-	console.log(addAnswerButton);
-
 	answersContainer.innerHTML = '';
 	addAnswerButton.style.display = 'block';
 }
@@ -151,7 +155,7 @@ function save(isFinalSave = false) {
 	
 	$('#questions-container .card').each(function() {
 		// Проверка текста вопроса
-		const questionText = $(this).find('input[name^="Questions"]').val().trim();
+		const questionText = $(this).find('input[name$="QuestionText"]').val().trim();
 		if (!questionText) {
 			showPopup("Заполните текст вопроса", 'error');
 			isValid = false;
@@ -163,11 +167,11 @@ function save(isFinalSave = false) {
 
 		// Проверка ответов для типов "Один вариант" и "Несколько вариантов"
 			const answers = $(this).find('.answers-container .answer-item');
-			if (answers.length === 0) {
-				showPopup("Добавьте варианты ответа", 'error');
-				isValid = false;
-				return false;
-			}
+			// if (answers.length === 0) {
+			// 	showPopup("Добавьте варианты ответа", 'error');
+			// 	isValid = false;
+			// 	return false;
+			// }
 
 			answers.each(function() {
 				const answerText = $(this).find('input[type="text"]').val().trim();
@@ -195,11 +199,14 @@ function save(isFinalSave = false) {
 	$('#questions-container .card').each(function (index, element) {
 		const question = {
 			Position: index,
-			QuestionText: $(element).find('input[name^="Questions"]').val(),
+			QuestionText: $(element).find('input[name$="QuestionText"]').val(),
+			QuestionScore: parseInt($(element).find('input[name$="QuestionScore"]').val(), 10),
 			ResponseType: parseInt($(element).find('select[name^="Questions"]').val(), 10),
 			Answers: []
 		};
-
+		console.log($(element).find('input[name$="QuestionScore"]').val());
+		console.log(question);
+		
 		$(element).find('.answers-container .answer-item').each(function () {
 			const answer = {
 				Position: question.Answers.length	,
@@ -208,7 +215,6 @@ function save(isFinalSave = false) {
 			};
 			question.Answers.push(answer);
 		});
-
 		jsonData.Questions.push(question);
 	});
 

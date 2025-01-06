@@ -61,7 +61,7 @@ public partial class AccountController {
 	private void UpdateUserData(AppUser currentUser, UserDataChangeViewModel userDataChange) {
 		currentUser.UserData.FirstName = userDataChange.FirstName;
 		currentUser.UserData.LastName = userDataChange.LastName;
-		currentUser.UserData.Group = userDataChange.Group;
+		currentUser.UserData.Group = userDataChange.Group ?? currentUser.UserData.Group;
 		currentUser.Email = userDataChange.Email;
 	}
 }

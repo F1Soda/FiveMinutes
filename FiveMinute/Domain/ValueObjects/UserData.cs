@@ -10,8 +10,9 @@ public class UserData
     public string FirstName { get; set; }
     [Display(Name = "Фамилия")]
     public string LastName { get; set; }
+
     [Display(Name = "Группа")]
-    public string Group{ get; set; }
+    public string Group { get; set; }
 
     public string FullName => FirstName + " " + LastName;
 

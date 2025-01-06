@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FiveMinute.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241228205809_Some_good_changes_in_FMTest")]
-    partial class Some_good_changes_in_FMTest
+    [Migration("20250106020248_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -220,8 +220,8 @@ namespace FiveMinute.Migrations
                     b.Property<DateTime>("PassTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Score")
-                        .HasColumnType("integer");
+                    b.Property<float>("Score")
+                        .HasColumnType("real");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -274,6 +274,9 @@ namespace FiveMinute.Migrations
                     b.Property<int>("Position")
                         .HasColumnType("integer");
 
+                    b.Property<float>("QuestionScore")
+                        .HasColumnType("real");
+
                     b.Property<string>("QuestionText")
                         .IsRequired()
                         .HasColumnType("text");
@@ -318,8 +321,8 @@ namespace FiveMinute.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Score")
-                        .HasColumnType("integer");
+                    b.Property<float>("Score")
+                        .HasColumnType("real");
 
                     b.Property<string>("Text")
                         .IsRequired()
