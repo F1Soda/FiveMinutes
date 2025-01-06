@@ -208,6 +208,12 @@ namespace FiveMinute.Controllers
 				foreach (var answer in answers)
 				{
 					answer.IsCorrect = model.IsCorrect;
+					if (answer.IsCorrect)
+						answer.Score = test?
+							.FiveMinuteTemplate
+							.Questions
+							.FirstOrDefault(x => x.Id == answer.QuestionId)
+							?.QuestionScore ?? 0;
 				}
 
 				await _fiveMinuteTestRepository.Save();
