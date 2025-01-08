@@ -25,6 +25,7 @@ namespace FiveMinute.Models {
 					new Question {
 						QuestionText = "Вопрос 1",
 						Position = 0,
+						QuestionScore = 1,
 						ResponseType = Models.ResponseType.SingleChoice,
 						AnswerOptions = new List<Answer>
 							{ new Answer { Position = 0, Text = "ответ 1", Id = 0, QuestionId = 0, IsCorrect = true } }

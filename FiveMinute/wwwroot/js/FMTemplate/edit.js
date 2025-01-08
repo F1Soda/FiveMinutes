@@ -19,7 +19,7 @@ function getQuestionHtml(question, questionIndex) {
 				<div class="form-group row">
 					<label>Количество баллов:</label>
 					<div class="col-sm-1">
-						<input type="number" name="Questions[${questionIndex}].QuestionScore" class="form-control" style="text-align: center;" value="${question["questionScore"] || 0}" min="0" />
+						<input type="number" name="Questions[${questionIndex}].QuestionScore" class="form-control" style="text-align: center;" value="${question["questionScore"] || 1}" min="0" />
             		</div>				
             	</div>
 				<div class="form-group">
