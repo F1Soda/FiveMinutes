@@ -8,47 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	initializeQuestionCheckboxes('IdToUninclude');
 	toggleEndTimeInput();
 	toggleStartTimeInput();
-
-	document.addEventListener('click', function (e) {
-		if (e.target.classList.contains('mark-correct-btn')) {
-			var questionId = e.target.getAttribute("data-question-id");
-
-			var answerId = e.target.getAttribute('data-answer-id');
-			var isCorrect = e.target.getAttribute('data-is-correct') === 'true';
-
-			var testId = e.target.getAttribute("data-test-id");
-			var text = e.target.getAttribute("data-answer-text");
-
-
-			fetch('@Url.Action("UpdateAnswerCorrectness", "FiveMinuteTest")', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					answerId: parseInt(answerId), isCorrect: isCorrect,
-					questionId: parseInt(questionId), testId: parseInt(testId),
-					text: text
-				}),
-			})
-				.then(response => {
-					if (!response.ok) throw new Error('Network response was not ok');
-					return response.json().catch(() => null);
-				})
-				.then(data => {
-					alert('Ответ обновлён!');
-					var answerBlock = e.target.closest('.answer-block');
-					if (answerBlock) {
-						answerBlock.style.backgroundColor = isCorrect ? '#d4edda' : '#f8d7da';
-					}
-				})
-				.catch(error => {
-					console.error('Fetch error:', error);
-					alert('Ошибка при обновлении ответа.');
-				});
-		}
-	});
-
+	
 	let closeButton = document.getElementById('closeTest');
 
 	if (closeButton) {

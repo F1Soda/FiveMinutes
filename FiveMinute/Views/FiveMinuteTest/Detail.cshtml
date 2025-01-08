@@ -106,7 +106,7 @@
 								<div>Время прохождения: @result.PassTime</div>
 								<div>
 									Всего
-									баллов: @answersDict.Values.SelectMany(x => x).Sum(x => x.Score)
+									баллов: @answersDict.Values.SelectMany(x => x).Where(x => x.IsCorrect).Sum(x => x.Score)
 								</div>
 								<a asp-action="FiveMinuteResult" asp-route-resultId="@result.Id">Подробнее</a>
 							</caption>
@@ -166,7 +166,7 @@
 									<th>Балл</th>
 									@foreach (var number in answersDict.Keys.Order())
 									{
-										<td>@answersDict[number].Sum(x => x.Score)</td>
+										<td>@answersDict[number].Where(x => x.IsCorrect).Sum(x => x.Score)</td>
 									}
 								</tr>
 							</tbody>
@@ -175,6 +175,52 @@
 				</div>
 			</div>
 		</div>
+		
+		<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                initializeQuestionCheckboxes('IdToUninclude');
+                toggleEndTimeInput();
+                toggleStartTimeInput();
+        
+                document.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('mark-correct-btn')) {
+                        var answerId = e.target.getAttribute('data-answer-id');
+                        var isCorrect = e.target.getAttribute('data-is-correct') === 'true';
+                        var questionId = e.target.getAttribute("data-question-id");
+                        var testId = e.target.getAttribute("data-test-id");
+                        var text = e.target.getAttribute("data-answer-text");
+                        
+        
+                        fetch('@Url.Action("UpdateAnswerCorrectness", "FiveMinuteTest")', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ answerId: parseInt(answerId), isCorrect: isCorrect, 
+                            questionId: parseInt(questionId), testId : parseInt(testId),
+                            text: text
+                            }),
+                        })
+                        .then(response => {
+                            if (!response.ok) throw new Error('Network response was not ok');
+                            return response.json().catch(() => null); 
+                        })
+                        .then(data => {
+                            alert('Ответ обновлён!');
+                            var answerBlock = e.target.closest('.answer-block');
+                            if (answerBlock) {
+                                answerBlock.style.backgroundColor = isCorrect ? '#d4edda' : '#f8d7da';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Fetch error:', error);
+                            alert('Ошибка при обновлении ответа.');
+                        });
+                    }
+                });
+            });
+			</script>
+		
 
 		<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
 
@@ -276,4 +322,5 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/popup.js"></script>
 	<script src="~/js/FMTest/detail.js"></script>
+	
 }
