@@ -203,15 +203,12 @@
 							return response.json().catch(() => null);
 						})
 						.then(data => {
-							alert('Ответ обновлён!');
+							showPopup('Ответ обновлён!', "notification");
 							var answerBlock = e.target.closest('.answer-block');
-							if (answerBlock) {
-								answerBlock.style.backgroundColor = isCorrect ? '#d4edda' : '#f8d7da';
-							}
 						})
 						.catch(error => {
 							console.error('Fetch error:', error);
-							alert('Ошибка при обновлении ответа.');
+							showPopup('Ошибка при обновлении ответа.', "error");
 						});
 					}
 				});
