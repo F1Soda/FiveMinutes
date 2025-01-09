@@ -85,7 +85,7 @@
 		<!-- Statistics Tab Pane -->
 		<div class="tab-pane fade show active" id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
 			<div class="row">
-				<div class="col-md-6">
+				<div >
 					<h6>Всего прохождений: @Model.Results.Count()</h6>
 
 					@foreach (var result in Model.Results)
@@ -96,79 +96,90 @@
 							answersDict.TryAdd(answer.QuestionPosition, new List<UserAnswer>());
 							answersDict[answer.QuestionPosition].Add(answer);
 						}
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-12">
 
-						<table class="table table-bordered table-striped mt-3">
-							<caption>
-								<div>Имя пользователя: @result.UserData.FirstName @result.UserData.LastName</div>
-								<div>Время прохождения: @result.PassTime</div>
-								<div>
-									Всего
-									баллов: @answersDict.Values.SelectMany(x => x).Where(x => x.IsCorrect).Sum(x => x.Score)
+									<div class="card my-3">
+										<div class="card-header d-flex justify-content-between align-items-center">
+											<div>
+												<strong>Имя пользователя:</strong> @result.UserData.FirstName @result.UserData.LastName<br />
+												<strong>Время прохождения:</strong> @result.PassTime.ToLocalTime()<br />
+												<strong>Всего баллов:</strong> @answersDict.Values.SelectMany(x => x).Where(x => x.IsCorrect).Sum(x => x.Score)
+											</div>
+											<a asp-action="FiveMinuteResult" asp-route-resultId="@result.Id" class="btn btn-primary btn-sm">Подробнее</a>
+										</div>
+
+										<div class="card-body">
+											<table class="table table-bordered table-striped mt-3">
+												<thead class="table">
+													<tr>
+														<th>Вопрос</th>
+														@foreach (var number in answersDict.Keys.Order())
+														{
+															var someAnswer = answersDict[number].FirstOrDefault();
+															<th>@(someAnswer?.QuestionPosition + 1). @someAnswer?.QuestionText</th>
+														}
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<th>Ответ</th>
+														@foreach (var number in answersDict.Keys.Order())
+														{
+															<td>
+																@foreach (var answer in answersDict[number].Where(x => !string.IsNullOrEmpty(x.Text)))
+																{
+																	<div class="answer-block mb-2">
+																		<span class="answer-text">@answer.Text</span>
+																		@if (Model.AttachedFMT.Questions.FirstOrDefault(q => q.Id == answer.QuestionId) == null)
+																		{
+																			continue;
+																		}
+																		@if (Model.AttachedFMT.Questions.FirstOrDefault(q => q.Id == answer.QuestionId).ResponseType == ResponseType.Text)
+																		{
+																			<div class="mt-2">
+																				<button type="button"
+																						class="btn btn-sm btn-success mark-correct-btn"
+																						data-answer-id="@answer.Id" data-is-correct="true"
+																						data-question-position="@answer.QuestionPosition"
+																						data-question-id="@answer.QuestionId"
+																						data-test-id="@Model.Id"
+																						data-answer-text="@answer.Text">
+																					Правильно
+																				</button>
+																				<button type="button"
+																						class="btn btn-sm btn-danger mark-correct-btn"
+																						data-answer-id="@answer.Id" data-is-correct="false"
+																						data-question-position="@answer.QuestionPosition"
+																						data-question-id="@answer.QuestionId"
+																						data-test-id="@Model.Id"
+																						data-answer-text="@answer.Text">
+																					Неправильно
+																				</button>
+																			</div>
+																		}
+																	</div>
+																}
+															</td>
+														}
+													</tr>
+													<tr>
+														<th>Балл</th>
+														@foreach (var number in answersDict.Keys.Order())
+														{
+															<td>@answersDict[number].Where(x => x.IsCorrect).Sum(x => x.Score)</td>
+														}
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
 								</div>
-								<a asp-action="FiveMinuteResult" asp-route-resultId="@result.Id">Подробнее</a>
-							</caption>
-							<thead>
-								<tr>
-									<th>Вопрос</th>
-									@foreach (var number in answersDict.Keys.Order())
-									{
-										var someAnswer = answersDict[number].FirstOrDefault();
-										<th>@someAnswer?.QuestionPosition. @someAnswer?.QuestionText</th>
-									}
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th>Ответ</th>
-									@foreach (var number in answersDict.Keys.Order())
-									{
-										<td>
-											@foreach (var answer in answersDict[number].Where(x => !string.IsNullOrEmpty(x.Text)))
-											{
-												<div class="answer-block" style="margin-bottom:10px;">
-													<span class="answer-text">@answer.Text</span>
-													@if (Model.AttachedFMT.Questions.FirstOrDefault(q => q.Id == answer.QuestionId) == null)
-													{
-														continue;
-													}
-													@if (Model.AttachedFMT.Questions.FirstOrDefault(q => q.Id == answer.QuestionId).ResponseType == ResponseType.Text)
-													{
-														<div class="mt-2">
-															<button type="button"
-																	class="btn btn-sm btn-success mark-correct-btn"
-																	data-answer-id="@answer.Id" data-is-correct="true"
-																	data-question-position="@answer.QuestionPosition"
-																	data-question-id="@answer.QuestionId"
-																	data-test-id="@Model.Id"
-																	data-answer-text="@answer.Text">
-																Правильно
-															</button>
-															<button type="button"
-																	class="btn btn-sm btn-danger mark-correct-btn"
-																	data-answer-id="@answer.Id" data-is-correct="false"
-																	data-question-position="@answer.QuestionPosition"
-																	data-question-id="@answer.QuestionId"
-																	data-test-id="@Model.Id"
-																	data-answer-text="@answer.Text">
-																Неправильно
-															</button>
-														</div>
-													}
-												</div>
-											}
-										</td>
-									}
-								</tr>
-								<tr>
-									<th>Балл</th>
-									@foreach (var number in answersDict.Keys.Order())
-									{
-										<td>@answersDict[number].Where(x => x.IsCorrect).Sum(x => x.Score)</td>
-									}
-								</tr>
-							</tbody>
-						</table>
+							</div>
+						</div>
 					}
+
 				</div>
 			</div>
 		</div>
@@ -283,16 +294,16 @@
 				<div class="mb-3">
 					<div class="d-flex align-items-center">
 						<label for="endPlanned" class="form-label me-2">Запланировать окончание </label>
-					@if (Model.EndPlanned)
-					{
-						<input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input"
-							   onchange="toggleEndTimeInput()" checked />
-					}
-					else
-					{
-						<input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input"
-							   onchange="toggleEndTimeInput()" />
-					}
+						@if (Model.EndPlanned)
+						{
+							<input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input"
+								   onchange="toggleEndTimeInput()" checked />
+						}
+						else
+						{
+							<input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input"
+								   onchange="toggleEndTimeInput()" />
+						}
 					</div>
 					<div id="endTimeInput" class="mt-2" style="display: @(Model.EndPlanned ? "block" : "none")">
 						<label for="endDateTime" class="form-label">Дата и время окончания</label>

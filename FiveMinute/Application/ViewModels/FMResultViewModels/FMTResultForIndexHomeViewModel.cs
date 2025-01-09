@@ -18,7 +18,7 @@ namespace FiveMinute.ViewModels.FMResultViewModels
 			{
 				Id = model.Id,
 				FiveMinuteTestId = model.FiveMinuteTestId,
-				Result = 0,
+				Result = model.Score,
 				FMTestName = "Empty",
 				PassTime = model.PassTime,
 				FMTestOrganizer = "model.UserName",

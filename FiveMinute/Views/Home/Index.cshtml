@@ -92,7 +92,7 @@
 									<td>@result.FMTestName</td>
 									<td>@result.FMTestOrganizer</td>
 									<td>@TimeAgoHelper.GetTimeAgoString(result.PassTime, TimeZoneInfo.Local)</td>
-									<td>0</td>
+									<td>@result.Result</td>
 									<td>
 										<a asp-action="FiveMinuteResult" asp-controller="FiveMinuteTest" asp-route-resultId="@result.Id" class="btn btn-primary">Подробнее</a>
 									</td>

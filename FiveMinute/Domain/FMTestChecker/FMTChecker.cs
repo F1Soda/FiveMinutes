@@ -21,7 +21,8 @@ public class FmtChecker(
 		if (testResultViewModel.UserId != "")
 		{
 			var currentUser = await userRepository.GetFullUserDataById(testResultViewModel.UserId);
-			currentUser.AddResult(testResult);
+			if (currentUser != null)
+				currentUser.AddResult(testResult);
 		}
 		if (!await fiveMinuteTestRepository.AddResultToTest(testResultViewModel.FMTestId, testResult))
 			return false;
