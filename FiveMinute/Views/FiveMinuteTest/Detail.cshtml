@@ -145,7 +145,8 @@
 																						data-question-position="@answer.QuestionPosition"
 																						data-question-id="@answer.QuestionId"
 																						data-test-id="@Model.Id"
-																						data-answer-text="@answer.Text">
+																						data-answer-text="@answer.Text"
+																						data-answer-result-id="@result.Id">
 																					Правильно
 																				</button>
 																				<button type="button"
@@ -154,7 +155,8 @@
 																						data-question-position="@answer.QuestionPosition"
 																						data-question-id="@answer.QuestionId"
 																						data-test-id="@Model.Id"
-																						data-answer-text="@answer.Text">
+																						data-answer-text="@answer.Text"
+																						data-answer-result-id="@result.Id">
 																					Неправильно
 																				</button>
 																			</div>
@@ -197,7 +199,7 @@
 						var questionId = e.target.getAttribute("data-question-id");
 						var testId = e.target.getAttribute("data-test-id");
 						var text = e.target.getAttribute("data-answer-text");
-
+						var resultId = e.target.getAttribute("data-answer-result-id");
 
 						fetch('@Url.Action("UpdateAnswerCorrectness", "FiveMinuteTest")', {
 							method: 'POST',
@@ -206,7 +208,7 @@
 							},
 							body: JSON.stringify({ answerId: parseInt(answerId), isCorrect: isCorrect,
 							questionId: parseInt(questionId), testId : parseInt(testId),
-							text: text
+							text: text, resultId : resultId
 							}),
 						})
 						.then(response => {

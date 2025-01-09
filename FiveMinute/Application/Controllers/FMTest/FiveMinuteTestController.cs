@@ -205,18 +205,33 @@ namespace FiveMinute.Controllers
 
 			if (answers != null)
 			{
+				var score = 0f;
 				foreach (var answer in answers)
 				{
 					answer.IsCorrect = model.IsCorrect;
 					if (answer.IsCorrect)
-						answer.Score = test?
+						score = answer.Score = test?
 							.FiveMinuteTemplate
 							.Questions
 							.FirstOrDefault(x => x.Id == answer.QuestionId)
 							?.QuestionScore ?? 0;
 				}
-
 				await _fiveMinuteTestRepository.Save();
+
+				var result = test!.Results.FirstOrDefault(x => x.Id == model.resultId);
+				var user = await _userRepository.GetFullUserDataById(result!.UserId!);
+				result = user.PassedTestResults.FirstOrDefault(x => x.Id == model.resultId);
+				foreach (var answer in result.Answers)
+				{
+					if (answer.QuestionId == model.QuestionId)
+					{
+						answer.Score = score;
+						break;
+					}
+				}
+				result.Score = result.Answers.Sum(x => x.Score);
+				var res = await _userRepository.Save();
+				Console.Write(res.Success);
 			}
 
 			return Json(new { success = true });

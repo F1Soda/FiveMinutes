@@ -10,6 +10,7 @@ public class CheckTextAnswerCorrectnessViewModel : IOutput<CheckTextAnswerCorrec
     public bool IsCorrect { get; set; }
     public int TestId { get; set; }
     public string Text { get; set; }
+    public int resultId { get; set; }
 
     
     public static UserAnswer CreateByView(CheckTextAnswerCorrectnessViewModel model)
