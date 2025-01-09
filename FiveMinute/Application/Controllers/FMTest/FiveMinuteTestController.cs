@@ -109,7 +109,7 @@ namespace FiveMinute.Controllers
 			var fmTest = await _fiveMinuteTestRepository.GetByIdAsync(viewModel.FMTestId);
 			if (fmTest == null) return NotFoundError();
 
-			if (fmTest.Status == TestStatus.Closed)
+			if (fmTest.Status == TestStatus.Closed && viewModel.UserId != fmTest.UserOrganizerId)
 				if (!fmTest.EndPlanned || (DateTime.UtcNow - fmTest.EndTime).Seconds > 10)
 				{
 					return View("PassInfo", new PassInfoViewModel($"Тест уже закрыт. Ответы не приняты"));

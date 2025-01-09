@@ -15,10 +15,11 @@
 				<h1 class="mb-0">@Model.Name</h1>
 
 				<div class="">
-					@if (Model.HasUncheckedAnswers)
-					{
-						<a class="btn btn-primary" asp-area="" asp-route-id="@Model.Id" asp-controller="FiveMinuteTest" asp-action="Checking" >Проверка ответов</a>
-					}
+					@* @if (Model.HasUncheckedAnswers) *@
+					@* { *@
+					@* 	<a class="btn btn-primary" asp-area="" asp-route-id="@Model.Id" asp-controller="FiveMinuteTest" asp-action="Checking" >Проверка ответов</a> *@
+					@* } *@
+					<a class="btn btn-secondary" id="copyUrlButton" encryptedId="@Model.EncryptedId">Скопировать ссылку</a>
 					<a class="btn btn-secondary" asp-area="" asp-route-encryptedId="@Model.EncryptedId" asp-controller="FiveMinuteTest" asp-action="Pass">Прохождение теста</a>
 					<input id="closeTest" type="button" class="btn btn-danger btn-delete" @(Model.Status == TestStatus.Open ? "" : "hidden") value="Закрыть" />
 					<input id="openTest" type="button" class="btn btn-primary" @(Model.Status == TestStatus.Closed ? "" : "hidden") value="Открыть" />
@@ -43,8 +44,6 @@
 				@Model.AttachedFMT.Name
 			</a>
 		</p>
-
-		<a class="btn btn-secondary" id="copyUrlButton" encryptedId="@Model.EncryptedId">Скопировать ссылку</a>
 
 
 		@if (Model.StartPlanned)
@@ -87,7 +86,6 @@
 		<div class="tab-pane fade show active" id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
 			<div class="row">
 				<div class="col-md-6">
-					<h4>Statistics for Passers</h4>
 					<h6>Всего прохождений: @Model.Results.Count()</h6>
 
 					@foreach (var result in Model.Results)
@@ -101,8 +99,7 @@
 
 						<table class="table table-bordered table-striped mt-3">
 							<caption>
-								<div>Id пользователя: @result.UserId</div>
-								<div>Имя пользователя: @result.UserData.FirstName @result.UserData.FirstName</div>
+								<div>Имя пользователя: @result.UserData.FirstName @result.UserData.LastName</div>
 								<div>Время прохождения: @result.PassTime</div>
 								<div>
 									Всего
@@ -175,52 +172,52 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                initializeQuestionCheckboxes('IdToUninclude');
-                toggleEndTimeInput();
-                toggleStartTimeInput();
-        
-                document.addEventListener('click', function(e) {
-                    if (e.target.classList.contains('mark-correct-btn')) {
-                        var answerId = e.target.getAttribute('data-answer-id');
-                        var isCorrect = e.target.getAttribute('data-is-correct') === 'true';
-                        var questionId = e.target.getAttribute("data-question-id");
-                        var testId = e.target.getAttribute("data-test-id");
-                        var text = e.target.getAttribute("data-answer-text");
-                        
-        
-                        fetch('@Url.Action("UpdateAnswerCorrectness", "FiveMinuteTest")', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ answerId: parseInt(answerId), isCorrect: isCorrect, 
-                            questionId: parseInt(questionId), testId : parseInt(testId),
-                            text: text
-                            }),
-                        })
-                        .then(response => {
-                            if (!response.ok) throw new Error('Network response was not ok');
-                            return response.json().catch(() => null); 
-                        })
-                        .then(data => {
-                            alert('Ответ обновлён!');
-                            var answerBlock = e.target.closest('.answer-block');
-                            if (answerBlock) {
-                                answerBlock.style.backgroundColor = isCorrect ? '#d4edda' : '#f8d7da';
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Fetch error:', error);
-                            alert('Ошибка при обновлении ответа.');
-                        });
-                    }
-                });
-            });
-			</script>
-		
+			document.addEventListener('DOMContentLoaded', function() {
+				initializeQuestionCheckboxes('IdToUninclude');
+				toggleEndTimeInput();
+				toggleStartTimeInput();
+
+				document.addEventListener('click', function(e) {
+					if (e.target.classList.contains('mark-correct-btn')) {
+						var answerId = e.target.getAttribute('data-answer-id');
+						var isCorrect = e.target.getAttribute('data-is-correct') === 'true';
+						var questionId = e.target.getAttribute("data-question-id");
+						var testId = e.target.getAttribute("data-test-id");
+						var text = e.target.getAttribute("data-answer-text");
+
+
+						fetch('@Url.Action("UpdateAnswerCorrectness", "FiveMinuteTest")', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify({ answerId: parseInt(answerId), isCorrect: isCorrect,
+							questionId: parseInt(questionId), testId : parseInt(testId),
+							text: text
+							}),
+						})
+						.then(response => {
+							if (!response.ok) throw new Error('Network response was not ok');
+							return response.json().catch(() => null);
+						})
+						.then(data => {
+							alert('Ответ обновлён!');
+							var answerBlock = e.target.closest('.answer-block');
+							if (answerBlock) {
+								answerBlock.style.backgroundColor = isCorrect ? '#d4edda' : '#f8d7da';
+							}
+						})
+						.catch(error => {
+							console.error('Fetch error:', error);
+							alert('Ошибка при обновлении ответа.');
+						});
+					}
+				});
+			});
+		</script>
+
 
 		<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
 
@@ -264,18 +261,20 @@
 
 				<div class="mb-4">
 					<h4>Запланировать время</h4>
+					<div class="d-flex align-items-center">
+						<label for="startPlanned" class="form-label me-2">Запланировать начало</label>
+						@if (Model.StartPlanned)
+						{
+							<input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"
+								   onchange="toggleStartTimeInput()" checked />
+						}
+						else
+						{
+							<input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"
+								   onchange="toggleStartTimeInput()" />
+						}
+					</div>
 
-					<label for="startPlanned" class="form-label">Запланировать начало</label>
-					@if (Model.StartPlanned)
-					{
-						<input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"
-							   onchange="toggleStartTimeInput()" checked />
-					}
-					else
-					{
-						<input class="form-check-input" type="checkbox" id="startPlanned" asp-for="StartPlanned"
-							   onchange="toggleStartTimeInput()" />
-					}
 					<div id="startTimeInput" class="mt-2" style="display: @(Model.StartPlanned ? "block" : "none")">
 						<label for="startDateTime" class="form-label">Дата и время начала</label>
 						<input type="datetime-local" id="startDateTime" asp-for="StartTime" class="form-control"
@@ -285,7 +284,8 @@
 				</div>
 
 				<div class="mb-3">
-					<label for="endPlanned" class="form-label">Запланировать окончание</label>
+					<div class="d-flex align-items-center">
+						<label for="endPlanned" class="form-label me-2">Запланировать окончание </label>
 					@if (Model.EndPlanned)
 					{
 						<input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input"
@@ -296,6 +296,7 @@
 						<input type="checkbox" id="endPlanned" asp-for="EndPlanned" class="form-check-input"
 							   onchange="toggleEndTimeInput()" />
 					}
+					</div>
 					<div id="endTimeInput" class="mt-2" style="display: @(Model.EndPlanned ? "block" : "none")">
 						<label for="endDateTime" class="form-label">Дата и время окончания</label>
 						<input type="datetime-local" id="endDateTime" asp-for="EndTime" class="form-control"
@@ -322,5 +323,5 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/popup.js"></script>
 	<script src="~/js/FMTest/detail.js"></script>
-	
+
 }

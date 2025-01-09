@@ -5,7 +5,7 @@
 
 @{
 	ViewData["Title"] = "TestPassing";
-	var duration = Model.StartPlanned ? Model.EndTime - Model.StartTime : Model.EndTime - DateTime.UtcNow;
+	var duration = Model.EndTime - DateTime.UtcNow;
 }
 
 @if (Model.EndPlanned)
