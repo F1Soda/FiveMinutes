@@ -41,37 +41,37 @@ body {
 	z-index: 1000;
 }
 
-.admin-debug-dropdown .dropdown-toggle {
-	cursor: pointer;
-}
+	.admin-debug-dropdown .dropdown-toggle {
+		cursor: pointer;
+	}
 
-.admin-debug-dropdown .dropdown-menu {
-	display: none;
-	position: absolute;
-	bottom: 40px;
-	left: 0;
-	background-color: #343a40;
-	border-radius: 4px;
-	padding: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-	color: white;
-}
+	.admin-debug-dropdown .dropdown-menu {
+		display: none;
+		position: absolute;
+		bottom: 40px;
+		left: 0;
+		background-color: #343a40;
+		border-radius: 4px;
+		padding: 10px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		color: white;
+	}
 
-.admin-debug-dropdown .dropdown-item {
-	display: block;
-	color: white;
-	padding: 5px;
-	text-decoration: none;
-}
+	.admin-debug-dropdown .dropdown-item {
+		display: block;
+		color: white;
+		padding: 5px;
+		text-decoration: none;
+	}
 
-.admin-debug-dropdown .dropdown-item:hover {
-	background-color: #495057;
-}
+		.admin-debug-dropdown .dropdown-item:hover {
+			background-color: #495057;
+		}
 
 
 /* Lighter Colors for Cards */
 .bg-light-blue {
-	background-color: #ccd4e0; 
+	background-color: #ccd4e0;
 }
 
 /* Lighter Colors for Cards */
@@ -128,3 +128,17 @@ label {
 	.bottom-timer span {
 		font-weight: bold;
 	}
+
+.truncate {
+	max-width: 200px; /* Adjust as needed */
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.truncate-card {
+	max-width: 230px; /* Adjust as needed */
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

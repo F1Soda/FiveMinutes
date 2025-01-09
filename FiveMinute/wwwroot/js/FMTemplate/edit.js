@@ -14,7 +14,7 @@ function getQuestionHtml(question, questionIndex) {
 	return `
 		<div class="card mt-3 question-card border-secondary border-3">
 			<div class="card-body">
-				<h5 class="card-title">Вопрос	 ${questionIndex + 1}</h5>
+				<h5 class="card-title">Вопрос	 ${questionIndex}</h5>
 				<button type="button" class="delete-answer-button btn btn-danger btn-sm mb-2" onclick="deleteQuestion(this)">Удалить вопрос</button>
 				<div class="form-group row">
 					<label>Количество баллов:</label>
@@ -129,7 +129,7 @@ function initQuestions() {
 	fmt["questions"].forEach((question, questionIndex) => {
 		questionCount++;
 		// Insert question HTML
-		const questionHtml = getQuestionHtml(question, questionIndex);
+		const questionHtml = getQuestionHtml(question, questionCount);
 		questionsContainer.insertAdjacentHTML('beforeend', questionHtml);
 
 		// Add answers for the question
@@ -237,8 +237,6 @@ function save(isFinalSave = false) {
 	});
 }
 
-
-// Function to initialize event handlers and intervals
 function initialize() {
 	// Set up change tracking on form inputs
 	$('input, select').on('change', function () {

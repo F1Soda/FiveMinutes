@@ -16,8 +16,10 @@
 					@foreach (var test in plannedFMTests.Take(5))
 					{
 						<li class="p-1">
-							@test.Name
-							<a href="@Url.Action("Detail", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="truncate-card" title="@test.Name">@test.Name</div>
+								<a href="@Url.Action("Detail", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
+							</div>
 						</li>
 					}
 				</ul>
@@ -41,8 +43,10 @@
 					@foreach (var test in activeFMTests.Take(5))
 					{
 						<li class="p-1">
-							@test.Name
-							<a href="@Url.Action("Detail", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="truncate-card" title="@test.Name">@test.Name</div>
+								<a href="@Url.Action("Detail", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
+							</div>
 						</li>
 					}
 				</ul>
@@ -65,8 +69,10 @@
 					@foreach (var test in requiresRecheckingFMTests.Take(5))
 					{
 						<li class="p-1">
-							@test.Name
-							<a href="@Url.Action("Detail", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="truncate-card" title="@test.Name">@test.Name</div>
+								<a href="@Url.Action("Detail", "FiveMinuteTest", new { testId = test.Id })" class="btn btn-primary btn-sm ml-2">Подробнее</a>
+							</div>
 						</li>
 					}
 				</ul>

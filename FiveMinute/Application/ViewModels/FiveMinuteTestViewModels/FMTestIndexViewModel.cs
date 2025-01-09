@@ -23,6 +23,11 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 	
 		public static FMTestIndexViewModel CreateByModel(FiveMinuteTest model)
 		{
+			var hasUncheckedAnswers = false;
+			if (model.Results != null)
+			{
+				hasUncheckedAnswers = model.Results.Any(x => x.Status != ResultStatus.Verified);
+			}
 			return new FMTestIndexViewModel
 			{
 				Id = model.Id,
@@ -35,7 +40,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels
 				EndPlanned = model.EndPlanned,
 				EndTime = model.EndTime,
 				Status = model.Status,
-				HasUncheckedAnswers = model.Results.Any(x => x.Status != ResultStatus.Verified)
+				HasUncheckedAnswers = hasUncheckedAnswers
 			};
 		}
 	}

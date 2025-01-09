@@ -13,7 +13,7 @@ public class FiveMinuteTestResultViewModel: IInput<FiveMinuteTestResultViewModel
        return new FiveMinuteTestResultViewModel
         {
             FiveMinuteTestName = model.Name,
-            Questions = model.FiveMinuteTemplate.Questions.ToList()
+            Questions = model.FiveMinuteTemplate.Questions.Where(x => !model.IdToUninclude.Contains(x.Id)).ToList()
         };
     }
 }

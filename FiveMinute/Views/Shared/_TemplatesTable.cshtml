@@ -21,7 +21,7 @@
             {
                 <tr>
                     <td>@template.Id</td>
-                    <td>@template.Name</td>
+                    <td><div class="" title="@template.Name">@template.Name</div></td>
                     <td>@TimeAgoHelper.GetTimeAgoString(template.lastModification, TimeZoneInfo.Local)</td>
                     <td>
                         <a asp-action="Edit" asp-controller="FiveMinuteTemplate" asp-route-Id="@template.Id" class="btn btn-primary">Редактировать</a>

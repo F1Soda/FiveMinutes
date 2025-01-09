@@ -179,20 +179,27 @@ namespace FiveMinute.Controllers
 
 		public async Task<IActionResult> FiveMinuteResult(int resultId)
 		{
-			var currentUser = await GetCurrentUser();
-			var result = await _fiveMinuteResultsRepository.GetById(resultId);
-			var fmTest = await _fiveMinuteTestRepository.GetByIdAsync(result?.FiveMinuteTestId ?? 0);
-
-			if (result == null || currentUser == null ||
-				(fmTest?.UserOrganizerId != currentUser.Id && result.UserId != currentUser.Id))
+			try
 			{
-				return View("Error", new ErrorViewModel(HttpStatusCode.NotFound.ToString()));
+				var currentUser = await GetCurrentUser();
+				var result = await _fiveMinuteResultsRepository.GetById(resultId);
+				var fmTest = await _fiveMinuteTestRepository.GetByIdAsync(result?.FiveMinuteTestId ?? 0);
+
+				if (result == null || currentUser == null ||
+					(fmTest?.UserOrganizerId != currentUser.Id && result.UserId != currentUser.Id))
+				{
+					return View("Error", new ErrorViewModel(HttpStatusCode.NotFound.ToString()));
+				}
+
+				var viewModel = FiveMinuteTestResultViewModel.CreateByModel(fmTest!);
+				viewModel.FiveMinuteTestResult = result;
+
+				return View(viewModel);
 			}
-
-			var viewModel = FiveMinuteTestResultViewModel.CreateByModel(fmTest!);
-			viewModel.FiveMinuteTestResult = result;
-
-			return View(viewModel);
+			catch (Exception ex)
+			{
+				return View("Error", new ErrorViewModel(message: ex.ToString()));
+			}
 		}
 
 		[HttpPost]
