@@ -1,13 +1,17 @@
 using Microsoft.EntityFrameworkCore;
 using FiveMinute.Data;
+using FiveMinute.Interfaces;
 using FiveMinute.Models;
 
 namespace FiveMinute.Repository.FMTestRepository;
 
 public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFiveMinuteTestRepository
 {
-	public FiveMinuteTestRepository(ApplicationDbContext context) : base(context)
+	private readonly IFiveMinuteResultsRepository resultsRepository;
+	public FiveMinuteTestRepository(ApplicationDbContext context,
+		IFiveMinuteResultsRepository resultsRepository) : base(context)
 	{
+		this.resultsRepository = resultsRepository;
 	}
 	public async Task<ResultOperationInDatabase> AddResultToTest(int testId, FiveMinuteTestResult testResults)
 	{
@@ -69,6 +73,15 @@ public class FiveMinuteTestRepository : DefaultRepository<FiveMinuteTest>, IFive
 
 		existingTest.Results = updatedTest.Results == null ? existingTest.Results : updatedTest.Results;
 
+		return await Save();
+	}
+	
+	public override async Task<ResultOperationInDatabase> Delete(FiveMinuteTest test) {
+		foreach (var result in test.Results)
+		{
+			await resultsRepository.Delete(result);
+		}
+		context.Remove(test);
 		return await Save();
 	}
 }

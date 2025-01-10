@@ -48,6 +48,7 @@ namespace FiveMinute.Repository {
 
 		public override async Task<ResultOperationInDatabase> Delete(FiveMinuteTemplate template) {
 			var relatedTests = context.FiveMinuteTests.Include(x => x.Results)
+				.ThenInclude(q => q.Answers)
 			                          .Where(x => x.FiveMinuteTemplateId == template.Id);
 			foreach (var test in relatedTests) {
 				await fMTestRepository.Delete(test);

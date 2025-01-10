@@ -25,4 +25,14 @@ public class FiveMinuteResultRepository: DefaultRepository<FiveMinuteTestResult?
             .Include(x => x.Answers)
             .FirstOrDefaultAsync(x => x.Id == resultId);
     }
+
+    public override async Task<ResultOperationInDatabase> Delete(FiveMinuteTestResult result)
+    {
+        foreach (var answer in result.Answers)
+        {
+            context.Remove(answer);
+        }
+        context.Remove(result);
+        return await Save();
+    }
 }
