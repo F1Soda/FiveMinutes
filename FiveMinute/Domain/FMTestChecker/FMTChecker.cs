@@ -33,7 +33,7 @@ public class FmtChecker(
 
 	public UserAnswer CheckUserAnswer(UserAnswerViewModel userAnswer, FiveMinuteTemplate fiveMinuteTemplate)
 	{
-		var question = fiveMinuteTemplate.Questions.FirstOrDefault(q => q.Position == userAnswer.QuestionPosition);
+		var question = fiveMinuteTemplate.Questions.FirstOrDefault(q => q.Id == userAnswer.QuestionId);
 		var dbAnswer = question?.AnswerOptions.FirstOrDefault(x => x.Position == userAnswer.Position);
 
 		var rez = UserAnswerViewModel.CreateByView(userAnswer);

@@ -7,6 +7,7 @@ public class UserAnswerViewModel:IOutput<UserAnswerViewModel,UserAnswer>
 {
     public string Text { get; set; }
     public int Position { get; set; }
+    public int QuestionId { get; set; }
     public int QuestionPosition { get; set; }
     
     
@@ -15,6 +16,7 @@ public class UserAnswerViewModel:IOutput<UserAnswerViewModel,UserAnswer>
         return new UserAnswer
         {
             Text = model.Text ?? "",
+            QuestionId = model.QuestionId,
             Position = model.Position,
             QuestionPosition = model.QuestionPosition,
         };

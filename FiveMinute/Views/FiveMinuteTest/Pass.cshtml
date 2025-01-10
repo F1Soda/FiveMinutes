@@ -94,7 +94,7 @@
 			var questionNumber = 0;
 			var answerNumber = 0;
 		}
-		@foreach (var question in Model.Questions)
+		@foreach (var question in Model.Questions.OrderBy(x => x.Position))
 		{
 			<div class="question card mt-3 question-card border-secondary border-3">
 				<h5 class="question-text card-title mb-2">@(questionNumber + 1). @question.QuestionText</h5>

@@ -46,7 +46,7 @@
             <div class="question card mt-3 question-card border-secondary border-3">
                 <h5 class="question-text card-title mb-2">@questionNumber. @question.QuestionText</h5>
                 @{
-                    var answers = Model.FiveMinuteTestResult.Answers.Where(answer => answer.QuestionPosition == question.Position).ToList();
+                    var answers = Model.FiveMinuteTestResult.Answers.Where(answer => answer.QuestionId == question.Id).ToList();
                 }
                 @switch (question.ResponseType)
                 {
@@ -81,6 +81,7 @@
                             {
                                 var userAnswer = answers
                                     .FirstOrDefault(ans => ans.Position == answer.Position);
+                                var b = 3;
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="@answer.Text"
                                            id="answer_@(question.Position)_@(answer.Position)"
