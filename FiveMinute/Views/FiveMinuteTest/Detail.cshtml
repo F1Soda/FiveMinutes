@@ -250,7 +250,8 @@
 				<input type="hidden" name="Id" value="@Model.Id" />
 				<input type="hidden" name="Name" value="@Model.Name" />
 				<input type="hidden" name="Status" value="@Model.Status" />
-				<input type="hidden" id="IdToUninclude" name="IdToUninclude" />
+				@* Id и имена разные, не запутайтесь *@
+				<input type="hidden" id="IdToUninclude" asp-for="IdToUnincludeAsString" />
 
 				<div class="form-group mb-4">
 					<h4>Название</h4>

@@ -25,7 +25,12 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels {
 		public bool EndPlanned { get; set; }
 		public DateTime EndTime { get; set; }
 		public IEnumerable<FiveMinuteTestResult> Results { get; set; }
-		public List<int> IdToUninclude { get; set; }
+		public string IdToUnincludeAsString
+		{
+			init => IdToUninclude = value.Split(',').Select(int.Parse).ToList();
+			get => string.Join(',', IdToUninclude);
+		}
+		public List<int> IdToUninclude {get; set;}
 		public string EncryptedId { get; set; }
 		public bool HasUncheckedAnswers { get; set; }
 
