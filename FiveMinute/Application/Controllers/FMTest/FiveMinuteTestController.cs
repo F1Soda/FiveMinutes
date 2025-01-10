@@ -205,34 +205,33 @@ namespace FiveMinute.Controllers
 		[HttpPost]
 		public async Task<IActionResult> UpdateAnswerCorrectness([FromBody] CheckTextAnswerCorrectnessViewModel model)
 		{
-			var test = await _fiveMinuteTestRepository.GetByIdAsync(model.TestId);
-			var answers = test?.Results
-							  .SelectMany(r => r.Answers)
-							  .Where(a => a.Text == model.Text);
+			Console.WriteLine("XYYYYYYYYYYYYYYYYYYYYYYYY");
+			Console.WriteLine("XYYYYYYYYYYYYYYYYYYYYYYYY");
+			Console.WriteLine("XYYYYYYYYYYYYYYYYYYYYYYYY");
+			Console.WriteLine("XYYYYYYYYYYYYYYYYYYYYYYYY");
 
-			if (answers != null)
+			var test = await _fiveMinuteTestRepository.GetByIdAsync(model.TestId);
+			var result = test?.Results.FirstOrDefault(a => a.Id == model.resultId);
+
+			var newScore = 0f;
+
+			if (result != null)
 			{
-				var score = 0f;
-				foreach (var answer in answers)
+				if (model.IsCorrect)
 				{
-					answer.IsCorrect = model.IsCorrect;
-					if (answer.IsCorrect)
-						score = answer.Score = test?
-							.FiveMinuteTemplate
-							.Questions
-							.FirstOrDefault(x => x.Id == answer.QuestionId)
-							?.QuestionScore ?? 0;
+					var question = test.FiveMinuteTemplate.Questions.FirstOrDefault(x => x.Id == model.QuestionId);
+					newScore = question!.QuestionScore;
 				}
+
 				await _fiveMinuteTestRepository.Save();
 
-				var result = test!.Results.FirstOrDefault(x => x.Id == model.resultId);
-				var user = await _userRepository.GetFullUserDataById(result!.UserId!);
+				var user = await _userRepository.GetFullUserDataById(result.UserId);
 				result = user.PassedTestResults.FirstOrDefault(x => x.Id == model.resultId);
 				foreach (var answer in result.Answers)
 				{
 					if (answer.QuestionId == model.QuestionId)
 					{
-						answer.Score = score;
+						answer.Score = newScore;
 						break;
 					}
 				}
@@ -241,7 +240,8 @@ namespace FiveMinute.Controllers
 				Console.Write(res.Success);
 			}
 
-			return Json(new { success = true });
+			return Json(new { success = true, newScore });
 		}
+	
 	}
 }

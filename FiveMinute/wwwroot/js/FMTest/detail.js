@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+
+
+
+
 	// Bind the submit function to the Save button's click event
 	$('#submit').click(function (e) {
 		verifyDataBeforeSubmit(e); // Call the save function
@@ -8,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	initializeQuestionCheckboxes('IdToUninclude');
 	toggleEndTimeInput();
 	toggleStartTimeInput();
-	
+
 	let closeButton = document.getElementById('closeTest');
 
 	if (closeButton) {

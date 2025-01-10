@@ -85,7 +85,7 @@
 		<!-- Statistics Tab Pane -->
 		<div class="tab-pane fade show active" id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
 			<div class="row">
-				<div >
+				<div>
 					<h6>Всего прохождений: @Model.Results.Count()</h6>
 
 					@foreach (var result in Model.Results)
@@ -170,7 +170,11 @@
 														<th>Балл</th>
 														@foreach (var number in answersDict.Keys.Order())
 														{
-															<td>@answersDict[number].Where(x => x.IsCorrect).Sum(x => x.Score)</td>
+															<td>
+																<div id="@($"{result.Id}.{answersDict[number].First()?.QuestionId}")">
+																	@answersDict[number].Where(x => x.IsCorrect).Sum(x => x.Score)
+																</div>
+															</td>
 														}
 													</tr>
 												</tbody>
@@ -192,7 +196,7 @@
 				toggleEndTimeInput();
 				toggleStartTimeInput();
 
-				document.addEventListener('click', function(e) {
+				document.addEventListener('click', function (e) {
 					if (e.target.classList.contains('mark-correct-btn')) {
 						var answerId = e.target.getAttribute('data-answer-id');
 						var isCorrect = e.target.getAttribute('data-is-correct') === 'true';
@@ -206,23 +210,33 @@
 							headers: {
 								'Content-Type': 'application/json'
 							},
-							body: JSON.stringify({ answerId: parseInt(answerId), isCorrect: isCorrect,
-							questionId: parseInt(questionId), testId : parseInt(testId),
-							text: text, resultId : resultId
+							body: JSON.stringify({
+								answerId: parseInt(answerId), isCorrect: isCorrect,
+								questionId: parseInt(questionId), testId: parseInt(testId),
+								text: text, resultId: resultId
 							}),
 						})
-						.then(response => {
-							if (!response.ok) throw new Error('Network response was not ok');
-							return response.json().catch(() => null);
-						})
-						.then(data => {
-							showPopup('Ответ обновлён!', "notification");
-							var answerBlock = e.target.closest('.answer-block');
-						})
-						.catch(error => {
-							console.error('Fetch error:', error);
-							showPopup('Ошибка при обновлении ответа.', "error");
-						});
+							.then(response => {
+								if (!response.ok) throw new Error('Network response was not ok');
+								console.log();
+								return response.json();
+							})
+							.then(data => {
+								showPopup('Ответ обновлён!', "notification");
+								console.log(data);
+								// Construct the unique ID of the score block using resultId and questionId
+				var scoreBlockId = `${resultId}.${questionId}`;
+				var scoreBlock = document.getElementById(scoreBlockId);
+
+				if (scoreBlock) {
+					// Update the content of the score block with the new score
+					scoreBlock.textContent = data.newScore;
+				}
+							})
+							.catch(error => {
+								console.error('Fetch error:', error);
+								showPopup('Ошибка при обновлении ответа.', "error");
+							});
 					}
 				});
 			});
