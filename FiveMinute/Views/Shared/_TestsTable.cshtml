@@ -21,7 +21,7 @@
 				<tr>
 					<td>@test.Id</td>
 					<td>
-						<div class="truncate" title="@test.Name">@test.Name</div>
+						<div class="truncate text-wrap" title="@test.Name">@test.Name</div>
 					</td>
 					<td>
 						<span class="badge @TestStatusHelper.GetStatusClass(test.Status) text-white">@TestStatusHelper.ConvertEnumToString(test.Status)</span>
@@ -31,7 +31,7 @@
 							<span id="sub-status" class="badge bg-warning text-white">Запланирована</span>
 						}
 					</td>
-					<td><div class="truncate" title="@test.AttachedFMTemplateName">@test.AttachedFMTemplateName</div></td>
+					<td><div class="truncate text-wrap" title="@test.AttachedFMTemplateName">@test.AttachedFMTemplateName</div></td>
 					<td>
 						<a class="btn btn-secondary copyUrlButton" encryptedId="@test.EncryptedId">Скопировать ссылку</a>
 

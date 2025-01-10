@@ -28,7 +28,7 @@ namespace FiveMinute.ViewModels.FiveMinuteTestViewModels {
 		public string IdToUnincludeAsString
 		{
 			init => IdToUninclude = value.Split(',').Select(int.Parse).ToList();
-			get => string.Join(',', IdToUninclude);
+			get => string.Join(',', IdToUninclude?? []);
 		}
 		public List<int> IdToUninclude {get; set;}
 		public string EncryptedId { get; set; }

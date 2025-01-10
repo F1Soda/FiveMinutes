@@ -1,4 +1,5 @@
-﻿using FiveMinute.Interfaces;
+﻿using FiveMinute.Data;
+using FiveMinute.Interfaces;
 using FiveMinute.Models;
 using FiveMinute.Repository.FMTestRepository;
 using FiveMinute.ViewModels;
@@ -15,6 +16,8 @@ public class FmtChecker(
 	{	
 		var testResult = await ConvertViewModelToFiveMinuteResult(testResultViewModel);
 
+		if (testResult.Answers.All(x => x.ResultStatus == ResultStatus.Verified))	
+			testResult.Status =  ResultStatus.Verified;
 		testResult.UserData = testResultViewModel.UserData.GetCopy();
 		testResult.UserId = testResultViewModel.UserId;
 		
@@ -39,6 +42,9 @@ public class FmtChecker(
 		var rez = UserAnswerViewModel.CreateByView(userAnswer);
 		rez.QuestionId = question.Id;
 		rez.IsCorrect = (dbAnswer?.IsCorrect ?? false) && rez.Text == dbAnswer?.Text;
+		rez.ResultStatus = question.ResponseType == ResponseType.Text 
+			? ResultStatus.Accepted 
+			: ResultStatus.Verified;
 		rez.QuestionText = question?.QuestionText ?? "";
 		if (rez.IsCorrect)
 		{

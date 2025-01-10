@@ -16,8 +16,9 @@ public partial class AccountController {
 	}
 
 	private AppUser CreateNewUser(RegisterViewModel registerViewModel) {
+		var role = registerViewModel.IsTeacher? UserRoles.Teacher : UserRoles.Student;
 		return new AppUser {
-			UserRole = UserRoles.Student,
+			UserRole = role,
 			Email = registerViewModel.EmailAddress,
 			UserName = registerViewModel.EmailAddress,
 			UserData = new UserData(registerViewModel.FirstName, registerViewModel.LastName,

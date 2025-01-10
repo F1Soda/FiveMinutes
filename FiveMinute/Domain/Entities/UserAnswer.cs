@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using FiveMinute.Data;
 
 namespace FiveMinute.Models;
 
@@ -19,4 +20,6 @@ public class UserAnswer
     public string QuestionText { get; set; } = "";
 
     public int QuestionPosition { get; set; }
+    
+    public ResultStatus ResultStatus { get; set; }
 }

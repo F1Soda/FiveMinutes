@@ -24,6 +24,9 @@ namespace FiveMinute.ViewModels.AccountViewModels
 		[Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        
+        [Display(Name = "Я преподаватель")]
+        public bool IsTeacher { get; set; }
 
         [Required(ErrorMessage = "Confirm password")]
         [Compare("Password", ErrorMessage = "Password do not match")]

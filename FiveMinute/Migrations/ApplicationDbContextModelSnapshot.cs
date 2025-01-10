@@ -318,6 +318,9 @@ namespace FiveMinute.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("ResultStatus")
+                        .HasColumnType("integer");
+
                     b.Property<float>("Score")
                         .HasColumnType("real");
 

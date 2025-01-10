@@ -223,7 +223,6 @@ namespace FiveMinute.Controllers
 					newScore = question!.QuestionScore;
 				}
 
-				await _fiveMinuteTestRepository.Save();
 
 				var user = await _userRepository.GetFullUserDataById(result.UserId);
 				result = user.PassedTestResults.FirstOrDefault(x => x.Id == model.resultId);
@@ -232,11 +231,17 @@ namespace FiveMinute.Controllers
 					if (answer.QuestionId == model.QuestionId)
 					{
 						answer.Score = newScore;
+						answer.IsCorrect = newScore > 0;
+						answer.ResultStatus = ResultStatus.Verified;
 						break;
 					}
 				}
 				result.Score = result.Answers.Sum(x => x.Score);
+				
+				if (result.Answers.All(x => x.ResultStatus==ResultStatus.Verified))
+					result.Status = ResultStatus.Verified;
 				var res = await _userRepository.Save();
+				await _fiveMinuteTestRepository.Save();
 				Console.Write(res.Success);
 			}
 
